@@ -12,9 +12,15 @@ ARG.room = (function () {
   let speechTimer = null;
   let toastTimer = null;
   let lastMood = null;
-  let lastMode = null;
   let lastPower = null;
   let armTimer = null;
+  const seen = {};                       // last rendered values, to avoid needless DOM work
+
+  function changed(key, value) {
+    if (seen[key] === value) return false;
+    seen[key] = value;
+    return true;
+  }
 
   function cache() {
     els.wall     = document.getElementById('room-wall');
@@ -91,39 +97,54 @@ ARG.room = (function () {
     const s = M();
     const t = T();
 
-    /* environment readouts */
-    els.out.textContent = s.outdoorTemp.toFixed(1) + '°';
-    els.roomT.textContent = s.roomTemp.toFixed(1) + '°';
-    els.hum.textContent = Math.round(s.humidity) + '%';
+    /* environment readouts (throttled to visible changes) */
+    const outTxt = s.outdoorTemp.toFixed(1) + '°';
+    if (changed('outT', outTxt)) els.out.textContent = outTxt;
+
+    const roomTxt = s.roomTemp.toFixed(1) + '°';
+    if (changed('roomT', roomTxt)) els.roomT.textContent = roomTxt;
+
+    const humTxt = Math.round(s.humidity) + '%';
+    if (changed('hum', humTxt)) els.hum.textContent = humTxt;
+
     const hh = Math.floor(s.clockH);
     const mm = Math.floor((s.clockH - hh) * 60);
-    els.clock.textContent = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+    const clockTxt = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+    if (changed('clock', clockTxt)) els.clock.textContent = clockTxt;
 
     /* outside weather look */
     const night = s.clockH < 6.5 || s.clockH > 18.5;
-    if (night) {
-      els.winSky.style.background = 'linear-gradient(180deg,#122045,#2b3f6e)';
-      els.winSun.style.opacity = '0';
-    } else {
-      const heat = s.outdoorTemp > 35;
-      els.winSky.style.background = heat
-        ? 'linear-gradient(180deg,#ffb95e,#ffdca8)'
-        : 'linear-gradient(180deg,#8ec9f0,#cfe8fb)';
-      els.winSun.textContent = heat ? '☀️' : '⛅';
-      els.winSun.style.opacity = '1';
+    const heat = s.outdoorTemp > 35;
+    const skyKey = night ? 'night' : (heat ? 'hot' : 'day');
+    if (changed('sky', skyKey)) {
+      if (night) {
+        els.winSky.style.background = 'linear-gradient(180deg,#122045,#2b3f6e)';
+        els.winSun.style.opacity = '0';
+      } else {
+        els.winSky.style.background = heat
+          ? 'linear-gradient(180deg,#ffb95e,#ffdca8)'
+          : 'linear-gradient(180deg,#8ec9f0,#cfe8fb)';
+        els.winSun.textContent = heat ? '☀️' : '⛅';
+        els.winSun.style.opacity = '1';
+      }
     }
 
-    /* room tint */
-    els.panel.style.setProperty('--room-tint', roomTint(s.roomTemp));
-    els.wall.style.background = wallColour(s.roomTemp);
+    /* room tint — rounded so we do not restyle every single frame */
+    const bucket = Math.round(s.roomTemp * 4) / 4;
+    if (changed('tint', bucket)) {
+      els.panel.style.setProperty('--room-tint', roomTint(bucket));
+      els.wall.style.background = wallColour(bucket);
+    }
 
     /* air-con */
     const on = s.power && s.selfClean <= 0;
     els.ac.classList.toggle('off', !s.power);
-    els.acTemp.textContent = s.power ? String(s.setTemp) : '--';
-    els.acLed.classList.toggle('off', !s.power);
+
+    const acTemp = s.power ? String(s.setTemp) : '--';
+    if (changed('acTemp', acTemp)) els.acTemp.textContent = acTemp;
 
     if (lastPower !== s.power) {
+      els.acLed.classList.toggle('off', !s.power);
       els.acLed.style.fill = s.power ? '#3ddc84' : '';
       lastPower = s.power;
     }
@@ -131,29 +152,33 @@ ARG.room = (function () {
     els.vaneV.classList.toggle('open', !!s.swingV || on);
     els.vaneH.classList.toggle('open', !!s.swingH || on);
 
-    const fanCls = 'fan-' + ({ AUTO: 2, LOW: 1, MED: 3, HIGH: 4 }[s.fan]);
     const clean = s.selfClean > 0;
-    els.airflow.className = 'airflow'
-      + (on || clean ? ' on' : '')
-      + ' ' + fanCls
+    const fanCls = 'airflow' + (on || clean ? ' on' : '')
+      + ' fan-' + ({ AUTO: 2, LOW: 1, MED: 3, HIGH: 4 }[s.fan])
       + (s.mode === 'HEAT' ? ' heat' : '')
       + (s.swingH ? ' swing-h' : '');
+    if (changed('airflow', fanCls)) els.airflow.className = fanCls;
 
+    let status, hot = false;
     if (clean) {
-      els.acStatus.textContent = '✨ ' + t('acClean');
-      els.acStatus.classList.remove('hot');
+      status = '✨ ' + t('acClean');
     } else if (!s.power) {
-      els.acStatus.textContent = '⏻ ' + t('acOff');
-      els.acStatus.classList.remove('hot');
+      status = '⏻ ' + t('acOff');
     } else {
-      els.acStatus.textContent = ARG.sim.MODE_ICON[s.mode] + ' ' + t('mode' + cap(s.mode))
+      status = ARG.sim.MODE_ICON[s.mode] + ' ' + t('mode' + cap(s.mode))
         + ' · ' + s.setTemp + '°C · ' + t('fan' + cap(s.fan));
-      els.acStatus.classList.toggle('hot', s.mode === 'HEAT');
+      hot = s.mode === 'HEAT';
+    }
+    if (changed('acStatus', status)) {
+      els.acStatus.textContent = status;
+      els.acStatus.classList.toggle('hot', hot);
     }
 
     /* boy */
-    els.boy.dataset.mood = s.mood;
-    els.miniTemp.textContent = s.power ? String(s.setTemp) : '--';
+    if (changed('boyMood', s.mood)) els.boy.dataset.mood = s.mood;
+
+    const miniTxt = s.power ? String(s.setTemp) : '--';
+    if (changed('mini', miniTxt)) els.miniTemp.textContent = miniTxt;
 
     if (lastMood !== s.mood) {
       lastMood = s.mood;
@@ -161,19 +186,25 @@ ARG.room = (function () {
     }
 
     /* HUD */
-    els.moodHud.textContent = t('mood' + capMood(s.mood));
-    els.moodHud.style.color = ({
-      freezing: '#7dd3fc', cold: '#93c5fd', ok: '#3ddc84', hot: '#fbbf24', veryhot: '#f87171'
-    })[s.mood];
+    const moodTxt = t('mood' + capMood(s.mood));
+    if (changed('moodHud', moodTxt + s.mood)) {
+      els.moodHud.textContent = moodTxt;
+      els.moodHud.style.color = ({
+        freezing: '#7dd3fc', cold: '#93c5fd', ok: '#3ddc84', hot: '#fbbf24', veryhot: '#f87171'
+      })[s.mood];
+    }
 
     els.scoreChip.hidden = !s.challenge;
     if (s.challenge) {
-      els.scoreHud.textContent = Math.floor(s.score);
-      els.comboHud.textContent = 'x' + s.combo;
-      els.comboHud.style.color = s.combo > 1 ? '#fbbf24' : '#93a3bd';
+      const sc = Math.floor(s.score);
+      if (changed('score', sc)) els.scoreHud.textContent = sc;
+      if (changed('combo', s.combo)) {
+        els.comboHud.textContent = 'x' + s.combo;
+        els.comboHud.style.color = s.combo > 1 ? '#fbbf24' : '#93a3bd';
+      }
     }
 
-    els.lockBan.hidden = !s.lock;
+    if (changed('lockBan', s.lock)) els.lockBan.hidden = !s.lock;
   }
 
   function cap(s) { return s.charAt(0) + s.slice(1).toLowerCase(); }

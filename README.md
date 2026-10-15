@@ -1,5 +1,7 @@
 # ❄ Aircond Remote Game
 
+[![Build Android APK](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml/badge.svg)](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml)
+
 A little air-conditioner remote game. **The left half of the screen is a Haier-style remote
 control. The right half is a room: a wall-mounted air-con at the top and a boy holding his
 own mini remote.**

@@ -41,6 +41,14 @@ ARG.remote = (function () {
   }
 
   /* ─────────── LCD rendering ─────────── */
+  const seen = {};                      // last rendered values, to avoid needless DOM work
+
+  function changed(key, value) {
+    if (seen[key] === value) return false;
+    seen[key] = value;
+    return true;
+  }
+
   function render() {
     const s = M();
     const t = T();
@@ -49,19 +57,26 @@ ARG.remote = (function () {
     els.lcd.classList.toggle('off', !s.power);
     els.lcd.classList.toggle('backlit', s.light);
 
-    els.modeIcon.textContent = ARG.sim.MODE_ICON[s.mode];
-    els.modeName.textContent = s.selfClean > 0 ? '--' : t('mode' + cap(s.mode));
+    const modeShown = s.selfClean > 0 ? '--' : t('mode' + cap(s.mode));
+    if (changed('modeName', modeShown)) {
+      els.modeIcon.textContent = ARG.sim.MODE_ICON[s.mode];
+      els.modeName.textContent = modeShown;
+    }
 
-    els.temp.textContent = '';
-    els.temp.appendChild(document.createTextNode(String(s.setTemp)));
-    const deg = document.createElement('span');
-    deg.className = 'lcd-deg';
-    deg.textContent = '°C';
-    els.temp.appendChild(deg);
+    if (changed('setTemp', s.setTemp)) {
+      els.temp.textContent = '';
+      els.temp.appendChild(document.createTextNode(String(s.setTemp)));
+      const deg = document.createElement('span');
+      deg.className = 'lcd-deg';
+      deg.textContent = '°C';
+      els.temp.appendChild(deg);
+    }
 
     const fanIdx = { AUTO: 0, LOW: 1, MED: 2, HIGH: 3 }[s.fan];
-    els.fanBars.forEach((b, i) => b.classList.toggle('active', fanIdx > 0 && i < fanIdx));
-    els.fanName.textContent = t('fan' + cap(s.fan));
+    if (changed('fan', s.fan)) {
+      els.fanBars.forEach((b, i) => b.classList.toggle('active', fanIdx > 0 && i < fanIdx));
+      els.fanName.textContent = t('fan' + cap(s.fan));
+    }
 
     els.swingIcons.forEach(el => {
       const on = el.dataset.sw === 'v' ? s.swingV : s.swingH;
@@ -79,13 +94,15 @@ ARG.remote = (function () {
 
     const showTimer = s.timerArmed && (s.timerOnLeft > 0 || s.timerOffLeft > 0);
     setInd('timer', showTimer);
+    let timerTxt;
     if (showTimer) {
-      if (s.timerOnLeft > 0) els.timerTxt.textContent = t('timerOn') + ' ' + fmtH(s.timerOnLeft);
-      else if (s.timerOffLeft > 0) els.timerTxt.textContent = t('timerOff') + ' ' + fmtH(s.timerOffLeft);
+      if (s.timerOnLeft > 0) timerTxt = t('timerOn') + ' ' + fmtH(s.timerOnLeft);
+      else timerTxt = t('timerOff') + ' ' + fmtH(s.timerOffLeft);
     } else {
-      els.timerTxt.textContent = s.timerOnH > 0 ? t('timerOn') + ' ' + s.timerOnH + 'h'
-                             : s.timerOffH > 0 ? t('timerOff') + ' ' + s.timerOffH + 'h' : '--';
+      timerTxt = s.timerOnH > 0 ? t('timerOn') + ' ' + s.timerOnH + 'h'
+               : s.timerOffH > 0 ? t('timerOff') + ' ' + s.timerOffH + 'h' : '--';
     }
+    if (changed('timerTxt', timerTxt)) els.timerTxt.textContent = timerTxt;
 
     /* key states */
     els.powerKey.classList.toggle('on', s.power);
