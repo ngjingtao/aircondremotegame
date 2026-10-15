@@ -1,34 +1,20 @@
 /* ═══════════════════════════════════════════
-   i18n.js — bilingual EN / 中文
+   i18n.js — Play Aircond, bilingual EN / 中文
    ═══════════════════════════════════════════ */
 window.ARG = window.ARG || {};
-
-/* safe storage: some WebViews / file:// pages block localStorage */
-ARG.store = (function () {
-  const mem = {};
-  return {
-    get(k) {
-      try { const v = localStorage.getItem(k); return v === undefined ? (mem[k] ?? null) : v; }
-      catch (e) { return mem[k] ?? null; }
-    },
-    set(k, v) {
-      mem[k] = String(v);
-      try { localStorage.setItem(k, String(v)); } catch (e) { /* ignore */ }
-    }
-  };
-})();
 
 ARG.i18n = (function () {
 
   const DICT = {
     en: {
-      title: 'Aircond Remote',
+      title: 'Play Aircond',
       feeling: 'Feeling',
       score: 'Score',
       freePlay: 'Free Play',
       challenge: 'Challenge',
       brand: 'Haier',
       lockBanner: '🔒 Remote is locked — press LOCK',
+      menu: 'Menu',
 
       'btn.turbo': 'TURBO', 'btn.quiet': '/ QUIET',
       'btn.cool': 'COOL', 'btn.self': 'SELF', 'btn.clean': 'CLEAN', 'btn.dry': 'DRY',
@@ -109,13 +95,14 @@ ARG.i18n = (function () {
     },
 
     zh: {
-      title: '空调遥控器',
+      title: '玩空调',
       feeling: '感受',
       score: '分数',
       freePlay: '自由模式',
       challenge: '挑战模式',
       brand: '海尔',
       lockBanner: '🔒 遥控器已锁定 — 按 LOCK 解锁',
+      menu: '菜单',
 
       'btn.turbo': '强力', 'btn.quiet': '/ 静音',
       'btn.cool': '制冷', 'btn.self': '自', 'btn.clean': '清洁', 'btn.dry': '除湿',

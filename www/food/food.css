@@ -1,0 +1,418 @@
+/* ═══════════════════════════════════════════════════════════
+   Food Eating — activity styles
+   (shell: ../shared/ui.css)
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --deck-w:320px;
+  --deck-h:660px;
+  --deck-scale:1;
+  --food-accent:#ff9a52;
+}
+
+/* ─────────────── SPLIT LAYOUT ─────────────── */
+#deck-panel{
+  flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;
+  padding:10px 6px calc(10px + env(safe-area-inset-bottom));
+  min-width:0;overflow:hidden;
+}
+
+#deck-scaler{
+  position:relative;
+  width:var(--deck-w);
+  height:var(--deck-h);
+  flex:0 0 auto;
+}
+
+#scene{
+  flex:1 1 auto;position:relative;min-width:0;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  border-left:1px solid var(--line);
+  background:
+    radial-gradient(600px 420px at 70% 0%, rgba(255,154,82,.18), transparent 62%),
+    radial-gradient(520px 420px at 0% 100%, rgba(120,90,255,.18), transparent 62%),
+    linear-gradient(180deg,#101a2c,#0c1424);
+}
+
+/* ═══════════════ CONTROL DECK ═══════════════ */
+.deck{
+  position:absolute;top:0;left:0;
+  width:var(--deck-w);height:var(--deck-h);
+  transform:scale(var(--deck-scale));
+  transform-origin:top left;
+  border-radius:26px;
+  padding:14px 14px 12px;
+  display:flex;flex-direction:column;gap:10px;
+  background:linear-gradient(160deg,#fff8f1,#f3e7db 55%,#e8dbcd);
+  box-shadow:
+    0 22px 44px rgba(0,0,0,.55),
+    0 4px 0 #cabbaa,
+    inset 0 2px 3px rgba(255,255,255,.9),
+    inset 0 -6px 14px rgba(0,0,0,.08);
+  color:#4a3a2c;
+}
+
+.deck-head{flex:0 0 auto;}
+
+.stage-name{display:flex;align-items:center;gap:8px;}
+.stage-icon{font-size:20px;}
+.stage-name b{font-size:16px;letter-spacing:-.2px;color:#3d2c1e;}
+.stage-name i{
+  margin-left:auto;font-style:normal;font-size:11px;font-weight:800;
+  color:#a08c78;
+}
+
+.stage-pips{display:flex;gap:5px;margin-top:8px;}
+.pip{
+  flex:1 1 auto;height:22px;border-radius:7px;border:1px solid #d6c7b6;
+  background:linear-gradient(180deg,#fdf7f1,#ecdfd2);
+  font-size:9px;font-weight:800;color:#a5957f;
+  display:flex;align-items:center;justify-content:center;
+  font-family:inherit;cursor:pointer;padding:0;
+  transition:background .2s,color .2s,transform .2s;
+}
+.pip.done{background:linear-gradient(180deg,#ffd9b0,#ffc088);border-color:#e8a860;color:#8a5a1e;}
+.pip.active{
+  background:linear-gradient(180deg,#ff9a52,#f97316);
+  border-color:#d9620c;color:#fff;
+  transform:translateY(-2px);
+  box-shadow:0 3px 0 #c2560a, 0 6px 12px rgba(249,115,22,.35);
+}
+
+/* ── food tray ── */
+.tray-wrap{flex:0 0 auto;}
+.tray-title{font-size:10px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:#a08c78;margin-bottom:5px;}
+.tray{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.tray.locked{opacity:.45;}
+
+.food{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  padding:6px 2px 5px;
+  border-radius:12px;
+  border:1px solid #d6c7b6;
+  background:linear-gradient(180deg,#ffffff,#f0e6da);
+  box-shadow:0 2px 0 #d6c7b6;
+  cursor:pointer;font-family:inherit;
+  transition:transform .1s, box-shadow .1s, background .15s, border-color .15s;
+}
+.food:active{transform:translateY(2px);box-shadow:0 0 0 #d6c7b6;}
+.food-emoji{font-size:20px;line-height:1;}
+.food-name{font-size:8.5px;font-weight:800;color:#7b6857;letter-spacing:.2px;}
+.food.chosen{
+  background:linear-gradient(180deg,#ffd9b0,#ffb877);
+  border-color:#e8944a;
+  box-shadow:0 2px 0 #e8944a, 0 0 14px rgba(249,115,22,.45);
+}
+.food:disabled{cursor:not-allowed;}
+
+/* ── actions ── */
+.actions{flex:0 0 auto;display:flex;flex-direction:column;gap:7px;}
+
+.big-btn{
+  position:relative;
+  padding:13px 10px;
+  border-radius:14px;
+  border:1px solid #d6c7b6;
+  background:linear-gradient(180deg,#ffffff,#eee3d6);
+  box-shadow:0 3px 0 #d6c7b6;
+  font-family:inherit;font-size:14px;font-weight:800;letter-spacing:.4px;
+  color:#5d4a38;cursor:pointer;
+  transition:transform .08s, box-shadow .08s, background .15s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.big-btn:active{transform:translateY(3px);box-shadow:0 0 0 #d6c7b6;}
+.big-btn i{
+  font-style:normal;font-size:11px;font-weight:800;
+  background:rgba(0,0,0,.10);border-radius:999px;padding:1px 7px;
+}
+.big-btn.primary{background:linear-gradient(180deg,#ffc98f,#ff9f52);border-color:#e07f2c;box-shadow:0 3px 0 #c96a1c;color:#4a2a08;}
+.big-btn.go{background:linear-gradient(180deg,#a8e6b8,#5cc47c);border-color:#3f9d5c;box-shadow:0 3px 0 #35854c;color:#123f22;}
+.big-btn.dim{opacity:.62;}
+.big-btn.ghost{background:rgba(0,0,0,.05);box-shadow:none;border-style:dashed;color:#a08c78;font-weight:700;font-size:12px;}
+.big-btn.pressed{transform:translateY(3px);box-shadow:0 0 0 #d6c7b6;}
+
+/* ── meters ── */
+.meters{flex:1 1 auto;display:flex;flex-direction:column;gap:6px;justify-content:center;min-height:0;}
+.meter{display:flex;align-items:center;gap:7px;}
+.meter-label{flex:0 0 62px;font-size:9.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;color:#a08c78;}
+.meter-bar{flex:1 1 auto;height:10px;border-radius:6px;background:#e2d5c6;box-shadow:inset 0 1px 2px rgba(0,0,0,.14);overflow:hidden;}
+.meter-bar i{
+  display:block;height:100%;width:0%;border-radius:6px;
+  background:linear-gradient(90deg,#7fd6a8,#3ddc84);
+  transition:width .18s linear;
+}
+.meter.val .meter-bar i{background:linear-gradient(90deg,#7fd6a8,#3ddc84);}
+.meter.hot .meter-bar i{background:linear-gradient(90deg,#ffd166,#ff9a52);}
+.meter.low .meter-bar i{background:linear-gradient(90deg,#ffb3b3,#ff8a8a);}
+.meter-val{flex:0 0 34px;text-align:right;font-size:10px;font-weight:800;color:#7b6857;font-variant-numeric:tabular-nums;}
+
+/* ── footer ── */
+.deck-foot{flex:0 0 auto;display:flex;gap:7px;}
+.mode-btn{
+  flex:1 1 auto;padding:9px;border-radius:11px;
+  border:1px solid #d6c7b6;
+  background:linear-gradient(180deg,#ffffff,#efe4d8);
+  box-shadow:0 2px 0 #d6c7b6;
+  font-family:inherit;font-size:11.5px;font-weight:800;color:#7b6857;
+  cursor:pointer;transition:transform .08s, background .15s;
+}
+.mode-btn.active{background:linear-gradient(180deg,#cfe6ff,#a9cdf7);border-color:#7aa9d8;box-shadow:0 2px 0 #7aa9d8;color:#1d3d61;}
+.mode-btn:active{transform:translateY(2px);box-shadow:0 0 0 #d6c7b6;}
+
+/* ═══════════════ SCENE ═══════════════ */
+.scene-top{
+  flex:0 0 auto;display:flex;align-items:center;gap:8px;
+  padding:8px 10px 0;
+  z-index:5;
+}
+.scene-stage{
+  font-size:11px;font-weight:800;letter-spacing:.4px;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:999px;padding:3px 11px;
+}
+.scene-mood{
+  margin-left:auto;font-size:11px;font-weight:800;letter-spacing:.4px;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:999px;padding:3px 11px;
+  color:var(--ok);
+}
+.scene-mood.m-ache{color:#f87171;}
+.scene-mood.m-full{color:#fbbf24;}
+.scene-mood.m-toilet{color:#fbbf24;}
+.scene-mood.m-relieved{color:#7dd3fc;}
+.scene-mood.m-hungry{color:#93a3bd;}
+
+.body-wrap{
+  flex:1 1 auto;position:relative;min-height:0;
+  display:flex;align-items:center;justify-content:center;
+  padding:4px 6px;
+}
+#body{width:100%;height:100%;display:block;}
+
+/* ── organs ── */
+#tract{transition:opacity .3s;}
+.organ{transition:filter .35s, opacity .35s;}
+
+.organ.large{
+  fill:none;stroke:#c9744f;stroke-width:16;stroke-linecap:round;stroke-linejoin:round;
+  opacity:.92;
+}
+.organ.coil{
+  fill:none;stroke:#e79a76;stroke-width:12;stroke-linecap:round;stroke-linejoin:round;
+  opacity:.95;
+}
+.organ.duo{fill:none;stroke:#f0b78c;stroke-width:10;stroke-linecap:round;}
+.organ.eso{fill:none;stroke:#f0b78c;stroke-width:9;stroke-linecap:round;}
+.organ.stomach{fill:url(#stomachGrad);opacity:.95;}
+.organ.stomach{transform-box:fill-box;transform-origin:center;transform:rotate(-5deg);}
+
+/* highlight the organ that is busy */
+#body[data-stage="ESOPHAGUS"] .organ.eso{filter:url(#softGlow);stroke:#ffd9a8;}
+#body[data-stage="STOMACH"] .organ.stomach{filter:url(#softGlow);animation:stomachChurn 1.5s ease-in-out infinite;}
+#body[data-stage="SMALL"] .organ.coil{filter:url(#softGlow);stroke:#ffb98f;}
+#body[data-stage="LARGE"] .organ.large{filter:url(#softGlow);stroke:#e08a5f;}
+#body[data-stage="MOUTH"] .organ.eso{stroke:#f7c9a5;}
+
+@keyframes stomachChurn{
+  0%,100%{transform:rotate(-6deg) scale(1);}
+  50%{transform:rotate(3deg) scale(1.07);}
+}
+
+/* ── effects ── */
+.fx-peri,.fx-acid,.fx-sparks,.fx-drops,.fx-stink{display:none;}
+#body[data-stage="ESOPHAGUS"] .fx-peri{display:block;}
+#body[data-stage="STOMACH"] .fx-acid{display:block;}
+#body[data-stage="SMALL"] .fx-sparks{display:block;}
+#body[data-stage="LARGE"] .fx-drops{display:block;}
+#body[data-stage="OUT"] .fx-stink{display:block;}
+
+.fx-peri ellipse{fill:#ffe0b8;opacity:0;animation:peri 1.2s linear infinite;}
+.fx-peri ellipse:nth-child(2){animation-delay:.4s;}
+.fx-peri ellipse:nth-child(3){animation-delay:.8s;}
+@keyframes peri{
+  0%{transform:translateY(-10px);opacity:0;}
+  25%{opacity:.95;}
+  100%{transform:translateY(34px);opacity:0;}
+}
+
+.fx-acid circle{fill:#e8ff9a;opacity:.85;animation:bubble 2s ease-in infinite;}
+.fx-acid circle:nth-child(2){animation-delay:.3s;}
+.fx-acid circle:nth-child(3){animation-delay:.6s;}
+.fx-acid circle:nth-child(4){animation-delay:.9s;}
+.fx-acid circle:nth-child(5){animation-delay:1.2s;}
+@keyframes bubble{
+  0%{transform:translateY(6px) scale(.6);opacity:0;}
+  40%{opacity:.95;}
+  100%{transform:translateY(-22px) scale(1.1);opacity:0;}
+}
+
+.fx-sparks circle{fill:#fff3a8;opacity:0;animation:spark 1.6s ease-out infinite;}
+.fx-sparks circle:nth-child(2){animation-delay:.25s;}
+.fx-sparks circle:nth-child(3){animation-delay:.5s;}
+.fx-sparks circle:nth-child(4){animation-delay:.75s;}
+.fx-sparks circle:nth-child(5){animation-delay:1s;}
+.fx-sparks circle:nth-child(6){animation-delay:1.25s;}
+@keyframes spark{
+  0%{transform:translate(0,0) scale(.5);opacity:0;}
+  25%{opacity:1;}
+  100%{transform:translate(0,-34px) scale(1.2);opacity:0;}
+}
+
+.fx-drops circle{fill:#8fd6ff;opacity:0;animation:soak 1.6s ease-in infinite;}
+.fx-drops circle:nth-child(2){animation-delay:.3s;}
+.fx-drops circle:nth-child(3){animation-delay:.6s;}
+.fx-drops circle:nth-child(4){animation-delay:.9s;}
+.fx-drops circle:nth-child(5){animation-delay:1.2s;}
+@keyframes soak{
+  0%{transform:translateY(0) scale(1);opacity:0;}
+  30%{opacity:1;}
+  100%{transform:translateY(-16px) scale(.3);opacity:0;}
+}
+
+.fx-stink path{fill:none;stroke:#b9e6a0;stroke-width:2.4;stroke-linecap:round;opacity:0;animation:stink 2s ease-out infinite;}
+.fx-stink path:nth-child(2){animation-delay:.35s;}
+.fx-stink path:nth-child(3){animation-delay:.7s;}
+@keyframes stink{
+  0%{transform:translateY(6px);opacity:0;}
+  30%{opacity:.85;}
+  100%{transform:translateY(-20px);opacity:0;}
+}
+
+/* ── food particle ── */
+#foodLayer text{pointer-events:none;}
+#foodHalo{filter:url(#softGlow);opacity:0;transition:opacity .3s;}
+#foodTrail{opacity:0;}
+
+/* ── organ labels ── */
+.organ-label text{
+  font-size:8px;font-weight:800;letter-spacing:.2px;
+  fill:rgba(214,232,255,.72);
+  stroke:rgba(8,14,26,.85);
+  stroke-width:2.2;
+  paint-order:stroke fill;
+  transition:fill .3s;
+}
+.organ-label .leader{
+  fill:none;stroke:rgba(214,232,255,.30);stroke-width:.9;
+  stroke-dasharray:2 3;
+  transition:stroke .3s;
+}
+.organ-label.active text{fill:#ffd9a8;font-size:9px;}
+.organ-label.active .leader{stroke:rgba(255,217,168,.85);stroke-dasharray:none;}
+#body[data-stage="MOUTH"] .organ-label[data-stage="MOUTH"] text,
+#body[data-stage="ESOPHAGUS"] .organ-label[data-stage="ESOPHAGUS"] text,
+#body[data-stage="STOMACH"] .organ-label[data-stage="STOMACH"] text,
+#body[data-stage="SMALL"] .organ-label[data-stage="SMALL"] text,
+#body[data-stage="LARGE"] .organ-label[data-stage="LARGE"] text,
+#body[data-stage="OUT"] .organ-label[data-stage="OUT"] text{fill:#ffd9a8;font-size:9px;}
+#body[data-stage="MOUTH"] .organ-label[data-stage="MOUTH"] .leader,
+#body[data-stage="ESOPHAGUS"] .organ-label[data-stage="ESOPHAGUS"] .leader,
+#body[data-stage="STOMACH"] .organ-label[data-stage="STOMACH"] .leader,
+#body[data-stage="SMALL"] .organ-label[data-stage="SMALL"] .leader,
+#body[data-stage="LARGE"] .organ-label[data-stage="LARGE"] .leader,
+#body[data-stage="OUT"] .organ-label[data-stage="OUT"] .leader{stroke:rgba(255,217,168,.85);stroke-dasharray:none;}
+
+/* ── mood cues ── */
+.blush{transition:opacity .3s;}
+#body[data-mood="ache"] #figure{animation:acheShake .55s ease-in-out infinite;}
+#body[data-mood="ache"] .blush{opacity:.7;}
+#body[data-mood="ache"] #bellyBulge{fill:rgba(255,90,90,.34);}
+@keyframes acheShake{
+  0%,100%{transform:translateX(-1.2px) rotate(-.35deg);}
+  50%{transform:translateX(1.2px) rotate(.35deg);}
+}
+#body[data-mood="hungry"] #bellyBulge{animation:rumble 1.8s ease-in-out infinite;}
+@keyframes rumble{
+  0%,100%{opacity:.10;transform:translateY(0);}
+  50%{opacity:.22;transform:translateY(-1.5px);}
+}
+#body[data-mood="full"] .blush{opacity:.45;}
+#body[data-mood="relieved"] .blush{opacity:.4;fill:#8fd6ff;}
+#body[data-mood="relieved"] #figure{animation:relief .8s ease-out;}
+@keyframes relief{
+  0%{transform:translateY(3px) scale(.99);}
+  60%{transform:translateY(-3px) scale(1.01);}
+  100%{transform:translateY(0) scale(1);}
+}
+
+.plop{animation:plop 1.3s ease-in forwards;}
+@keyframes plop{
+  0%{transform:translateY(-16px);opacity:0;}
+  30%{transform:translateY(0);opacity:1;}
+  100%{transform:translateY(6px);opacity:0;}
+}
+
+/* ── speech ── */
+.speech{
+  position:absolute;left:50%;top:3%;
+  transform:translate(-50%,0) scale(.9);
+  background:rgba(255,255,255,.97);
+  color:#1d2b3f;
+  border-radius:14px;padding:6px 11px;
+  font-size:11.5px;font-weight:700;
+  opacity:0;pointer-events:none;
+  transition:opacity .25s, transform .25s;
+  box-shadow:0 6px 18px rgba(0,0,0,.3);
+  max-width:190px;text-align:center;
+  z-index:6;
+}
+.speech::after{
+  content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);
+  border:7px solid transparent;border-top-color:rgba(255,255,255,.97);border-bottom:0;
+}
+.speech.show{opacity:1;transform:translate(-50%,0) scale(1);}
+
+/* ── fact card ── */
+.fact-card{
+  flex:0 0 auto;
+  max-height:34%;
+  overflow-y:auto;
+  margin:0 8px calc(8px + env(safe-area-inset-bottom));
+  padding:9px 11px;
+  border-radius:14px;
+  background:linear-gradient(180deg,rgba(56,189,248,.13),rgba(56,189,248,.05));
+  border:1px solid rgba(120,200,255,.28);
+  backdrop-filter:blur(6px);
+  z-index:5;
+}
+.fact-label{
+  font-size:9.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;
+  color:#7dd3fc;margin-bottom:3px;
+}
+.fact-text{font-size:11.5px;line-height:1.55;color:#d6e4f5;}
+.fact-text b{color:#ffd9a8;}
+
+/* ═══════════════ QUIZ ═══════════════ */
+.quiz-card{max-width:460px;}
+.quiz-q{font-size:13.5px;font-weight:700;margin:0 0 10px;line-height:1.5;color:#e8eef8;}
+.quiz-ans{
+  display:block;width:100%;text-align:left;
+  margin:6px 0;padding:11px 13px;
+  border-radius:11px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.05);
+  color:var(--txt);font-family:inherit;font-size:12.5px;font-weight:600;
+  cursor:pointer;transition:background .15s,border-color .15s,transform .1s;
+}
+.quiz-ans:hover{background:rgba(255,255,255,.12);}
+.quiz-ans:active{transform:scale(.99);}
+.quiz-ans.right{background:rgba(61,220,132,.22);border-color:rgba(61,220,132,.55);color:#b8f5cf;}
+.quiz-ans.wrong{background:rgba(248,113,113,.20);border-color:rgba(248,113,113,.5);color:#ffc9c9;}
+.quiz-ans.disabled{pointer-events:none;opacity:.75;}
+.quiz-feedback{margin-top:10px;font-size:12px;font-weight:800;min-height:18px;}
+.quiz-feedback.ok{color:#3ddc84;}
+.quiz-feedback.no{color:#f87171;}
+.quiz-progress{font-size:10.5px;color:var(--txt-dim);margin-bottom:8px;letter-spacing:.4px;}
+.quiz-final{text-align:center;padding:6px 0;}
+.quiz-final .big{font-size:34px;font-weight:800;color:var(--brand);}
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media (max-width:520px){
+  .fact-text{font-size:11px;}
+  .fact-card{max-height:32%;}
+  .scene-top{padding:6px 8px 0;}
+}

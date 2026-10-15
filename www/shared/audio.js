@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   audio.js — tiny WebAudio blips (no assets)
+   shared/audio.js — tiny WebAudio blips (no audio assets)
    ═══════════════════════════════════════════ */
 window.ARG = window.ARG || {};
 
@@ -36,11 +36,11 @@ ARG.audio = (function () {
     osc.stop(t0 + dur + 0.02);
   }
 
-  function noise(dur, vol, freq) {
+  function noise(dur, vol, freq, q) {
     if (!enabled) return;
     const c = ensure();
     if (!c) return;
-    const len = Math.floor(c.sampleRate * dur);
+    const len = Math.max(1, Math.floor(c.sampleRate * dur));
     const buf = c.createBuffer(1, len, c.sampleRate);
     const data = buf.getChannelData(0);
     for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / len);
@@ -49,6 +49,7 @@ ARG.audio = (function () {
     const filt = c.createBiquadFilter();
     filt.type = 'bandpass';
     filt.frequency.value = freq || 900;
+    filt.Q.value = q || 1;
     const gain = c.createGain();
     gain.gain.value = vol || 0.05;
     src.connect(filt); filt.connect(gain); gain.connect(c.destination);
@@ -63,15 +64,23 @@ ARG.audio = (function () {
       if (enabled) { ensure(); tone(880, 0.08, 'square', 0.05); }
       return enabled;
     },
-    /** remote button blip — the AC acknowledging the command */
     beep() { tone(2100, 0.07, 'square', 0.045); tone(1500, 0.06, 'square', 0.03, 0.05); },
-    /** button that does nothing / locked */
     deny() { tone(220, 0.16, 'sawtooth', 0.05); },
+    blip() { tone(1300, 0.06, 'sine', 0.05); },
     powerOn() { tone(660, 0.1, 'triangle', 0.06); tone(990, 0.14, 'triangle', 0.06, 0.09); },
     powerOff() { tone(880, 0.1, 'triangle', 0.06); tone(440, 0.16, 'triangle', 0.05, 0.09); },
     clean() { noise(1.4, 0.05, 1400); },
     toast() { tone(520, 0.12, 'triangle', 0.06); tone(780, 0.12, 'triangle', 0.06, 0.1); },
     chime() { tone(784, 0.12, 'sine', 0.05); tone(1046, 0.16, 'sine', 0.05, 0.1); },
-    unlock() { if (ctx) { ensure(); } }
+    /* food-eating set */
+    chomp() { noise(0.09, 0.09, 700, 2); tone(180, 0.07, 'sawtooth', 0.035); },
+    gulp() { tone(320, 0.13, 'sine', 0.06); tone(180, 0.18, 'sine', 0.05, 0.09); },
+    rumble() { tone(70, 0.6, 'sawtooth', 0.05); noise(0.6, 0.035, 160, 0.8); },
+    squirt() { noise(0.35, 0.06, 2200, 0.6); },
+    absorb() { tone(1100, 0.09, 'sine', 0.045); tone(1650, 0.09, 'sine', 0.04, 0.06); },
+    plop() { tone(300, 0.16, 'sine', 0.07); tone(150, 0.22, 'sine', 0.05, 0.05); },
+    flush() { noise(1.1, 0.055, 800, 0.5); },
+    cheer() { [523, 659, 784, 1046].forEach((f, i) => tone(f, 0.14, 'triangle', 0.055, i * 0.09)); },
+    ouch() { tone(300, 0.14, 'sawtooth', 0.055); tone(200, 0.2, 'sawtooth', 0.05, 0.12); }
   };
 })();

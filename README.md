@@ -1,36 +1,81 @@
-# ❄ Aircond Remote Game
+# ✦ Play &amp; Learn
 
 [![Build Android APK](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml/badge.svg)](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml)
 
-A little air-conditioner remote game. **The left half of the screen is a Haier-style remote
-control. The right half is a room: a wall-mounted air-con at the top and a boy holding his
-own mini remote.**
-
-Press a key and three things react at once:
-
-1. the remote's LCD changes,
-2. the air-con responds (vanes open, air blows, display changes),
-3. the boy's face and body show exactly how the room feels.
-
-Keep him in the comfort zone — he will happily tell you when he is happy, cold, freezing,
-hot, or boiling.
+One little app, two activities for a curious kid. The home screen shows two picture tiles —
+tap one and you are in.
 
 ```
-┌──────────────────┬───────────────────────────────┐
-│  ┌────────────┐  │  ┌─────────────────────────┐  │
-│  │  ❄ COOL 26°│  │  │      wall air-con       │  │
-│  └────────────┘  │  └─────────────────────────┘  │
-│  [ TURBO ]  (⏻)  │        ~~~ airflow ~~~        │
-│  COOL SELF DRY   │                               │
-│   (  TEMP ▲  )   │        "Ahh, just right~"     │
-│   ◀  🌀   ▶      │                               │
-│   (  TEMP ▼  )   │            ( o u o )          │
-│  HEALTH SLEEP EX │             boy +             │
-│  TIME  TIME CONF │          mini remote          │
-│  LOCK LIGHT RESET│                               │
-│      Haier       │                               │
-└──────────────────┴───────────────────────────────┘
+┌─────────────────────────────────────────────┐
+│  ✦ Play & Learn              EN  🔊         │
+│                                             │
+│        What shall we play?                  │
+│                                             │
+│  ┌────────────────┐  ┌────────────────┐     │
+│  │  [ air-con ]   │  │  [ innards  ]  │     │
+│  │  Play Aircond ›│  │ Food Eating   ›│     │
+│  └────────────────┘  └────────────────┘     │
+└─────────────────────────────────────────────┘
 ```
+
+Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
+Both activities speak **English and 中文** and work offline.
+
+---
+
+## 1 · ❄ Play Aircond
+
+A Haier-style remote on the left, a boy and his air-con on the right.
+
+Press a key and three things react at once: the **remote LCD**, the **air-con** (vanes open,
+air blows, display changes, beep), and the **boy's face and body**.
+
+| Room feels like | The boy |
+|---|---|
+| < 15.5 °C | 🥶 X-eyes, shivering hard, blanket, breath puffs |
+| 15.5 – 20.5 °C | Droopy eyes, wavy mouth, shivers |
+| 20.5 – 27 °C | 😊 Big smile — "Ahh, just right~" |
+| 27 – 29.5 °C | 🥵 Panting, sweating, heat haze |
+| > 29.5 °C | 🔥 Drenched, red cheeks |
+
+It runs on a real (if simplified) thermal model: the room leaks toward the outdoor temperature,
+the compressor has a rate ceiling, humidity shifts the feels-like temperature, a cooler only
+cools, and an open door beats the air-con entirely.
+
+**Free Play** to explore. **Challenge** for score, combo and random weather events
+(heatwave, cold snap, open door, humidity surge).
+
+Keys: Power · COOL (cycles mode) · DRY · TEMP ▲▼ · SWING ◀▶ · fan speed · TURBO/QUIET ·
+SELF CLEAN · HEALTH · SLEEP · EXTRA (ECO) · TIME ON/OFF + CONFIRM · LOCK · LIGHT · RESET.
+
+---
+
+## 2 · 🍎 Food Eating
+
+Follow a bite of food from the plate all the way out. The boy is drawn see-through so the whole
+digestive tract is visible, and the food actually travels along it.
+
+**Six stops**
+
+| # | Stop | What happens |
+|---|---|---|
+| 1 | 👄 **Mouth** | Pick a food, tap `CHEW`. Teeth grind it, saliva starts on starch. |
+| 2 | ⬇ **Oesophagus** | Peristalsis squeezes it down in ~7 s (no gravity needed). |
+| 3 | 🫧 **Stomach** | Tap `CHURN`. Acid + pepsin + churning turn it into chyme. |
+| 4 | 🌀 **Small intestine** | ~6 m of villi absorb nutrients into the blood → your energy meter fills. |
+| 5 | 💧 **Large intestine** | Water is absorbed, waste forms, gut bacteria make vitamin K. |
+| 6 | 🚽 **Out** | `GO TO TOILET`. The belly empties and he feels great. |
+
+**It teaches real habits, not just names**
+
+* Chew a lot → nutrients absorb well and the boy is happy.
+* Swallow a lump → the stomach can't break it down, absorption drops, **tummy ache**.
+* Eat and eat → the belly fills up and the boy says he is too full (and eventually aches).
+* `WATCH` plays the whole journey by itself if you would rather just watch.
+
+A **science fact card** under the body changes at every stop, with the real numbers:
+amylase, pH 1.5–3.5, ~6 m of small intestine, ~30 m² of villi, 12–48 h transit time.
+There is a **4-question quiz** in the top bar for afterwards.
 
 ---
 
@@ -45,7 +90,7 @@ npm run serve
 
 …or just double-click `www/index.html`.
 
-Want to see it at real phone sizes? Open **`www/_devicelab.html`**.
+`www/_devicelab.html` opens all three screens side by side at real phone size.
 
 ---
 
@@ -60,15 +105,13 @@ git push origin main
 ```
 
 Then on GitHub go to **Actions → Build Android APK → the latest run → Artifacts →
-`aircond-remote-apk`**. Download, unzip, and install `aircond-remote-<sha>.apk` on your
-phone (enable *Install unknown apps*).
-
-You can also trigger it manually: **Actions → Build Android APK → Run workflow**.
+`aircond-remote-apk`**. Download, unzip, install the `.apk` on your phone
+(allow *Install unknown apps*). You can also trigger it by hand:
+**Actions → Build Android APK → Run workflow**.
 
 ### Option B — build locally
 
-Requirements: **JDK 21**, **Android SDK (platform 36 + build-tools)**, and `ANDROID_HOME`
-set. Then:
+Needs **JDK 21**, **Android SDK 36**, and `ANDROID_HOME` set.
 
 ```bash
 npm install
@@ -79,123 +122,63 @@ gradlew.bat assembleDebug      # Windows
 ```
 
 The APK lands in `android/app/build/outputs/apk/debug/app-debug.apk`.
-
-Easiest way to get the toolchain: install **Android Studio**, open the `android/` folder,
-and hit ▶ Run.
+Easiest route to the toolchain: install **Android Studio**, open the `android/` folder, hit ▶ Run.
 
 ### Release (Play Store) build
 
 ```bash
 keytool -genkey -v -keystore my-release.jks -keyalg RSA -keysize 2048 \
-        -validity 10000 -alias aircond
+        -validity 10000 -alias playlearn
 
 cd android
 ./gradlew assembleRelease \
   -Pandroid.injected.signing.store.file=../my-release.jks \
   -Pandroid.injected.signing.store.password=YOUR_PASS \
-  -Pandroid.injected.signing.key.alias=aircond \
+  -Pandroid.injected.signing.key.alias=playlearn \
   -Pandroid.injected.signing.key.password=YOUR_PASS
 ```
-
----
-
-## The remote
-
-Mirrors the Haier remote in the reference photo.
-
-| Key | What it does |
-|---|---|
-| **Power** (green circle) | Turn the air-con on / off |
-| **COOL** | Cycles the mode: `COOL → HEAT → FAN → COOL` (the LCD shows the active mode) |
-| **DRY** | Dehumidify mode — cools gently and drops the humidity |
-| **TEMP ▲ / ▼** | Set point, 16 °C … 30 °C |
-| **SWING ◀** | Vertical louvre swing (up / down) |
-| **SWING ▶** | Horizontal louvre swing (left / right) |
-| **🌀 (centre)** | Fan speed: `AUTO → LOW → MED → HIGH` |
-| **TURBO / QUIET** | Boost the airflow, or make it whisper quiet |
-| **SELF CLEAN** | The unit runs a 5-second cleaning cycle (no cooling while it runs) |
-| **HEALTH** | Fresh-ion air — the boy feels fresher |
-| **SLEEP** | Night mode — the room temperature creeps up gently |
-| **EXTRA FUNCTION** | Toggles **ECO** (weaker but power-saving) |
-| **TIME ON / TIME OFF** | Add one hour, then **CONFIRM** to arm the timer (in-game 1 h ≈ 15 s) |
-| **CONFIRM / CANCEL** | Arm or cancel the timer |
-| **LOCK** | Child lock — every other key is ignored until you press LOCK again |
-| **LIGHT** | LCD backlight + air-con display light |
-| **RESET** | Back to factory settings |
-
----
-
-## How the simulation works
-
-The room has a real (if simplified) thermal model.
-
-| Quantity | Behaviour |
-|---|---|
-| **Room temp** | Always leaks toward the outdoor temperature. The air-con pulls it toward the set point. |
-| **Outdoor temp** | 33 °C by default; drops to 18 °C on a cold snap, jumps to 39 °C on a heatwave. |
-| **Humidity** | 62 % baseline. DRY mode pulls it down to ~38 %. It raises the *feels-like* temperature. |
-| **Feels-like** | `roomTemp + (humidity − 55) × 0.03` |
-| **Cooling strength** | mode × fan speed × turbo/quiet × eco |
-| **Leakage** | ×5 while a "door open" event is running |
-| **Comfort zone** | feels-like **20.5 – 27 °C**. Setting 25–26 °C holds it there on a normal day; a heatwave needs 24 °C or lower. |
-
-### Mood bands (on feels-like temperature)
-
-| Feels-like | Mood | Boy |
-|---|---|---|
-| < 15.5 °C | 🥶 Freezing | X-eyes, shivering hard, blanket, breath puffs |
-| 15.5 – 20.5 °C | 🥶 Cold | droopy eyes, wavy mouth, shivers |
-| 20.5 – 27.0 °C | 😊 Just right | big smile, relaxed |
-| 27.0 – 29.5 °C | 🥵 Hot | panting mouth, sweating, heat haze |
-| > 29.5 °C | 🔥 Very hot | wide eyes, drenched, red cheeks |
-
-### Challenge mode
-
-The **Free Play / Challenge** button in the top bar switches modes.
-
-* In **Challenge**, score climbs at `10 × combo` per second while he is comfortable.
-* Combo grows to **×5** every 6 comfortable seconds and resets the moment he is uncomfortable.
-* Random weather events hit every 15–27 s: **heatwave**, **cold snap**, **door open**,
-  **humidity surge**. Each one announces itself with a toast and self-clears.
-* Best score is saved on the device.
 
 ---
 
 ## Project layout
 
 ```
-AircondRemoteGame/
-├─ www/                     ← the whole game (no build step)
-│  ├─ index.html            ← markup: remote, room, boy SVG, air-con SVG
-│  ├─ styles.css            ← remote skin, LCD, room, character animations
-│  ├─ _devicelab.html       ← dev-only: live phone-size previews
-│  └─ js/
-│     ├─ i18n.js            ← EN / 中文 strings + safe storage helper
-│     ├─ audio.js           ← WebAudio blips (no audio files)
-│     ├─ state.js           ← thermal simulation, key actions, events, scoring
-│     ├─ remote.js          ← remote keys + LCD rendering
-│     ├─ room.js            ← boy / air-con / airflow / speech rendering
-│     └─ main.js            ← boot, game loop, responsive scaling, HUD
-├─ android/                 ← Capacitor Android project (committed)
-├─ capacitor.config.json
-├─ package.json
-└─ .github/workflows/android.yml   ← auto-builds the APK
+www/                          ← the whole app (no build step)
+├─ index.html  home.css  home.js        the activity picker
+├─ shared/
+│  ├─ ui.css                            top bar, help overlay, toast, colour vars
+│  ├─ store.js                          ARG namespace + safe localStorage
+│  └─ audio.js                          WebAudio blips (no audio files)
+├─ aircond/                             ── activity 1 ──
+│  ├─ index.html
+│  ├─ aircond.css                       remote skin, LCD, room, character animations
+│  └─ js/ i18n.js · state.js · remote.js · room.js · main.js
+├─ food/                                ── activity 2 ──
+│  ├─ index.html
+│  ├─ food.css                          deck, body, organs, effects, quiz
+│  └─ js/ i18n.js · state.js · body.js · deck.js · main.js
+└─ _devicelab.html                      dev-only: phone-size previews
+android/                                Capacitor Android project (committed)
+capacitor.config.json
+.github/workflows/android.yml           auto-builds the APK
 ```
 
 ### Adding your own artwork
 
-Both characters are inline SVG, so you can restyle or replace them without touching any
-logic:
+* **The boy (aircond)** — `#boy` in `www/aircond/index.html`. Mood variants are grouped by
+  class (`m-ok`, `m-hot`, `m-cold`, `m-freeze`, `b-hot`, `b-cold`); CSS swaps them off
+  `#boy[data-mood="…"]`.
+* **The air-con** — `#ac`, with the vanes at `#ac-vane-v` / `#ac-vane-h`.
+* **The digestive tract (food)** — `www/food/js/body.js`. The geometry lives in a handful of
+  point lists (`MOUTH_ESO`, `STOMACH`, `DUODENUM`, `coilPoints()`, `LARGE`). One smoothed path
+  is generated from them and used both to draw the organs *and* to carry the food particle,
+  so moving a point moves the drawing and the animation together.
 
-* **Boy** — `#boy` in `www/index.html`. Mood variants are grouped by class
-  (`m-ok`, `m-hot`, `m-cold`, `m-freeze`, `b-hot`, `b-cold`); CSS in `styles.css` swaps them
-  off `#boy[data-mood="…"]`.
-* **Air-con** — `#ac`. The two vanes are `#ac-vane-v` / `#ac-vane-h`.
-* Airflow particles are plain `<div>`s built in `room.js` — a good spot for a snowflake sprite.
+### Adding a language
 
----
+Copy the `en` object in either `i18n.js` and translate. The top-bar toggle switches every
+label, speech bubble, science fact and the help screen instantly.
 
-## Languages
-
-English and 中文. The toggle in the top bar switches every label, speech bubble and the help
-screen instantly. Add a language by copying the `en` object in `www/js/i18n.js`.
+> Naming note: the repo is called `aircondremotegame` and the Android application id is still
+> `com.ngjingtao.aircondremote`, left as-is so existing installs keep updating. Rename both in
+> `capacitor.config.json` + `android/app/build.gradle` if you would rather.

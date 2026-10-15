@@ -1,6 +1,6 @@
 {
   "appId": "com.ngjingtao.aircondremote",
-  "appName": "Aircond Remote",
+  "appName": "Play & Learn",
   "webDir": "www",
   "android": {
     "allowMixedContent": false,

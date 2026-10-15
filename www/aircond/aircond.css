@@ -1,87 +1,15 @@
 /* ═══════════════════════════════════════════════════════════
-   Aircond Remote Game — styles.css
+   Play Aircond — activity styles
+   (shell: ../shared/ui.css)
    ═══════════════════════════════════════════════════════════ */
 
 :root{
-  --bg-0:#0b1220;
-  --bg-1:#121c2e;
-  --panel:#182238;
-  --line:rgba(255,255,255,.10);
-  --txt:#e8eef8;
-  --txt-dim:#93a3bd;
-  --brand:#38bdf8;
-  --ok:#3ddc84;
-  --warn:#fbbf24;
-  --bad:#f87171;
   --remote-w:300px;
   --remote-h:640px;
   --scale:1;
 }
 
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-
-[hidden]{display:none !important;}
-
-html,body{
-  margin:0;padding:0;height:100%;
-  overflow:hidden;
-  background:var(--bg-0);
-  color:var(--txt);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif;
-  user-select:none;-webkit-user-select:none;
-  overscroll-behavior:none;
-}
-
-#app{display:flex;flex-direction:column;height:100dvh;height:100vh;}
-
-/* ─────────────── TOP BAR ─────────────── */
-#topbar{
-  flex:0 0 auto;
-  display:flex;align-items:center;gap:8px;
-  padding:6px 10px;
-  background:linear-gradient(180deg,#16223a,#111a2b);
-  border-bottom:1px solid var(--line);
-  padding-top:calc(6px + env(safe-area-inset-top));
-}
-
-.tb-brand{display:flex;align-items:center;gap:6px;flex:0 0 auto;}
-.tb-logo{font-size:16px;color:var(--brand);text-shadow:0 0 10px rgba(56,189,248,.8);}
-.tb-title{font-size:13px;font-weight:700;letter-spacing:.4px;white-space:nowrap;}
-
-.tb-hud{display:flex;gap:6px;flex:1 1 auto;justify-content:center;min-width:0;}
-.hud-chip{
-  display:flex;align-items:center;gap:6px;
-  background:rgba(255,255,255,.05);
-  border:1px solid var(--line);
-  border-radius:999px;
-  padding:3px 10px;
-  font-size:11px;
-  min-width:0;
-}
-.hud-label{color:var(--txt-dim);font-size:10px;text-transform:uppercase;letter-spacing:.4px;}
-.hud-chip b{font-weight:700;white-space:nowrap;}
-.hud-chip i{font-style:normal;color:var(--warn);font-size:10px;font-weight:700;}
-.hud-score b{color:var(--ok);font-variant-numeric:tabular-nums;}
-
-.tb-buttons{display:flex;gap:6px;flex:0 0 auto;}
-.tb-btn{
-  background:rgba(255,255,255,.06);
-  color:var(--txt);
-  border:1px solid var(--line);
-  border-radius:8px;
-  padding:6px 9px;
-  font-size:11px;font-weight:600;
-  cursor:pointer;
-  font-family:inherit;
-  transition:background .15s,transform .1s;
-  white-space:nowrap;
-}
-.tb-btn:hover{background:rgba(255,255,255,.13);}
-.tb-btn:active{transform:scale(.94);}
-
-/* ─────────────── MAIN SPLIT ─────────────── */
-main{flex:1 1 auto;display:flex;min-height:0;overflow:hidden;}
-
+/* ─────────────── SPLIT LAYOUT ─────────────── */
 #remote-panel{
   flex:0 0 auto;
   display:flex;align-items:center;justify-content:center;
@@ -575,21 +503,7 @@ main{flex:1 1 auto;display:flex;min-height:0;overflow:hidden;}
   100%{width:190px;height:190px;opacity:0;border-color:rgba(120,220,255,.15);}
 }
 
-/* TOAST */
-.toast{
-  position:absolute;left:50%;top:52%;
-  transform:translate(-50%,-50%) scale(.8);
-  background:linear-gradient(135deg,#f97316,#ef4444);
-  color:#fff;
-  padding:9px 16px;border-radius:12px;
-  font-size:13px;font-weight:800;
-  letter-spacing:.4px;
-  opacity:0;pointer-events:none;
-  transition:opacity .3s,transform .3s;
-  box-shadow:0 10px 30px rgba(0,0,0,.4);
-  z-index:20;text-align:center;max-width:90%;
-}
-.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
+/* TOAST: base styles live in shared/ui.css */
 
 /* LOCK BANNER */
 .lock-banner{
@@ -608,48 +522,10 @@ main{flex:1 1 auto;display:flex;min-height:0;overflow:hidden;}
   transition:background .8s;
 }
 
-/* ═══════════════ OVERLAY ═══════════════ */
-.overlay{
-  position:fixed;inset:0;z-index:100;
-  background:rgba(5,10,20,.82);
-  display:flex;align-items:center;justify-content:center;
-  padding:20px;
-  backdrop-filter:blur(4px);
-}
-.overlay[hidden]{display:none;}
-.overlay-card{
-  background:linear-gradient(180deg,#1a2540,#131c2f);
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:18px 18px 16px;
-  max-width:440px;width:100%;
-  max-height:82vh;overflow-y:auto;
-  box-shadow:0 24px 60px rgba(0,0,0,.6);
-}
-.overlay-card h2{margin:0 0 12px;font-size:17px;color:var(--brand);}
-.help-body{font-size:12.5px;line-height:1.65;color:#cfd9e8;}
-.help-body h3{font-size:12px;color:var(--warn);margin:14px 0 4px;text-transform:uppercase;letter-spacing:.6px;}
-.help-body h3:first-child{margin-top:0;}
-.help-body ul{margin:0;padding-left:16px;}
-.help-body li{margin:2px 0;}
-.help-body code{
-  background:rgba(255,255,255,.09);
-  padding:1px 5px;border-radius:4px;
-  font-size:11px;color:#8ee6ff;
-}
-.overlay-close{
-  margin-top:16px;width:100%;
-  padding:11px;border-radius:11px;border:none;
-  background:linear-gradient(135deg,#38bdf8,#0ea5e9);
-  color:#04121f;font-weight:800;font-size:13px;
-  cursor:pointer;font-family:inherit;
-}
-.overlay-close:active{transform:scale(.98);}
+/* OVERLAY styles live in shared/ui.css */
 
 /* ═══════════════ RESPONSIVE ═══════════════ */
 @media (max-width:520px){
-  .tb-title{display:none;}
-  .hud-label{display:none;}
   /* the env chips wrap to two rows, so give the AC room */
   .ac-wrap{margin-top:60px;}
   .env-item{font-size:9px;padding:2px 6px;}
