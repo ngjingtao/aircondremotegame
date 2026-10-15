@@ -11,8 +11,6 @@ android/app/build/
 android/build/
 android/.gradle/
 android/local.properties
-android/capacitor-cordova-android-plugins/
-www-dist/
 
 # OS / editor
 .DS_Store
