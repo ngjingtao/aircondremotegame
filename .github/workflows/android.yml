@@ -17,22 +17,48 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: npm
 
       - name: Set up Java 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: '21'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      # The GitHub Ubuntu image already ships an Android SDK. Accept the licences
+      # and make sure the exact platform/build-tools Capacitor needs are present
+      # (AGP downloads anything else on demand once licences are accepted).
+      - name: Prepare Android SDK
+        run: |
+          SDK="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          if [ -z "$SDK" ] || [ ! -d "$SDK" ]; then
+            echo "::error::No Android SDK found on this runner"
+            exit 1
+          fi
+          echo "Android SDK root: $SDK"
+
+          SDKMANAGER="$SDK/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$SDKMANAGER" ]; then
+            SDKMANAGER="$(find "$SDK" -name sdkmanager -type f 2>/dev/null | head -n1)"
+          fi
+          echo "sdkmanager: $SDKMANAGER"
+
+          yes | "$SDKMANAGER" --licenses > /dev/null 2>&1 || true
+          "$SDKMANAGER" "platform-tools" "platforms;android-36" "build-tools;36.0.0" || true
+
+          echo "ANDROID_SDK_ROOT=$SDK" >> "$GITHUB_ENV"
+          echo "ANDROID_HOME=$SDK" >> "$GITHUB_ENV"
+
+          echo "--- installed platforms ---"
+          ls "$SDK/platforms" || true
+          echo "--- installed build-tools ---"
+          ls "$SDK/build-tools" || true
 
       - name: Install npm dependencies
         run: npm ci
@@ -40,21 +66,25 @@ jobs:
       - name: Sync web assets into the Android project
         run: npx cap sync android
 
-      - name: Build debug APK
+      - name: Gradle info
         working-directory: android
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          ./gradlew --version
+
+      - name: Build debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: Rename APK
         run: |
           mkdir -p dist
           cp android/app/build/outputs/apk/debug/app-debug.apk \
-             dist/aircond-remote-${{ github.sha }}.apk
+             "dist/aircond-remote-${GITHUB_SHA::7}.apk"
           ls -lh dist
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: aircond-remote-apk
           path: dist/*.apk
