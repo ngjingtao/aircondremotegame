@@ -105,7 +105,7 @@ git push origin main
 ```
 
 Then on GitHub go to **Actions → Build Android APK → the latest run → Artifacts →
-`aircond-remote-apk`**. Download, unzip, install the `.apk` on your phone
+`play-and-learn-apk`**. Download, unzip, install `play-and-learn-<sha>.apk` on your phone
 (allow *Install unknown apps*). You can also trigger it by hand:
 **Actions → Build Android APK → Run workflow**.
 
