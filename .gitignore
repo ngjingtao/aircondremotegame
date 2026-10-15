@@ -1,0 +1,23 @@
+# ─────────────────────────────────────────────
+#  Aircond Remote Game
+# ─────────────────────────────────────────────
+
+# dependencies
+node_modules/
+.npm/
+
+# build output
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+android/capacitor-cordova-android-plugins/
+www-dist/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+*.iml
+.vscode/

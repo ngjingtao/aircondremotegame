@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0f172a" />
+<meta name="format-detection" content="telephone=no" />
+<title>Aircond Remote Game</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ══════════════ TOP BAR ══════════════ -->
+  <header id="topbar">
+    <div class="tb-brand">
+      <span class="tb-logo">❄</span>
+      <span class="tb-title" data-i18n="title">Aircond Remote</span>
+    </div>
+
+    <div class="tb-hud">
+      <div class="hud-chip" id="hud-mood-chip">
+        <span class="hud-label" data-i18n="feeling">Feeling</span>
+        <b id="hud-mood">Just right</b>
+      </div>
+      <div class="hud-chip hud-score" id="hud-score-chip" hidden>
+        <span class="hud-label" data-i18n="score">Score</span>
+        <b id="hud-score">0</b>
+        <i id="hud-combo">x1</i>
+      </div>
+    </div>
+
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-mode" title="Free play / Challenge"><span id="btn-mode-label">Free Play</span></button>
+      <button class="tb-btn" id="btn-lang" title="Language">EN</button>
+      <button class="tb-btn" id="btn-sound" title="Sound">🔊</button>
+      <button class="tb-btn" id="btn-help" title="Help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ══════════════ LEFT : REMOTE ══════════════ -->
+    <section id="remote-panel">
+      <div id="remote-scaler">
+        <div class="remote" id="remote">
+
+          <div class="remote-body">
+
+            <!-- LCD -->
+            <div class="lcd" id="lcd">
+              <div class="lcd-inner">
+                <div class="lcd-top">
+                  <div class="lcd-mode">
+                    <span class="lcd-mode-icon" id="lcd-mode-icon">❄</span>
+                    <span class="lcd-mode-name" id="lcd-mode-name">COOL</span>
+                  </div>
+                  <div class="lcd-fan">
+                    <span class="fan-bar" data-fan="1"></span>
+                    <span class="fan-bar" data-fan="2"></span>
+                    <span class="fan-bar" data-fan="3"></span>
+                    <span class="fan-label" id="lcd-fan-name">AUTO</span>
+                  </div>
+                </div>
+
+                <div class="lcd-mid">
+                  <div class="lcd-temp" id="lcd-temp">26<span class="lcd-deg">°C</span></div>
+                  <div class="lcd-swing" id="lcd-swing">
+                    <span class="sw-icon" data-sw="v">↕</span>
+                    <span class="sw-icon" data-sw="h">↔</span>
+                  </div>
+                </div>
+
+                <div class="lcd-bottom">
+                  <span class="lcd-ind" data-ind="power">⏻</span>
+                  <span class="lcd-ind" data-ind="lock">🔒</span>
+                  <span class="lcd-ind" data-ind="sleep">🌙</span>
+                  <span class="lcd-ind" data-ind="health">🌿</span>
+                  <span class="lcd-ind" data-ind="turbo">⚡</span>
+                  <span class="lcd-ind" data-ind="quiet">🤫</span>
+                  <span class="lcd-ind" data-ind="eco">🍃</span>
+                  <span class="lcd-ind" data-ind="clean">✨</span>
+                  <span class="lcd-ind lcd-timer" data-ind="timer">⏰ <b id="lcd-timer-txt">--</b></span>
+                </div>
+              </div>
+              <div class="lcd-scanlines"></div>
+            </div>
+
+            <!-- KEYS -->
+            <div class="keys">
+
+              <div class="key-row row-a">
+                <button class="key key-turbo" data-action="turbo">
+                  <span class="k-l1" data-i18n="btn.turbo">TURBO</span>
+                  <span class="k-l2" data-i18n="btn.quiet">/ QUIET</span>
+                </button>
+                <button class="key key-power" data-action="power"><span class="pw-ring"></span></button>
+              </div>
+
+              <div class="key-row row-b">
+                <button class="key" data-action="mode" data-mode="COOL" data-i18n="btn.cool">COOL</button>
+                <button class="key key-selfclean" data-action="selfclean">
+                  <span class="k-l1" data-i18n="btn.self">SELF</span>
+                  <span class="k-l2" data-i18n="btn.clean">CLEAN</span>
+                </button>
+                <button class="key" data-action="mode" data-mode="DRY" data-i18n="btn.dry">DRY</button>
+              </div>
+
+              <div class="pad">
+                <button class="key key-temp-up" data-action="tempup" data-pad="up">
+                  <span data-i18n="btn.temp">TEMP</span> <span class="arrow">▲</span>
+                </button>
+                <button class="key key-swing-l" data-action="swingv" data-pad="left" data-i18n="btn.swing">SWING</button>
+                <button class="key key-fan" data-action="fan" data-pad="center">🌀</button>
+                <button class="key key-swing-r" data-action="swingh" data-pad="right" data-i18n="btn.swing">SWING</button>
+                <button class="key key-temp-down" data-action="tempdown" data-pad="down">
+                  <span data-i18n="btn.temp">TEMP</span> <span class="arrow">▼</span>
+                </button>
+                <div class="pad-ring"></div>
+              </div>
+
+              <div class="key-row row-d">
+                <button class="key" data-action="health" data-i18n="btn.health">HEALTH</button>
+                <button class="key" data-action="sleep" data-i18n="btn.sleep">SLEEP</button>
+                <button class="key key-small" data-action="extra">
+                  <span class="k-l1" data-i18n="btn.extra1">EXTRA</span>
+                  <span class="k-l2" data-i18n="btn.extra2">FUNCTION</span>
+                </button>
+              </div>
+
+              <div class="key-row row-e">
+                <button class="key key-small" data-action="timeon">
+                  <span class="k-l1" data-i18n="btn.time">TIME</span><span class="k-l2" data-i18n="btn.on">ON</span>
+                </button>
+                <button class="key key-small" data-action="timeoff">
+                  <span class="k-l1" data-i18n="btn.time">TIME</span><span class="k-l2" data-i18n="btn.off">OFF</span>
+                </button>
+                <button class="key key-small" data-action="confirm">
+                  <span class="k-l1" data-i18n="btn.confirm">CONFIRM</span><span class="k-l2" data-i18n="btn.cancel">CANCEL</span>
+                </button>
+              </div>
+
+              <div class="key-row row-f">
+                <div class="round-key">
+                  <button class="key key-round" data-action="lock"></button>
+                  <span data-i18n="btn.lock">LOCK</span>
+                </div>
+                <div class="round-key">
+                  <button class="key key-round" data-action="light"></button>
+                  <span data-i18n="btn.light">LIGHT</span>
+                </div>
+                <div class="round-key">
+                  <button class="key key-round" data-action="reset"></button>
+                  <span data-i18n="btn.reset">RESET</span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="remote-brand" data-i18n="brand">Haier</div>
+          </div>
+
+          <div class="remote-glow" id="remote-glow"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ RIGHT : ROOM ══════════════ -->
+    <section id="room-panel">
+
+      <div class="room-wall" id="room-wall"></div>
+      <div class="room-floor"></div>
+      <div class="room-rug"></div>
+      <div class="room-window" id="room-window">
+        <div class="win-sky" id="win-sky"></div>
+        <div class="win-sun" id="win-sun">☀️</div>
+        <div class="win-cross v"></div>
+        <div class="win-cross h"></div>
+      </div>
+
+      <div class="env-bar" id="env-bar">
+        <span class="env-item"><i>🌡</i><b id="env-out">33.0°</b></span>
+        <span class="env-item"><i>🏠</i><b id="env-room">30.0°</b></span>
+        <span class="env-item"><i>💧</i><b id="env-hum">65%</b></span>
+        <span class="env-item"><i>🕐</i><b id="env-clock">14:00</b></span>
+      </div>
+
+      <!-- AC UNIT -->
+      <div class="ac-wrap" id="ac-wrap">
+        <svg id="ac" viewBox="0 0 360 150" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="acCaseGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="55%" stop-color="#f2f4f8"/>
+              <stop offset="100%" stop-color="#dfe4ec"/>
+            </linearGradient>
+            <linearGradient id="acPanelGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#eef1f6"/>
+              <stop offset="100%" stop-color="#d6dbe4"/>
+            </linearGradient>
+            <filter id="acShadow" x="-20%" y="-20%" width="140%" height="160%">
+              <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0b1220" flood-opacity="0.28"/>
+            </filter>
+          </defs>
+
+          <g filter="url(#acShadow)">
+            <rect x="14" y="12" width="332" height="104" rx="20" fill="url(#acCaseGrad)"/>
+            <rect x="14" y="12" width="332" height="104" rx="20" fill="none" stroke="#c3cad6" stroke-width="1.5"/>
+            <rect x="26" y="24" width="308" height="30" rx="12" fill="url(#acPanelGrad)"/>
+            <path d="M40 39 H320" stroke="#c9d0dc" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 7" opacity="0.9"/>
+            <!-- outlet -->
+            <rect x="26" y="62" width="240" height="22" rx="8" fill="#b9c1cf"/>
+            <rect x="30" y="65" width="232" height="16" rx="6" fill="#8e97a8"/>
+            <rect x="276" y="62" width="58" height="22" rx="8" fill="#cfd6e2"/>
+            <!-- display -->
+            <rect x="278" y="26" width="28" height="26" rx="7" fill="#101826" opacity="0.85"/>
+            <text id="ac-temp-txt" x="292" y="44" text-anchor="middle" font-size="15" font-weight="700" fill="#6ee7ff" font-family="ui-monospace, monospace">26</text>
+            <circle id="ac-led" cx="330" cy="30" r="5" fill="#3ddc84"/>
+            <!-- vanes -->
+            <g id="ac-vane-v">
+              <rect x="30" y="86" width="232" height="13" rx="6" fill="#e6eaf1" stroke="#bcc4d2" stroke-width="1.2"/>
+            </g>
+            <g id="ac-vane-h">
+              <rect x="278" y="86" width="54" height="13" rx="6" fill="#e6eaf1" stroke="#bcc4d2" stroke-width="1.2"/>
+            </g>
+            <rect x="26" y="100" width="308" height="8" rx="4" fill="#d3d9e3"/>
+          </g>
+        </svg>
+
+        <div class="airflow" id="airflow"></div>
+
+        <!-- AC status bubble -->
+        <div class="ac-status" id="ac-status">❄ COOL · 26°C</div>
+      </div>
+
+      <!-- BOY -->
+      <div class="boy-wrap" id="boy-wrap">
+        <svg id="boy" viewBox="0 0 220 300" preserveAspectRatio="xMidYMax meet" data-mood="ok">
+          <defs>
+            <linearGradient id="skinGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffd7b0"/>
+              <stop offset="100%" stop-color="#f6bb8a"/>
+            </linearGradient>
+            <linearGradient id="shirtGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#67e8f9"/>
+              <stop offset="100%" stop-color="#22a8c4"/>
+            </linearGradient>
+            <filter id="boyShadow" x="-30%" y="-30%" width="160%" height="180%">
+              <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#0b1220" flood-opacity="0.22"/>
+            </filter>
+          </defs>
+
+          <ellipse class="boy-ground-shadow" cx="110" cy="290" rx="70" ry="9" fill="#000000" opacity="0.18"/>
+
+          <g id="boy-root" filter="url(#boyShadow)">
+
+            <!-- legs -->
+            <g id="boy-legs">
+              <rect x="66" y="252" width="34" height="34" rx="15" fill="#3b4a63"/>
+              <rect x="120" y="252" width="34" height="34" rx="15" fill="#3b4a63"/>
+            </g>
+
+            <!-- body -->
+            <g id="boy-body">
+              <rect x="56" y="176" width="108" height="92" rx="28" fill="url(#shirtGrad)"/>
+              <path d="M92 180 Q110 200 128 180" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.6" stroke-linecap="round"/>
+            </g>
+
+            <!-- left arm (relaxed) -->
+            <g id="boy-arm-l">
+              <rect class="arm" x="40" y="184" width="24" height="62" rx="12" fill="url(#skinGrad)"/>
+            </g>
+
+            <!-- right arm holding the mini remote -->
+            <g id="boy-arm-r">
+              <g id="arm-r-inner">
+                <rect class="arm" x="156" y="176" width="24" height="58" rx="12" fill="url(#skinGrad)"/>
+                <g id="mini-remote" transform="translate(150,150) rotate(14)">
+                  <rect x="0" y="0" width="34" height="72" rx="7" fill="#f7f8fa" stroke="#c8cfdb" stroke-width="1.4"/>
+                  <rect x="5" y="6" width="24" height="18" rx="3" fill="#b9c9a8"/>
+                  <text id="mini-temp" x="17" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#25331c" font-family="ui-monospace, monospace">26</text>
+                  <circle cx="17" cy="34" r="4" fill="#c3cad6"/>
+                  <circle cx="17" cy="46" r="4" fill="#c3cad6"/>
+                  <circle cx="17" cy="58" r="4.6" fill="#8ee6a4"/>
+                </g>
+              </g>
+            </g>
+
+            <!-- neck + head -->
+            <g id="boy-head">
+              <rect x="98" y="158" width="24" height="28" rx="10" fill="#f0b184"/>
+              <circle cx="54" cy="120" r="13" fill="#f6bb8a"/>
+              <circle cx="166" cy="120" r="13" fill="#f6bb8a"/>
+              <ellipse cx="110" cy="114" rx="56" ry="60" fill="url(#skinGrad)"/>
+
+              <!-- hair -->
+              <path class="boy-hair" d="M54 106 C54 62 76 44 110 44 C144 44 166 62 166 106 C158 92 150 86 138 84 C120 92 96 92 82 84 C70 86 62 92 54 106 Z"
+                    fill="#2f2a35"/>
+              <path class="boy-hair-tuft" d="M96 48 Q104 30 118 40 Q112 46 110 52 Z" fill="#2f2a35"/>
+
+              <!-- cheek blush -->
+              <ellipse class="blush" cx="74" cy="134" rx="12" ry="8" fill="#ff9a9a" opacity="0"/>
+              <ellipse class="blush" cx="146" cy="134" rx="12" ry="8" fill="#ff9a9a" opacity="0"/>
+
+              <!-- EYES -->
+              <g class="exp m-ok">
+                <circle cx="88" cy="110" r="7" fill="#2b2b33"/>
+                <circle cx="132" cy="110" r="7" fill="#2b2b33"/>
+                <circle cx="90.5" cy="107.5" r="2.4" fill="#ffffff"/>
+                <circle cx="134.5" cy="107.5" r="2.4" fill="#ffffff"/>
+              </g>
+              <g class="exp m-hot">
+                <ellipse cx="88" cy="108" rx="8.5" ry="10" fill="#ffffff"/>
+                <ellipse cx="132" cy="108" rx="8.5" ry="10" fill="#ffffff"/>
+                <circle cx="88" cy="110" r="6.2" fill="#2b2b33"/>
+                <circle cx="132" cy="110" r="6.2" fill="#2b2b33"/>
+                <circle cx="90" cy="107" r="2.2" fill="#ffffff"/>
+                <circle cx="134" cy="107" r="2.2" fill="#ffffff"/>
+              </g>
+              <g class="exp m-cold">
+                <path d="M78 112 Q88 103 98 112" fill="none" stroke="#2b2b33" stroke-width="3.4" stroke-linecap="round"/>
+                <path d="M122 112 Q132 103 142 112" fill="none" stroke="#2b2b33" stroke-width="3.4" stroke-linecap="round"/>
+              </g>
+              <g class="exp m-freeze">
+                <path d="M79 104 L97 118 M97 104 L79 118" stroke="#2b2b33" stroke-width="3.4" stroke-linecap="round"/>
+                <path d="M123 104 L141 118 M141 104 L123 118" stroke="#2b2b33" stroke-width="3.4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BROWS -->
+              <g class="brow b-hot">
+                <path d="M76 88 Q88 82 100 88" fill="none" stroke="#3a3242" stroke-width="3.4" stroke-linecap="round"/>
+                <path d="M120 88 Q132 82 144 88" fill="none" stroke="#3a3242" stroke-width="3.4" stroke-linecap="round"/>
+              </g>
+              <g class="brow b-cold">
+                <path d="M76 86 Q88 92 100 88" fill="none" stroke="#3a3242" stroke-width="3.4" stroke-linecap="round"/>
+                <path d="M120 88 Q132 92 144 86" fill="none" stroke="#3a3242" stroke-width="3.4" stroke-linecap="round"/>
+              </g>
+
+              <!-- MOUTHS -->
+              <path class="exp m-ok" d="M92 138 Q110 154 128 138" fill="none" stroke="#8b3a3a" stroke-width="4" stroke-linecap="round"/>
+              <g class="exp m-hot">
+                <ellipse cx="110" cy="146" rx="11" ry="9.5" fill="#8b3a3a"/>
+                <ellipse cx="110" cy="152" rx="6" ry="5" fill="#d4756f"/>
+              </g>
+              <g class="exp m-cold">
+                <path d="M92 142 Q101 136 110 142 Q119 148 128 142" fill="none" stroke="#8b3a3a" stroke-width="4" stroke-linecap="round"/>
+              </g>
+              <g class="exp m-freeze">
+                <path d="M90 144 Q100 136 110 144 Q120 152 130 144" fill="none" stroke="#6d5ea8" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- breath puff (freezing) -->
+              <g class="breath">
+                <circle cx="168" cy="132" r="6" fill="#dff3ff" opacity="0.9"/>
+                <circle cx="182" cy="124" r="5" fill="#dff3ff" opacity="0.7"/>
+                <circle cx="194" cy="116" r="4" fill="#dff3ff" opacity="0.5"/>
+              </g>
+            </g>
+
+            <!-- sweat -->
+            <g id="sweat">
+              <ellipse class="drop d1" cx="60" cy="96" rx="4.5" ry="6.5" fill="#5fc8ff"/>
+              <ellipse class="drop d2" cx="168" cy="84" rx="4" ry="6" fill="#5fc8ff"/>
+              <ellipse class="drop d3" cx="52" cy="126" rx="4" ry="6" fill="#5fc8ff"/>
+              <ellipse class="drop d4" cx="176" cy="118" rx="4.5" ry="6.5" fill="#5fc8ff"/>
+              <ellipse class="drop d5" cx="110" cy="66" rx="4" ry="6" fill="#5fc8ff"/>
+            </g>
+
+            <!-- shiver marks -->
+            <g id="shiver">
+              <path class="sline s1" d="M32 96 q8 -8 0 -16" fill="none" stroke="#9fd8ff" stroke-width="3" stroke-linecap="round"/>
+              <path class="sline s2" d="M188 96 q-8 -8 0 -16" fill="none" stroke="#9fd8ff" stroke-width="3" stroke-linecap="round"/>
+              <path class="sline s3" d="M44 186 q8 -8 0 -16" fill="none" stroke="#9fd8ff" stroke-width="3" stroke-linecap="round"/>
+              <path class="sline s4" d="M180 186 q-8 -8 0 -16" fill="none" stroke="#9fd8ff" stroke-width="3" stroke-linecap="round"/>
+            </g>
+
+            <!-- blanket -->
+            <g id="blanket">
+              <path d="M46 222 Q110 200 174 222 L182 286 Q110 296 38 286 Z" fill="#7c5cff" opacity="0.95"/>
+              <path d="M46 236 Q110 216 174 236" fill="none" stroke="#a58cff" stroke-width="4"/>
+              <path d="M50 262 Q110 244 178 262" fill="none" stroke="#a58cff" stroke-width="4"/>
+            </g>
+
+            <!-- heat haze -->
+            <g id="heat-haze">
+              <path class="haze h1" d="M40 200 q6 -14 0 -28" fill="none" stroke="#ff9d5c" stroke-width="4" stroke-linecap="round"/>
+              <path class="haze h2" d="M182 200 q-6 -14 0 -28" fill="none" stroke="#ff9d5c" stroke-width="4" stroke-linecap="round"/>
+              <path class="haze h3" d="M110 52 q6 -12 0 -24" fill="none" stroke="#ff9d5c" stroke-width="4" stroke-linecap="round"/>
+            </g>
+
+          </g>
+        </svg>
+
+        <div class="speech" id="speech">Ahh, just right~</div>
+      </div>
+
+      <!-- signal wave from boy's remote to the AC -->
+      <div class="signal" id="signal">
+        <span></span><span></span><span></span>
+      </div>
+
+      <!-- event toast -->
+      <div class="toast" id="toast"></div>
+
+      <div class="lock-banner" id="lock-banner" hidden data-i18n="lockBanner">🔒 Remote Locked</div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ══════════════ HELP ══════════════ -->
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">How to play</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/state.js"></script>
+<script src="js/remote.js"></script>
+<script src="js/room.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
