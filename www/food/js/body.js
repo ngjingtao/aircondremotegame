@@ -330,5 +330,14 @@ ARG.body = (function () {
     }, 1400);
   }
 
-  return { build, render, bite, say, dropPoo, refreshLabels: () => ARG.i18n.apply(document.getElementById('labels')) };
+  function refreshLabels() {
+    /* force the next render to re-emit every translated string */
+    lastStage = null;
+    lastFact = null;
+    seen.mood = null;
+    seen.emoji = null;
+    ARG.i18n.apply(document.getElementById('labels'));
+  }
+
+  return { build, render, bite, say, dropPoo, refreshLabels };
 })();
