@@ -148,6 +148,48 @@
 .art-food span:nth-child(3){animation-delay:.5s;}
 @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
 
+/* ── train art ── */
+.tile-train .tile-art{background:linear-gradient(160deg,#173049,#0c2233);}
+.art-rail{
+  position:absolute;left:10px;right:10px;bottom:20px;height:10px;
+  background:
+    linear-gradient(180deg,#cfd6e0,#8b95a3) 0 4px/100% 3px no-repeat,
+    repeating-linear-gradient(90deg,#8a7350 0 5px,transparent 5px 11px) 0 6px/100% 5px no-repeat;
+}
+.art-train{position:absolute;left:10px;right:10px;bottom:28px;height:34px;}
+.at-loco,.at-coach{
+  position:absolute;bottom:6px;height:22px;border-radius:3px;
+  box-shadow:0 2px 4px rgba(0,0,0,.45);
+}
+.at-loco{
+  right:0;width:34px;
+  background:linear-gradient(180deg,#3a66a0,#1d3863);
+}
+.at-loco::after{content:"";position:absolute;right:3px;top:4px;width:10px;height:8px;border-radius:2px;background:#a8cdec;}
+.at-loco::before{content:"";position:absolute;left:2px;bottom:2px;width:28px;height:4px;background:#e63946;border-radius:2px;}
+.at-coach{
+  right:36px;width:30px;
+  background:linear-gradient(180deg,#f5f8fc,#ccd5e2);
+}
+.at-coach::after{content:"";position:absolute;left:3px;right:3px;top:5px;height:7px;background:repeating-linear-gradient(90deg,#2b3b52 0 5px,transparent 5px 9px);}
+.at-wheel{position:absolute;bottom:2px;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#8d97a5,#2b323c);}
+.at-wheel.w1{right:4px;} .at-wheel.w2{right:22px;} .at-wheel.w3{left:6px;}
+.at-x{
+  position:absolute;right:2px;bottom:30px;
+  width:15px;height:15px;
+  font-size:13px;font-weight:900;line-height:15px;text-align:center;color:#fff;
+  text-shadow:0 0 1px #000, 0 1px 2px rgba(0,0,0,.7);
+  animation:xflash 1s steps(2,end) infinite;
+}
+@keyframes xflash{0%{color:#fff;}50%{color:#ff8a7a;}}
+.at-lamp{
+  position:absolute;right:20px;bottom:30px;
+  width:6px;height:6px;border-radius:50%;background:#ff3b2a;
+  box-shadow:0 0 7px #ff3b2a;
+  animation:lampblink 0.9s steps(2,end) infinite;
+}
+@keyframes lampblink{0%{opacity:1;}50%{opacity:.15;}}
+
 /* ── footer ── */
 .home-foot{
   margin-top:18px;

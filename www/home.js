@@ -14,6 +14,8 @@
       tileAirSub: 'Drive the remote, make the boy happy, cold or hot',
       tileFoodTitle: 'Food Eating',
       tileFoodSub: 'Follow food from the mouth all the way out',
+      tileTrainTitle: 'Train Driving',
+      tileTrainSub: 'Drive the train, stop at the station, ding ding at the crossing',
       foot: 'Made for curious kids',
       help: '?',
       helpTitle: 'Two activities',
@@ -31,6 +33,13 @@
           <li>Real science facts at every stop, plus a quiz at the end.</li>
           <li>Press <code>WATCH</code> to sit back and let the journey play by itself.</li>
         </ul>
+        <h3>🚆 Train Driving</h3>
+        <ul>
+          <li>Notch up the throttle and feel how heavy a train is. Brakes need a long distance.</li>
+          <li>Stop with the front of the train on the white mark at each station.</li>
+          <li>Listen for <code>ding, ding, ding</code> at every level crossing — red lights flash and the barrier comes down.</li>
+          <li>Horn, bell, headlights and doors all work. Doors must be shut before you move.</li>
+        </ul>
         <h3>Buttons in the top bar</h3>
         <ul>
           <li><code>‹ Menu</code> — back to this screen (inside an activity).</li>
@@ -47,6 +56,8 @@
       tileAirSub: '操作遥控器，看看男孩是舒服、冷还是热',
       tileFoodTitle: '吃东西',
       tileFoodSub: '跟着食物从嘴巴一路走到外面',
+      tileTrainTitle: '开火车',
+      tileTrainSub: '开动火车、停准站台，道口叮叮叮',
       foot: '给充满好奇心的小朋友',
       help: '?',
       helpTitle: '两个小游戏',
@@ -63,6 +74,13 @@
           <li>六个阶段：口腔 → 食道 → 胃 → 小肠 → 大肠 → 排出。</li>
           <li>每一站都有真实的科学知识，最后还有小测验。</li>
           <li>按 <code>观看</code> 可以放手不管，让旅程自己播放。</li>
+        </ul>
+        <h3>🚆 开火车</h3>
+        <ul>
+          <li>推动油门，感受火车有多重。刹车需要很长的距离。</li>
+          <li>让车头停在每个车站的白色标线上。</li>
+          <li>每个道口都要听 <code>叮、叮、叮</code> — 红灯闪烁，栏杆落下。</li>
+          <li>风笛、铃声、车灯、车门都能用。门没关好火车不会动。</li>
         </ul>
         <h3>顶栏按钮</h3>
         <ul>

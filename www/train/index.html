@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0b1220" />
+<meta name="format-detection" content="telephone=no" />
+<title>Train Driving · Play &amp; Learn</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="train.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">🚆</span>
+      <span class="tb-title" data-i18n="title">Train Driving</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip hud-score"><span class="hud-label" data-i18n="score">Score</span><b id="hud-score">0</b></div>
+      <div class="hud-chip"><span class="hud-label" data-i18n="served">Stops</span><b id="hud-served">0</b></div>
+      <div class="hud-chip"><span class="hud-label" data-i18n="distance">Distance</span><b id="hud-dist">0 m</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ══════════ SCENE ══════════ -->
+    <section id="scene">
+      <div class="sky"></div>
+      <div class="sun" id="sun"></div>
+      <div class="clouds" id="clouds"></div>
+      <div class="hills" id="hills"></div>
+      <div class="ground"></div>
+      <div class="track" id="track"><div class="sleepers" id="sleepers"></div></div>
+      <div class="objs" id="objs"></div>
+      <div class="wire"></div>
+      <div class="foreground" id="foreground"></div>
+
+      <div class="headlight" id="headlight"></div>
+      <div class="train" id="train"></div>
+
+      <div class="scene-hud">
+        <div class="sh-speed"><b id="hud-kmh">0</b><span data-i18n="speedUnit">km/h</span></div>
+        <div class="sh-next" id="hud-next">
+          <span class="sh-label" data-i18n="nextStop">Next stop</span>
+          <b id="hud-next-name">—</b>
+          <i id="hud-next-dist">—</i>
+        </div>
+      </div>
+
+      <div class="crossing-flag" id="crossing-flag">
+        <span class="cf-lamp"></span>
+        <span class="cf-text" data-i18n="crossingActive">CROSSING ACTIVE</span>
+        <span class="cf-ding" data-i18n="ding">DING</span>
+      </div>
+
+      <div class="toast" id="toast"></div>
+    </section>
+
+    <!-- ══════════ CAB DESK ══════════ -->
+    <section id="cab" class="cab">
+
+      <div class="cab-gauge">
+        <svg id="gauge" viewBox="0 0 120 96" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="gGlass" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0d1522"/>
+              <stop offset="100%" stop-color="#050a12"/>
+            </linearGradient>
+            <filter id="gGlow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="1.6" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <rect x="2" y="2" width="116" height="92" rx="12" fill="url(#gGlass)" stroke="rgba(255,255,255,.14)" stroke-width="1.5"/>
+          <path d="M14,74 A46,46 0 0 1 83,34.2" fill="none" stroke="#2fbf62" stroke-width="7" stroke-linecap="round"/>
+          <path d="M85.6,32.5 A46,46 0 0 1 99.8,51" fill="none" stroke="#f0b429" stroke-width="7" stroke-linecap="round"/>
+          <path d="M101.4,53.6 A46,46 0 0 1 106,74" fill="none" stroke="#f2564d" stroke-width="7" stroke-linecap="round"/>
+          <g id="g-ticks" stroke="rgba(210,235,255,.55)" stroke-width="1.4"></g>
+          <g id="g-needle" transform="rotate(0 60 74)">
+            <line x1="60" y1="74" x2="22" y2="74" stroke="#ff5a4d" stroke-width="2.6" stroke-linecap="round"/>
+            <circle cx="60" cy="74" r="5" fill="#26313f" stroke="rgba(255,255,255,.2)"/>
+          </g>
+          <text id="g-value" x="60" y="64" text-anchor="middle" font-size="21" font-weight="800"
+                fill="#8ef0b4" font-family="ui-monospace, monospace">0</text>
+        </svg>
+      </div>
+
+      <div class="lever thr" id="lever-thr">
+        <div class="lv-head"><span data-i18n="throttle">THROTTLE</span><b id="thr-name">OFF</b></div>
+        <div class="lv-bar" id="thr-bar"></div>
+        <div class="lv-btns">
+          <button class="lv-btn up" data-action="throttleUp">▲</button>
+          <button class="lv-btn dn" data-action="throttleDown">▼</button>
+        </div>
+      </div>
+
+      <div class="lever brk" id="lever-brk">
+        <div class="lv-head"><span data-i18n="brake">BRAKE</span><b id="brk-name">RELEASE</b></div>
+        <div class="lv-bar" id="brk-bar"></div>
+        <div class="lv-btns">
+          <button class="lv-btn up" data-action="brakeUp">▲</button>
+          <button class="lv-btn dn" data-action="brakeDown">▼</button>
+        </div>
+      </div>
+
+      <div class="cab-btns">
+        <button class="cb-btn horn" data-action="horn">
+          <span class="cb-ico">📢</span><span class="cb-lbl" data-i18n="bHorn">HORN</span>
+        </button>
+        <button class="cb-btn bell" data-action="bell">
+          <span class="cb-ico">🔔</span><span class="cb-lbl" data-i18n="bBell">BELL</span>
+        </button>
+        <button class="cb-btn lights" data-action="lights">
+          <span class="cb-ico">💡</span><span class="cb-lbl" data-i18n="bLights">LIGHTS</span>
+          <span class="cb-state" id="lights-state">BRIGHT</span>
+        </button>
+        <button class="cb-btn doors" data-action="doors">
+          <span class="cb-ico">🚪</span><span class="cb-lbl" data-i18n="bDoors">DOORS</span>
+          <span class="cb-state" id="doors-state">SHUT</span>
+        </button>
+      </div>
+
+      <div class="cab-status">
+        <div class="cs-row">
+          <span class="cs-lamp" id="cs-lamp"></span>
+          <b id="cs-title">—</b>
+        </div>
+        <div class="cs-sub" id="cs-sub">—</div>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">How to drive the train</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/cab.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

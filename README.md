@@ -2,24 +2,24 @@
 
 [![Build Android APK](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml/badge.svg)](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml)
 
-One little app, two activities for a curious kid. The home screen shows two picture tiles —
+One little app, three activities for a curious kid. The home screen shows three picture tiles —
 tap one and you are in.
 
 ```
-┌─────────────────────────────────────────────┐
-│  ✦ Play & Learn              EN  🔊         │
-│                                             │
-│        What shall we play?                  │
-│                                             │
-│  ┌────────────────┐  ┌────────────────┐     │
-│  │  [ air-con ]   │  │  [ innards  ]  │     │
-│  │  Play Aircond ›│  │ Food Eating   ›│     │
-│  └────────────────┘  └────────────────┘     │
-└─────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│  ✦ Play & Learn                          EN  🔊              │
+│                                                              │
+│                 What shall we play?                          │
+│                                                              │
+│  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐          │
+│  │ [ air-con ]  │ │ [ innards  ] │ │  [ train ]   │          │
+│  │Play Aircond ›│ │Food Eating  ›│ │Train Driving ›│         │
+│  └──────────────┘ └──────────────┘ └──────────────┘          │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
-Both activities speak **English and 中文** and work offline.
+All three activities speak **English and 中文** and work offline.
 
 ---
 
@@ -79,6 +79,45 @@ There is a **4-question quiz** in the top bar for afterwards.
 
 ---
 
+## 3 · 🚆 Train Driving
+
+A full-width view out of the cab, with a driver's desk along the bottom.
+
+**It drives like a train, not a car.** The consist weighs what a train weighs: notch the
+throttle up to 100 % and it still takes 10 seconds to reach 37 km/h, half a minute to reach
+90. Take the power off and it coasts for kilometres. Brakes act on the whole train — from
+60 km/h you need **165 metres** to stop, so you have to plan your stop long before you see
+the platform.
+
+<img width="1" height="1" alt="" src="data:,">
+
+| Control | What it does |
+|---|---|
+| **THROTTLE ▲▼** | OFF · 25 · 50 · 75 · 100 %. Power also releases the brake. |
+| **BRAKE ▲▼** | RELEASE · step 1 · 2 · 3 · FULL · **EMERGENCY**. Applying brake cuts the power. |
+| **HORN** | Two-tone horn (a low chord, like the real thing) |
+| **BELL** | Rings the bell |
+| **LIGHTS** | Headlights off / dim / bright — the beam lights up the track ahead |
+| **DOORS** | Only open at a platform, and the train **will not move until they are shut** |
+
+**The level crossing.** Every crossing warns you from 300 m out: the two red lights begin
+flashing alternately, the red-and-white barrier swings down across the road, the bell rings
+`ding, ding, ding`, and a car pulls up and waits. Drive past and the barrier lifts again and
+the car moves off. (You hear the bell before you see the crossing — just like real life.)
+
+**Your job** — stop with the front of the train on the **white mark** in each platform:
+
+| How close | Points |
+|---|---|
+| within 6 m | 150 — *Perfect stop!* |
+| within 16 m | 80 — *Good stop.* |
+| on the platform | 30 — *A bit far from the mark* |
+| rolled past | −20 — *You went past the platform!* |
+
+Mind your speed in the platform, and use the horn — it is good manners.
+
+---
+
 ## Play it in a browser (fastest)
 
 Everything is plain HTML/CSS/JS — no build step.
@@ -90,7 +129,8 @@ npm run serve
 
 …or just double-click `www/index.html`.
 
-`www/_devicelab.html` opens all three screens side by side at real phone size.
+`www/_devicelab.html` opens every screen at real phone **and** iPad sizes, portrait and
+landscape, side by side.
 
 ---
 
@@ -157,7 +197,11 @@ www/                          ← the whole app (no build step)
 │  ├─ index.html
 │  ├─ food.css                          deck, body, organs, effects, quiz
 │  └─ js/ i18n.js · state.js · body.js · deck.js · main.js
-└─ _devicelab.html                      dev-only: phone-size previews
+├─ train/                               ── activity 3 ──
+│  ├─ index.html
+│  ├─ train.css                         sky, track, train, crossing, driver's desk
+│  └─ js/ i18n.js · state.js · scene.js · cab.js · main.js
+└─ _devicelab.html                      dev-only: phone & iPad previews
 android/                                Capacitor Android project (committed)
 capacitor.config.json
 .github/workflows/android.yml           auto-builds the APK
@@ -173,6 +217,11 @@ capacitor.config.json
   point lists (`MOUTH_ESO`, `STOMACH`, `DUODENUM`, `coilPoints()`, `LARGE`). One smoothed path
   is generated from them and used both to draw the organs *and* to carry the food particle,
   so moving a point moves the drawing and the animation together.
+* **The train (train)** — `www/train/js/scene.js`. Everything in the world is measured in
+  **metres** and scaled by a single CSS variable, `--ppm` (pixels per metre), which is derived
+  from how wide the scene is, so the train always fills the same share of the screen on a phone
+  and on an iPad. The route is generated from `CYCLE`/`STATION_OFFSET`/`CROSSING_OFFSET` in
+  `state.js` — change those to re-space the stations and crossings.
 
 ### Adding a language
 

@@ -81,6 +81,29 @@ ARG.audio = (function () {
     plop() { tone(300, 0.16, 'sine', 0.07); tone(150, 0.22, 'sine', 0.05, 0.05); },
     flush() { noise(1.1, 0.055, 800, 0.5); },
     cheer() { [523, 659, 784, 1046].forEach((f, i) => tone(f, 0.14, 'triangle', 0.055, i * 0.09)); },
-    ouch() { tone(300, 0.14, 'sawtooth', 0.055); tone(200, 0.2, 'sawtooth', 0.05, 0.12); }
+    ouch() { tone(300, 0.14, 'sawtooth', 0.055); tone(200, 0.2, 'sawtooth', 0.05, 0.12); },
+
+    /* ── train set ── */
+    /** level-crossing bell: one clear "ding" */
+    ding() {
+      tone(1160, 0.34, 'sine', 0.060);
+      tone(1740, 0.24, 'sine', 0.030, 0.004);
+      tone(2330, 0.15, 'sine', 0.014, 0.008);
+    },
+    /** two-tone train horn */
+    horn() {
+      tone(155, 1.15, 'triangle', 0.030);
+      [311, 370, 466].forEach((f, i) => tone(f, 1.10, 'sawtooth', 0.028, i * 0.018));
+    },
+    /** brake release / air hiss */
+    air() { noise(0.85, 0.05, 1500, 0.7); },
+    /** brake squeal */
+    squeal() { noise(0.45, 0.04, 2900, 3); },
+    /** door chime */
+    doorChime() { tone(880, 0.16, 'sine', 0.05); tone(660, 0.22, 'sine', 0.045, 0.15); },
+    /** combination lever / notch click */
+    notch() { tone(640, 0.035, 'square', 0.03); noise(0.03, 0.02, 2400, 1); },
+    /** button that is not allowed right now */
+    warn() { tone(300, 0.14, 'square', 0.05); tone(240, 0.18, 'square', 0.045, 0.13); }
   };
 })();

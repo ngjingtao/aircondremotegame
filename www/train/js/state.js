@@ -1,0 +1,279 @@
+/* ═══════════════════════════════════════════
+   train/js/state.js — driving physics + route
+   ═══════════════════════════════════════════ */
+window.ARG = window.ARG || {};
+
+ARG.sim = (function () {
+
+  /* ── the consist ── */
+  const LOCO_LEN = 16;
+  const COACH_LEN = 16;
+  const COACHES = 2;
+  const TRAIN_LEN = LOCO_LEN + COACH_LEN * COACHES;      // 48 m
+
+  /* ── route ── */
+  const CYCLE = 900;             // metres per repeating stretch
+  const STATION_OFFSET = 250;
+  const CROSSING_OFFSET = 620;
+  const PLATFORM_LEN = 80;
+  const MARK_AT = STATION_OFFSET + 40;                   // stop mark inside the platform
+  const START_X = 150;
+
+  /* ── physics ── */
+  const MAX_KMH = 120;
+  const MAX_MS = MAX_KMH / 3.6;
+  const THROTTLE = [0, 25, 50, 75, 100];
+  const BRAKE = [0, 25, 50, 75, 100, 130];               // last one is EMERGENCY
+
+  const ACTIVATE_M = 300;        // crossing warns from this far out
+  const CLEAR_M = 40;            // ... and clears this far past
+
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+  function fresh() {
+    return {
+      throttle: 0,
+      brake: 1,                 // start with the brake applied
+      speed: 0,                 // m/s
+      x: START_X,               // metres (train nose)
+      lights: 2,
+      doors: false,
+      hornT: 0,
+      bellT: 0,
+
+      score: 0,
+      served: 0,
+      servedStations: {},
+      overshot: {},
+
+      msg: '',
+      msgT: 0,
+      msgGood: true,
+
+      stoppedFor: 0,
+      lastStopResult: '',
+
+      /* derived each tick */
+      kmh: 0,
+      nextIdx: 0,
+      distToStation: 0,
+      distToMark: 0,
+      atPlatform: false,
+      activeCrossings: [],
+      gates: {},
+      flashPhase: 0,
+      dingNow: false,
+      bellOn: false,
+      overspeed: false
+    };
+  }
+
+  let S = fresh();
+
+  const stationX = n => n * CYCLE + STATION_OFFSET;
+  const crossingX = n => n * CYCLE + CROSSING_OFFSET;
+
+  function say(key, good) {
+    S.msg = key;
+    S.msgT = 3.4;
+    S.msgGood = good !== false;
+  }
+
+  /* ─────────── driver actions ─────────── */
+  const ACTIONS = {
+    throttleUp() {
+      if (S.doors) return { sound: 'warn', msg: 'msgDoorsOpen', good: false };
+      if (S.throttle < THROTTLE.length - 1) {
+        S.throttle++;
+        if (S.brake > 0) S.brake = 0;               // power off the brake
+        return { sound: 'notch', msg: S.throttle === 0 ? null : null, throttle: true };
+      }
+      return { sound: 'notch' };
+    },
+    throttleDown() {
+      if (S.throttle > 0) { S.throttle--; return { sound: 'notch' }; }
+      return { sound: 'notch' };
+    },
+    brakeUp() {
+      if (S.brake < BRAKE.length - 1) {
+        S.brake++;
+        if (S.brake > 0) S.throttle = 0;            // brake takes over from power
+        if (S.brake === BRAKE.length - 1) return { sound: 'squeal', msg: 'msgEmergency', good: false };
+        return { sound: 'notch' };
+      }
+      return { sound: 'warn' };
+    },
+    brakeDown() {
+      if (S.brake > 0) {
+        S.brake--;
+        if (S.brake === 0) return { sound: 'air' };
+        return { sound: 'notch' };
+      }
+      return { sound: 'notch' };
+    },
+    horn() {
+      S.hornT = 1.3;
+      return { sound: 'horn', msg: 'msgHorn' };
+    },
+    bell() {
+      S.bellT = 1.6;
+      return { sound: 'ding', msg: 'msgBell' };
+    },
+    lights() {
+      S.lights = (S.lights + 1) % 3;
+      return { sound: 'notch', msg: S.lights === 0 ? 'msgLightsOff' : 'msgLightsOn' };
+    },
+    doors() {
+      if (S.doors) {
+        S.doors = false;
+        return { sound: 'doorChime', msg: 'msgDoorsShut' };
+      }
+      if (!S.atPlatform || Math.abs(S.speed) > 0.35) {
+        return { sound: 'warn', msg: 'msgDoorsNeedStop', good: false };
+      }
+      S.doors = true;
+      return { sound: 'doorChime', msg: 'msgDoorsOpen' };
+    }
+  };
+
+  function press(action) {
+    const fn = ACTIONS[action];
+    if (!fn) return null;
+    const res = fn() || { sound: 'notch' };
+    if (res.msg) say(res.msg, res.good);
+    return res;
+  }
+
+  /* ─────────── tick ─────────── */
+  function tick(dt) {
+    dt = Math.min(dt, 0.08);
+
+    /* ── physics ── */
+    let v = S.speed;
+    const thr = THROTTLE[S.throttle] / 100;
+    const brk = BRAKE[S.brake];
+    let a = 0;
+
+    if (thr > 0 && !S.doors) {
+      /* tractive effort falls away as the train gets faster */
+      const eff = Math.max(0.06, 1 - Math.abs(v) / 64);
+      a += thr * 1.15 * eff;
+    }
+
+    if (brk > 0) {
+      const b = brk >= 130 ? 1.55 : (brk / 100) * 1.05;
+      if (Math.abs(v) < 0.25 && thr === 0) {
+        S.speed = 0;
+        v = 0;
+        a = 0;
+      } else {
+        a -= Math.sign(v || 1) * b;
+      }
+    }
+
+    /* running resistance: rolling + air drag */
+    if (Math.abs(v) > 0.01) a -= Math.sign(v) * (0.03 + 0.00014 * v * v);
+
+    const vPrev = v;
+    v += a * dt;
+    if (brk > 0 && thr === 0 && ((vPrev > 0 && v < 0) || (vPrev < 0 && v > 0))) v = 0;
+    v = clamp(v, -MAX_MS, MAX_MS);
+
+    S.speed = v;
+    S.kmh = Math.abs(v) * 3.6;
+    S.x += v * dt;
+
+    /* ── which station are we heading for / standing at? ──
+       the first one whose platform we have not completely passed yet */
+    let n = Math.ceil((S.x - STATION_OFFSET - PLATFORM_LEN - 4) / CYCLE);
+    if (n < 0) n = 0;
+    S.nextIdx = n;
+    const stX = stationX(n);
+    S.distToStation = stX - S.x;
+    S.distToMark = (stX + 40) - S.x;
+    S.atPlatform = S.x >= stX - 4 && S.x <= stX + PLATFORM_LEN + 4;
+
+    /* stopped at a station? */
+    if (Math.abs(S.speed) < 0.35) S.stoppedFor += dt; else S.stoppedFor = 0;
+
+    const key = 'st' + n;
+    if (S.stoppedFor > 0.35 && S.atPlatform && !S.servedStations[key]) {
+      S.servedStations[key] = true;
+      const off = Math.abs(S.distToMark);
+      let gained, msg;
+      if (off <= 6) { gained = 150; msg = 'msgPerfect'; }
+      else if (off <= 16) { gained = 80; msg = 'msgGood'; }
+      else { gained = 30; msg = 'msgLong'; }
+      S.score += gained;
+      S.served++;
+      S.lastStopResult = msg;
+      say(msg, true);
+    }
+
+    /* rolled past the previous platform without stopping */
+    const prev = n - 1;
+    if (prev >= 0) {
+      const pk = 'st' + prev;
+      const px = stationX(prev);
+      if (!S.servedStations[pk] && !S.overshot[pk] && S.x > px + PLATFORM_LEN + 4) {
+        S.overshot[pk] = true;
+        S.servedStations[pk] = true;
+        S.score = Math.max(0, S.score - 20);
+        say('msgOvershoot', false);
+      }
+    }
+
+    /* ── level crossings ── */
+    const active = [];
+    let ding = false;
+    let bellOn = false;
+    const base = Math.floor(S.x / CYCLE);
+    for (let i = base - 1; i <= base + 1; i++) {
+      const cx = crossingX(i);
+      const d = cx - S.x;
+      const isActive = d < ACTIVATE_M && d > -CLEAR_M;
+      const gk = 'c' + i;
+      const target = isActive ? 1 : 0;
+      const cur = S.gates[gk] === undefined ? 0 : S.gates[gk];
+      const rate = target > cur ? 0.55 : 0.30;   // barrier drops faster than it lifts
+      S.gates[gk] = cur + Math.sign(target - cur) * Math.min(rate * dt, Math.abs(target - cur));
+      if (isActive) { active.push(i); bellOn = true; }
+    }
+    S.activeCrossings = active;
+    S.bellOn = bellOn || S.bellT > 0;
+
+    /* ding, ding, ding */
+    S.dingNow = false;
+    if (active.length) {
+      S.crossingT = (S.crossingT || 0) + dt;
+      S.dingAcc = (S.dingAcc || 0) + dt;
+      if (S.dingAcc >= 0.44) { S.dingAcc = 0; S.dingNow = true; }
+      S.flashPhase = (S.crossingT % 0.9) < 0.45 ? 0 : 1;
+    } else {
+      S.crossingT = 0;
+      S.dingAcc = 0;
+      S.flashPhase = -1;
+    }
+
+    /* ── housekeeping ── */
+    if (S.hornT > 0) S.hornT = Math.max(0, S.hornT - dt);
+    if (S.bellT > 0) S.bellT = Math.max(0, S.bellT - dt);
+    if (S.msgT > 0) S.msgT = Math.max(0, S.msgT - dt);
+
+    /* gentle nudge about station speed */
+    S.overspeed = S.atPlatform && S.kmh > 60;
+
+    return S;
+  }
+
+  return {
+    get s() { return S; },
+    press, tick,
+    fresh: () => { S = fresh(); return S; },
+    stationX, crossingX,
+    THROTTLE, BRAKE, MAX_KMH, MAX_MS,
+    TRAIN_LEN, LOCO_LEN, COACH_LEN, COACHES,
+    CYCLE, PLATFORM_LEN, MARK_AT, ACTIVATE_M,
+    clamp
+  };
+})();
