@@ -17,10 +17,14 @@
 
     const totalW = mainEl.clientWidth;
     const availH = panel.clientHeight - 16;
-    const maxPanelW = Math.min(totalW * 0.52, 440);
+    /* "tablet" = roomy in both directions; a landscape phone has the width but not the height */
+    const tablet = totalW >= 700 && mainEl.clientHeight >= 560;
+
+    const maxPanelW = Math.min(totalW * (tablet ? 0.50 : 0.52), tablet ? 520 : 440);
+    const maxScale = tablet ? 1.4 : 1.15;
 
     let scale = Math.min((maxPanelW - 20) / DW, availH / DH);
-    scale = Math.max(0.32, Math.min(scale, 1.1));
+    scale = Math.max(0.32, Math.min(scale, maxScale));
 
     document.documentElement.style.setProperty('--deck-scale', scale);
     scaler.style.width = (DW * scale) + 'px';

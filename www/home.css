@@ -166,3 +166,20 @@
   .art-snow{top:36px;}
   .art-remote{right:14px;bottom:8px;transform:scale(.9);}
 }
+
+/* ─────────── tablets (iPad) ─────────── */
+@media (min-width:700px) and (min-height:560px){
+  #home{padding:32px;}
+  .home-inner{max-width:1020px;}
+  .home-title{font-size:36px;margin-bottom:6px;}
+  .home-sub{font-size:15px;margin-bottom:32px;}
+  .tiles{gap:22px;}
+  .tile{flex:1 1 300px;padding:26px;gap:24px;border-radius:26px;}
+  .tile:hover{transform:translateY(-5px);}
+  .tile-art{width:150px;height:150px;border-radius:22px;}
+  .tile-art > *{transform:scale(1.5);}
+  .tile-text h2{font-size:24px;margin-bottom:6px;}
+  .tile-text p{font-size:14.5px;line-height:1.5;}
+  .tile-go{font-size:40px;}
+  .home-foot{margin-top:30px;font-size:14px;gap:14px;}
+}

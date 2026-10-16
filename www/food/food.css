@@ -371,7 +371,9 @@
   flex:0 0 auto;
   max-height:34%;
   overflow-y:auto;
-  margin:0 8px calc(8px + env(safe-area-inset-bottom));
+  width:calc(100% - 16px);
+  max-width:700px;
+  margin:0 auto calc(8px + env(safe-area-inset-bottom));
   padding:9px 11px;
   border-radius:14px;
   background:linear-gradient(180deg,rgba(56,189,248,.13),rgba(56,189,248,.05));
@@ -411,8 +413,38 @@
 .quiz-final .big{font-size:34px;font-weight:800;color:var(--brand);}
 
 /* ═══════════════ RESPONSIVE ═══════════════ */
+
 @media (max-width:520px){
   .fact-text{font-size:11px;}
   .fact-card{max-height:32%;}
   .scene-top{padding:6px 8px 0;}
+}
+
+/* landscape phones — very little height */
+@media (max-height:520px){
+  .fact-card{max-height:30%;padding:7px 10px;margin-bottom:6px;}
+  .fact-text{font-size:10.5px;line-height:1.45;}
+  .fact-label{font-size:8.5px;}
+  .scene-top{padding:5px 8px 0;}
+  .speech{font-size:10.5px;padding:4px 9px;max-width:150px;}
+}
+
+/* ─────────── tablets (iPad) ─────────── */
+@media (min-width:700px) and (min-height:560px){
+  .scene-top{padding:14px 18px 0;gap:12px;}
+  .scene-stage,.scene-mood{font-size:13.5px;padding:5px 15px;}
+  .fact-card{
+    max-width:900px;width:calc(100% - 36px);
+    margin:0 auto calc(16px + env(safe-area-inset-bottom));
+    padding:15px 18px;border-radius:18px;max-height:32%;
+  }
+  .fact-label{font-size:12px;margin-bottom:5px;}
+  .fact-text{font-size:14.5px;line-height:1.65;}
+  .speech{font-size:15px;padding:10px 17px;border-radius:18px;max-width:280px;top:2%;}
+  .quiz-card{max-width:600px;}
+  .quiz-q{font-size:17px;}
+  .quiz-ans{font-size:15px;padding:14px 16px;border-radius:13px;}
+  .quiz-progress{font-size:12.5px;}
+  .quiz-feedback{font-size:14px;}
+  .quiz-final .big{font-size:44px;}
 }

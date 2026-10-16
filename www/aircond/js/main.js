@@ -17,11 +17,15 @@
 
     const totalW = mainEl.clientWidth;
     const availH = panel.clientHeight - 16;
+    /* "tablet" = roomy in both directions; a landscape phone has the width but not the height */
+    const tablet = totalW >= 700 && mainEl.clientHeight >= 560;
+
     /* the remote column never eats more than this share of the screen */
-    const maxPanelW = Math.min(totalW * 0.56, 430);
+    const maxPanelW = Math.min(totalW * (tablet ? 0.48 : 0.56), tablet ? 560 : 430);
+    const maxScale = tablet ? 1.4 : 1.15;
 
     let scale = Math.min((maxPanelW - 20) / RW, availH / RH);
-    scale = Math.max(0.3, Math.min(scale, 1.1));
+    scale = Math.max(0.30, Math.min(scale, maxScale));
 
     document.documentElement.style.setProperty('--scale', scale);
     scaler.style.width  = (RW * scale) + 'px';

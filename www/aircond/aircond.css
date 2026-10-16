@@ -525,11 +525,38 @@
 /* OVERLAY styles live in shared/ui.css */
 
 /* ═══════════════ RESPONSIVE ═══════════════ */
+
+/* keep the air-con from ever pushing the boy out of a short scene */
+#ac{max-height:30vh;}
+
 @media (max-width:520px){
   /* the env chips wrap to two rows, so give the AC room */
   .ac-wrap{margin-top:60px;}
   .env-item{font-size:9px;padding:2px 6px;}
   .env-item i{font-size:9px;}
+}
+
+/* landscape phones — very little height */
+@media (max-height:520px){
+  .ac-wrap{margin-top:16px;width:70%;}
+  .boy-wrap{height:38%;}
+  .speech{font-size:11px;padding:4px 9px;max-width:150px;}
+  .ac-status{bottom:-20px;font-size:10px;padding:3px 10px;}
+  .env-bar{top:4px;gap:3px;}
+}
+
+/* ─────────── tablets (iPad) ─────────── */
+@media (min-width:700px) and (min-height:560px){
+  .ac-wrap{margin-top:52px;width:80%;max-width:560px;}
+  .boy-wrap{width:84%;max-width:430px;height:46%;}
+  .env-bar{top:14px;gap:9px;}
+  .env-item{font-size:12.5px;padding:5px 13px;gap:5px;}
+  .env-item i{font-size:12.5px;}
+  .ac-status{font-size:13.5px;padding:7px 18px;bottom:-34px;}
+  .speech{font-size:15px;padding:9px 16px;border-radius:18px;max-width:260px;}
+  .lock-banner{font-size:13px;padding:6px 16px;bottom:14px;}
+  .room-window{max-width:230px;border-width:7px;}
+  .room-rug{max-width:380px;max-height:80px;}
 }
 @media (min-width:760px){
   #remote-panel{padding-left:16px;padding-right:16px;}

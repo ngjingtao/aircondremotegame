@@ -4,33 +4,79 @@
 <meta charset="utf-8" />
 <title>Device Lab — Play &amp; Learn</title>
 <style>
-  body{margin:0;background:#0b1220;color:#cbd5e1;font-family:-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px;}
-  h1{font-size:15px;margin:0 0 4px;color:#38bdf8;}
-  p.note{font-size:12px;color:#7f8ea8;margin:0 0 18px;}
-  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start;}
+  body{margin:0;background:#0b1220;color:#cbd5e1;font-family:-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px 16px 40px;}
+  h1{font-size:16px;margin:0 0 4px;color:#38bdf8;}
+  p.note{font-size:12.5px;color:#7f8ea8;margin:0 0 8px;}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 22px;font-size:12px;}
+  .bar button{
+    background:rgba(255,255,255,.07);color:#e8eef8;border:1px solid rgba(255,255,255,.12);
+    border-radius:8px;padding:6px 11px;font:inherit;font-size:12px;cursor:pointer;
+  }
+  .bar button.on{background:rgba(56,189,248,.22);border-color:rgba(56,189,248,.5);color:#bfe9ff;}
+  .row{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;}
   .device{display:flex;flex-direction:column;gap:6px;}
   .label{font-size:11px;color:#93a3bd;letter-spacing:.4px;text-transform:uppercase;}
   .frame{border:10px solid #1e2839;border-radius:30px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.6);background:#000;}
-  iframe{display:block;border:0;width:390px;height:760px;background:#0b1220;}
+  .frame.tablet{border-radius:22px;}
+  iframe{display:block;border:0;background:#0b1220;}
   a{color:#7dd3fc;}
 </style>
 </head>
 <body>
   <h1>Device Lab</h1>
-  <p class="note">Live view at real phone size. Pages: <a href="index.html">menu</a> · <a href="aircond/index.html">Play Aircond</a> · <a href="food/index.html">Food Eating</a></p>
-  <div class="row">
-    <div class="device">
-      <div class="label">Home · 390 × 760</div>
-      <div class="frame"><iframe src="index.html" title="menu"></iframe></div>
-    </div>
-    <div class="device">
-      <div class="label">Play Aircond · 390 × 760</div>
-      <div class="frame"><iframe src="aircond/index.html" title="aircond"></iframe></div>
-    </div>
-    <div class="device">
-      <div class="label">Food Eating · 390 × 760</div>
-      <div class="frame"><iframe src="food/index.html" title="food"></iframe></div>
-    </div>
+  <p class="note">
+    Live phone &amp; iPad sizes. Pages:
+    <a href="index.html">menu</a> ·
+    <a href="aircond/index.html">Play Aircond</a> ·
+    <a href="food/index.html">Food Eating</a>
+  </p>
+
+  <div class="bar">
+    <span>Show:</span>
+    <button data-set="phone" class="on">Phone</button>
+    <button data-set="tablet" class="on">iPad</button>
   </div>
+
+  <div class="row" id="row"></div>
+
+<script>
+  const SIZES = [
+    { set: 'phone',  label: 'Phone portrait · 390×844',  w: 390,  h: 844 },
+    { set: 'tablet', label: 'iPad portrait · 768×1024',  w: 768,  h: 1024 },
+    { set: 'tablet', label: 'iPad landscape · 1024×768', w: 1024, h: 768 },
+    { set: 'phone',  label: 'Phone landscape · 844×390', w: 844,  h: 390 }
+  ];
+
+  const PAGES = [
+    { file: 'index.html',         name: 'Menu' },
+    { file: 'aircond/index.html', name: 'Play Aircond' },
+    { file: 'food/index.html',    name: 'Food Eating' }
+  ];
+
+  const row = document.getElementById('row');
+
+  function build() {
+    row.innerHTML = '';
+    const on = {};
+    document.querySelectorAll('.bar button').forEach(b => { on[b.dataset.set] = b.classList.contains('on'); });
+
+    SIZES.filter(s => on[s.set]).forEach(size => {
+      PAGES.forEach(page => {
+        const d = document.createElement('div');
+        d.className = 'device';
+        d.innerHTML = '<div class="label">' + size.label + ' — ' + page.name + '</div>' +
+          '<div class="frame' + (size.set === 'tablet' ? ' tablet' : '') + '">' +
+          '<iframe src="' + page.file + '" width="' + size.w + '" height="' + size.h + '" title="' + page.name + '"></iframe></div>';
+        row.appendChild(d);
+      });
+    });
+  }
+
+  document.querySelectorAll('.bar button').forEach(b => {
+    b.addEventListener('click', () => { b.classList.toggle('on'); build(); });
+  });
+
+  build();
+</script>
 </body>
 </html>
