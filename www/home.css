@@ -171,15 +171,15 @@
 @media (min-width:700px) and (min-height:560px){
   #home{padding:32px;}
   .home-inner{max-width:1020px;}
-  .home-title{font-size:36px;margin-bottom:6px;}
+  .home-title{font-size:34px;margin-bottom:6px;}
   .home-sub{font-size:15px;margin-bottom:32px;}
   .tiles{gap:22px;}
-  .tile{flex:1 1 300px;padding:26px;gap:24px;border-radius:26px;}
+  .tile{flex:1 1 330px;padding:24px;gap:22px;border-radius:26px;}
   .tile:hover{transform:translateY(-5px);}
-  .tile-art{width:150px;height:150px;border-radius:22px;}
-  .tile-art > *{transform:scale(1.5);}
-  .tile-text h2{font-size:24px;margin-bottom:6px;}
-  .tile-text p{font-size:14.5px;line-height:1.5;}
-  .tile-go{font-size:40px;}
+  /* the art is drawn for a 96px box, so scale the whole box rather than its children */
+  .tile-art{width:104px;height:104px;border-radius:18px;transform:scale(1.2);}
+  .tile-text h2{font-size:20px;margin-bottom:6px;}
+  .tile-text p{font-size:13px;line-height:1.5;}
+  .tile-go{font-size:36px;}
   .home-foot{margin-top:30px;font-size:14px;gap:14px;}
 }
