@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0b1220" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="Toilet &amp; Indah Water" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>Toilet &amp; Indah Water · Play &amp; Learn</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="toilet.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">🚽</span>
+      <span class="tb-title" data-i18n="title">Toilet &amp; Indah Water</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="stage">Stage</span><b id="hud-stage">1 / 6</b></div>
+      <div class="hud-chip hud-score"><span class="hud-label" id="hud-label2" data-i18n="oSeal">water seal</span><b id="hud-val">OK</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ══════════ LEFT PANEL ══════════ -->
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl">
+
+          <div class="ctl-tabs">
+            <button class="tab on" data-action="mode" data-mode="flush"><span>🚽</span><b data-i18n="tabFlush">How it flushes</b></button>
+            <button class="tab" data-action="mode" data-mode="treat"><span>🏭</span><b data-i18n="tabTreat">How it gets cleaned</b></button>
+          </div>
+
+          <!-- ── flush ── -->
+          <div class="pane" id="pane-flush">
+            <button class="flush-btn" data-action="flush" id="flush-btn">
+              <span class="fb-ico">🚽</span><span data-i18n="flushBtn">PRESS TO FLUSH</span>
+            </button>
+            <div class="steps" id="steps-flush"></div>
+          </div>
+
+          <!-- ── treat ── -->
+          <div class="pane" id="pane-treat" hidden>
+            <button class="air-btn" data-action="air" id="air-btn">
+              <span class="ab-ico">💨</span><span id="air-txt" data-i18n="airOn">AIR ON</span>
+            </button>
+            <div class="steps" id="steps-treat"></div>
+          </div>
+
+          <div class="fact" id="fact"></div>
+
+          <div class="nav">
+            <button class="ctl-btn small" data-action="stepDown" data-i18n="prev">BACK</button>
+            <button class="ctl-btn go" data-action="stepUp" id="next-btn" data-i18n="next">NEXT</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ SCENE ══════════ -->
+    <section id="scene" class="mode-flush" data-step="0">
+
+      <div class="scene-top">
+        <span class="scene-lead" id="scene-lead" data-i18n="tabFlush">How it flushes</span>
+        <span class="scene-status" id="scene-status" data-i18n="ready">Ready</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="porcGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="60%" stop-color="#f2f5fa"/>
+              <stop offset="100%" stop-color="#dbe2ec"/>
+            </linearGradient>
+            <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#9fe0ff"/>
+              <stop offset="100%" stop-color="#48a9e0"/>
+            </linearGradient>
+            <clipPath id="clipBowl">
+              <path d="M100,206 C100,300 122,372 170,384 C218,372 240,300 240,206 Z"/>
+            </clipPath>
+            <clipPath id="clipCistern">
+              <rect x="76" y="64" width="188" height="122" rx="8"/>
+            </clipPath>
+            <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0b1220" flood-opacity="0.35"/>
+            </filter>
+          </defs>
+
+          <!-- ═════ FLUSH SCENE ═════ -->
+          <g id="flushScene">
+
+            <!-- floor -->
+            <rect x="0" y="500" width="340" height="20" fill="#2a3646"/>
+            <path d="M0 500 H340" stroke="#3c4c60" stroke-width="2"/>
+
+            <!-- ── cistern ── -->
+            <g id="cistern" filter="url(#soft)">
+              <rect x="70" y="60" width="200" height="130" rx="12" fill="url(#porcGrad)" stroke="#c8d1dd" stroke-width="1.6"/>
+              <g clip-path="url(#clipCistern)">
+                <rect id="cisternWater" x="76" y="64" width="188" height="122" fill="url(#waterGrad)" opacity="0.85"/>
+              </g>
+              <!-- fill valve + float -->
+              <rect x="242" y="74" width="10" height="112" rx="4" fill="#c3ccd8"/>
+              <ellipse id="floatBall" cx="247" cy="110" rx="13" ry="11" fill="#e8eef6" stroke="#b9c4d2" stroke-width="1.4"/>
+              <!-- flapper -->
+              <rect id="flapper" x="146" y="182" width="48" height="10" rx="5" fill="#2f3a4a"/>
+              <rect id="flapperArm" x="192" y="168" width="6" height="16" rx="3" fill="#3c4a5c"/>
+              <!-- lid + button -->
+              <rect x="64" y="48" width="212" height="14" rx="7" fill="#eef2f8" stroke="#c8d1dd" stroke-width="1.4"/>
+              <g id="flushButton">
+                <rect x="152" y="34" width="36" height="16" rx="8" fill="#c8d1dd"/>
+                <rect x="156" y="38" width="28" height="8" rx="4" fill="#9fb0c4"/>
+              </g>
+            </g>
+
+            <!-- ── bowl ── -->
+            <g id="bowl" filter="url(#soft)">
+              <path d="M96,196 H244 V214 C244,330 216,392 170,404 C124,392 96,330 96,214 Z" fill="url(#porcGrad)" stroke="#c8d1dd" stroke-width="1.6"/>
+              <g clip-path="url(#clipBowl)">
+                <rect id="bowlWater" x="90" y="300" width="160" height="120" fill="url(#waterGrad)" opacity="0.9"/>
+              </g>
+              <path d="M100,210 C104,300 124,368 170,380 C216,368 236,300 240,210" fill="none" stroke="#d8e0ea" stroke-width="2"/>
+            </g>
+
+            <!-- ── the S-bend and the drain ── -->
+            <g id="trap">
+              <path id="trapTube" d="M170,396 C170,424 190,438 210,428 C226,420 228,404 228,384 L228,506"
+                    fill="none" stroke="#dfe6ef" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+              <path id="trapWater" d="M170,396 C170,424 190,438 210,428 C226,420 228,404 228,384"
+                    fill="none" stroke="url(#waterGrad)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+              <path id="trapLine" d="M170,396 C170,424 190,438 210,428 C226,420 228,404 228,384"
+                    fill="none" stroke="#b9c6d6" stroke-width="1.4"/>
+            </g>
+
+            <!-- base -->
+            <path d="M118,392 C118,470 130,506 170,506 C210,506 222,470 222,392 Z" fill="url(#porcGrad)" stroke="#c8d1dd" stroke-width="1.6"/>
+            <path d="M228,506 V520" stroke="#dfe6ef" stroke-width="30" stroke-linecap="round"/>
+
+            <!-- flow particles -->
+            <g id="flushFlow"></g>
+          </g>
+
+          <!-- ═════ TREATMENT SCENE ═════ -->
+          <g id="treatScene" hidden>
+            <g id="tanks"></g>
+            <g id="treatFlow"></g>
+            <g id="sludgeLine">
+              <path d="M300,214 H326" stroke="#8b6a3a" stroke-width="8" stroke-linecap="round"/>
+              <path d="M326,214 V330" stroke="#8b6a3a" stroke-width="8" stroke-linecap="round"/>
+              <path d="M300,378 H326" stroke="#8b6a3a" stroke-width="8" stroke-linecap="round"/>
+              <text class="sludge-txt" x="326" y="352" text-anchor="middle" data-i18n="pSludge">sludge</text>
+            </g>
+          </g>
+
+          <!-- ═════ labels ═════ -->
+          <g id="labels-flush">
+            <g class="lab" data-lab="cistern"><text x="60" y="96" text-anchor="end" data-i18n="oCistern">cistern</text></g>
+            <g class="lab" data-lab="flapper"><text x="300" y="190" text-anchor="start" data-i18n="oFlapper">flapper</text></g>
+            <g class="lab" data-lab="trap"><text x="120" y="430" text-anchor="end" data-i18n="oTrap">S-bend</text></g>
+            <g class="lab" data-lab="seal"><text x="140" y="460" text-anchor="end" data-i18n="oSeal">water seal</text></g>
+            <g class="lab" data-lab="drain"><text x="250" y="490" text-anchor="start" data-i18n="oDrain">drain</text></g>
+          </g>
+          <g id="labels-treat" hidden></g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+      <div class="toast" id="toast"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">Where it goes after you flush</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

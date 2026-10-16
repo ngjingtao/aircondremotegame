@@ -1,0 +1,198 @@
+/* ═══════════════════════════════════════════════════════════
+   Toilet & Indah Water — activity styles
+   (shell: ../shared/ui.css)
+   ═══════════════════════════════════════════════════════════ */
+
+:root{ --ctl-w:300px; --ctl-h:640px; --ctl-scale:1; }
+
+#ctl-panel{
+  flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+  padding:10px 6px calc(10px + env(safe-area-inset-bottom));
+  min-width:0;overflow:hidden;
+}
+#ctl-scaler{position:relative;width:var(--ctl-w);height:var(--ctl-h);flex:0 0 auto;}
+
+#scene{
+  flex:1 1 auto;position:relative;min-width:0;overflow:hidden;
+  display:flex;flex-direction:column;
+  border-left:1px solid var(--line);
+  background:
+    radial-gradient(560px 420px at 80% 4%, rgba(90,170,255,.16), transparent 62%),
+    radial-gradient(520px 420px at 4% 98%, rgba(120,220,180,.12), transparent 62%),
+    linear-gradient(180deg,#101a2b,#0a1120);
+}
+
+/* ═══════════════ PANEL ═══════════════ */
+.ctl{
+  position:absolute;top:0;left:0;
+  width:var(--ctl-w);height:var(--ctl-h);
+  transform:scale(var(--ctl-scale));transform-origin:top left;
+  border-radius:24px;padding:12px 13px;
+  display:flex;flex-direction:column;gap:9px;
+  background:linear-gradient(165deg,#f7fbfd,#e6f1f6 55%,#d8e6ee);
+  box-shadow:0 22px 44px rgba(0,0,0,.55), 0 4px 0 #bfd0dc,
+             inset 0 2px 3px rgba(255,255,255,.9), inset 0 -6px 14px rgba(0,0,0,.07);
+  color:#26404f;
+}
+
+.ctl-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;flex:0 0 auto;}
+.tab{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:9px 4px 8px;border-radius:12px;
+  border:1px solid #bfd0dc;background:linear-gradient(180deg,#ffffff,#eaf3f8);
+  box-shadow:0 2px 0 #bfd0dc;font-family:inherit;cursor:pointer;
+  transition:transform .08s, box-shadow .08s, background .15s;
+}
+.tab:active,.tab.pressed{transform:translateY(2px);box-shadow:0 0 0 #bfd0dc;}
+.tab span{font-size:16px;line-height:1;}
+.tab b{font-size:9px;font-weight:800;color:#5b7180;letter-spacing:.2px;text-align:center;}
+.tab.on{background:linear-gradient(180deg,#a8e2ff,#5fb6ef);border-color:#3d90d0;box-shadow:0 2px 0 #3d90d0;}
+.tab.on b{color:#083049;}
+
+.pane{flex:1 1 auto;display:flex;flex-direction:column;gap:9px;min-height:0;}
+.pane[hidden]{display:none;}
+
+.flush-btn{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:15px 8px;border-radius:14px;
+  border:1px solid #3d90d0;
+  background:linear-gradient(180deg,#bfe8ff,#6fbcf0);
+  box-shadow:0 4px 0 #3d90d0;font-family:inherit;cursor:pointer;
+  font-size:13px;font-weight:800;color:#06344f;
+  transition:transform .08s, box-shadow .08s;
+}
+.flush-btn:active,.flush-btn.pressed{transform:translateY(4px);box-shadow:0 0 0 #3d90d0;}
+.flush-btn.busy{background:linear-gradient(180deg,#a8f0e0,#4fd0b0);border-color:#2aa88c;box-shadow:0 4px 0 #2aa88c;color:#04372c;}
+.fb-ico{font-size:17px;}
+
+.air-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 8px;border-radius:13px;
+  border:1px solid #7bbf6a;background:linear-gradient(180deg,#d6f5c8,#9fdc88);
+  box-shadow:0 3px 0 #6aa85a;font-family:inherit;cursor:pointer;
+  font-size:12px;font-weight:800;color:#1e4a13;
+  transition:transform .08s, box-shadow .08s;
+}
+.air-btn:active,.air-btn.pressed{transform:translateY(3px);box-shadow:0 0 0 #6aa85a;}
+.air-btn.off{background:linear-gradient(180deg,#e6ecf2,#c8d4de);border-color:#a9b8c6;box-shadow:0 3px 0 #a9b8c6;color:#5b6b7a;}
+.ab-ico{font-size:15px;}
+
+.steps{flex:1 1 auto;display:flex;flex-direction:column;gap:5px;overflow-y:auto;min-height:0;}
+.step{
+  display:flex;align-items:center;gap:8px;text-align:left;
+  padding:7px 9px;border-radius:10px;
+  border:1px solid #d3e0ea;background:rgba(255,255,255,.72);
+  font-family:inherit;cursor:pointer;
+  transition:background .15s, border-color .15s;
+}
+.step .st-n{
+  flex:0 0 18px;height:18px;border-radius:50%;
+  background:#dfe9f2;color:#7b8fa1;font-size:9.5px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+}
+.step .st-t{font-size:10px;font-weight:700;color:#4d6577;line-height:1.3;}
+.step.on{background:linear-gradient(180deg,#d6f0ff,#a8dfff);border-color:#5fb6ef;}
+.step.on .st-n{background:#3d90d0;color:#fff;}
+.step.on .st-t{color:#06344f;font-weight:800;}
+.step.done{background:rgba(206,240,222,.7);border-color:#8fd8b4;}
+.step.done .st-n{background:#4aa87a;color:#fff;}
+.step.done .st-t{color:#1f5c42;}
+
+.fact{
+  font-size:10.5px;line-height:1.5;color:#42596b;flex:0 0 auto;
+  background:rgba(255,255,255,.85);border:1px solid #d3e0ea;border-radius:11px;
+  padding:9px 10px;
+}
+.nav{display:grid;grid-template-columns:1fr 1.4fr;gap:7px;flex:0 0 auto;}
+.ctl-btn{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:11px 6px;border-radius:12px;
+  border:1px solid #bfd0dc;background:linear-gradient(180deg,#ffffff,#e8f1f7);
+  box-shadow:0 3px 0 #bfd0dc;font-family:inherit;font-size:11px;font-weight:800;
+  color:#3a4f60;cursor:pointer;transition:transform .08s, box-shadow .08s;
+}
+.ctl-btn:active,.ctl-btn.pressed{transform:translateY(3px);box-shadow:0 0 0 #bfd0dc;}
+.ctl-btn.go{background:linear-gradient(180deg,#a8e2ff,#5fb6ef);border-color:#3d90d0;box-shadow:0 3px 0 #3d90d0;color:#06344f;}
+
+/* ═══════════════ SCENE ═══════════════ */
+.scene-top{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:9px 11px 0;z-index:5;}
+.scene-lead{font-size:11px;font-weight:800;letter-spacing:.4px;color:#8fb6c9;}
+.scene-status{
+  margin-left:auto;font-size:11px;font-weight:800;letter-spacing:.4px;
+  background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);
+  border-radius:999px;padding:3px 12px;color:#8ef0b4;
+}
+.scene-status.busy{color:#5fd0ff;border-color:rgba(95,208,255,.4);}
+.art-wrap{flex:1 1 auto;position:relative;min-height:0;display:flex;align-items:center;justify-content:center;padding:4px 6px;}
+#art{width:100%;height:100%;display:block;}
+
+.pane-note{
+  flex:0 0 auto;
+  margin:0 10px calc(10px + env(safe-area-inset-bottom));
+  padding:9px 12px;border-radius:13px;
+  background:linear-gradient(180deg,rgba(56,189,248,.14),rgba(56,189,248,.05));
+  border:1px solid rgba(120,200,255,.28);
+  font-size:11px;line-height:1.5;color:#d6e4f5;
+  max-width:760px;align-self:center;width:calc(100% - 20px);
+}
+
+/* ── flush bits ── */
+.fp{fill:#bfe8ff;stroke:rgba(255,255,255,.5);stroke-width:0.6;}
+#cisternWater,#bowlWater{transition:y .12s linear, height .12s linear;}
+#floatBall{transition:cy .12s linear;}
+#flapper,#flushButton{transition:transform .15s;}
+
+/* ── treatment bits ── */
+.tank .tank-water{transition:opacity .3s, filter .3s;}
+.tank.on .tank-water{filter:brightness(1.35) saturate(1.2);}
+.tank.on > rect:first-of-type{stroke:#5fb6ef;}
+.tank-name{
+  font-size:8.5px;font-weight:800;fill:rgba(226,240,255,.75);
+  stroke:rgba(8,14,26,.8);stroke-width:2.2;paint-order:stroke fill;
+}
+.tp{stroke:rgba(255,255,255,.4);stroke-width:0.6;}
+.grit ellipse{fill:#c9a86a;}
+.sludge-bed rect{fill:#6b4a25;}
+.grease ellipse{fill:#c8b48a;opacity:.85;}
+.aerator circle{fill:#3c4a5c;}
+.no-air .aerator circle{fill:#2a3442;}
+.bubbles circle{fill:rgba(190,235,255,.85);}
+.no-air .bubbles circle{opacity:0;}
+.uv rect{fill:#8fd0ff;opacity:.55;}
+.river{stroke-dasharray:8 6;animation:riverFlow 2s linear infinite;}
+@keyframes riverFlow{ to{ stroke-dashoffset:-28; } }
+.sludge-txt{
+  font-size:8.5px;font-weight:800;fill:#c9a86a;text-anchor:middle;
+  stroke:rgba(8,14,26,.8);stroke-width:2.2;paint-order:stroke fill;
+}
+
+/* ── labels ── */
+#labels-flush .lab text,
+#labels-treat .tlab text{
+  font-size:8.5px;font-weight:800;
+  fill:rgba(214,232,255,.5);
+  stroke:rgba(8,14,26,.85);stroke-width:2.2;paint-order:stroke fill;
+  transition:fill .25s;
+}
+#labels-flush .lab.on text{fill:#5fd0ff;}
+#labels-treat .tlab{display:none;}
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media (max-width:520px){
+  .scene-lead{display:none;}
+  .pane-note{font-size:10px;padding:7px 10px;}
+  .fact{font-size:10px;}
+}
+@media (max-height:560px){
+  .scene-top{padding:6px 9px 0;}
+  .pane-note{font-size:10px;padding:6px 10px;}
+}
+@media (min-width:700px) and (min-height:560px){
+  .scene-top{padding:14px 18px 0;gap:12px;}
+  .scene-lead{font-size:14px;}
+  .scene-status{font-size:13.5px;padding:5px 16px;}
+  #labels-flush .lab text{font-size:11px;}
+  .tank-name{font-size:10px;}
+  .pane-note{font-size:14px;padding:13px 16px;border-radius:16px;}
+  .toast{font-size:15px;}
+}

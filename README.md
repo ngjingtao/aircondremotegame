@@ -211,6 +211,55 @@ the mesh*, *sharp fins, go gently*, *run FAN only for two hours to dry the insid
 
 ---
 
+## 6 · 🚽 Toilet & Indah Water
+
+Where it actually goes. Two tabs: what a flush does, and the journey through the treatment works.
+
+### How it flushes
+
+Press **PRESS TO FLUSH** and watch the whole sequence run — verified timing:
+
+| Time | What happens | Cistern | Bowl | S-bend |
+|---|---|---|---|---|
+| 0.0 s | the button lifts the flapper | 1.00 | 0.75 | 0.35 |
+| 1.4 s | water rushes in | 0.46 | 0.93 | 0.94 |
+| 2.1 s | **the siphon catches** | 0.19 | 0.95 | 0.99 |
+| 2.8 s | everything is pulled away | 0.00 | 0.65 | 0.99 |
+| 4.9 s | the cistern refills | 1.00 | 0.74 | 0.68 |
+| 6.2 s | settled, water seal restored | 1.00 | 0.75 | 0.68 |
+
+The float rides down with the water and shuts the fill valve when the cistern is full. Six steps
+you can also tap through by hand, with the relevant part highlighted (cistern, flapper, S-bend,
+water seal, drain).
+
+The point of the whole thing: **a toilet does not push the waste away — it siphons it.** Once
+the S-bend is completely full, the falling water drags the rest after it. And the little pool
+left behind, the **water seal**, is what stops sewer smells coming back up.
+
+### How it gets cleaned — an Indah Water plant
+
+Eight stages, top to bottom, with the water getting visibly cleaner as it goes:
+
+| # | Stage | What happens |
+|---|---|---|
+| 1 | Arrives | everything from the house flows downhill to the plant |
+| 2 | **Screening** | bar screens catch rags, wet wipes and plastic |
+| 3 | **Grit removal** | sand and coffee grounds sink out |
+| 4 | **Primary tank** | solids sink as sludge, grease floats and is skimmed |
+| 5 | **Aeration tank** | air is pumped in and **bacteria eat the waste** |
+| 6 | **Secondary clarifier** | the bacteria clump and settle; some go back to work |
+| 7 | **Disinfection** | the remaining germs are killed |
+| 8 | **Out to the river** | clean enough to meet the standard; sludge becomes fertiliser |
+
+The aeration tank is the big one, and it has a working **AIR ON / AIR OFF** button — switch it
+off and the bubbles stop and the tank greys out, which is exactly what happens when a blower
+fails. The sludge line runs off to the side, ending at *sludge → fertiliser*.
+
+There is no fake chemistry here on purpose: the honest answer is that **living bacteria do the
+work**, and people just build tanks and pump air for them.
+
+---
+
 ## Play it in a browser (fastest)
 
 Everything is plain HTML/CSS/JS — no build step.
@@ -382,6 +431,10 @@ www/                          ← the whole app (no build step)
 ├─ aircare/                             ── activity 5 ──
 │  ├─ index.html
 │  ├─ aircare.css                       cutaway unit, refrigerant loop, wash-step animations
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ toilet/                              ── activity 6 ──
+│  ├─ index.html
+│  ├─ toilet.css                        flush cutaway, treatment train, step animations
 │  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
 └─ _devicelab.html                      dev-only: phone & iPad previews
 

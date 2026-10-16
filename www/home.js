@@ -20,6 +20,8 @@
       tileBreathSub: 'Run experiments: breathe, hold your breath, run and climb a mountain',
       tileCareTitle: 'Inside the Aircon',
       tileCareSub: 'See how it works — then learn how to wash it, step by step',
+      tileToiletTitle: 'Toilet & Indah Water',
+      tileToiletSub: 'See what a flush really does — then follow the water to the treatment plant',
       foot: 'Made for curious kids',
       help: '?',
       helpTitle: 'Two activities',
@@ -57,6 +59,12 @@
           <li>Watch the tube turn red where it is hot and blue where it is cold, and see heat coming in from your room and going out of the outdoor unit.</li>
           <li><code>How to wash it</code> — an eight-step service, from unplugging it to running the fan dry.</li>
         </ul>
+        <h3>🚽 Toilet &amp; Indah Water</h3>
+        <ul>
+          <li><code>How it flushes</code> — press the button and watch the cistern empty, the jet fill the S-bend, and the siphon pull everything away.</li>
+          <li><code>How it gets cleaned</code> — eight stages through an Indah Water plant: screens, grit, primary tank, aeration, clarifier, disinfection, river.</li>
+          <li>Tap any stage, or use NEXT, to hear what happens at each one.</li>
+        </ul>
         <h3>Buttons in the top bar</h3>
         <ul>
           <li><code>‹ Menu</code> — back to this screen (inside an activity).</li>
@@ -79,6 +87,8 @@
       tileBreathSub: '做实验：呼吸、屏气、跑步、上高山',
       tileCareTitle: '空调的秘密',
       tileCareSub: '看它怎么工作 — 再一步步学会清洗空调',
+      tileToiletTitle: '马桶与英达丽水',
+      tileToiletSub: '看看冲水到底发生了什么 — 再跟着水去污水厂走一趟',
       foot: '给充满好奇心的小朋友',
       help: '?',
       helpTitle: '两个小游戏',
@@ -115,6 +125,12 @@
           <li><code>怎么工作的</code> — 跟着制冷剂走一圈：压缩机、冷凝器、节流阀、蒸发器。</li>
           <li>看管子哪里变红（热）、哪里变蓝（冷），屋里吸热、室外放热。</li>
           <li><code>怎么清洗</code> — 从断电到开送风干燥，一共八个步骤。</li>
+        </ul>
+        <h3>🚽 马桶与英达丽水</h3>
+        <ul>
+          <li><code>怎么冲水</code> — 按下按钮，看水箱排空、水流灌满 S 形弯管、虹吸把东西拉走。</li>
+          <li><code>怎么变干净</code> — 走过污水厂的八个阶段：格栅、沉砂、初沉、曝气、二沉、消毒、排河。</li>
+          <li>点任意一个阶段，或按“下一步”，听听每一段发生了什么。</li>
         </ul>
         <h3>顶栏按钮</h3>
         <ul>
