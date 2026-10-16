@@ -18,6 +18,8 @@
       tileTrainSub: 'Drive the train, stop at the station, ding ding at the crossing',
       tileBreathTitle: 'Breathing & Blood',
       tileBreathSub: 'Run experiments: breathe, hold your breath, run and climb a mountain',
+      tileCareTitle: 'Inside the Aircon',
+      tileCareSub: 'See how it works — then learn how to wash it, step by step',
       foot: 'Made for curious kids',
       help: '?',
       helpTitle: 'Two activities',
@@ -49,6 +51,12 @@
           <li>Press <code>TAKE A BREATH</code>, or <code>HOLD BREATH</code> and see the oxygen fall until the body forces a gasp.</li>
           <li>Blue blood cells carry carbon dioxide; they turn red in the lungs. The bubble shows the gas exchange.</li>
         </ul>
+        <h3>❄ Inside the Aircon</h3>
+        <ul>
+          <li><code>How it works</code> — follow the refrigerant round its loop: compressor, condenser, expansion valve, evaporator.</li>
+          <li>Watch the tube turn red where it is hot and blue where it is cold, and see heat coming in from your room and going out of the outdoor unit.</li>
+          <li><code>How to wash it</code> — an eight-step service, from unplugging it to running the fan dry.</li>
+        </ul>
         <h3>Buttons in the top bar</h3>
         <ul>
           <li><code>‹ Menu</code> — back to this screen (inside an activity).</li>
@@ -69,6 +77,8 @@
       tileTrainSub: '开动火车、停准站台，道口叮叮叮',
       tileBreathTitle: '呼吸与血液循环',
       tileBreathSub: '做实验：呼吸、屏气、跑步、上高山',
+      tileCareTitle: '空调的秘密',
+      tileCareSub: '看它怎么工作 — 再一步步学会清洗空调',
       foot: '给充满好奇心的小朋友',
       help: '?',
       helpTitle: '两个小游戏',
@@ -99,6 +109,12 @@
           <li>看肺怎么鼓起来，身体需要更多氧气时心脏怎么跳得更快。</li>
           <li>按 <code>深吸一口气</code>；或按 <code>屏住呼吸</code>，看含氧量一直下降直到身体逼你吸气。</li>
           <li>蓝色的血细胞带着二氧化碳，到肺里就变成红色。小圆窗展示气体交换。</li>
+        </ul>
+        <h3>❄ 空调的秘密</h3>
+        <ul>
+          <li><code>怎么工作的</code> — 跟着制冷剂走一圈：压缩机、冷凝器、节流阀、蒸发器。</li>
+          <li>看管子哪里变红（热）、哪里变蓝（冷），屋里吸热、室外放热。</li>
+          <li><code>怎么清洗</code> — 从断电到开送风干燥，一共八个步骤。</li>
         </ul>
         <h3>顶栏按钮</h3>
         <ul>

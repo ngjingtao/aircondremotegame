@@ -223,6 +223,56 @@
 }
 @keyframes o2Blink{0%,100%{opacity:.35;}50%{opacity:1;}}
 
+/* ── inside the aircon art ── */
+.tile-care .tile-art{background:linear-gradient(160deg,#123049,#0a2131);}
+.art-care{position:absolute;inset:0;}
+.ac-unit{
+  position:absolute;left:10px;right:10px;top:14px;height:26px;
+  border-radius:7px;
+  background:linear-gradient(180deg,#ffffff,#d9e0ea);
+  box-shadow:0 3px 8px rgba(0,0,0,.45);
+  overflow:hidden;
+}
+.ac-coil{
+  position:absolute;left:5px;right:5px;top:5px;height:9px;border-radius:3px;
+  background:repeating-linear-gradient(90deg,#8fc9ee 0 3px,#cfe6f7 3px 5px);
+  animation:coilPulse 1.8s ease-in-out infinite;
+}
+@keyframes coilPulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.35) saturate(1.4);}}
+.ac-vent{
+  position:absolute;left:5px;right:5px;bottom:3px;height:5px;border-radius:3px;
+  background:#9aa5b5;
+  animation:ventPuff 2.2s ease-in-out infinite;
+}
+@keyframes ventPuff{0%,100%{transform:translateY(0);}50%{transform:translateY(3px);}}
+.ac-snow{position:absolute;font-size:10px;color:#8ee6ff;animation:snowfall 1.9s linear infinite;}
+.ac-snow.s1{left:22px;top:44px;}
+.ac-snow.s2{left:46px;top:44px;animation-delay:.6s;}
+.ac-snow.s3{left:70px;top:44px;animation-delay:1.2s;}
+@keyframes snowfall{
+  0%{transform:translateY(0);opacity:0;}
+  25%{opacity:1;}
+  100%{transform:translateY(24px);opacity:0;}
+}
+.ac-spray{
+  position:absolute;right:12px;bottom:12px;
+  width:16px;height:34px;border-radius:5px;
+  background:linear-gradient(180deg,#a8d8ff,#5aa9e0);
+  box-shadow:0 2px 6px rgba(0,0,0,.4);
+  animation:sprayBounce 2.4s ease-in-out infinite;
+}
+.ac-spray::after{
+  content:"";position:absolute;left:50%;top:-7px;transform:translateX(-50%);
+  width:7px;height:8px;border-radius:2px;background:#3d8fd0;
+}
+@keyframes sprayBounce{0%,100%{transform:translateY(0) rotate(0);}50%{transform:translateY(-4px) rotate(-8deg);}}
+.ac-read{
+  position:absolute;left:14px;bottom:14px;
+  font-size:8px;font-weight:900;letter-spacing:.6px;color:#ff9a72;
+  animation:heatOut 2s ease-in-out infinite;
+}
+@keyframes heatOut{0%,100%{opacity:.45;transform:translateX(0);}50%{opacity:1;transform:translateX(6px);}}
+
 /* ── footer ── */
 .home-foot{
   margin-top:18px;

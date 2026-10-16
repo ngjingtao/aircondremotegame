@@ -1,0 +1,295 @@
+/* ═══════════════════════════════════════════════════════════
+   Inside the Aircon — activity styles
+   (shell: ../shared/ui.css)
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ctl-w:300px;
+  --ctl-h:640px;
+  --ctl-scale:1;
+}
+
+#ctl-panel{
+  flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;
+  padding:10px 6px calc(10px + env(safe-area-inset-bottom));
+  min-width:0;overflow:hidden;
+}
+#ctl-scaler{position:relative;width:var(--ctl-w);height:var(--ctl-h);flex:0 0 auto;}
+
+#scene{
+  flex:1 1 auto;position:relative;min-width:0;
+  overflow:hidden;display:flex;flex-direction:column;
+  border-left:1px solid var(--line);
+  background:
+    radial-gradient(560px 420px at 80% 6%, rgba(90,180,255,.16), transparent 62%),
+    radial-gradient(520px 420px at 4% 96%, rgba(255,140,80,.14), transparent 62%),
+    linear-gradient(180deg,#0f1a2b,#0a1120);
+}
+#scene.off #indoor, #scene.off #outdoor { filter:grayscale(.55) brightness(.85); }
+
+/* ═══════════════ PANEL ═══════════════ */
+.ctl{
+  position:absolute;top:0;left:0;
+  width:var(--ctl-w);height:var(--ctl-h);
+  transform:scale(var(--ctl-scale));
+  transform-origin:top left;
+  border-radius:24px;
+  padding:12px 13px;
+  display:flex;flex-direction:column;gap:10px;
+  background:linear-gradient(165deg,#f7f9fc,#e8eef6 55%,#dbe3ee);
+  box-shadow:
+    0 22px 44px rgba(0,0,0,.55),
+    0 4px 0 #c3ccda,
+    inset 0 2px 3px rgba(255,255,255,.9),
+    inset 0 -6px 14px rgba(0,0,0,.07);
+  color:#2a3547;
+}
+
+.ctl-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;flex:0 0 auto;}
+.tab{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:9px 4px 8px;border-radius:12px;
+  border:1px solid #c3ccda;
+  background:linear-gradient(180deg,#ffffff,#eaf0f7);
+  box-shadow:0 2px 0 #c3ccda;
+  font-family:inherit;cursor:pointer;
+  transition:transform .08s, box-shadow .08s, background .15s;
+}
+.tab:active,.tab.pressed{transform:translateY(2px);box-shadow:0 0 0 #c3ccda;}
+.tab span{font-size:16px;line-height:1;}
+.tab b{font-size:9px;font-weight:800;color:#5b6b80;letter-spacing:.2px;}
+.tab.on{background:linear-gradient(180deg,#a8d8ff,#5fb0ef);border-color:#3d8fd0;box-shadow:0 2px 0 #3d8fd0;}
+.tab.on b{color:#08304e;}
+
+.pane{flex:1 1 auto;display:flex;flex-direction:column;gap:9px;min-height:0;}
+.pane[hidden]{display:none;}
+
+.big-idea{
+  font-size:11px;line-height:1.45;font-weight:700;color:#3d4d63;
+  background:linear-gradient(180deg,#fff6e6,#ffe9c4);
+  border:1px solid #f0cf94;border-radius:11px;padding:8px 10px;
+}
+
+.ctl-row{flex:0 0 auto;}
+.ctl-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:12px 8px;border-radius:13px;
+  border:1px solid #c3ccda;
+  background:linear-gradient(180deg,#ffffff,#e7eef6);
+  box-shadow:0 3px 0 #c3ccda;
+  font-family:inherit;font-size:12px;font-weight:800;letter-spacing:.3px;color:#39485c;
+  cursor:pointer;transition:transform .08s, box-shadow .08s, background .15s;
+  position:relative;
+}
+.ctl-btn:active,.ctl-btn.pressed{transform:translateY(3px);box-shadow:0 0 0 #c3ccda;}
+.ctl-btn i{position:absolute;right:10px;font-style:normal;font-size:10px;font-weight:800;color:#93a3b8;}
+.ctl-btn i.on{color:#1f9e4e;}
+.ctl-btn.power.on{background:linear-gradient(180deg,#c8f3d6,#8fe3b0);border-color:#4aa672;box-shadow:0 3px 0 #4aa672;}
+.ctl-btn.power.on .cb-ico{color:#14512c;}
+.cb-ico{font-size:15px;}
+.ctl-btn.small{padding:10px 6px;font-size:11px;gap:5px;}
+.ctl-btn.small b{font-size:8.5px;font-weight:800;color:#6b7b90;}
+.ctl-btn.go{background:linear-gradient(180deg,#a8d8ff,#5fb0ef);border-color:#3d8fd0;box-shadow:0 3px 0 #3d8fd0;color:#08304e;}
+.ctl-btn:disabled{opacity:.5;}
+
+.temp-row{display:grid;grid-template-columns:1fr 74px 1fr;gap:7px;align-items:stretch;flex:0 0 auto;}
+.temp-box{
+  display:flex;align-items:baseline;justify-content:center;gap:1px;
+  border-radius:13px;
+  background:linear-gradient(180deg,#14243a,#0c1728);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+.temp-box b{font-size:24px;font-weight:800;color:#8fd0ff;font-family:ui-monospace,monospace;line-height:1.6;}
+.temp-box span{font-size:11px;font-weight:800;color:#5f7793;}
+
+.cycle-list{flex:1 1 auto;display:flex;flex-direction:column;gap:6px;justify-content:center;min-height:0;}
+.cyc{
+  display:flex;align-items:center;gap:9px;
+  padding:8px 10px;border-radius:11px;
+  border:1px solid #d3dbe6;background:rgba(255,255,255,.7);
+  transition:background .2s, border-color .2s, transform .2s;
+}
+.cyc-n{
+  flex:0 0 20px;height:20px;border-radius:50%;
+  background:#dbe3ee;color:#7b8ba1;
+  font-size:10px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+}
+.cyc b{display:block;font-size:11.5px;font-weight:800;color:#39485c;}
+.cyc i{display:block;font-style:normal;font-size:9.5px;color:#7b8ba1;}
+.cyc.on{background:linear-gradient(180deg,#d6ecff,#a8d8ff);border-color:#5fb0ef;transform:translateX(3px);}
+.cyc.on .cyc-n{background:#3d8fd0;color:#fff;}
+.cyc.on b{color:#08304e;}
+
+/* wash steps */
+.steps{flex:1 1 auto;display:flex;flex-direction:column;gap:5px;overflow-y:auto;min-height:0;}
+.step{
+  display:flex;align-items:center;gap:8px;text-align:left;
+  padding:7px 9px;border-radius:10px;
+  border:1px solid #d3dbe6;background:rgba(255,255,255,.72);
+  font-family:inherit;cursor:pointer;
+  transition:background .15s, border-color .15s;
+}
+.step .st-n{
+  flex:0 0 18px;height:18px;border-radius:50%;
+  background:#dbe3ee;color:#7b8ba1;
+  font-size:9.5px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+}
+.step .st-t{font-size:10px;font-weight:700;color:#4d5d74;line-height:1.3;}
+.step.on{background:linear-gradient(180deg,#ffe6c4,#ffcf94);border-color:#e0a04a;}
+.step.on .st-n{background:#e08c2a;color:#fff;}
+.step.on .st-t{color:#5c3406;font-weight:800;}
+.step.done{background:rgba(200,243,214,.7);border-color:#8fd8ab;}
+.step.done .st-n{background:#4aa672;color:#fff;}
+.step.done .st-t{color:#1f5c37;}
+
+.fact{
+  font-size:10.5px;line-height:1.5;color:#46586f;
+  background:rgba(255,255,255,.82);border:1px solid #d3dbe6;border-radius:11px;
+  padding:9px 10px;
+}
+.wash-nav{display:grid;grid-template-columns:1fr 1.4fr;gap:7px;flex:0 0 auto;}
+
+/* ═══════════════ SCENE ═══════════════ */
+.scene-top{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:9px 11px 0;z-index:5;}
+.scene-lead{font-size:11px;font-weight:800;letter-spacing:.4px;color:#8fb6c9;}
+.scene-status{
+  margin-left:auto;font-size:11px;font-weight:800;letter-spacing:.4px;
+  background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);
+  border-radius:999px;padding:3px 12px;color:#8ef0b4;
+}
+.art-wrap{flex:1 1 auto;position:relative;min-height:0;display:flex;align-items:center;justify-content:center;padding:4px 6px;}
+#art{width:100%;height:100%;display:block;}
+
+.pane-note{
+  flex:0 0 auto;
+  margin:0 10px calc(10px + env(safe-area-inset-bottom));
+  padding:9px 12px;border-radius:13px;
+  background:linear-gradient(180deg,rgba(56,189,248,.14),rgba(56,189,248,.05));
+  border:1px solid rgba(120,200,255,.28);
+  font-size:11px;line-height:1.5;color:#d6e4f5;
+  max-width:760px;align-self:center;width:calc(100% - 20px);
+}
+
+/* ── refrigerant loop ── */
+.rf{stroke:rgba(255,255,255,.6);stroke-width:0.7;}
+
+/* ── airflow ── */
+.ai{fill:#ff7a5c;}
+.ao{fill:#6fd2ff;}
+.oh{fill:#ff7a5c;}
+
+/* ── fan ── */
+#fanBlades{
+  transform-box:fill-box;transform-origin:center;
+  animation:fanSpin 1.1s linear infinite;
+}
+@keyframes fanSpin{ to{ transform:rotate(360deg); } }
+
+/* ── labels ── */
+#labels .lab text{
+  font-size:9px;font-weight:800;letter-spacing:.2px;
+  fill:rgba(214,232,255,.55);
+  stroke:rgba(8,14,26,.85);stroke-width:2.4;paint-order:stroke fill;
+  transition:fill .25s;
+}
+#labels .lab.on text{fill:#8fd0ff;}
+#labels .lab.wash-on text{fill:#ffcf94;}
+
+/* ═══════════════ WASH MODE ═══════════════ */
+#scene.mode-how #frontPanel,
+#scene.mode-how #filters,
+#scene.mode-how #washfx { display:none; }
+#scene.mode-wash #loop,
+#scene.mode-wash #airflow { opacity:0; }
+#scene.mode-wash #indoorCoil,
+#scene.mode-wash #outCoil { opacity:.35; }
+
+#frontPanel{transform-box:view-box;transform-origin:150px 52px;transition:transform .55s cubic-bezier(.3,1.3,.5,1);}
+#filters .flt{transition:transform .5s cubic-bezier(.3,1.3,.5,1);}
+#washfx > g{opacity:0;transition:opacity .3s;}
+
+/* step 1+ — panel lifted open */
+#scene[data-wash-step="1"] #frontPanel,
+#scene[data-wash-step="2"] #frontPanel,
+#scene[data-wash-step="3"] #frontPanel,
+#scene[data-wash-step="4"] #frontPanel,
+#scene[data-wash-step="5"] #frontPanel,
+#scene[data-wash-step="6"] #frontPanel{
+  transform:translateY(-78px) rotate(-9deg);
+}
+
+/* step 2+ — filters pulled out and parked below the unit */
+#scene[data-wash-step="2"] #filters .f1{transform:translate(-14px,182px) rotate(-5deg);}
+#scene[data-wash-step="2"] #filters .f2{transform:translate(18px,196px) rotate(6deg);}
+#scene[data-wash-step="3"] #filters .f1,
+#scene[data-wash-step="4"] #filters .f1,
+#scene[data-wash-step="5"] #filters .f1,
+#scene[data-wash-step="6"] #filters .f1{transform:translate(-14px,182px) rotate(-5deg);}
+#scene[data-wash-step="3"] #filters .f2,
+#scene[data-wash-step="4"] #filters .f2,
+#scene[data-wash-step="5"] #filters .f2,
+#scene[data-wash-step="6"] #filters .f2{transform:translate(18px,196px) rotate(6deg);}
+
+/* step 0 — power off badge */
+#scene[data-wash-step="0"] .plug{opacity:1;animation:pulseBadge 1.4s ease-in-out infinite;}
+@keyframes pulseBadge{0%,100%{opacity:.55;}50%{opacity:1;}}
+
+/* step 3 — water + foam on the filters */
+#scene[data-wash-step="3"] .water,
+#scene[data-wash-step="3"] .foam{opacity:1;}
+#scene[data-wash-step="3"] .water circle{animation:dropFall 1.3s linear infinite;}
+#scene[data-wash-step="3"] .water circle:nth-child(3){animation-delay:.25s;}
+#scene[data-wash-step="3"] .water circle:nth-child(4){animation-delay:.5s;}
+#scene[data-wash-step="3"] .water circle:nth-child(5){animation-delay:.7s;}
+#scene[data-wash-step="3"] .water circle:nth-child(6){animation-delay:.9s;}
+#scene[data-wash-step="3"] .water circle:nth-child(7){animation-delay:1.1s;}
+@keyframes dropFall{
+  0%{transform:translateY(-14px);opacity:0;}
+  25%{opacity:1;}
+  100%{transform:translateY(30px);opacity:0;}
+}
+#scene[data-wash-step="3"] .foam{animation:foamBob 2.2s ease-in-out infinite;}
+@keyframes foamBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+
+/* step 4 — spray + foam + brush on the coil */
+#scene[data-wash-step="4"] .spray,
+#scene[data-wash-step="4"] .coilfoam,
+#scene[data-wash-step="4"] .brush{opacity:1;}
+#scene[data-wash-step="4"] .coilfoam{animation:foamBob 1.8s ease-in-out infinite;}
+#scene[data-wash-step="4"] .brush{animation:scrub 1.1s ease-in-out infinite;transform-box:view-box;transform-origin:230px 152px;}
+@keyframes scrub{0%,100%{transform:translate(0,0) rotate(0);}50%{transform:translate(-30px,4px) rotate(-7deg);}}
+
+/* step 5 — water running through the drain */
+#scene[data-wash-step="5"] .drainflow{opacity:1;animation:drainRun 1.6s linear infinite;}
+@keyframes drainRun{0%,100%{opacity:.7;}50%{opacity:1;}}
+
+/* step 6 — cleaning the outdoor coil */
+#scene[data-wash-step="6"] .outbrush,
+#scene[data-wash-step="6"] .outwater{opacity:1;}
+#scene[data-wash-step="6"] .outbrush{animation:scrubOut 1.2s ease-in-out infinite;transform-box:view-box;transform-origin:231px 328px;}
+@keyframes scrubOut{0%,100%{transform:translate(0,0) rotate(0);}50%{transform:translate(-34px,10px) rotate(6deg);}}
+#scene[data-wash-step="6"] .outwater circle{animation:dropFall 1.3s linear infinite;}
+#scene[data-wash-step="6"] .outwater circle:nth-child(3){animation-delay:.3s;}
+#scene[data-wash-step="6"] .outwater circle:nth-child(4){animation-delay:.6s;}
+#scene[data-wash-step="6"] .outwater circle:nth-child(5){animation-delay:.9s;}
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media (max-width:520px){
+  .scene-lead{display:none;}
+  .pane-note{font-size:10px;padding:7px 10px;}
+}
+@media (max-height:560px){
+  .scene-top{padding:6px 9px 0;}
+  .pane-note{font-size:10px;padding:6px 10px;}
+}
+@media (min-width:700px) and (min-height:560px){
+  .scene-top{padding:14px 18px 0;gap:12px;}
+  .scene-lead{font-size:14px;}
+  .scene-status{font-size:13.5px;padding:5px 16px;}
+  #labels .lab text{font-size:11px;}
+  .pane-note{font-size:14px;padding:13px 16px;border-radius:16px;}
+  .toast{font-size:15px;}
+}

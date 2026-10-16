@@ -24,6 +24,7 @@
     { "name": "Play Aircond", "url": "aircond/index.html" },
     { "name": "Food Eating", "url": "food/index.html" },
     { "name": "Train Driving", "url": "train/index.html" },
-    { "name": "Breathing & Blood", "url": "breath/index.html" }
+    { "name": "Breathing & Blood", "url": "breath/index.html" },
+    { "name": "Inside the Aircon", "url": "aircare/index.html" }
   ]
 }

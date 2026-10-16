@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0b1220" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="Inside the Aircon" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<meta name="format-detection" content="telephone=no" />
+<title>Inside the Aircon · Play &amp; Learn</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="aircare.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">❄</span>
+      <span class="tb-title" data-i18n="title">Inside the Aircon</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="inside">Inside</span><b id="hud-room">30.0°</b></div>
+      <div class="hud-chip hud-score"><span class="hud-label" data-i18n="cEvap">Evaporator</span><b id="hud-evap">5°</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ══════════ LEFT PANEL ══════════ -->
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl">
+
+          <div class="ctl-tabs">
+            <button class="tab on" data-action="mode" data-mode="how"><span>⚙️</span><b data-i18n="tabHow">How it works</b></button>
+            <button class="tab" data-action="mode" data-mode="wash"><span>🧼</span><b data-i18n="tabWash">How to wash it</b></button>
+          </div>
+
+          <!-- ── how it works ── -->
+          <div class="pane" id="pane-how">
+            <div class="big-idea" data-i18n="bigIdea">An air conditioner does not make cold. It moves heat from inside your room to outside.</div>
+
+            <div class="ctl-row">
+              <button class="ctl-btn power" data-action="power">
+                <span class="cb-ico">⏻</span><span data-i18n="power">POWER</span><i id="power-state">ON</i>
+              </button>
+            </div>
+
+            <div class="temp-row">
+              <button class="ctl-btn small" data-action="tempDown">▼<b data-i18n="tempDown">COOLER</b></button>
+              <div class="temp-box"><b id="temp-val">24</b><span>°C</span></div>
+              <button class="ctl-btn small" data-action="tempUp">▲<b data-i18n="tempUp">WARMER</b></button>
+            </div>
+
+            <div class="cycle-list" id="cycle-list"></div>
+          </div>
+
+          <!-- ── wash ── -->
+          <div class="pane" id="pane-wash" hidden>
+            <div class="steps" id="steps"></div>
+            <div class="fact" id="fact"></div>
+            <div class="wash-nav">
+              <button class="ctl-btn small" data-action="stepDown" data-i18n="prev">BACK</button>
+              <button class="ctl-btn go" data-action="stepUp" id="next-btn" data-i18n="next">NEXT</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ SCENE ══════════ -->
+    <section id="scene" class="mode-how" data-wash-step="0">
+
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="cycle">Refrigerant cycle</span>
+        <span class="scene-status" id="scene-status">ON</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="caseGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="55%" stop-color="#f0f3f8"/>
+              <stop offset="100%" stop-color="#dbe1ea"/>
+            </linearGradient>
+            <linearGradient id="outCase" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#eef1f6"/>
+              <stop offset="100%" stop-color="#c9d1dc"/>
+            </linearGradient>
+            <linearGradient id="coolGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#9fe2ff"/>
+              <stop offset="100%" stop-color="#4fb6ee"/>
+            </linearGradient>
+            <linearGradient id="hotGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ff9f7a"/>
+              <stop offset="100%" stop-color="#e0472a"/>
+            </linearGradient>
+            <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+              <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#0b1220" flood-opacity="0.30"/>
+            </filter>
+            <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="3" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- ═════ indoor unit ═════ -->
+          <g id="indoor" filter="url(#soft)">
+            <rect x="20" y="46" width="260" height="138" rx="16" fill="url(#caseGrad)" stroke="#c6cdd8" stroke-width="1.6"/>
+            <rect x="28" y="52" width="244" height="14" rx="7" fill="#e6eaf1"/>
+            <path d="M40 59 H260" stroke="#c6cdd8" stroke-width="2" stroke-dasharray="3 6"/>
+
+            <!-- the coil (tinted cold when running) -->
+            <g id="indoorCoil">
+              <rect x="48" y="70" width="206" height="78" rx="6" fill="#dfe6ee" opacity="0.55"/>
+              <g stroke="#b9c4d2" stroke-width="3" stroke-linecap="round" fill="none">
+                <path d="M56 78 H246 M56 98 H246 M56 118 H246 M56 138 H246"/>
+                <path d="M56 78 V138 M246 78 V138"/>
+              </g>
+              <rect id="evapTint" x="48" y="70" width="206" height="78" rx="6" fill="url(#coolGrad)" opacity="0.5"/>
+            </g>
+
+            <!-- blower drum -->
+            <g id="blower">
+              <rect x="86" y="150" width="140" height="24" rx="12" fill="#cdd5e0" stroke="#b0bac7" stroke-width="1.2"/>
+              <g stroke="#9aa5b4" stroke-width="1.5">
+                <path d="M104 152 V172 M124 152 V172 M144 152 V172 M164 152 V172 M184 152 V172 M204 152 V172"/>
+              </g>
+            </g>
+
+            <rect x="28" y="170" width="244" height="10" rx="5" fill="#c6cedb"/>
+
+            <!-- front panel: only visible in wash mode -->
+            <g id="frontPanel">
+              <rect x="24" y="52" width="252" height="120" rx="14" fill="url(#caseGrad)" stroke="#c6cdd8" stroke-width="1.6"/>
+              <path d="M40 62 H260" stroke="#d5dbe4" stroke-width="2"/>
+              <circle id="panelLamp" cx="262" cy="66" r="4" fill="#3ddc84"/>
+            </g>
+
+            <!-- filters: only in wash mode -->
+            <g id="filters">
+              <rect class="flt f1" x="58" y="74" width="88" height="70" rx="4" fill="rgba(160,190,210,.55)" stroke="#8ba5b8" stroke-width="1.4"/>
+              <rect class="flt f2" x="156" y="74" width="88" height="70" rx="4" fill="rgba(160,190,210,.55)" stroke="#8ba5b8" stroke-width="1.4"/>
+              <g class="mesh">
+                <path d="M62 82 H142 M62 94 H142 M62 106 H142 M62 118 H142 M62 130 H142" stroke="rgba(90,120,145,.5)" stroke-width="1"/>
+                <path d="M160 82 H240 M160 94 H240 M160 106 H240 M160 118 H240 M160 130 H240" stroke="rgba(90,120,145,.5)" stroke-width="1"/>
+              </g>
+            </g>
+
+            <!-- drain pan + pipe -->
+            <g id="drain">
+              <rect x="46" y="176" width="180" height="12" rx="5" fill="#b7c2cf"/>
+              <path id="drainPipe" d="M226 182 H262 V214" fill="none" stroke="#b7c2cf" stroke-width="8" stroke-linecap="round"/>
+            </g>
+          </g>
+
+          <!-- ═════ connecting pipes ═════ -->
+          <g id="pipes">
+            <path d="M280 78 H300 V330" fill="none" stroke="#c3ccd8" stroke-width="7" stroke-linecap="round"/>
+            <path d="M306 160 V470" fill="none" stroke="#c3ccd8" stroke-width="7" stroke-linecap="round"/>
+          </g>
+
+          <!-- ═════ outdoor unit ═════ -->
+          <g id="outdoor" filter="url(#soft)">
+            <rect x="40" y="356" width="240" height="148" rx="14" fill="url(#outCase)" stroke="#b9c3d0" stroke-width="1.6"/>
+
+            <!-- condenser coil -->
+            <g id="outCoil">
+              <rect x="76" y="404" width="180" height="74" rx="6" fill="#dfe6ee" opacity="0.5"/>
+              <g stroke="#b9c4d2" stroke-width="3" stroke-linecap="round" fill="none">
+                <path d="M84 412 H248 M84 430 H248 M84 448 H248 M84 466 H248"/>
+              </g>
+              <rect id="condTint" x="76" y="404" width="180" height="74" rx="6" fill="url(#hotGrad)" opacity="0.45"/>
+            </g>
+
+            <!-- fan -->
+            <g id="outFan">
+              <circle cx="252" cy="386" r="42" fill="#e9eef5" stroke="#c2cbd8" stroke-width="1.4"/>
+              <g id="fanBlades" stroke="#a9b4c4" stroke-width="7" stroke-linecap="round">
+                <path d="M252 356 V416"/>
+                <path d="M226 371 L278 401"/>
+                <path d="M278 371 L226 401"/>
+              </g>
+              <circle cx="252" cy="386" r="8" fill="#c2cbd8"/>
+            </g>
+
+            <!-- compressor -->
+            <g id="comp">
+              <rect x="88" y="368" width="66" height="30" rx="12" fill="#3b4553"/>
+              <rect x="96" y="374" width="50" height="8" rx="4" fill="#59657a"/>
+            </g>
+
+            <rect x="40" y="496" width="240" height="6" rx="3" fill="#aab4c2"/>
+          </g>
+
+          <!-- ═════ refrigerant loop (JS) ═════ -->
+          <g id="loop"></g>
+          <g id="drops"></g>
+
+          <!-- ═════ airflow (JS) ═════ -->
+          <g id="airflow"></g>
+
+          <!-- ═════ wash overlays ═════ -->
+          <g id="washfx">
+            <!-- step 3 · washing the filters, which are parked below the unit -->
+            <g class="water" id="w-water">
+              <rect x="40" y="246" width="220" height="7" rx="3.5" fill="#7fd6ff" opacity="0.85"/>
+              <g fill="#7fd6ff">
+                <circle cx="62" cy="262" r="3"/><circle cx="98" cy="256" r="2.6"/><circle cx="134" cy="266" r="3.2"/>
+                <circle cx="170" cy="258" r="2.8"/><circle cx="206" cy="268" r="3"/><circle cx="236" cy="256" r="2.6"/>
+              </g>
+            </g>
+            <g class="foam" id="w-foam">
+              <circle cx="74" cy="300" r="9"/><circle cx="98" cy="320" r="11"/><circle cx="124" cy="298" r="8"/>
+              <circle cx="152" cy="322" r="10"/><circle cx="180" cy="300" r="9"/><circle cx="208" cy="320" r="11"/>
+              <circle cx="232" cy="298" r="8"/>
+            </g>
+
+            <!-- step 4 · cleaning the evaporator coil -->
+            <g class="spray" id="w-spray">
+              <rect x="24" y="66" width="32" height="72" rx="8" fill="#8fd0ff" opacity="0.9"/>
+              <rect x="31" y="58" width="18" height="12" rx="4" fill="#5aa9e0"/>
+              <g fill="#bfe8ff">
+                <circle cx="56" cy="92" r="2.4"/><circle cx="66" cy="102" r="2"/><circle cx="58" cy="112" r="2.2"/>
+              </g>
+            </g>
+            <g class="coilfoam" id="w-coilfoam">
+              <circle cx="82" cy="96" r="9"/><circle cx="112" cy="112" r="11"/><circle cx="142" cy="94" r="8"/>
+              <circle cx="172" cy="114" r="10"/><circle cx="202" cy="96" r="9"/><circle cx="228" cy="112" r="8"/>
+            </g>
+            <g class="brush" id="w-brush">
+              <rect x="196" y="146" width="66" height="12" rx="6" fill="#c98a4b"/>
+              <g stroke="#e8d3a8" stroke-width="3" stroke-linecap="round">
+                <path d="M200 162 V172 M210 162 V172 M220 162 V172 M230 162 V172 M240 162 V172 M250 162 V172"/>
+              </g>
+            </g>
+
+            <!-- step 5 · flushing the drain -->
+            <g class="drainflow" id="w-drain">
+              <path d="M60 182 H224" stroke="#5fc8ff" stroke-width="6" stroke-linecap="round"/>
+              <path d="M258 186 V252" stroke="#5fc8ff" stroke-width="6" stroke-linecap="round"/>
+            </g>
+
+            <!-- step 0 · power off -->
+            <g class="plug" id="w-plug">
+              <circle cx="292" cy="104" r="22" fill="rgba(224,58,40,.16)" stroke="#e03424" stroke-width="2.6"/>
+              <path d="M292 90 V105" stroke="#e03424" stroke-width="4.5" stroke-linecap="round"/>
+              <circle cx="292" cy="113" r="3.2" fill="#e03424"/>
+            </g>
+
+            <!-- step 6 · cleaning the outdoor coil -->
+            <g class="outwater" id="w-outwater">
+              <rect x="66" y="344" width="180" height="6" rx="3" fill="#7fd6ff" opacity="0.85"/>
+              <g fill="#7fd6ff">
+                <circle cx="86" cy="362" r="3"/><circle cx="122" cy="356" r="2.6"/><circle cx="158" cy="366" r="3.2"/>
+                <circle cx="194" cy="358" r="2.8"/><circle cx="224" cy="368" r="3"/>
+              </g>
+            </g>
+            <g class="outbrush" id="w-outbrush">
+              <rect x="196" y="322" width="70" height="12" rx="6" fill="#c98a4b"/>
+              <g stroke="#e8d3a8" stroke-width="3" stroke-linecap="round">
+                <path d="M200 338 V348 M210 338 V348 M220 338 V348 M230 338 V348 M240 338 V348 M250 338 V348"/>
+              </g>
+            </g>
+          </g>
+
+          <!-- ═════ labels ═════ -->
+          <g id="labels">
+            <g class="lab" data-lab="comp"><text x="121" y="358" text-anchor="middle" data-i18n="cComp">compressor</text></g>
+            <g class="lab" data-lab="cond"><text x="166" y="496" text-anchor="middle" data-i18n="cCond">condenser</text></g>
+            <g class="lab" data-lab="fan"><text x="252" y="440" text-anchor="middle" data-i18n="oFan">fan</text></g>
+            <g class="lab" data-lab="evap"><text x="150" y="40" text-anchor="middle" data-i18n="cEvap">evaporator</text></g>
+            <g class="lab" data-lab="filter"><text x="150" y="196" text-anchor="middle" data-i18n="oFilter">filter</text></g>
+            <g class="lab" data-lab="drain"><text x="286" y="228" text-anchor="start" data-i18n="oDrain">drain</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+      <div class="toast" id="toast"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">How an aircon works</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

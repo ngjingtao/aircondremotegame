@@ -163,6 +163,54 @@ and gasps for you.
 
 ---
 
+## 5 · ❄ Inside the Aircon
+
+Two things in one: **how an air-con works**, and **how to wash it**.
+
+### How it works — the refrigerant loop
+
+The scene is a cutaway of a split unit: the indoor half on the wall, the outdoor half below,
+joined by the two pipes. A stream of refrigerant dots travels one closed loop through all four
+parts, and **the tube changes colour as it goes**:
+
+| Where | What happens | Colour |
+|---|---|---|
+| **Compressor** | squeezes the gas → very hot, high pressure | 🔴 red |
+| **Condenser** (outdoor) | gives its heat to the outside air and turns back into a liquid | 🟠 amber |
+| **Expansion valve** | a tiny hole — the pressure crashes and it goes cold | 🔵 cyan |
+| **Evaporator** (indoor) | soaks heat out of your room air and boils back to a gas | 🔵 blue |
+
+Verified behaviour: the room cools 30 → 27.4 °C, the evaporator settles at **5.6 °C** and the
+condenser at **53 °C**, the highlight walks the four parts on a loop, and switching the power
+off stops the refrigerant dead and the evaporator drifts back to room temperature. Lowering the
+set point from 26 °C to 20 °C drops the coil from 6.5 °C to 3.8 °C.
+
+Red dots show **warm room air** being pulled in over the top, blue dots show **cool air** coming
+out of the vent, and hot dots fly out of the outdoor fan. The panel spells out the one big idea:
+
+> **An air conditioner does not make cold. It moves heat from inside your room to outside.**
+
+### How to wash it — an eight-step service
+
+Tap through, or use NEXT/BACK, and the drawing animates each step:
+
+| # | Step | What you see |
+|---|---|---|
+| 1 | Switch off and **unplug** | a red power-off badge pulses, the unit greys out |
+| 2 | **Open the front panel** | the panel lifts and tilts |
+| 3 | **Take out the filters** | both mesh filters slide out and park below |
+| 4 | **Wash the filters** | water runs over them and foam bubbles up |
+| 5 | **Clean the coil** | a spray can, foam on the fins, a brush scrubbing |
+| 6 | **Clear the drain** | water flushes the pan and runs down the pipe |
+| 7 | **Clean the outdoor unit** | a brush scrubs the outdoor coil, water rinses it |
+| 8 | **Put it back and dry** | filters slide home, the panel closes |
+
+Each step carries a real servicing note — *never work on a live unit, the fan can start by
+itself*, *rinse from the clean side so dust falls out, and dry in the shade because sun cracks
+the mesh*, *sharp fins, go gently*, *run FAN only for two hours to dry the inside*.
+
+---
+
 ## Play it in a browser (fastest)
 
 Everything is plain HTML/CSS/JS — no build step.
@@ -306,6 +354,10 @@ www/                          ← the whole app (no build step)
 │  ├─ index.html
 │  ├─ breath.css                        lab panel, organs, gas-exchange bubble, ECG
 │  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ aircare/                             ── activity 5 ──
+│  ├─ index.html
+│  ├─ aircare.css                       cutaway unit, refrigerant loop, wash-step animations
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
 └─ _devicelab.html                      dev-only: phone & iPad previews
 
 server.js                               zero-dependency static server ($PORT aware)
@@ -337,6 +389,15 @@ capacitor.config.json
 * **The breathing model (breath)** — `www/breath/js/state.js`. `SCENARIOS` sets how much oxygen
   the body wants; heart rate, breathing rate, SpO₂ and CO₂ then follow. Nudge the numbers in
   `SCENARIOS` or the tuning constants in `tick()` to make it easier or harder.
+* **The refrigerant loop (aircare)** — `www/aircare/js/scene.js`. `LOOP` is a point list for one
+  closed circuit through the four parts, smoothed into a path and sampled once for the moving
+  dots. `I_EVAP_OUT` / `I_COMP_OUT` / `I_COND_OUT` are the indices where the colour changes, and
+  the gradient stops are derived from them, so moving a point moves the drawing, the colour
+  changes and the particles together.
+* **The wash steps (aircare)** — `www/aircare/js/state.js` holds the eight steps, each with a
+  `lit` part to highlight. The scene writes `data-wash-step` on `#scene`, and all the animation
+  lives in plain CSS keyed off that attribute — add a step by adding an entry to `STEPS` and a
+  `#scene[data-wash-step="N"]` rule.
 
 ### Adding a language
 

@@ -59,7 +59,15 @@ const ASSETS = [
   'breath/js/state.js',
   'breath/js/scene.js',
   'breath/js/panel.js',
-  'breath/js/main.js'
+  'breath/js/main.js',
+
+  'aircare/index.html',
+  'aircare/aircare.css',
+  'aircare/js/i18n.js',
+  'aircare/js/state.js',
+  'aircare/js/scene.js',
+  'aircare/js/panel.js',
+  'aircare/js/main.js'
 ];
 
 self.addEventListener('install', event => {
