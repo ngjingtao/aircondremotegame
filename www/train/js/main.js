@@ -55,6 +55,7 @@
     $('btn-lang').addEventListener('click', () => {
       ARG.i18n.toggle();
       ARG.i18n.apply();
+      ARG.cab.refresh();
       /* station name plates are refreshed by scene.render */
       ARG.cab.render();
     });

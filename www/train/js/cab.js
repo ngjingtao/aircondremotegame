@@ -140,5 +140,10 @@ ARG.cab = (function () {
     }
   }
 
-  return { build, render };
+  /* clear the value caches so the next render re-emits translated text */
+  function refresh() {
+    for (const k in seen) delete seen[k];
+  }
+
+  return { build, render, refresh };
 })();
