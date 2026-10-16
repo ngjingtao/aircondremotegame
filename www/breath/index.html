@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0b1220" />
+<meta name="format-detection" content="telephone=no" />
+<title>Breathing &amp; Blood · Play &amp; Learn</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="breath.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">🫁</span>
+      <span class="tb-title" data-i18n="title">Breathing &amp; Blood</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip hud-score"><span class="hud-label" data-i18n="mSpo2">Oxygen in blood</span><b id="hud-spo2">98%</b></div>
+      <div class="hud-chip"><span class="hud-label" data-i18n="mHeart">Heart rate</span><b id="hud-hr">70</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ══════════ LEFT : LAB PANEL ══════════ -->
+    <section id="panel-panel">
+      <div id="panel-scaler">
+        <div class="panel">
+
+          <div class="pl-head">
+            <span class="pl-logo">🫁</span>
+            <b data-i18n="title">Breathing &amp; Blood</b>
+          </div>
+
+          <div class="pl-block">
+            <div class="pl-label" data-i18n="experiment">Experiment</div>
+            <div class="scenarios" id="scenarios"></div>
+          </div>
+
+          <div class="pl-block">
+            <div class="pl-label" data-i18n="mLung">Lungs</div>
+            <div class="lung-shell">
+              <i class="lung-fill" id="lung-fill"></i>
+              <div class="lung-ticks"><span></span><span></span><span></span><span></span></div>
+            </div>
+          </div>
+
+          <div class="pl-actions">
+            <button class="pl-btn breathe" data-action="breathe">
+              <span class="pb-ico">🌬️</span><span class="pb-txt" data-i18n="bBreathe">TAKE A BREATH</span>
+            </button>
+            <button class="pl-btn hold" data-action="hold" id="hold-btn">
+              <span class="pb-ico">✋</span><span class="pb-txt" id="hold-txt" data-i18n="bHold">HOLD BREATH</span>
+            </button>
+          </div>
+
+          <div class="pl-meters" id="meters"></div>
+
+          <div class="pl-heart">
+            <span class="ph-icon" id="ph-icon">🫀</span>
+            <div class="ph-text">
+              <b id="ph-bpm">70</b>
+              <span data-i18n="bpm">bpm</span>
+            </div>
+            <svg class="ph-wave" viewBox="0 0 120 40" preserveAspectRatio="none">
+              <path class="ph-line" d="M0,20 L14,20 L18,20 L21,5 L25,33 L29,20 L46,20 L49,12 L53,28 L57,20 L74,20 L77,20 L80,5 L84,33 L88,20 L104,20 L120,20"/>
+            </svg>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ RIGHT : BODY ══════════ -->
+    <section id="scene">
+
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="title">Breathing &amp; Blood</span>
+        <span class="scene-status" id="scene-status">Rest</span>
+      </div>
+
+      <div class="body-wrap">
+        <svg id="body" viewBox="0 0 260 440" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="skinGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffe0c2"/>
+              <stop offset="100%" stop-color="#f9c9a0"/>
+            </linearGradient>
+            <linearGradient id="torsoGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffe3c8" stop-opacity="0.52"/>
+              <stop offset="100%" stop-color="#f7c9a5" stop-opacity="0.52"/>
+            </linearGradient>
+            <linearGradient id="lungGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffc0cf"/>
+              <stop offset="100%" stop-color="#e58aa4"/>
+            </linearGradient>
+            <linearGradient id="heartGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#ff8a7a"/>
+              <stop offset="100%" stop-color="#cf2f24"/>
+            </linearGradient>
+            <filter id="dropShadow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#0b1220" flood-opacity="0.28"/>
+            </filter>
+            <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="3" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- ───── body ───── -->
+          <g id="figure" filter="url(#dropShadow)">
+            <rect x="92" y="384" width="30" height="50" rx="14" fill="#3b4a63"/>
+            <rect x="138" y="384" width="30" height="50" rx="14" fill="#3b4a63"/>
+            <path d="M62 348 L198 348 L202 390 Q202 398 194 398 L142 398 L130 364 L118 398 L66 398 Q58 398 58 390 Z" fill="#4f6ea8"/>
+
+            <rect x="56" y="104" width="148" height="256" rx="40" fill="url(#torsoGrad)" stroke="rgba(255,255,255,.5)" stroke-width="1.6"/>
+            <rect x="24" y="128" width="26" height="132" rx="13" fill="url(#skinGrad)"/>
+            <rect x="210" y="128" width="26" height="132" rx="13" fill="url(#skinGrad)"/>
+
+            <rect x="116" y="86" width="28" height="30" rx="12" fill="#f6c39a"/>
+
+            <g id="head">
+              <circle cx="130" cy="52" r="40" fill="url(#skinGrad)"/>
+              <circle cx="90" cy="56" r="10" fill="#f6c39a"/>
+              <circle cx="170" cy="56" r="10" fill="#f6c39a"/>
+              <path d="M90 46 C90 14 106 4 130 4 C154 4 170 14 170 46 C164 34 156 28 146 26 C132 34 128 34 114 26 C104 28 96 34 90 46 Z" fill="#2f2a35"/>
+              <circle cx="114" cy="50" r="5" fill="#2b2b33"/>
+              <circle cx="146" cy="50" r="5" fill="#2b2b33"/>
+              <circle cx="115.6" cy="48" r="1.7" fill="#fff"/>
+              <circle cx="147.6" cy="48" r="1.7" fill="#fff"/>
+              <path d="M122 70 Q130 76 138 70" fill="none" stroke="#a8453f" stroke-width="3" stroke-linecap="round"/>
+              <ellipse class="cheek" cx="102" cy="64" rx="9" ry="6" fill="#ff9a9a" opacity="0"/>
+              <ellipse class="cheek" cx="158" cy="64" rx="9" ry="6" fill="#ff9a9a" opacity="0"/>
+            </g>
+          </g>
+
+          <!-- ───── organs ───── -->
+          <g id="organs">
+
+            <g id="lungs">
+              <path d="M120,146 C94,146 72,170 72,198 C72,224 90,242 112,242 C124,242 128,234 128,222 L128,158 C128,150 126,146 120,146 Z"
+                    fill="url(#lungGrad)" stroke="rgba(255,255,255,.45)" stroke-width="1.4"/>
+              <path d="M140,146 C166,146 188,170 188,198 C188,224 170,242 148,242 C136,242 132,234 132,222 L132,158 C132,150 134,146 140,146 Z"
+                    fill="url(#lungGrad)" stroke="rgba(255,255,255,.45)" stroke-width="1.4"/>
+            </g>
+
+            <g id="heart">
+              <path d="M130,228 C114,210 96,220 96,242 C96,264 116,280 130,296 C144,280 164,264 164,242 C164,220 146,210 130,228 Z"
+                    fill="url(#heartGrad)" stroke="rgba(255,255,255,.35)" stroke-width="1.4"/>
+              <path d="M130,234 C121,222 109,228 109,241" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
+              <path d="M130,234 C139,222 151,228 151,241" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
+              <path d="M130,234 L130,288" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+            </g>
+
+            <g id="trachea">
+              <path d="M130,94 L130,146" fill="none" stroke="#dcebf8" stroke-width="13" stroke-linecap="round"/>
+              <path d="M130,146 L112,166" fill="none" stroke="#dcebf8" stroke-width="9" stroke-linecap="round"/>
+              <path d="M130,146 L148,166" fill="none" stroke="#dcebf8" stroke-width="9" stroke-linecap="round"/>
+              <path d="M130,94 L130,146" fill="none" stroke="rgba(150,190,225,.55)" stroke-width="5" stroke-dasharray="2 6"/>
+              <g id="airflow"></g>
+            </g>
+
+            <!-- the blood circuit sits on top so you can follow it -->
+            <g id="vessels">
+              <path id="vessel" fill="none" stroke="rgba(228,240,255,.16)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+              <path id="vesselRed" fill="none" stroke="#ef5a4a" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+              <path id="highlight" fill="none" stroke="none"/>
+            </g>
+
+            <g id="cells"></g>
+          </g>
+
+          <!-- ───── labels ───── -->
+          <g id="labels">
+            <g class="organ-label"><path class="leader" d="M112,118 L54,116"/><text x="50" y="119" text-anchor="end" data-i18n="oTrachea">windpipe</text></g>
+            <g class="organ-label"><path class="leader" d="M182,186 L226,180"/><text x="230" y="183" text-anchor="start" data-i18n="oLung">lung</text></g>
+            <g class="organ-label"><path class="leader" d="M100,258 L52,262"/><text x="48" y="265" text-anchor="end" data-i18n="oHeart">heart</text></g>
+            <g class="organ-label"><path class="leader" d="M182,340 L226,344"/><text x="230" y="347" text-anchor="start" data-i18n="oBody">body</text></g>
+          </g>
+        </svg>
+
+        <!-- gas exchange bubble -->
+        <div class="alveoli" id="alveoli">
+          <div class="alv-title" data-i18n="exchange">Gas exchange in the alveoli</div>
+          <svg viewBox="0 0 120 124">
+            <circle class="alv-wall" cx="54" cy="46" r="33"/>
+            <path class="alv-cap" d="M10,84 C28,104 86,104 110,72"/>
+            <g class="gas o2">
+              <circle cx="54" cy="42" r="3.4"/>
+              <circle cx="44" cy="50" r="3"/>
+              <circle cx="64" cy="50" r="3.2"/>
+              <circle cx="54" cy="58" r="2.8"/>
+            </g>
+            <g class="gas co2">
+              <circle cx="34" cy="88" r="3.4"/>
+              <circle cx="52" cy="94" r="3"/>
+              <circle cx="70" cy="94" r="3.2"/>
+            </g>
+            <text class="gt o2t" x="54" y="24" text-anchor="middle">O₂</text>
+            <text class="gt co2t" x="22" y="118" text-anchor="middle">CO₂</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="speech" id="speech">Nice and calm.</div>
+      <div class="toast" id="toast"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">How breathing and blood work</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -118,6 +118,51 @@ Mind your speed in the platform, and use the horn — it is good manners.
 
 ---
 
+## 4 · 🫁 Breathing & Blood
+
+A science lab you can poke. Choose an experiment on the left, watch the boy's insides on the
+right — lungs, heart, and a blood circuit with cells that actually change colour.
+
+**Think of it as a lab bench with five experiments.** Each one changes how much oxygen the
+body is asking for, and everything else follows. These are the real numbers it settles at:
+
+| Experiment | Heart rate | Breaths / min | Oxygen in blood | CO₂ |
+|---|---|---|---|---|
+| 😴 Sleep | 63 | 11 | 98.9 % | 38.9 |
+| 🧘 Rest | 75 | 14 | 98.6 % | 39.0 |
+| 🚶 Walk | 111 | 23 | 97.8 % | 39.1 |
+| 🏃 Run | 167 | 38 | 96.6 % | 39.1 |
+| 🏔️ High altitude | 142 | 47 | **87.7 %** | 37.8 |
+
+Notice how **carbon dioxide barely moves** while the other numbers swing. That is the whole
+point: CO₂ is what your body actually regulates, and breathing rate is the knob it turns.
+At altitude there is less oxygen in every breath, so the heart and lungs have to work much
+harder for a lower result.
+
+**The two buttons are the experiments that go wrong on purpose**
+
+- **TAKE A BREATH** — a deep breath. Watch oxygen climb.
+- **HOLD BREATH** — stop breathing and watch it unwind:
+
+| Held for | Oxygen | CO₂ | Urge to breathe |
+|---|---|---|---|
+| 5 s | 95.6 % | 43.0 | 0.04 |
+| 10 s | 92.5 % | 47.1 | 0.39 |
+| 15 s | 89.5 % | 51.2 | 0.75 |
+| ~17 s | — | — | **your body forces a gasp** |
+
+You cannot cheat it. Once the urge maxes out (or oxygen drops far enough) the body takes over
+and gasps for you.
+
+**What to watch on the boy**
+
+- **Lungs** inflate and deflate with every breath, and air particles move down the windpipe as you inhale and back up as you exhale.
+- **Heart** beats in a proper *lub-dub*, and its rate follows the experiment.
+- **Blood cells** flow in a single loop — heart → lungs → heart → body → heart. They are **blue** carrying CO₂ and turn **red** in the lungs. When oxygen is low they come out a duller red.
+- **The gas exchange bubble** up in the corner: the alveolus with a capillary wrapped round it, O₂ molecules crossing in and CO₂ crossing out, ticking over faster the harder you breathe.
+
+---
+
 ## Play it in a browser (fastest)
 
 Everything is plain HTML/CSS/JS — no build step.
@@ -217,6 +262,10 @@ www/                          ← the whole app (no build step)
 │  ├─ index.html
 │  ├─ train.css                         sky, track, train, crossing, driver's desk
 │  └─ js/ i18n.js · state.js · scene.js · cab.js · main.js
+├─ breath/                              ── activity 4 ──
+│  ├─ index.html
+│  ├─ breath.css                        lab panel, organs, gas-exchange bubble, ECG
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
 └─ _devicelab.html                      dev-only: phone & iPad previews
 
 server.js                               zero-dependency static server ($PORT aware)
@@ -241,6 +290,13 @@ capacitor.config.json
   from how wide the scene is, so the train always fills the same share of the screen on a phone
   and on an iPad. The route is generated from `CYCLE`/`STATION_OFFSET`/`CROSSING_OFFSET` in
   `state.js` — change those to re-space the stations and crossings.
+* **The blood circuit (breath)** — `www/breath/js/scene.js`. `CIRCUIT` is a list of points for
+  one closed loop; it is smoothed into a path, sampled once into a lookup table, and the cells
+  ride along it. `LUNG_I` / `BODY_I` mark the two points where a cell changes colour, so moving
+  a point moves the drawing, the tube and the colour change together.
+* **The breathing model (breath)** — `www/breath/js/state.js`. `SCENARIOS` sets how much oxygen
+  the body wants; heart rate, breathing rate, SpO₂ and CO₂ then follow. Nudge the numbers in
+  `SCENARIOS` or the tuning constants in `tick()` to make it easier or harder.
 
 ### Adding a language
 

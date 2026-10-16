@@ -16,6 +16,8 @@
       tileFoodSub: 'Follow food from the mouth all the way out',
       tileTrainTitle: 'Train Driving',
       tileTrainSub: 'Drive the train, stop at the station, ding ding at the crossing',
+      tileBreathTitle: 'Breathing & Blood',
+      tileBreathSub: 'Run experiments: breathe, hold your breath, run and climb a mountain',
       foot: 'Made for curious kids',
       help: '?',
       helpTitle: 'Two activities',
@@ -40,6 +42,13 @@
           <li>Listen for <code>ding, ding, ding</code> at every level crossing — red lights flash and the barrier comes down.</li>
           <li>Horn, bell, headlights and doors all work. Doors must be shut before you move.</li>
         </ul>
+        <h3>🫁 Breathing &amp; Blood</h3>
+        <ul>
+          <li>Choose an experiment: <code>Sleep</code>, <code>Rest</code>, <code>Walk</code>, <code>Run</code> or <code>High altitude</code>.</li>
+          <li>Watch the lungs inflate and the heart beat faster when the body needs more oxygen.</li>
+          <li>Press <code>TAKE A BREATH</code>, or <code>HOLD BREATH</code> and see the oxygen fall until the body forces a gasp.</li>
+          <li>Blue blood cells carry carbon dioxide; they turn red in the lungs. The bubble shows the gas exchange.</li>
+        </ul>
         <h3>Buttons in the top bar</h3>
         <ul>
           <li><code>‹ Menu</code> — back to this screen (inside an activity).</li>
@@ -58,6 +67,8 @@
       tileFoodSub: '跟着食物从嘴巴一路走到外面',
       tileTrainTitle: '开火车',
       tileTrainSub: '开动火车、停准站台，道口叮叮叮',
+      tileBreathTitle: '呼吸与血液循环',
+      tileBreathSub: '做实验：呼吸、屏气、跑步、上高山',
       foot: '给充满好奇心的小朋友',
       help: '?',
       helpTitle: '两个小游戏',
@@ -81,6 +92,13 @@
           <li>让车头停在每个车站的白色标线上。</li>
           <li>每个道口都要听 <code>叮、叮、叮</code> — 红灯闪烁，栏杆落下。</li>
           <li>风笛、铃声、车灯、车门都能用。门没关好火车不会动。</li>
+        </ul>
+        <h3>🫁 呼吸与血液循环</h3>
+        <ul>
+          <li>选择实验：<code>睡觉</code>、<code>休息</code>、<code>走路</code>、<code>跑步</code> 或 <code>高海拔</code>。</li>
+          <li>看肺怎么鼓起来，身体需要更多氧气时心脏怎么跳得更快。</li>
+          <li>按 <code>深吸一口气</code>；或按 <code>屏住呼吸</code>，看含氧量一直下降直到身体逼你吸气。</li>
+          <li>蓝色的血细胞带着二氧化碳，到肺里就变成红色。小圆窗展示气体交换。</li>
         </ul>
         <h3>顶栏按钮</h3>
         <ul>

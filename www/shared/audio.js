@@ -104,6 +104,20 @@ ARG.audio = (function () {
     /** combination lever / notch click */
     notch() { tone(640, 0.035, 'square', 0.03); noise(0.03, 0.02, 2400, 1); },
     /** button that is not allowed right now */
-    warn() { tone(300, 0.14, 'square', 0.05); tone(240, 0.18, 'square', 0.045, 0.13); }
+    warn() { tone(300, 0.14, 'square', 0.05); tone(240, 0.18, 'square', 0.045, 0.13); },
+
+    /* ── breathing & blood set ── */
+    /** air drawn in through the nose */
+    breatheIn() { noise(0.55, 0.045, 700, 0.7); },
+    /** air pushed out */
+    breatheOut() { noise(0.5, 0.038, 420, 0.6); },
+    /** one heartbeat — a soft double thump */
+    thump() { tone(62, 0.12, 'sine', 0.030); tone(52, 0.14, 'sine', 0.022, 0.13); },
+    /** the body forces a breath */
+    gasp() { noise(0.32, 0.06, 1100, 0.8); tone(420, 0.14, 'triangle', 0.03, 0.02); },
+    /** oxygen-rich blood reaching the body */
+    pulseGood() { tone(880, 0.1, 'sine', 0.035); tone(1320, 0.12, 'sine', 0.03, 0.05); },
+    /** something is wrong */
+    alarm() { tone(680, 0.16, 'square', 0.045); tone(520, 0.18, 'square', 0.04, 0.16); }
   };
 })();
