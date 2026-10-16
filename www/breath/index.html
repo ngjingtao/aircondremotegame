@@ -90,7 +90,7 @@
       </div>
 
       <div class="body-wrap">
-        <svg id="body" viewBox="0 0 260 440" preserveAspectRatio="xMidYMid meet">
+        <svg id="body" viewBox="0 0 260 540" preserveAspectRatio="xMidYMid meet">
           <defs>
             <linearGradient id="skinGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#ffe0c2"/>
@@ -119,8 +119,10 @@
 
           <!-- ───── body ───── -->
           <g id="figure" filter="url(#dropShadow)">
-            <rect x="92" y="384" width="30" height="50" rx="14" fill="#3b4a63"/>
-            <rect x="138" y="384" width="30" height="50" rx="14" fill="#3b4a63"/>
+            <rect x="92" y="394" width="30" height="126" rx="15" fill="#3b4a63"/>
+            <rect x="138" y="394" width="30" height="126" rx="15" fill="#3b4a63"/>
+            <rect x="86" y="512" width="42" height="18" rx="9" fill="#546179"/>
+            <rect x="132" y="512" width="42" height="18" rx="9" fill="#546179"/>
             <path d="M62 348 L198 348 L202 390 Q202 398 194 398 L142 398 L130 364 L118 398 L66 398 Q58 398 58 390 Z" fill="#4f6ea8"/>
 
             <rect x="56" y="104" width="148" height="256" rx="40" fill="url(#torsoGrad)" stroke="rgba(255,255,255,.5)" stroke-width="1.6"/>
@@ -210,6 +212,12 @@
             <text class="gt co2t" x="22" y="118" text-anchor="middle">CO₂</text>
           </svg>
         </div>
+      </div>
+
+      <div class="legend" id="legend">
+        <span class="lg-item"><i class="dot red"></i><span data-i18n="legRedO2">Oxygen-rich blood</span></span>
+        <span class="lg-item"><i class="dot blue"></i><span data-i18n="legBlueCo2">Oxygen-poor blood</span></span>
+        <span class="lg-item"><i class="dot heart"></i><span data-i18n="oHeart">heart</span></span>
       </div>
 
       <div class="speech" id="speech">Nice and calm.</div>

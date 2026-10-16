@@ -19,7 +19,7 @@
     const availH = panel.clientHeight - 16;
     const tablet = totalW >= 700 && mainEl.clientHeight >= 560;
 
-    const maxPanelW = Math.min(totalW * (tablet ? 0.46 : 0.56), tablet ? 520 : 430);
+    const maxPanelW = Math.min(totalW * (tablet ? 0.46 : 0.50), tablet ? 520 : 400);
     const maxScale = tablet ? 1.4 : 1.15;
 
     let scale = Math.min((maxPanelW - 20) / BW, availH / BH);
