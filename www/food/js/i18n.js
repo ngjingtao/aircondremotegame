@@ -214,9 +214,7 @@ ARG.i18n = (function () {
   };
 
   let lang = ARG.store.get('arg.lang');
-  if (!lang || !DICT[lang]) {
-    lang = (navigator.language || 'en').toLowerCase().startsWith('zh') ? 'zh' : 'en';
-  }
+  if (!lang || !DICT[lang]) lang = 'zh';   // Chinese unless you switch it
 
   /* science facts, shown one per stage */
   const FACTS = {

@@ -31,21 +31,70 @@
   }
 
   function handleAction(action, el) {
+    /* ── narration ── */
+    if (action === 'speakPart') {
+      const key = el && el.dataset ? el.dataset.speak : null;
+      ARG.audio.blip();
+      if (key) ARG.voice.speak(ARG.i18n.t(key));
+      return;
+    }
+    if (action === 'readAll') {
+      ARG.audio.blip();
+      narrateCycle();
+      return;
+    }
+    if (action === 'jumpStep') {
+      ARG.sim.s.step = +(el && el.dataset ? el.dataset.step : 0);
+      ARG.audio.blip();
+      speakStep();
+      ARG.panel.render();
+      ARG.scene.render(0.016);
+      return;
+    }
+
     const res = ARG.sim.press(action, el);
     if (!res) return;
     if (res.sound && typeof ARG.audio[res.sound] === 'function') ARG.audio[res.sound]();
     else ARG.audio.blip();
 
+    if (action === 'mode') {
+      ARG.voice.stop();
+      if (ARG.sim.s.mode === 'wash') ARG.voice.speak(ARG.i18n.t('tWashIntro'));
+      else ARG.voice.speak(ARG.i18n.t('tIdea'));
+    }
+    if (action === 'stepUp' || action === 'stepDown' || action === 'restart') {
+      speakStep();
+    }
     if (action === 'stepUp' && ARG.sim.s.step === ARG.sim.STEPS.length - 1) {
       ARG.scene.toast(ARG.i18n.t('washDone'), true);
       ARG.audio.cheer();
     }
-    if (action === 'stepUp' && ARG.sim.s.step === 0) {
-      ARG.audio.blip();
-    }
 
     ARG.panel.render();
     ARG.scene.render(0.016);
+  }
+
+  /* read the whole cycle out, one part after another */
+  let narrateTimer = null;
+  function narrateCycle() {
+    clearTimeout(narrateTimer);
+    const parts = ['tIdea', 'tComp', 'tCond', 'tValve', 'tEvap'];
+    let i = 0;
+    (function next() {
+      if (i >= parts.length) return;
+      const txt = ARG.i18n.t(parts[i++]);
+      ARG.voice.speak(txt);
+      /* rough timing so the next part waits for the voice to finish */
+      narrateTimer = setTimeout(next, Math.min(20000, 1400 + txt.length * 95));
+    })();
+  }
+
+  function speakStep() {
+    const st = ARG.sim.STEPS[ARG.sim.s.step];
+    if (!st) return;
+    const n = ARG.sim.s.step + 1;
+    const head = ARG.i18n.lang === 'zh' ? ('第 ' + n + ' 步，') : ('Step ' + n + '. ');
+    ARG.voice.speak(head + ARG.i18n.t(st.key) + '。' + ARG.i18n.t(st.fact));
   }
 
   let last = 0, running = true;
@@ -66,9 +115,11 @@
     ARG.scene.build();
     ARG.panel.build(handleAction);
     ARG.i18n.apply();
+    ARG.voice.attach();
 
     $('btn-lang').addEventListener('click', () => {
       ARG.i18n.toggle();
+      ARG.voice.syncLang();
       ARG.i18n.apply();
       ARG.panel.refresh();
       ARG.panel.render();
@@ -85,6 +136,10 @@
     $('btn-help').addEventListener('click', () => { help.hidden = false; });
     $('help-close').addEventListener('click', () => { help.hidden = true; });
     help.addEventListener('click', e => { if (e.target === help) help.hidden = true; });
+
+    /* tapping the help or the note has it read out */
+    ARG.voice.speakOnTap($('help-body'));
+    ARG.voice.speakOnTap($('pane-note'));
 
     layout();
     window.addEventListener('resize', layout);

@@ -83,6 +83,20 @@
     if (MOODS[s.mood] && ARG.i18n.t(key) !== key) ARG.body.say(ARG.i18n.pick(key));
   }
 
+  /* ─────────── narration ─────────── */
+  let lastSpokenStage = null;
+
+  function speakWatch() {
+    const s = ARG.sim.s;
+    if (!ARG.voice.enabled) return;
+    if (s.stage === lastSpokenStage) return;
+    lastSpokenStage = s.stage;
+    if (s.stage === 'MOUTH' && !s.food) return;         // nothing has happened yet
+    const name = ARG.i18n.t('s' + s.stage);
+    const fact = ARG.i18n.fact(s.stage.toLowerCase());
+    ARG.voice.speak(name + '。' + fact);
+  }
+
   /* ─────────── loop ─────────── */
   let last = 0, running = true;
 
@@ -93,6 +107,7 @@
 
     ARG.sim.tick(dt);
     moodWatch();
+    speakWatch();
     ARG.body.render(dt);
     ARG.deck.render();
 
@@ -162,7 +177,8 @@
   function boot() {
     ARG.body.build();
     ARG.deck.build(handleAction);
-    ARG.i18n.apply();          // after the decks exist, so every label is translated
+    ARG.i18n.apply();
+    ARG.voice.attach();          // after the decks exist, so every label is translated
 
     ARG.sim.setToastHook((key, kind) => {
       if (!key) return;
@@ -173,6 +189,7 @@
     /* top bar */
     $('btn-lang').addEventListener('click', () => {
       ARG.i18n.toggle();
+      ARG.voice.syncLang();
       ARG.i18n.apply();
       ARG.body.refreshLabels();
       ARG.deck.render();
@@ -188,6 +205,9 @@
     $('btn-help').addEventListener('click', () => { help.hidden = false; });
     $('help-close').addEventListener('click', () => { help.hidden = true; });
     help.addEventListener('click', e => { if (e.target === help) help.hidden = true; });
+
+    /* tap the fact card to read it out */
+    ARG.voice.speakOnTap($('fact-text'));
 
     const quiz = $('quiz-overlay');
     $('btn-quiz').addEventListener('click', () => {

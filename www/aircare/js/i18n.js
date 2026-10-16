@@ -35,6 +35,17 @@ ARG.i18n = (function () {
       roomAir: 'warm room air',
       coolAir: 'cool air',
       rendering: 'Follow the refrigerant around the loop',
+      tapPart: 'Tap a part to hear it',
+      readAll: 'READ IT TO ME',
+
+      /* spoken explanations */
+      tComp: 'Part one, the compressor. It squeezes the refrigerant gas. Squeezing something heats it up, so what leaves the compressor is a very hot gas under high pressure.',
+      tCond: 'Part two, the condenser. That hot gas flows through the coil in the outdoor unit. The fan blows outside air across the coil, the heat goes into the air, and the gas cools down until it turns into a liquid.',
+      tValve: 'Part three, the expansion valve. The liquid is forced through a tiny hole. The pressure drops all at once, and when pressure drops the temperature drops with it, so the refrigerant comes out very cold.',
+      tEvap: 'Part four, the evaporator. The cold refrigerant flows through the coil in your indoor unit. Warm room air is blown across it, the heat moves into the refrigerant, and cool air comes out of the vent. The refrigerant boils back into a gas and returns to the compressor, and the loop starts again.',
+      tIdea: 'Here is the big idea. An air conditioner does not make cold. It moves heat. It picks heat up from the air inside your room, carries it outside, and lets it go. That is why the outdoor unit blows out hot air.',
+      tCycleAll: 'Let us follow the refrigerant all the way round. ',
+      tWashIntro: 'Now let us wash it. Follow me, step by step. Always start by switching the power off.',
 
       /* wash */
       step: 'Step',
@@ -117,6 +128,16 @@ ARG.i18n = (function () {
       roomAir: '房间里的热空气',
       coolAir: '冷风',
       rendering: '跟着制冷剂走一圈',
+      tapPart: '点一下部件，听它讲解',
+      readAll: '念给我听',
+
+      tComp: '第一部分，压缩机。它把制冷剂气体压缩起来。压缩会让它变热，所以从压缩机出来的是又热、压力又高的气体。',
+      tCond: '第二部分，冷凝器。热气体流到室外机的盘管里。风扇把外面的空气吹过盘管，热量就跑到空气里，气体慢慢冷却，变成液体。',
+      tValve: '第三部分，节流阀。液体被压过一个小小的孔。压力一下子降低，而压力降低，温度也跟着降低，所以出来的制冷剂非常冷。',
+      tEvap: '第四部分，蒸发器。冷的制冷剂流进室内机的盘管。屋里的热空气被吹过盘管，热量跑进制冷剂里，吹出来的就是冷风。制冷剂又变回气体，回到压缩机，循环重新开始。',
+      tIdea: '重点来了。空调不会“制造冷”，它是把热量搬走：从屋里的空气里吸走热量，带到室外放掉。所以室外机吹出来的是热风。',
+      tCycleAll: '我们跟着制冷剂走一整圈。',
+      tWashIntro: '现在我们来清洗它。跟着我一步一步做。第一步永远是先断电。',
 
       step: '第',
       next: '下一步',
@@ -171,9 +192,7 @@ ARG.i18n = (function () {
   };
 
   let lang = ARG.store.get('arg.lang');
-  if (!lang || !DICT[lang]) {
-    lang = (navigator.language || 'en').toLowerCase().startsWith('zh') ? 'zh' : 'en';
-  }
+  if (!lang || !DICT[lang]) lang = 'zh';   // Chinese unless you switch it
 
   function t(key) {
     const v = DICT[lang][key];

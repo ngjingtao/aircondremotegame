@@ -109,6 +109,17 @@
   padding:8px 10px;border-radius:11px;
   border:1px solid #d3dbe6;background:rgba(255,255,255,.7);
   transition:background .2s, border-color .2s, transform .2s;
+  font-family:inherit;text-align:left;cursor:pointer;width:100%;
+}
+.cyc:active{transform:scale(.99);}
+.cyc-spk{font-size:11px;opacity:.45;margin-left:auto;flex:0 0 auto;}
+.cyc.on .cyc-spk{opacity:1;}
+.ctl-btn.read{
+  background:linear-gradient(180deg,#ffe6c4,#ffcf94);
+  border-color:#e0a04a;box-shadow:0 3px 0 #e0a04a;color:#5c3406;flex:0 0 auto;
+}
+.tap-hint{
+  font-size:9px;font-weight:700;color:#8a9bb0;text-align:center;margin-top:-4px;flex:0 0 auto;
 }
 .cyc-n{
   flex:0 0 20px;height:20px;border-radius:50%;
@@ -123,8 +134,7 @@
 .cyc.on b{color:#08304e;}
 
 /* wash steps */
-.steps{flex:1 1 auto;display:flex;flex-direction:column;gap:5px;overflow-y:auto;min-height:0;}
-.step{
+.steps{flex:1 1 auto;display:flex;flex-direction:column;gap:5px;overflow-y:auto;min-height:0;}.step{
   display:flex;align-items:center;gap:8px;text-align:left;
   padding:7px 9px;border-radius:10px;
   border:1px solid #d3dbe6;background:rgba(255,255,255,.72);

@@ -131,16 +131,17 @@ ARG.scene = (function () {
 
   function buildCycleList() {
     const list = [
-      ['cComp', 'cCompSub'],
-      ['cCond', 'cCondSub'],
-      ['cValve', 'cValveSub'],
-      ['cEvap', 'cEvapSub']
+      ['cComp', 'cCompSub', 'tComp'],
+      ['cCond', 'cCondSub', 'tCond'],
+      ['cValve', 'cValveSub', 'tValve'],
+      ['cEvap', 'cEvapSub', 'tEvap']
     ];
-    els.cycleList.innerHTML = list.map(([a, b], i) =>
-      `<div class="cyc" data-cyc="${i}">
+    els.cycleList.innerHTML = list.map(([a, b, spoken], i) =>
+      `<button class="cyc" data-cyc="${i}" data-action="speakPart" data-part="${i}" data-speak="${spoken}">
          <span class="cyc-n">${i + 1}</span>
          <div><b data-i18n="${a}"></b><i data-i18n="${b}"></i></div>
-       </div>`).join('');
+         <span class="cyc-spk">🔊</span>
+       </button>`).join('');
   }
 
   function pointAt(f) {

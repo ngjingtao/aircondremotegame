@@ -127,7 +127,7 @@
   };
 
   let lang = ARG.store.get('arg.lang');
-  if (!lang || !DICT[lang]) lang = (navigator.language || 'en').toLowerCase().startsWith('zh') ? 'zh' : 'en';
+  if (!lang || !DICT[lang]) lang = 'zh';   // Chinese unless you switch it
 
   function apply() {
     document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
@@ -145,6 +145,7 @@
       lang = lang === 'en' ? 'zh' : 'en';
       ARG.store.set('arg.lang', lang);
       apply();
+      ARG.voice.syncLang();
       ARG.audio.blip();
     });
 
@@ -154,6 +155,8 @@
     });
     $('btn-sound').textContent = ARG.audio.enabled ? '🔊' : '🔇';
 
+    ARG.voice.attach();
+
     const overlay = $('help-overlay');
     $('btn-help').addEventListener('click', () => { overlay.hidden = false; });
     $('help-close').addEventListener('click', () => { overlay.hidden = true; });
@@ -162,6 +165,9 @@
     document.querySelectorAll('.tile').forEach(t => {
       t.addEventListener('pointerdown', () => ARG.audio.blip());
     });
+
+    /* tap the help text to have it read out */
+    ARG.voice.speakOnTap($('help-body'));
 
     apply();
   }

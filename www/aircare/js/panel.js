@@ -35,10 +35,7 @@ ARG.panel = (function () {
       const b = ev.target.closest('button');
       if (!b) return;
       ev.preventDefault();
-      ARG.sim.s.step = +b.dataset.step;
-      ARG.audio.blip();
-      ARG.panel.render();
-      ARG.scene.render(0.016);
+      onAction('jumpStep', b);
     });
 
     document.querySelectorAll('[data-action]').forEach(b => {

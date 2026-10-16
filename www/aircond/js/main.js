@@ -74,6 +74,7 @@
   /* ─────────── boot ─────────── */
   function boot() {
     ARG.i18n.apply();
+    ARG.voice.attach();
 
     ARG.remote.init(handleAction);
     ARG.room.init();
@@ -96,6 +97,7 @@
     /* top bar */
     $('btn-lang').addEventListener('click', () => {
       ARG.i18n.toggle();
+      ARG.voice.syncLang();
       ARG.i18n.apply();
       ARG.remote.render();
       ARG.room.render();

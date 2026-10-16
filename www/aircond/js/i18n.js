@@ -184,10 +184,7 @@ ARG.i18n = (function () {
   };
 
   let lang = ARG.store.get('arg.lang');
-  if (!lang || !DICT[lang]) {
-    const nav = (navigator.language || 'en').toLowerCase();
-    lang = nav.startsWith('zh') ? 'zh' : 'en';
-  }
+  if (!lang || !DICT[lang]) lang = 'zh';   // Chinese unless you switch it
 
   function t(key) {
     const v = DICT[lang][key];

@@ -37,6 +37,7 @@
     </div>
     <div class="tb-buttons">
       <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
       <button class="tb-btn" id="btn-sound">🔊</button>
       <button class="tb-btn" id="btn-help">?</button>
     </div>
@@ -71,6 +72,11 @@
             </div>
 
             <div class="cycle-list" id="cycle-list"></div>
+
+            <button class="ctl-btn read" data-action="readAll">
+              <span class="cb-ico">🗣️</span><span data-i18n="readAll">READ IT TO ME</span>
+            </button>
+            <div class="tap-hint" data-i18n="tapPart">Tap a part to hear it</div>
           </div>
 
           <!-- ── wash ── -->
@@ -312,6 +318,8 @@
 </div>
 
 <script src="../shared/store.js"></script>
+
+<script src="../shared/voice.js"></script>
 <script src="../shared/audio.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/state.js"></script>

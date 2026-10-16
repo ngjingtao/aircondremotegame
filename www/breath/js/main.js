@@ -47,6 +47,19 @@
   let last = 0, running = true;
   let lastBeat = -1;
 
+  /* ─────────── narration ─────────── */
+  let lastSpokenSc = null;
+
+  function speakWatch() {
+    const s = ARG.sim.s;
+    if (!ARG.voice.enabled) return;
+    if (lastSpokenSc === null) { lastSpokenSc = s.scenario; return; }   // quiet on load
+    if (s.scenario === lastSpokenSc) return;
+    lastSpokenSc = s.scenario;
+    const cap = s.scenario.charAt(0).toUpperCase() + s.scenario.slice(1);
+    ARG.voice.speak(ARG.i18n.t('sc' + cap) + '。' + ARG.i18n.t('msg' + cap));
+  }
+
   function loop(now) {
     if (!running) return;
     const dt = last ? (now - last) / 1000 : 0.016;
@@ -65,6 +78,7 @@
 
     ARG.scene.render(dt);
     ARG.panel.render();
+    speakWatch();
 
     requestAnimationFrame(loop);
   }
@@ -74,9 +88,11 @@
     ARG.scene.build();
     ARG.panel.build(handleAction);
     ARG.i18n.apply();
+    ARG.voice.attach();
 
     $('btn-lang').addEventListener('click', () => {
       ARG.i18n.toggle();
+      ARG.voice.syncLang();
       ARG.i18n.apply();
       ARG.panel.refresh();
       ARG.panel.render();
@@ -93,6 +109,9 @@
     $('btn-help').addEventListener('click', () => { help.hidden = false; });
     $('help-close').addEventListener('click', () => { help.hidden = true; });
     help.addEventListener('click', e => { if (e.target === help) help.hidden = true; });
+
+    /* tap the fact card to hear it */
+    ARG.voice.speakOnTap($('fact-text'));
 
     layout();
     window.addEventListener('resize', layout);

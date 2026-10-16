@@ -243,6 +243,30 @@ Live: **https://jk-play-n-learn.onrender.com**
 
 ---
 
+## Languages and voice
+
+**The interface starts in 中文.** It stays in Chinese unless you press the language button in
+the top bar — that choice is remembered on the device. Every label, speech bubble, science fact
+and help screen exists in both English and Chinese.
+
+**🗣️ Voice** — every activity has a voice button next to the sound button. Narration uses the
+browser's built-in speech voices (Web Speech API), so nothing is downloaded and it works
+offline. It follows the interface language: pick a Chinese voice for Chinese, an English voice
+for English.
+
+Where it speaks:
+
+| Activity | What it reads |
+|---|---|
+| **Inside the Aircon** | Tap any of the four parts to hear it explained. **READ IT TO ME** narrates the whole cycle in order. Switching to *How to wash it* reads the intro, and every step is read out with its servicing note. Tap the note card to hear it again. |
+| **Food Eating** | Each stop is announced with its science fact as the food arrives. Tap the fact card to hear it again. |
+| **Breathing & Blood** | Each experiment is announced with what it does to the body. Tap the fact card to hear it again. |
+| **All activities** | Tap the help text to have the instructions read out. |
+
+If the device has no speech voices, the button hides itself and nothing else changes.
+
+---
+
 ## Install it on an iPad (home-screen app)
 
 The site is a **PWA**, so on an iPad you can install it and it runs full screen with no
@@ -337,7 +361,8 @@ www/                          ← the whole app (no build step)
 ├─ shared/
 │  ├─ ui.css                            top bar, help overlay, toast, colour vars
 │  ├─ store.js                          ARG namespace + safe localStorage
-│  └─ audio.js                          WebAudio blips (no audio files)
+│  ├─ audio.js                          WebAudio blips (no audio files)
+│  └─ voice.js                          spoken narration (Web Speech API)
 ├─ aircond/                             ── activity 1 ──
 │  ├─ index.html
 │  ├─ aircond.css                       remote skin, LCD, room, character animations

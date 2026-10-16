@@ -49,11 +49,13 @@
   /* ─────────── boot ─────────── */
   function boot() {
     ARG.i18n.apply();
+    ARG.voice.attach();
     ARG.scene.build();
     ARG.cab.build(handleAction);
 
     $('btn-lang').addEventListener('click', () => {
       ARG.i18n.toggle();
+      ARG.voice.syncLang();
       ARG.i18n.apply();
       ARG.cab.refresh();
       /* station name plates are refreshed by scene.render */
