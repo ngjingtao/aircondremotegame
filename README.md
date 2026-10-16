@@ -195,6 +195,42 @@ Live: **https://jk-play-n-learn.onrender.com**
 
 ---
 
+## Install it on an iPad (home-screen app)
+
+The site is a **PWA**, so on an iPad you can install it and it runs full screen with no
+Safari address bar or toolbars — like a native app.
+
+> ⚠️ **If you added it to the home screen before, delete that icon and do it again.** The old
+> icon was created without the standalone tags, so iOS keeps wrapping it in Safari. iOS reads
+> those tags only at the moment you add it.
+
+**How to install**
+
+1. Open the site in **Safari** (it must be Safari, not Chrome on iOS).
+2. Pull down to **reload the page once**, so Safari picks up the manifest and tags.
+3. Tap the **Share** button (the square with an arrow, top right).
+4. Scroll down and tap **Add to Home Screen**, then **Add**.
+5. Launch it from the new home-screen icon — no browser chrome, and it works offline.
+
+You should get a full-screen app with the ✦ icon, a black status bar, and no Safari UI.
+
+**What makes it behave like an app**
+
+| Piece | Why |
+|---|---|
+| `<meta name="apple-mobile-web-app-capable" content="yes">` | the actual switch that removes Safari's chrome |
+| `manifest.webmanifest` with `"display": "standalone"` | the modern equivalent (iOS 16.4+, and Chrome/Android) |
+| `apple-touch-icon` at 120/152/167/180 px | a real icon instead of a screenshot of the page |
+| `apple-mobile-web-app-status-bar-style` | a black status bar that matches the dark theme |
+| `sw.js` service worker | caches all 44 files, so it opens instantly and works with no wifi |
+| `viewport-fit=cover` + `env(safe-area-inset-*)` | keeps controls clear of the notch and home indicator |
+
+Android works the same way — Chrome will offer **Install app** automatically.
+
+> Bump `CACHE` in `www/sw.js` whenever you ship a change, so installed copies pick it up.
+
+---
+
 ## Build an APK
 
 ### Option A — GitHub Actions (no Android Studio needed) ✅
@@ -246,6 +282,10 @@ cd android
 ```
 www/                          ← the whole app (no build step)
 ├─ index.html  home.css  home.js        the activity picker
+├─ manifest.webmanifest                 PWA: standalone display, icons, shortcuts
+├─ sw.js                                service worker — caches all 44 files for offline
+├─ pwa.js                               registers the service worker, detects standalone
+├─ icons/                               120/152/167/180/192/512 px + maskable
 ├─ shared/
 │  ├─ ui.css                            top bar, help overlay, toast, colour vars
 │  ├─ store.js                          ARG namespace + safe localStorage
