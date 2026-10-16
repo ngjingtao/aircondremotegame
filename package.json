@@ -2,14 +2,17 @@
   "name": "aircond-remote-game",
   "version": "1.0.0",
   "private": true,
-  "description": "An air-conditioner remote controller game — match the boy's comfort by driving a Haier-style remote.",
+  "description": "Play & Learn — three CSS-drawn activities for kids: Play Aircond, Food Eating and Train Driving.",
   "scripts": {
-    "serve": "npx --yes serve www -l 5173",
-    "start": "npx --yes serve www -l 5173",
+    "start": "node server.js",
+    "serve": "node server.js",
     "cap:sync": "cap sync android",
     "cap:open": "cap open android",
     "android:apk": "cd android && gradlew.bat assembleDebug",
     "android:apk:sh": "cd android && ./gradlew assembleDebug"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",

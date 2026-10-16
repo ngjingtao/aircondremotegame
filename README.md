@@ -123,7 +123,7 @@ Mind your speed in the platform, and use the horn — it is good manners.
 Everything is plain HTML/CSS/JS — no build step.
 
 ```bash
-npm run serve
+npm start
 # open http://localhost:5173
 ```
 
@@ -131,6 +131,22 @@ npm run serve
 
 `www/_devicelab.html` opens every screen at real phone **and** iPad sizes, portrait and
 landscape, side by side.
+
+### Hosting it as a website
+
+`server.js` is a zero-dependency static server for `www/`. It binds to `$PORT` when the host
+provides one, so it drops straight onto Render / Railway / Fly with no configuration.
+
+| Setting | Value |
+|---|---|
+| Build command | `npm ci --omit=dev` |
+| Start command | `node server.js` |
+| Health check | `/` |
+
+`render.yaml` in the repo root is a ready-made Render blueprint; if your service was created
+by hand in the dashboard, just copy those three values into Settings.
+
+Live: **https://jk-play-n-learn.onrender.com**
 
 ---
 
@@ -202,6 +218,9 @@ www/                          ← the whole app (no build step)
 │  ├─ train.css                         sky, track, train, crossing, driver's desk
 │  └─ js/ i18n.js · state.js · scene.js · cab.js · main.js
 └─ _devicelab.html                      dev-only: phone & iPad previews
+
+server.js                               zero-dependency static server ($PORT aware)
+render.yaml                             Render blueprint (build + start commands)
 android/                                Capacitor Android project (committed)
 capacitor.config.json
 .github/workflows/android.yml           auto-builds the APK

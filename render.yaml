@@ -1,0 +1,23 @@
+# Render blueprint — https://render.com/docs/blueprint-spec
+#
+# The web app is pure static files under www/, served by server.js so it
+# picks up $PORT automatically.
+#
+# If your Render service was created by hand in the dashboard instead of from
+# this file, set these in Settings:
+#   Build Command : npm ci --omit=dev
+#   Start Command : node server.js
+#   Health Check  : /
+
+services:
+  - type: web
+    name: jk-play-n-learn
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
