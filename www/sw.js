@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-v4';
+const CACHE = 'play-learn-v5';
 
 const ASSETS = [
   './',
@@ -76,7 +76,15 @@ const ASSETS = [
   'toilet/js/state.js',
   'toilet/js/scene.js',
   'toilet/js/panel.js',
-  'toilet/js/main.js'
+  'toilet/js/main.js',
+
+  'hood/index.html',
+  'hood/hood.css',
+  'hood/js/i18n.js',
+  'hood/js/state.js',
+  'hood/js/scene.js',
+  'hood/js/panel.js',
+  'hood/js/main.js'
 ];
 
 self.addEventListener('install', event => {

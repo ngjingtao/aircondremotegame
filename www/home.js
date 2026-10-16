@@ -22,6 +22,8 @@
       tileCareSub: 'See how it works — then learn how to wash it, step by step',
       tileToiletTitle: 'Toilet & Indah Water',
       tileToiletSub: 'See what a flush really does — then follow the water to the treatment plant',
+      tileHoodTitle: 'Kitchen Hood',
+      tileHoodSub: 'Turn the fan up and watch how it pulls the smoke, grease and smell out of the kitchen',
       foot: 'Made for curious kids',
       help: '?',
       helpTitle: 'Two activities',
@@ -65,6 +67,12 @@
           <li><code>How it gets cleaned</code> — eight stages through an Indah Water plant: screens, grit, primary tank, aeration, clarifier, disinfection, river.</li>
           <li>Tap any stage, or use NEXT, to hear what happens at each one.</li>
         </ul>
+        <h3>🍳 Kitchen Hood</h3>
+        <ul>
+          <li>Turn the fan to <code>OFF</code> and watch the smoke escape into the room.</li>
+          <li>Press <code>FILTER → DIRTY</code>: the airflow drops, the noise goes up and smoke starts leaking — exactly what a clogged filter does.</li>
+          <li>Switch between <code>OUTSIDE</code> and <code>RECIRCULATE</code> to see where the air ends up.</li>
+        </ul>
         <h3>Buttons in the top bar</h3>
         <ul>
           <li><code>‹ Menu</code> — back to this screen (inside an activity).</li>
@@ -89,6 +97,8 @@
       tileCareSub: '看它怎么工作 — 再一步步学会清洗空调',
       tileToiletTitle: '马桶与英达丽水',
       tileToiletSub: '看看冲水到底发生了什么 — 再跟着水去污水厂走一趟',
+      tileHoodTitle: '抽油烟机',
+      tileHoodSub: '把风速调大，看它怎么把油烟、油和味道抽走',
       foot: '给充满好奇心的小朋友',
       help: '?',
       helpTitle: '两个小游戏',
@@ -131,6 +141,12 @@
           <li><code>怎么冲水</code> — 按下按钮，看水箱排空、水流灌满 S 形弯管、虹吸把东西拉走。</li>
           <li><code>怎么变干净</code> — 走过污水厂的八个阶段：格栅、沉砂、初沉、曝气、二沉、消毒、排河。</li>
           <li>点任意一个阶段，或按“下一步”，听听每一段发生了什么。</li>
+        </ul>
+        <h3>🍳 抽油烟机</h3>
+        <ul>
+          <li>把风速按到 <code>关闭</code>，看油烟怎么跑进屋里。</li>
+          <li>按 <code>滤网 → 脏了</code>：风量掉下来、噪音变大、油烟开始外漏 — 这就是滤网堵住的样子。</li>
+          <li>在 <code>排到室外</code> 和 <code>室内循环</code> 之间切换，看空气最后去了哪里。</li>
         </ul>
         <h3>顶栏按钮</h3>
         <ul>

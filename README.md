@@ -260,6 +260,42 @@ work**, and people just build tanks and pump air for them.
 
 ---
 
+## 7 · 🍳 Kitchen Hood
+
+Turn the fan up and watch where the smoke goes. Everything reacts live, and I measured it:
+
+| Setting | Airflow | Smoke caught | Noise |
+|---|---|---|---|
+| Fan 2, clean | 600 m³/h | 97 % | 55 dB |
+| Fan 3, clean | 830 m³/h | 100 % | 63 dB |
+| **Fan off** | 0 m³/h | 0 % — it all escapes into the room | 0 dB |
+| **Fan 3, dirty filter** | 457 m³/h | 74 % — it leaks again | **67 dB** |
+| Fan 3, recirculating | 730 m³/h | 100 % | 63 dB |
+
+That dirty-filter row is the whole point of the activity, and it is the reason the button says
+**WASH IT** when you press it: a clogged grease filter cuts the airflow nearly in half, makes
+the hood *louder* and lets the smoke back into the kitchen. Exactly what happens in a real one.
+
+**The journey of the smoke** — the note card under the scene changes to match whatever you are
+doing:
+
+1. Cooking makes hot smoke, and hot air rises by itself.
+2. The **blower** — a wheel of curved blades — throws air outwards, which leaves a low pressure
+   in the middle, so air keeps rushing in. That is what makes the suction.
+3. Higher pressure in the room pushes the smoke up into the hood.
+4. The **grease filter** catches the oil droplets; the oil runs down and drips into the oil cup,
+   which visibly fills up while you are frying.
+5. Clean air goes up the **duct** and outside, pushing the **damper** open on the way. Switch the
+   fan off and the damper falls shut, so smells, draughts and birds stay outside.
+
+Switching to **RECIRCULATE** hides the duct and opens a front grille instead: grease is caught,
+but the air comes straight back into the room, smell and all.
+
+The one thing it teaches that most adults get wrong: **a hood does not suck like a vacuum
+cleaner.** It makes a low-pressure area, and the air around it pushes the smoke up.
+
+---
+
 ## Play it in a browser (fastest)
 
 Everything is plain HTML/CSS/JS — no build step.
@@ -435,6 +471,10 @@ www/                          ← the whole app (no build step)
 ├─ toilet/                              ── activity 6 ──
 │  ├─ index.html
 │  ├─ toilet.css                        flush cutaway, treatment train, step animations
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ hood/                                ── activity 7 ──
+│  ├─ index.html
+│  ├─ hood.css                          kitchen, blower, damper, smoke, airflow
 │  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
 └─ _devicelab.html                      dev-only: phone & iPad previews
 

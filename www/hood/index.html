@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0b1220" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="Kitchen Hood" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>Kitchen Hood · Play &amp; Learn</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="hood.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">🍳</span>
+      <span class="tb-title" data-i18n="title">Kitchen Hood</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="mAir">Airflow</span><b id="hud-air">600</b></div>
+      <div class="hud-chip hud-score"><span class="hud-label" data-i18n="mCaught">Smoke caught</span><b id="hud-catch">96%</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ══════════ LEFT PANEL ══════════ -->
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl">
+
+          <div class="ctl-block">
+            <div class="ctl-label" data-i18n="fan">FAN</div>
+            <div class="fan-row" id="fan-row"></div>
+          </div>
+
+          <div class="two-row">
+            <button class="ctl-btn light on" data-action="light">
+              <span class="cb-ico">💡</span><span data-i18n="light">LIGHT</span><i id="light-state">ON</i>
+            </button>
+            <button class="ctl-btn filter" data-action="filter">
+              <span class="cb-ico">🧽</span><span data-i18n="filter">FILTER</span><i id="filter-state">CLEAN</i>
+            </button>
+          </div>
+
+          <div class="ctl-block">
+            <div class="ctl-label" data-i18n="modeDuct">OUTSIDE</div>
+            <div class="mode-row">
+              <button class="mode-btn on" data-action="mode" data-mode="duct">
+                <span class="mb-ico">🏠</span><b data-i18n="modeDuct">OUTSIDE</b>
+              </button>
+              <button class="mode-btn" data-action="mode" data-mode="recirc">
+                <span class="mb-ico">🔄</span><b data-i18n="modeRecirc">RECIRCULATE</b>
+              </button>
+            </div>
+          </div>
+
+          <div class="meters" id="meters"></div>
+
+          <button class="cook-btn on" data-action="cooking" id="cook-btn">
+            <span class="cb-ico">🍳</span><span id="cook-txt">COOKING</span>
+          </button>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ SCENE ══════════ -->
+    <section id="scene" class="mode-duct">
+
+      <div class="scene-top">
+        <span class="scene-lead" id="scene-lead" data-i18n="ducted">Air goes outside</span>
+        <span class="scene-status" id="scene-status" data-i18n="blowing">Blowing</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="steelGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f8fafc"/>
+              <stop offset="55%" stop-color="#e2e8f0"/>
+              <stop offset="100%" stop-color="#c3ccd8"/>
+            </linearGradient>
+            <linearGradient id="ductGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#c3ccd8"/>
+              <stop offset="45%" stop-color="#eef2f7"/>
+              <stop offset="100%" stop-color="#aab5c3"/>
+            </linearGradient>
+            <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2c3a4d"/>
+              <stop offset="100%" stop-color="#1b2634"/>
+            </linearGradient>
+            <radialGradient id="lampGlow">
+              <stop offset="0%" stop-color="rgba(255,236,170,.75)"/>
+              <stop offset="100%" stop-color="rgba(255,236,170,0)"/>
+            </radialGradient>
+            <clipPath id="clipDuct"><rect x="132" y="14" width="76" height="132"/></clipPath>
+            <clipPath id="clipRoom"><rect x="0" y="14" width="340" height="506"/></clipPath>
+            <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0b1220" flood-opacity="0.4"/>
+            </filter>
+          </defs>
+
+          <!-- room -->
+          <rect x="0" y="14" width="340" height="506" fill="url(#wallGrad)"/>
+          <rect x="0" y="0" width="340" height="14" fill="#16202e"/>
+          <g clip-path="url(#clipRoom)">
+            <rect x="0" y="0" width="8" height="520" fill="#16202e"/>
+            <rect x="332" y="0" width="8" height="520" fill="#16202e"/>
+          </g>
+
+          <!-- floor / counter -->
+          <rect x="0" y="452" width="340" height="68" fill="#26313f"/>
+          <rect x="0" y="452" width="340" height="6" fill="#3a4858"/>
+          <rect x="52" y="458" width="236" height="56" rx="6" fill="#333f4f"/>
+          <rect x="52" y="458" width="236" height="6" rx="3" fill="#46566a"/>
+
+          <!-- ═════ duct ═════ -->
+          <g id="duct" filter="url(#soft)">
+            <rect x="132" y="14" width="76" height="136" fill="url(#ductGrad)" stroke="#9fabb9" stroke-width="1.4"/>
+            <g clip-path="url(#clipDuct)">
+              <!-- the damper flap -->
+              <g id="damper">
+                <rect x="132" y="52" width="76" height="8" rx="3" fill="#8d99a8" stroke="#6d7a8a" stroke-width="1"/>
+              </g>
+              <!-- air flowing up the duct -->
+              <g id="ductP"></g>
+            </g>
+            <!-- the top opening -->
+            <rect x="128" y="8" width="84" height="10" rx="4" fill="#9fabb9"/>
+          </g>
+
+          <!-- ═════ hood ═════ -->
+          <g id="hood" filter="url(#soft)">
+            <!-- chimney cover -->
+            <rect x="120" y="146" width="100" height="44" rx="6" fill="url(#steelGrad)" stroke="#aab5c3" stroke-width="1.4"/>
+            <!-- canopy -->
+            <path d="M100,188 H240 L268,250 H72 Z" fill="url(#steelGrad)" stroke="#aab5c3" stroke-width="1.6"/>
+            <path d="M100,188 H240 L246,202 H94 Z" fill="#f4f7fb" opacity="0.75"/>
+
+            <!-- blower, shown through a round window -->
+            <circle cx="170" cy="214" r="30" fill="#1d2734" stroke="#8d99a8" stroke-width="2"/>
+            <g id="blower"></g>
+            <circle cx="170" cy="214" r="7" fill="#8d99a8"/>
+
+            <!-- the light -->
+            <ellipse id="lampGlow" cx="170" cy="240" rx="66" ry="26" fill="url(#lampGlow)" opacity="0.85"/>
+            <ellipse id="lamp" cx="170" cy="248" rx="11" ry="5" fill="#ffd166" opacity="0.95"/>
+
+            <!-- grease filter -->
+            <g id="filterPanel">
+              <rect x="84" y="252" width="172" height="14" rx="4" fill="#b9c4d2" stroke="#9fabb9" stroke-width="1.2"/>
+              <g id="filterMesh" stroke="#8b97a6" stroke-width="1" opacity="0.9">
+                <path d="M90 255 H250 M90 259 H250 M90 263 H250"/>
+              </g>
+              <rect id="filterGrease" x="84" y="252" width="172" height="14" rx="4" fill="#8a6a3a" opacity="0"/>
+            </g>
+
+            <!-- oil cup -->
+            <g id="oilCup">
+              <rect x="88" y="266" width="46" height="18" rx="4" fill="#5d6b7c" stroke="#47535f" stroke-width="1.2"/>
+              <rect id="oilLevel" x="92" y="274" width="38" height="8" rx="3" fill="#7a5a2e"/>
+            </g>
+
+            <!-- the front grille, only used when recirculating -->
+            <g id="recircGrille">
+              <rect x="104" y="206" width="132" height="20" rx="6" fill="#1d2734" stroke="#8d99a8" stroke-width="1.4"/>
+              <g stroke="#5d6b7c" stroke-width="2.4" stroke-linecap="round">
+                <path d="M114 212 H226 M114 218 H226"/>
+              </g>
+              <g id="recircP"></g>
+            </g>
+          </g>
+
+          <!-- ═════ stove + wok ═════ -->
+          <g id="stove">
+            <rect x="60" y="404" width="220" height="14" rx="6" fill="#3f4c5d" stroke="#2f3a49" stroke-width="1.2"/>
+            <ellipse cx="170" cy="404" rx="46" ry="8" fill="#2a3442"/>
+            <g id="flame">
+              <ellipse cx="170" cy="402" rx="30" ry="5" fill="#ff9a3c" opacity="0.75"/>
+              <ellipse cx="146" cy="400" rx="8" ry="4" fill="#ffd166" opacity="0.8"/>
+              <ellipse cx="194" cy="400" rx="8" ry="4" fill="#ffd166" opacity="0.8"/>
+            </g>
+            <!-- wok -->
+            <path d="M118,392 C118,420 142,436 170,436 C198,436 222,420 222,392 Z" fill="#4a5563" stroke="#39424f" stroke-width="1.4"/>
+            <ellipse cx="170" cy="392" rx="52" ry="9" fill="#5b6874"/>
+            <ellipse cx="170" cy="392" rx="44" ry="6" fill="#7a5a2e"/>
+            <path d="M222,392 L256,368" stroke="#39424f" stroke-width="7" stroke-linecap="round"/>
+          </g>
+
+          <!-- ═════ particles ═════ -->
+          <g id="smoke"></g>
+          <g id="escaped"></g>
+
+          <!-- ═════ labels ═════ -->
+          <g id="labels">
+            <g class="lab" data-lab="hood"><text x="284" y="170" text-anchor="start" data-i18n="lHood">hood</text></g>
+            <g class="lab" data-lab="blower"><text x="284" y="216" text-anchor="start" data-i18n="lBlower">blower</text></g>
+            <g class="lab" data-lab="filter"><text x="284" y="262" text-anchor="start" data-i18n="lFilter">grease filter</text></g>
+            <g class="lab" data-lab="cup"><text x="60" y="280" text-anchor="end" data-i18n="lCup">oil cup</text></g>
+            <g class="lab" data-lab="duct"><text x="104" y="90" text-anchor="end" data-i18n="lDuct">duct</text></g>
+            <g class="lab" data-lab="damper"><text x="104" y="50" text-anchor="end" data-i18n="lDamper">damper</text></g>
+            <g class="lab" data-lab="wok"><text x="60" y="430" text-anchor="end" data-i18n="lWok">wok</text></g>
+            <g class="lab" data-lab="grille"><text x="284" y="212" text-anchor="start" data-i18n="lGrille">grille</text></g>
+            <g class="lab out" data-lab="outside"><text x="170" y="26" text-anchor="middle" data-i18n="lOutside">OUTSIDE</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+      <div class="toast" id="toast"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">How a kitchen hood works</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>
