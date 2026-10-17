@@ -138,7 +138,17 @@
 
 /* ── flush bits ── */
 .fp{fill:#bfe8ff;stroke:rgba(255,255,255,.5);stroke-width:0.6;}
-#cisternWater,#bowlWater{transition:y .12s linear, height .12s linear;}
+#cisternWater,#bowlWater{transition:y .12s linear, height .12s linear;
+  stroke:rgba(255,255,255,.6);stroke-width:1;
+  filter:drop-shadow(0 0 3px rgba(90,180,240,.5));}
+/* a ripple on the surface of the bowl water so the level reads clearly */
+.wave{fill:rgba(255,255,255,.42);transition:cy .12s linear, opacity .3s;
+  animation:waveSlide 2.6s ease-in-out infinite;}
+.wave.w2{fill:rgba(255,255,255,.26);animation-duration:3.4s;animation-direction:reverse;}
+@keyframes waveSlide{
+  0%,100%{ transform:translateX(-4px) scaleX(1); }
+  50%{ transform:translateX(4px) scaleX(1.08); }
+}
 #floatBall{transition:cy .12s linear;}
 #flapper,#flushButton{transition:transform .15s;}
 

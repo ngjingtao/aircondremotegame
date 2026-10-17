@@ -41,6 +41,8 @@ ARG.scene = (function () {
     els.tanks = document.getElementById('tanks');
     els.cisternWater = document.getElementById('cisternWater');
     els.bowlWater = document.getElementById('bowlWater');
+    els.bowlWave = document.getElementById('bowlWave');
+    els.bowlWave2 = document.getElementById('bowlWave2');
     els.trapWater = document.getElementById('trapWater');
     els.flapper = document.getElementById('flapper');
     els.flushButton = document.getElementById('flushButton');
@@ -249,6 +251,12 @@ ARG.scene = (function () {
     const bowlTop = 386 - 100 * clamp(S.bowl, 0, 1);
     els.bowlWater.setAttribute('y', bowlTop.toFixed(1));
     els.bowlWater.setAttribute('height', (500 - bowlTop).toFixed(1));
+    if (els.bowlWave) {
+      els.bowlWave.setAttribute('cy', (bowlTop + 3).toFixed(1));
+      els.bowlWave.setAttribute('opacity', S.flushing ? '0.75' : '0.5');
+      els.bowlWave2.setAttribute('cy', (bowlTop + 7).toFixed(1));
+      els.bowlWave2.setAttribute('opacity', S.flushing ? '0.5' : '0.3');
+    }
 
     /* trapway: full and fast while siphoning */
     els.trapWater.setAttribute('opacity', S.siphoning ? '1' : (S.flushing ? '0.95' : '0.85'));

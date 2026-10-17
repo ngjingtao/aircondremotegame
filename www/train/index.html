@@ -38,6 +38,7 @@
     </div>
     <div class="tb-buttons">
       <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
       <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
       <button class="tb-btn" id="btn-sound">🔊</button>
       <button class="tb-btn" id="btn-help">?</button>
@@ -51,8 +52,10 @@
       <div class="sky"></div>
       <div class="sun" id="sun"></div>
       <div class="clouds" id="clouds"></div>
+      <div class="clouds2" id="clouds2"></div>
       <div class="hills" id="hills"></div>
       <div class="ground"></div>
+      <div class="mid" id="mid"></div>
       <div class="track" id="track"><div class="sleepers" id="sleepers"></div></div>
       <div class="objs" id="objs"></div>
       <div class="wire"></div>
@@ -63,10 +66,18 @@
 
       <div class="scene-hud">
         <div class="sh-speed"><b id="hud-kmh">0</b><span data-i18n="speedUnit">km/h</span></div>
-        <div class="sh-next" id="hud-next">
-          <span class="sh-label" data-i18n="nextStop">Next stop</span>
-          <b id="hud-next-name">—</b>
-          <i id="hud-next-dist">—</i>
+        <div class="sh-right">
+          <div class="sh-next" id="hud-next">
+            <span class="sh-label" data-i18n="nextStop">Next stop</span>
+            <b id="hud-next-name">—</b>
+            <i id="hud-next-dist">—</i>
+          </div>
+          <div class="sh-track" id="sh-track">
+            <span class="st-station from"></span>
+            <span class="st-line"><i id="st-fill"></i></span>
+            <span class="st-station to"></span>
+            <span class="st-train" id="st-train">🚆</span>
+          </div>
         </div>
       </div>
 
@@ -167,6 +178,8 @@
 <script src="../shared/store.js"></script>
 
 <script src="../shared/voice.js"></script>
+
+<script src="../shared/shell.js"></script>
 <script src="../shared/audio.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/state.js"></script>

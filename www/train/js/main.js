@@ -50,6 +50,7 @@
   function boot() {
     ARG.i18n.apply();
     ARG.voice.attach();
+    ARG.shell.attach();
     ARG.scene.build();
     ARG.cab.build(handleAction);
 

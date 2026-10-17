@@ -36,6 +36,7 @@
       <div class="hud-chip hud-score"><span class="hud-label" data-i18n="mCaught">Smoke caught</span><b id="hud-catch">96%</b></div>
     </div>
     <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
       <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
       <button class="tb-btn" id="btn-lang">EN</button>
       <button class="tb-btn" id="btn-sound">🔊</button>
@@ -115,6 +116,11 @@
               <stop offset="0%" stop-color="rgba(255,236,170,.75)"/>
               <stop offset="100%" stop-color="rgba(255,236,170,0)"/>
             </radialGradient>
+            <linearGradient id="coneGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(255,238,180,.42)"/>
+              <stop offset="60%" stop-color="rgba(255,232,160,.17)"/>
+              <stop offset="100%" stop-color="rgba(255,228,150,0)"/>
+            </linearGradient>
             <clipPath id="clipDuct"><rect x="132" y="14" width="76" height="132"/></clipPath>
             <clipPath id="clipRoom"><rect x="0" y="14" width="340" height="506"/></clipPath>
             <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
@@ -165,6 +171,8 @@
             <circle cx="170" cy="214" r="7" fill="#8d99a8"/>
 
             <!-- the light -->
+            <path id="lightCone" d="M148,252 L192,252 L268,412 L72,412 Z"
+                  fill="url(#coneGrad)" opacity="0" style="transition:opacity .3s"/>
             <ellipse id="lampGlow" cx="170" cy="240" rx="66" ry="26" fill="url(#lampGlow)" opacity="0.85"/>
             <ellipse id="lamp" cx="170" cy="248" rx="11" ry="5" fill="#ffd166" opacity="0.95"/>
 
@@ -245,6 +253,7 @@
 
 <script src="../shared/store.js"></script>
 <script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
 <script src="../shared/audio.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/state.js"></script>

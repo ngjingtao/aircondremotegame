@@ -184,7 +184,27 @@
 }
 
 /* ── refrigerant loop ── */
-.rf{stroke:rgba(255,255,255,.6);stroke-width:0.7;}
+.rf{stroke:rgba(255,255,255,.6);stroke-width:0.7;transition:r .25s, opacity .25s;}
+/* a droplet of liquid is smaller and denser than a puff of gas */
+.rf.liquid{r:2.6;stroke-width:0.5;}
+.rf.gas{r:4.2;opacity:.8;}
+
+/* ── the ring that highlights the part you are reading about ── */
+.ring{
+  fill:none;stroke:rgba(255,226,160,.95);stroke-width:3;
+  opacity:0;pointer-events:none;
+}
+#scene[data-part="0"] .ring.comp,
+#scene[data-part="1"] .ring.cond,
+#scene[data-part="2"] .ring.valve,
+#scene[data-part="3"] .ring.evap{
+  opacity:1;
+  animation:ringPulse 1.5s ease-in-out infinite;
+}
+@keyframes ringPulse{
+  0%,100%{ filter:blur(3px); opacity:.45; }
+  50%{ filter:blur(7px); opacity:1; }
+}
 
 /* ── airflow ── */
 .ai{fill:#ff7a5c;}

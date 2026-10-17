@@ -33,6 +33,7 @@ ARG.scene = (function () {
     els.oilLevel = document.getElementById('oilLevel');
     els.lamp = document.getElementById('lamp');
     els.lampGlow = document.getElementById('lampGlow');
+    els.lightCone = document.getElementById('lightCone');
     els.flame = document.getElementById('flame');
     els.grille = document.getElementById('recircGrille');
     els.lead = document.getElementById('scene-lead');
@@ -92,6 +93,7 @@ ARG.scene = (function () {
     /* the lamp */
     els.lamp.setAttribute('opacity', S.light ? '0.95' : '0.12');
     els.lampGlow.setAttribute('opacity', S.light ? '0.85' : '0.05');
+    if (els.lightCone) els.lightCone.setAttribute('opacity', S.light ? '0.95' : '0');
     els.flame.setAttribute('opacity', S.boiling ? '0.85' : '0.12');
 
     /* a dirty filter looks oily */

@@ -74,7 +74,7 @@ ARG.panel = (function () {
     if (lastLight !== S.light) {
       lastLight = S.light;
       els.lightBtn.classList.toggle('on', S.light);
-      els.lightState.textContent = S.light ? 'ON' : 'OFF';
+      els.lightState.textContent = t(S.light ? 'on' : 'off');
     }
     if (lastDirty !== S.dirty) {
       lastDirty = S.dirty;
@@ -88,7 +88,7 @@ ARG.panel = (function () {
     if (lastCook !== S.boiling) {
       lastCook = S.boiling;
       els.cookBtn.classList.toggle('on', S.boiling);
-      els.cookTxt.textContent = S.boiling ? 'COOKING' : 'IDLE';
+      els.cookTxt.textContent = t(S.boiling ? 'cooking' : 'idleState');
     }
 
     const val = {

@@ -15,6 +15,18 @@
     const scaler = $('remote-scaler');
     if (!mainEl || !panel) return;
 
+    if (ARG.shell && ARG.shell.isCollapsed()) {
+
+
+      panel.style.flexBasis = '0px';
+
+
+      return;
+
+
+    }
+
+
     const totalW = mainEl.clientWidth;
     const availH = panel.clientHeight - 16;
     /* "tablet" = roomy in both directions; a landscape phone has the width but not the height */
@@ -75,6 +87,7 @@
   function boot() {
     ARG.i18n.apply();
     ARG.voice.attach();
+    ARG.shell.attach();
 
     ARG.remote.init(handleAction);
     ARG.room.init();

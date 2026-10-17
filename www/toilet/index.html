@@ -36,6 +36,7 @@
       <div class="hud-chip hud-score"><span class="hud-label" id="hud-label2" data-i18n="oSeal">water seal</span><b id="hud-val">OK</b></div>
     </div>
     <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
       <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
       <button class="tb-btn" id="btn-lang">EN</button>
       <button class="tb-btn" id="btn-sound">🔊</button>
@@ -144,8 +145,10 @@
             <g id="bowl" filter="url(#soft)">
               <path d="M96,196 H244 V214 C244,330 216,392 170,404 C124,392 96,330 96,214 Z" fill="url(#porcGrad)" stroke="#c8d1dd" stroke-width="1.6"/>
               <g clip-path="url(#clipBowl)">
-                <rect id="bowlWater" x="90" y="300" width="160" height="120" fill="url(#waterGrad)" opacity="0.9"/>
+                <rect id="bowlWater" x="90" y="300" width="160" height="120" fill="url(#waterGrad)" opacity="0.92"/>
               </g>
+              <ellipse id="bowlWave" class="wave" cx="170" cy="310" rx="52" ry="6" opacity="0"/>
+              <ellipse id="bowlWave2" class="wave w2" cx="170" cy="310" rx="40" ry="4" opacity="0"/>
               <path d="M100,210 C104,300 124,368 170,380 C216,368 236,300 240,210" fill="none" stroke="#d8e0ea" stroke-width="2"/>
             </g>
 
@@ -208,6 +211,7 @@
 
 <script src="../shared/store.js"></script>
 <script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
 <script src="../shared/audio.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/state.js"></script>

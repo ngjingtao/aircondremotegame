@@ -127,8 +127,8 @@
 }
 
 /* ── smoke + air ── */
-.sm{fill:#c8d2de;stroke:rgba(255,255,255,.35);stroke-width:0.6;}
-.es{fill:#a9b6c6;stroke:rgba(255,255,255,.25);stroke-width:0.6;}
+.sm{fill:#c8d2de;stroke:rgba(255,255,255,.35);stroke-width:0.6;filter:blur(1.6px);}
+.es{fill:#a9b6c6;stroke:rgba(255,255,255,.25);stroke-width:0.6;filter:blur(2.2px);}
 .dp{fill:#9fe0ff;stroke:rgba(255,255,255,.4);stroke-width:0.5;}
 .rp{fill:#9fe0ff;stroke:rgba(255,255,255,.4);stroke-width:0.5;}
 

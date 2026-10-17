@@ -13,6 +13,18 @@
     const scaler = $('ctl-scaler');
     if (!mainEl || !panel) return;
 
+    if (ARG.shell && ARG.shell.isCollapsed()) {
+
+
+      panel.style.flexBasis = '0px';
+
+
+      return;
+
+
+    }
+
+
     const totalW = mainEl.clientWidth;
     const availH = panel.clientHeight - 16;
     const tablet = totalW >= 700 && mainEl.clientHeight >= 560;
@@ -91,6 +103,7 @@
     ARG.panel.build(handleAction);
     ARG.i18n.apply();
     ARG.voice.attach();
+    ARG.shell.attach();
 
     $('btn-lang').addEventListener('click', () => {
       ARG.i18n.toggle();

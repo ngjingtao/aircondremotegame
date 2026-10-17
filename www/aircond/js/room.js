@@ -22,6 +22,21 @@ ARG.room = (function () {
     return true;
   }
 
+  /* flash the little status pill for a moment when its number changes */
+  const bumpTimers = {};
+  function bump(el, kind) {
+    if (!el) return;
+    const pill = el.closest ? el.closest('.env-item') : el.parentElement;
+    if (!pill) return;
+    pill.classList.remove('bump', 'hot', 'cold');
+    void pill.offsetWidth;
+    pill.classList.add('bump');
+    if (kind) pill.classList.add(kind);
+    const id = pill.dataset.key || (pill.dataset.key = 'k' + Math.random().toString(36).slice(2));
+    clearTimeout(bumpTimers[id]);
+    bumpTimers[id] = setTimeout(() => pill.classList.remove('bump', 'hot', 'cold'), 620);
+  }
+
   function cache() {
     els.wall     = document.getElementById('room-wall');
     els.panel    = document.getElementById('room-panel');
@@ -51,13 +66,19 @@ ARG.room = (function () {
     els.comboHud = document.getElementById('hud-combo');
     els.scoreChip = document.getElementById('hud-score-chip');
 
-    /* build airflow streams */
+    /* build airflow streams + direction arrows */
     els.airflow.innerHTML = '';
     for (let i = 0; i < 10; i++) {
       const d = document.createElement('div');
       d.className = 'stream';
       els.airflow.appendChild(d);
     }
+    for (let i = 0; i < 4; i++) {
+      const a = document.createElement('div');
+      a.className = 'arrow';
+      els.airflow.appendChild(a);
+    }
+    els.arrows = Array.from(els.airflow.querySelectorAll('.arrow'));
   }
 
   /* ─────────── mood colours ─────────── */
@@ -99,13 +120,22 @@ ARG.room = (function () {
 
     /* environment readouts (throttled to visible changes) */
     const outTxt = s.outdoorTemp.toFixed(1) + '°';
-    if (changed('outT', outTxt)) els.out.textContent = outTxt;
+    if (changed('outT', outTxt)) {
+      els.out.textContent = outTxt;
+      bump(els.out, s.outdoorTemp > 35 ? 'hot' : (s.outdoorTemp < 22 ? 'cold' : ''));
+    }
 
     const roomTxt = s.roomTemp.toFixed(1) + '°';
-    if (changed('roomT', roomTxt)) els.roomT.textContent = roomTxt;
+    if (changed('roomT', roomTxt)) {
+      els.roomT.textContent = roomTxt;
+      bump(els.roomT, s.roomTemp > 29 ? 'hot' : (s.roomTemp < 21 ? 'cold' : ''));
+    }
 
     const humTxt = Math.round(s.humidity) + '%';
-    if (changed('hum', humTxt)) els.hum.textContent = humTxt;
+    if (changed('hum', humTxt)) {
+      els.hum.textContent = humTxt;
+      bump(els.hum, s.humidity > 78 ? 'hot' : '');
+    }
 
     const hh = Math.floor(s.clockH);
     const mm = Math.floor((s.clockH - hh) * 60);
@@ -115,18 +145,38 @@ ARG.room = (function () {
     /* outside weather look */
     const night = s.clockH < 6.5 || s.clockH > 18.5;
     const heat = s.outdoorTemp > 35;
+    const storm = s.humidity > 82 && !night;
+    const freeze = s.outdoorTemp < 22;
     const skyKey = night ? 'night' : (heat ? 'hot' : 'day');
     if (changed('sky', skyKey)) {
       if (night) {
         els.winSky.style.background = 'linear-gradient(180deg,#122045,#2b3f6e)';
         els.winSun.style.opacity = '0';
+        els.winSun.textContent = '🌙';
       } else {
         els.winSky.style.background = heat
           ? 'linear-gradient(180deg,#ffb95e,#ffdca8)'
           : 'linear-gradient(180deg,#8ec9f0,#cfe8fb)';
-        els.winSun.textContent = heat ? '☀️' : '⛅';
+        els.winSun.textContent = heat ? '☀️' : (storm ? '⛅' : '⛅');
         els.winSun.style.opacity = '1';
       }
+      els.rays = els.rays || document.getElementById('win-rays');
+      if (els.rays) els.rays.style.opacity = night ? '0' : (storm ? '0.12' : '0.55');
+    }
+
+    /* weather inside the window */
+    const wetKey = storm ? 'rain' : (freeze ? 'snow' : 'dry');
+    if (changed('wet', wetKey)) {
+      const rain = document.getElementById('win-rain');
+      const snow = document.getElementById('win-snowfall');
+      const hills = document.getElementById('win-hills');
+      if (rain) rain.style.opacity = storm ? '0.55' : '0';
+      if (snow) snow.style.opacity = freeze ? '0.6' : '0';
+      if (hills) {
+        hills.style.filter = freeze ? 'saturate(.5) brightness(1.15)' : (heat ? 'saturate(1.1) sepia(.25)' : 'none');
+      }
+      const w = document.getElementById('room-window');
+      if (w) w.classList.toggle('storm', storm);
     }
 
     /* room tint — rounded so we do not restyle every single frame */

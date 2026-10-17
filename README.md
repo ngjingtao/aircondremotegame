@@ -339,16 +339,28 @@ browser's built-in speech voices (Web Speech API), so nothing is downloaded and 
 offline. It follows the interface language: pick a Chinese voice for Chinese, an English voice
 for English.
 
+**While it reads, the words light up.** Tap a fact card or the help text and each word is
+highlighted as it is spoken (on browsers that report word boundaries — Chrome and Edge do; on
+iOS the card is outlined instead). Narrated steps outline the note card so you can see which
+text is being talked about.
+
 Where it speaks:
 
 | Activity | What it reads |
 |---|---|
-| **Inside the Aircon** | Tap any of the four parts to hear it explained. **READ IT TO ME** narrates the whole cycle in order. Switching to *How to wash it* reads the intro, and every step is read out with its servicing note. Tap the note card to hear it again. |
-| **Food Eating** | Each stop is announced with its science fact as the food arrives. Tap the fact card to hear it again. |
+| **Inside the Aircon** | Tap any of the four parts to hear it explained — the part is also ringed on the diagram. **READ IT TO ME** narrates the whole cycle in order. Switching to *How to wash it* reads the intro, and every step is read out with its servicing note. |
+| **Food Eating** | Each stop is announced with its science fact as the food arrives, and the fact card highlights word by word. |
 | **Breathing & Blood** | Each experiment is announced with what it does to the body. Tap the fact card to hear it again. |
 | **All activities** | Tap the help text to have the instructions read out. |
 
 If the device has no speech voices, the button hides itself and nothing else changes.
+
+## ◧ Bigger picture on a small screen
+
+Every activity has a **◧ button** in the top bar that folds the control panel away so the
+illustration gets the whole screen — handy on a phone. Tap it again to bring the controls back,
+and the preference is remembered. On Train Driving it hides the bottom desk instead, so the
+view out of the cab fills the screen (512 px → 802 px on a phone).
 
 ---
 

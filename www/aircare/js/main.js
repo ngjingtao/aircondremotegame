@@ -14,6 +14,18 @@
     const scaler = $('ctl-scaler');
     if (!mainEl || !panel) return;
 
+    if (ARG.shell && ARG.shell.isCollapsed()) {
+
+
+      panel.style.flexBasis = '0px';
+
+
+      return;
+
+
+    }
+
+
     const totalW = mainEl.clientWidth;
     const availH = panel.clientHeight - 16;
     const tablet = totalW >= 700 && mainEl.clientHeight >= 560;
@@ -34,7 +46,9 @@
     /* ── narration ── */
     if (action === 'speakPart') {
       const key = el && el.dataset ? el.dataset.speak : null;
+      const idx = el && el.dataset ? +el.dataset.part : -1;
       ARG.audio.blip();
+      ARG.scene.focus(idx);
       if (key) ARG.voice.speak(ARG.i18n.t(key));
       return;
     }
@@ -82,6 +96,8 @@
     let i = 0;
     (function next() {
       if (i >= parts.length) return;
+      const idx = i - 1;
+      ARG.scene.focus(idx >= 0 ? idx : -1);
       const txt = ARG.i18n.t(parts[i++]);
       ARG.voice.speak(txt);
       /* rough timing so the next part waits for the voice to finish */
@@ -94,7 +110,8 @@
     if (!st) return;
     const n = ARG.sim.s.step + 1;
     const head = ARG.i18n.lang === 'zh' ? ('第 ' + n + ' 步，') : ('Step ' + n + '. ');
-    ARG.voice.speak(head + ARG.i18n.t(st.key) + '。' + ARG.i18n.t(st.fact));
+    ARG.voice.speakLinked(document.getElementById('pane-note'),
+      head + ARG.i18n.t(st.key) + '。' + ARG.i18n.t(st.fact));
   }
 
   let last = 0, running = true;
@@ -116,6 +133,7 @@
     ARG.panel.build(handleAction);
     ARG.i18n.apply();
     ARG.voice.attach();
+    ARG.shell.attach();
 
     $('btn-lang').addEventListener('click', () => {
       ARG.i18n.toggle();

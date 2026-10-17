@@ -15,6 +15,18 @@
     const scaler = $('deck-scaler');
     if (!mainEl || !panel) return;
 
+    if (ARG.shell && ARG.shell.isCollapsed()) {
+
+
+      panel.style.flexBasis = '0px';
+
+
+      return;
+
+
+    }
+
+
     const totalW = mainEl.clientWidth;
     const availH = panel.clientHeight - 16;
     /* "tablet" = roomy in both directions; a landscape phone has the width but not the height */
@@ -94,7 +106,8 @@
     if (s.stage === 'MOUTH' && !s.food) return;         // nothing has happened yet
     const name = ARG.i18n.t('s' + s.stage);
     const fact = ARG.i18n.fact(s.stage.toLowerCase());
-    ARG.voice.speak(name + '。' + fact);
+    /* the fact card contains exactly this text, so the words light up as it reads */
+    ARG.voice.speakIn(document.getElementById('fact-text'), name + '。' + fact);
   }
 
   /* ─────────── loop ─────────── */
@@ -178,7 +191,8 @@
     ARG.body.build();
     ARG.deck.build(handleAction);
     ARG.i18n.apply();
-    ARG.voice.attach();          // after the decks exist, so every label is translated
+    ARG.voice.attach();
+    ARG.shell.attach();          // after the decks exist, so every label is translated
 
     ARG.sim.setToastHook((key, kind) => {
       if (!key) return;

@@ -17,6 +17,8 @@ ARG.i18n = (function () {
       filter: 'FILTER',
       clean: 'CLEAN', dirty: 'DIRTY',
       washIt: 'WASH IT',
+      on: 'ON', off: 'OFF',
+      cooking: 'COOKING', idleState: 'IDLE',
 
       mAir: 'Airflow',
       mCaught: 'Smoke caught',
@@ -79,6 +81,8 @@ ARG.i18n = (function () {
       filter: '滤网',
       clean: '干净', dirty: '脏了',
       washIt: '去洗一洗',
+      on: '开', off: '关',
+      cooking: '正在做菜', idleState: '空闲',
 
       mAir: '风量',
       mCaught: '吸走油烟',

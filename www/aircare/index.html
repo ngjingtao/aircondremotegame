@@ -37,6 +37,7 @@
     </div>
     <div class="tb-buttons">
       <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
       <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
       <button class="tb-btn" id="btn-sound">🔊</button>
       <button class="tb-btn" id="btn-help">?</button>
@@ -290,6 +291,14 @@
             </g>
           </g>
 
+          <!-- ═════ component focus rings ═════ -->
+          <g id="rings">
+            <circle class="ring comp" cx="121" cy="384" r="44"/>
+            <ellipse class="ring cond" cx="166" cy="438" rx="98" ry="46"/>
+            <circle class="ring valve" cx="272" cy="160" r="32"/>
+            <ellipse class="ring evap" cx="150" cy="104" rx="112" ry="46"/>
+          </g>
+
           <!-- ═════ labels ═════ -->
           <g id="labels">
             <g class="lab" data-lab="comp"><text x="121" y="358" text-anchor="middle" data-i18n="cComp">compressor</text></g>
@@ -320,6 +329,8 @@
 <script src="../shared/store.js"></script>
 
 <script src="../shared/voice.js"></script>
+
+<script src="../shared/shell.js"></script>
 <script src="../shared/audio.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/state.js"></script>

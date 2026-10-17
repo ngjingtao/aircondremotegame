@@ -154,12 +154,16 @@ ARG.scene = (function () {
     els.sleepers = document.getElementById('sleepers');
     els.foreground = document.getElementById('foreground');
     els.clouds = document.getElementById('clouds');
+    els.clouds2 = document.getElementById('clouds2');
     els.hills = document.getElementById('hills');
+    els.mid = document.getElementById('mid');
     els.headlight = document.getElementById('headlight');
     els.hudKmh = document.getElementById('hud-kmh');
     els.hudNext = document.getElementById('hud-next');
     els.hudNextName = document.getElementById('hud-next-name');
     els.hudNextDist = document.getElementById('hud-next-dist');
+    els.stFill = document.getElementById('st-fill');
+    els.stTrain = document.getElementById('st-train');
     els.flag = document.getElementById('crossing-flag');
     els.toast = document.getElementById('toast');
 
@@ -200,8 +204,10 @@ ARG.scene = (function () {
 
     /* ── parallax: shift wide tiled layers by the remainder of their period ── */
     const camM = S.x;
-    els.clouds.style.transform = 'translateX(' + (-(camM * ppm * 0.10) % 124).toFixed(1) + 'px)';
+    els.clouds.style.transform = 'translateX(' + (-(camM * ppm * 0.06) % 300).toFixed(1) + 'px)';
+    els.clouds2.style.transform = 'translateX(' + (-(camM * ppm * 0.17) % 340).toFixed(1) + 'px)';
     els.hills.style.transform = 'translateX(' + (-(camM * ppm * 0.32) % 300).toFixed(1) + 'px)';
+    els.mid.style.transform = 'translateX(' + (-(camM * ppm * 0.58) % 46).toFixed(1) + 'px)';
     els.sleepers.style.transform = 'translateX(' + (-(camM * ppm) % 30).toFixed(1) + 'px)';
     els.foreground.style.transform = 'translateX(' + (-(camM * ppm * 1.7) % 36).toFixed(1) + 'px)';
 
@@ -305,6 +311,16 @@ ARG.scene = (function () {
     els.hudNextDist.textContent = atP ? (Math.round(S.distToMark) + ' ' + T()('metres')) : (dist + ' ' + T()('metres'));
     els.hudNext.classList.toggle('near', !atP && dist >= 0 && dist < 250);
     els.hudNext.classList.toggle('at', atP);
+
+    /* the little progress track between the last station and the next */
+    const prevX = ARG.sim.stationX(S.nextIdx - 1);
+    const nextX = ARG.sim.stationX(S.nextIdx);
+    const span = Math.max(1, nextX - prevX);
+    const prog = clamp((S.x - prevX) / span, 0, 1);
+    if (els.stFill) {
+      els.stFill.style.width = (prog * 100).toFixed(1) + '%';
+      els.stTrain.style.left = (prog * 100).toFixed(1) + '%';
+    }
 
     /* ── crossing flag ── */
     els.flag.classList.toggle('on', S.activeCrossings.length > 0);

@@ -99,6 +99,10 @@ ARG.body = (function () {
     const labels = document.getElementById('labels');
 
     ns(tract, `
+      <path d="${D.large}" fill="none" class="halo h-large"/>
+      <path d="${D.coil}" fill="none" class="halo h-coil"/>
+      <path d="${D.eso}" fill="none" class="halo h-eso"/>
+      <ellipse class="halo h-stomach" cx="114" cy="169" rx="30" ry="25" transform="rotate(-5 114 169)"/>
       <path d="${D.large}" fill="none" class="organ large"/>
       <path d="${D.coil}" fill="none" class="organ coil"/>
       <path d="${D.duo}" fill="none" class="organ duo"/>

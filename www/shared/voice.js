@@ -69,6 +69,48 @@ ARG.voice = (function () {
       .trim();
   }
 
+  /* the element whose text is being read, so we can highlight word by word */
+  let speakingEl = null;
+  let wordMarks = null;
+
+  function clearHighlight() {
+    if (speakingEl && wordMarks) {
+      speakingEl.innerHTML = wordMarks.html;   // put the original markup back
+    }
+    speakingEl = null;
+    wordMarks = null;
+  }
+
+  /* Chrome/Edge give us word boundaries; iOS gives nothing, so we fall back to
+     simply marking the whole card as "being read". */
+  function showProgress(u, charIndex, charLength, total) {
+    if (!speakingEl || !wordMarks || !wordMarks.plain) return;
+    if (charIndex >= total) return;
+    const { plain } = wordMarks;
+    const end = charLength ? charIndex + charLength : charIndex + 1;
+    speakingEl.innerHTML =
+      escapeHTML(plain.slice(0, charIndex)) +
+      '<mark class="tts-word">' + escapeHTML(plain.slice(charIndex, end)) + '</mark>' +
+      escapeHTML(plain.slice(end));
+  }
+
+  function escapeHTML(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  /* speak, and highlight the words inside `el` while it reads */
+  function speakIn(el, text, opts) {
+    clearHighlight();
+    if (el && enabled) {
+      speakingEl = el;
+      wordMarks = { plain: clean(text), html: el.innerHTML };
+      el.classList.add('tts-reading');
+    }
+    const ok = speak(text, opts);
+    if (!ok && speakingEl) { speakingEl.classList.remove('tts-reading'); clearHighlight(); }
+    return ok;
+  }
+
   function speak(text, opts) {
     if (!enabled || !synth) return false;
     const body = clean(text);
@@ -82,9 +124,28 @@ ARG.voice = (function () {
     u.rate = (options.rate || 0.92);
     u.pitch = 1;
     u.volume = 1;
-    u.onstart = () => { current = u; notify(); };
-    u.onend = () => { if (current === u) current = null; notify(); };
-    u.onerror = () => { if (current === u) current = null; notify(); };
+    u.onstart = () => {
+      current = u;
+      if (speakingEl) speakingEl.classList.add('tts-reading');
+      notify();
+    };
+    u.onboundary = (ev) => {
+      if (!speakingEl) return;
+      const total = clean(u.text).length;
+      showProgress(u, ev.charIndex, ev.charLength, total);
+    };
+    u.onend = () => {
+      if (current === u) current = null;
+      if (speakingEl) speakingEl.classList.remove('tts-reading');
+      clearHighlight();
+      notify();
+    };
+    u.onerror = () => {
+      if (current === u) current = null;
+      if (speakingEl) speakingEl.classList.remove('tts-reading');
+      clearHighlight();
+      notify();
+    };
     try { synth.speak(u); } catch (e) { return false; }
     return true;
   }
@@ -95,6 +156,8 @@ ARG.voice = (function () {
     if (!synth) return;
     try { synth.cancel(); } catch (e) {}
     current = null;
+    if (speakingEl) speakingEl.classList.remove('tts-reading');
+    clearHighlight();
     notify();
   }
 
@@ -149,9 +212,24 @@ ARG.voice = (function () {
     el.style.cursor = 'pointer';
     el.addEventListener('pointerdown', ev => {
       ev.stopPropagation();
+      if (current) { stop(); return; }
       const txt = typeof getText === 'function' ? getText() : (el.textContent || '');
-      if (current) stop(); else speak(txt);
+      speakIn(el, txt);
     });
+  }
+
+  /* like speakIn, but for narration whose words are not the card's words —
+     it just outlines the card so the reader can see what is being talked about */
+  function speakLinked(el, text, opts) {
+    clearHighlight();
+    if (el && enabled) {
+      speakingEl = el;
+      wordMarks = { plain: '', html: el.innerHTML };
+      el.classList.add('tts-reading');
+    }
+    const ok = speak(text, opts);
+    if (!ok && speakingEl) { speakingEl.classList.remove('tts-reading'); clearHighlight(); }
+    return ok;
   }
 
   /* keep the speech language in step with the interface */
@@ -160,7 +238,7 @@ ARG.voice = (function () {
   }
 
   return {
-    speak, say: speak, stop, toggle, setLang, watch, attach, speakOnTap, syncLang,
+    speak, say: speak, speakIn, speakLinked, stop, toggle, setLang, watch, attach, speakOnTap, syncLang,
     get enabled() { return enabled; },
     get supported() { return !!synth; },
     get speaking() { return !!current; }

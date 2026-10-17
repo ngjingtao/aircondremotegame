@@ -206,6 +206,7 @@ ARG.scene = (function () {
 
     /* ── refrigerant particles ── */
     const spd = 0.05 + S.speed * 0.055;
+    const condFrac = stops[3] ? stops[3].f : 0.8;
     for (let i = 0; i < parts.length; i++) {
       const p = parts[i];
       p._f = (p._f + spd * d) % 1;
@@ -215,6 +216,12 @@ ARG.scene = (function () {
       p.setAttribute('cy', pt.y.toFixed(1));
       const c = colourAt(p._f);
       if (p._c !== c) { p._c = c; p.setAttribute('fill', c); }
+      /* after the condenser it is a liquid: smaller, denser droplets */
+      const liquid = p._f >= condFrac;
+      if (p._liq !== liquid) {
+        p._liq = liquid;
+        p.setAttribute('class', liquid ? 'rf liquid' : 'rf gas');
+      }
       p.setAttribute('opacity', (0.35 + S.speed * 0.65).toFixed(2));
     }
 
@@ -298,9 +305,14 @@ ARG.scene = (function () {
     }
   }
 
+  /* highlight one of the four parts on the diagram */
+  function focus(n) {
+    if (n === undefined || n === null || n < 0) delete els.scene.dataset.part;
+    else els.scene.dataset.part = String(n);
+  }
+
   let toastTimer = null;
-  function toast(msg, good) {
-    if (!msg) return;
+  function toast(msg, good) {    if (!msg) return;
     els.toast.textContent = msg;
     els.toast.classList.toggle('good', good !== false);
     els.toast.classList.add('show');
@@ -308,5 +320,5 @@ ARG.scene = (function () {
     toastTimer = setTimeout(() => els.toast.classList.remove('show'), 2600);
   }
 
-  return { build, render, toast };
+  return { build, render, toast, focus };
 })();
