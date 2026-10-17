@@ -108,6 +108,22 @@
       if (ARG.sim.s.challenge) ARG.audio.beep();
     });
 
+    ARG.sim.setScoreHook((kind, combo) => {
+      const t = ARG.i18n.t;
+      if (kind === 'recover') {
+        ARG.audio.chime();
+        ARG.room.toast('+' + (100 * combo) + '   ' + t('combo') + ' x' + combo, true);
+      } else if (kind === 'weather') {
+        ARG.audio.cheer();
+        ARG.room.toast('+150   ' + t('rodeItOut'), true);
+      } else if (kind === 'slip') {
+        ARG.audio.warn();
+      }
+    });
+
+    /* tapping the open door closes it */
+    ARG.room.onDoor(() => handleAction('closedoor'));
+
     /* top bar */
     $('btn-lang').addEventListener('click', () => {
       ARG.i18n.toggle();

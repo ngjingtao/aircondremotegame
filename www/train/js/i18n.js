@@ -43,6 +43,8 @@ ARG.i18n = (function () {
       msgDoorsOpen: 'Doors are open — close them before you move.',
       msgDoorsShut: 'Doors closed. Ready to go.',
       msgDoorsNeedStop: 'Stop at the platform to open the doors.',
+      msgGoodCrossing: '✔ Nice — eased off over the crossing.',
+      msgRoughCrossing: '✘ Too fast over the crossing! Slow to 80 km/h.',
       msgHorn: 'Two-tone horn!',
       msgBell: 'Bell ringing.',
       msgLightsOn: 'Headlights on.',
@@ -64,9 +66,10 @@ ARG.i18n = (function () {
         <h3>Your job</h3>
         <ul>
           <li>Stop with the front of the train on the <b>white mark</b> at each station. The closer, the more points.</li>
-          <li>An automatic bell rings at every level crossing — listen for <code>ding, ding, ding</code>.</li>
+          <li><b>Slow to 80 km/h over a level crossing.</b> Blasting through costs you 60 points; easing off earns 40.</li>
+          <li>An automatic bell rings at every crossing — listen for <code>ding, ding, ding</code>.</li>
           <li>Watch the red lights and the barrier come down at the crossing.</li>
-          <li>Mind your speed in the platform. Overshooting costs you.</li>
+          <li>The track under the sign shows how far you are between the two stations.</li>
         </ul>
       `
     },
@@ -108,6 +111,8 @@ ARG.i18n = (function () {
       msgDoorsOpen: '车门还开着 — 先关门再开车。',
       msgDoorsShut: '车门已关，可以出发了。',
       msgDoorsNeedStop: '停到站台才能开门。',
+      msgGoodCrossing: '✔ 很好 — 过道口前减速了。',
+      msgRoughCrossing: '✘ 过道口太快了！减速到 80 公里/时。',
       msgHorn: '双音风笛！',
       msgBell: '铃响了。',
       msgLightsOn: '车灯已打开。',
@@ -129,9 +134,10 @@ ARG.i18n = (function () {
         <h3>你的任务</h3>
         <ul>
           <li>让车头停在每个车站的<b>白色标线</b>上，越准分越高。</li>
+          <li><b>过道口要减速到 80 公里/时。</b>冲过去扣 60 分，减速通过加 40 分。</li>
           <li>每个铁路道口都会自动响铃 — 注意听 <code>叮、叮、叮</code>。</li>
           <li>看道口的红灯闪烁和栏杆落下。</li>
-          <li>进站注意限速，冲过站台会扣分。</li>
+          <li>站牌下面的那条小轨道，显示你在两站之间走到哪儿了。</li>
         </ul>
       `
     }

@@ -49,8 +49,23 @@ cools, and an open door beats the air-con entirely.
 **Free Play** to explore. **Challenge** for score, combo and random weather events
 (heatwave, cold snap, open door, humidity surge).
 
-Keys: Power · COOL (cycles mode) · DRY · TEMP ▲▼ · SWING ◀▶ · fan speed · TURBO/QUIET ·
-SELF CLEAN · HEALTH · SLEEP · EXTRA (ECO) · TIME ON/OFF + CONFIRM · LOCK · LIGHT · RESET.
+**Challenge points come from results, not from waiting** — you score when you actually *rescue*
+him back into the comfort zone:
+
+| What happened | Points |
+|---|---|
+| Brought him back into the comfort zone | **+100 × combo** |
+| Kept him comfortable right through a weather event | **+150** |
+| Recovered again without losing him in between | combo climbs to **×5** |
+| Let him slip out | combo resets to ×1 |
+
+Set 25 °C and walk away and you score **nothing** (there is a test that asserts exactly this).
+The **door** is the one event you can do something about: it swings open in the room with a
+**TAP TO CLOSE** hint — tap it before all the cold air escapes.
+
+Keys: Power · COOL (mode key — steps through COOL → DRY → HEAT → FAN) · DRY · TEMP ▲▼ ·
+SWING ◀▶ · fan speed · TURBO/QUIET · SELF CLEAN · HEALTH · SLEEP · EXTRA (ECO) ·
+TIME ON/OFF + CONFIRM · LOCK · LIGHT · RESET.
 
 ---
 
@@ -116,9 +131,19 @@ the car moves off. (You hear the bell before you see the crossing — just like 
 | within 6 m | 150 — *Perfect stop!* |
 | within 16 m | 80 — *Good stop.* |
 | on the platform | 30 — *A bit far from the mark* |
-| rolled past | −20 — *You went past the platform!* |
+| rolled past | **−60** and it counts as a missed stop |
 
-Mind your speed in the platform, and use the horn — it is good manners.
+**Level crossings now have teeth.** They always had the barrier, the flashing lights and the
+`ding ding ding`, but going through flat out had no consequence. Now:
+
+| Through the crossing at | Result |
+|---|---|
+| over **80 km/h** | **−60** and *"Too fast over the crossing!"* |
+| under 80 km/h | **+40** and *"Nice — eased off over the crossing."* |
+
+So you have to plan your braking for the crossing as well as the platform, which is exactly
+what a real driver does. The little track under the station sign shows your progress between the
+two stations.
 
 ---
 

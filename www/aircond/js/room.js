@@ -65,6 +65,7 @@ ARG.room = (function () {
     els.scoreHud = document.getElementById('hud-score');
     els.comboHud = document.getElementById('hud-combo');
     els.scoreChip = document.getElementById('hud-score-chip');
+    els.door     = document.getElementById('room-door');
 
     /* build airflow streams + direction arrows */
     els.airflow.innerHTML = '';
@@ -255,6 +256,21 @@ ARG.room = (function () {
     }
 
     if (changed('lockBan', s.lock)) els.lockBan.hidden = !s.lock;
+
+    /* the open door is tappable — closer on the left, or press Enter on it */
+    if (changed('doorOn', !!s.doorOpen)) {
+      els.door.classList.toggle('on', !!s.doorOpen);
+      els.door.setAttribute('aria-hidden', s.doorOpen ? 'false' : 'true');
+    }
+  }
+
+  /* let the page wire the door to the sim */
+  function onDoor(fn) {
+    if (!els.door) return;
+    els.door.addEventListener('pointerdown', ev => { ev.preventDefault(); fn(); });
+    els.door.addEventListener('keydown', ev => {
+      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); fn(); }
+    });
   }
 
   function cap(s) { return s.charAt(0) + s.slice(1).toLowerCase(); }
@@ -286,6 +302,14 @@ ARG.room = (function () {
     els.armR.classList.add('raised');
     clearTimeout(armTimer);
     armTimer = setTimeout(() => els.armR.classList.remove('raised'), 520);
+
+    /* a little squash so the press feels like it landed */
+    const root = document.getElementById('boy-root');
+    if (root) {
+      root.classList.remove('bump');
+      void root.offsetWidth;
+      root.classList.add('bump');
+    }
   }
 
   /* ─────────── toast ─────────── */
@@ -300,5 +324,5 @@ ARG.room = (function () {
     toastTimer = setTimeout(() => els.toast.classList.remove('show'), 2400);
   }
 
-  return { init: cache, render, say, signal, toast };
+  return { init: cache, render, say, signal, toast, onDoor };
 })();

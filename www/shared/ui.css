@@ -131,6 +131,21 @@ html.kb-nav a:focus-visible{
 /* keep the tap targets comfortably large */
 button{ min-height:28px; }
 
+/* ─────────────── REDUCED MOTION ─────────────── */
+/* respect the system setting: keep the information, drop the movement */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+    scroll-behavior:auto !important;
+  }
+  /* a few things still need to be visible, just not moving */
+  .airflow.on .stream{ opacity:.5; }
+  .win-rain, .win-snowfall{ display:none; }
+  .toast, .speech{ transition:none !important; }
+}
+
 /* ─────────────── HELP OVERLAY ─────────────── */
 .overlay{
   position:fixed;inset:0;z-index:100;

@@ -5,9 +5,13 @@ window.ARG = window.ARG || {};
 
 ARG.sim = (function () {
 
-  const MODES = ['COOL', 'HEAT', 'FAN'];
+  const MODES = ['COOL', 'DRY', 'HEAT', 'FAN'];
   const FANS = ['AUTO', 'LOW', 'MED', 'HIGH'];
   const TURBO = ['OFF', 'TURBO', 'QUIET'];
+
+  /* crossing the mode button cycles through EVERY mode, so nothing is unreachable;
+     the DRY key still jumps straight there */
+  const CYCLE = ['COOL', 'DRY', 'HEAT', 'FAN'];
 
   const HOUR_SECONDS = 15;   // 1 in-game hour = 15 real seconds
 
@@ -46,6 +50,12 @@ ARG.sim = (function () {
       best: Number(ARG.store.get('arg.best') || 0),
       combo: 1,
       comboTimer: 0,
+      rescues: 0,
+      slips: 0,
+      weatherSurvived: 0,
+      lastGain: 0,
+      gainT: 0,
+      eventJustEnded: false,
       eventTimer: 16,
       event: null,
       eventLeft: 0,
@@ -87,15 +97,29 @@ ARG.sim = (function () {
 
     mode(el) {
       const m = el.dataset.mode;
-      if (S.mode === m) {
-        // COOL button also cycles into HEAT / FAN
-        const i = MODES.indexOf(S.mode);
-        S.mode = MODES[(i + 1) % MODES.length];
+      if (m === 'DRY') {
+        /* the DRY key goes straight to dry */
+        S.mode = 'DRY';
       } else {
-        S.mode = m;
+        /* the COOL key is the mode key: it steps through every mode, so HEAT
+           and FAN are always reachable and nothing loops back on itself */
+        const i = CYCLE.indexOf(S.mode);
+        S.mode = CYCLE[(i + 1) % CYCLE.length];
       }
       if (!S.power) S.power = true;
       return { sound: 'beep', signal: true, msg: S.mode };
+    },
+
+    /* the door the weather forgot to shut */
+    closedoor() {
+      if (!S.doorOpen) return { sound: 'deny' };
+      S.doorOpen = false;
+      if (S.event && S.event.id === 'door') {
+        S.event = null;
+        S.eventLeft = 0;
+        S.eventTimer = 14 + Math.random() * 10;
+      }
+      return { sound: 'air', say: 'sayDoorShut', toast: 'toastDoorShut' };
     },
 
     tempup() {
@@ -238,6 +262,7 @@ ARG.sim = (function () {
   ];
 
   let onEvent = null;      // callback(event | null)
+  let onScore = null;      // callback('recover'|'slip'|'weather', combo)
   let onClockHour = null;
 
   /* ─────────── main tick ─────────── */
@@ -324,6 +349,7 @@ ARG.sim = (function () {
         if (S.eventLeft <= 0) {
           S.event.undo();
           S.event = null;
+          S.eventJustEnded = true;
           if (onEvent) onEvent(null);
         }
       } else {
@@ -339,16 +365,40 @@ ARG.sim = (function () {
       }
     }
 
-    /* score + combo */
+    /* ── scoring ──
+       Points come from RESULTS, not from sitting still. You score when he
+       comes back into the comfort zone, and you score more for a longer run
+       of rescues. Set a temperature and walk away and you get nothing. */
     if (S.challenge) {
-      if (S.mood === 'ok') {
-        S.comboTimer += dt;
-        if (S.comboTimer >= 6) { S.comboTimer = 0; S.combo = Math.min(5, S.combo + 1); }
-        S.score += dt * 10 * S.combo;
-      } else {
-        S.comboTimer = 0;
+      const recovered = prevMood !== 'ok' && S.mood === 'ok';
+      const slipped = prevMood === 'ok' && S.mood !== 'ok';
+
+      if (recovered) {
+        S.combo = Math.min(5, S.combo + 1);
+        S.score += 100 * S.combo;
+        S.rescues++;
+        S.lastGain = 100 * S.combo;
+        S.gainT = 1.4;
+        if (onScore) onScore('recover', S.combo);
+      } else if (slipped) {
         S.combo = 1;
+        S.slips++;
+        if (onScore) onScore('slip', 0);
       }
+
+      /* riding out a weather event without losing him pays a bonus */
+      if (S.eventJustEnded) {
+        S.eventJustEnded = false;
+        if (S.mood === 'ok') {
+          S.score += 150;
+          S.weatherSurvived++;
+          S.lastGain = 150;
+          S.gainT = 1.8;
+          if (onScore) onScore('weather', 0);
+        }
+      }
+
+      if (S.gainT > 0) S.gainT = Math.max(0, S.gainT - dt);
       if (S.score > S.best) {
         S.best = S.score;
         ARG.store.set('arg.best', String(Math.floor(S.best)));
@@ -365,6 +415,7 @@ ARG.sim = (function () {
     get s() { return S; },
     press, tick, fresh: () => { S = fresh(); return S; },
     setEventHook: fn => { onEvent = fn; },
+    setScoreHook: fn => { onScore = fn; },
     setHourHook: fn => { onClockHour = fn; },
     MODES, FANS, TURBO, MODE_ICON, HOUR_SECONDS,
     feelsLike, moodFor, clamp

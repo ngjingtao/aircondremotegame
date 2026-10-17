@@ -39,6 +39,7 @@ ARG.i18n = (function () {
 
       sayPowerOn: 'Air-con is on!',
       sayPowerOff: 'Wait, why off?!',
+      sayDoorShut: 'Shut the door! Much better.',
       sayTurbo: 'Whoa, turbo!',
       sayQuiet: 'So quiet...',
       saySelfClean: 'Cleaning the air-con...',
@@ -51,11 +52,16 @@ ARG.i18n = (function () {
       sayReset: 'Everything reset.',
 
       locked: 'LOCKED',
+      combo: 'COMBO',
+      rodeItOut: 'Rode it out!',
+      tapDoor: 'TAP TO CLOSE',
       eventHeatwave: '🔥 HEATWAVE! Outside is boiling!',
       eventColdSnap: '❄ COLD SNAP! A chill blows in!',
-      eventDoor: '🚪 DOOR OPEN! All the cold air is escaping!',
+      eventDoor: '🚪 DOOR OPEN! All the cold air is escaping! — tap the door',
       eventHumid: '💧 HUMIDITY SURGE! It feels sticky!',
       eventBack: 'Air is back to normal.',
+      toastDoorShut: '🚪 Door shut — nice save!',
+      sayDoorShutShort: 'Door shut!',
 
       acOff: 'OFF',
       acClean: 'SELF CLEAN',
@@ -69,8 +75,8 @@ ARG.i18n = (function () {
         <h3>Remote keys</h3>
         <ul>
           <li><code>Power</code> (green circle) — turn the air-con on / off.</li>
-          <li><code>COOL</code> — cycles the mode: COOL → HEAT → FAN → COOL. (LCD shows the active mode.)</li>
-          <li><code>DRY</code> — dehumidify mode. Removes humidity slowly.</li>
+          <li><code>COOL</code> — the mode key. Each press steps to the next mode: <b>COOL → DRY → HEAT → FAN</b>. The LCD shows which one you are in.</li>
+          <li><code>DRY</code> — jumps straight to dehumidify mode.</li>
           <li><code>TEMP ▲ / ▼</code> — set 16 °C to 30 °C.</li>
           <li><code>SWING ◀ / ▶</code> — vertical and horizontal louvre swing.</li>
           <li><code>🌀</code> (centre) — fan speed: AUTO → LOW → MED → HIGH.</li>
@@ -127,6 +133,7 @@ ARG.i18n = (function () {
 
       sayPowerOn: '空调开啦！',
       sayPowerOff: '欸？怎么关了？！',
+      sayDoorShut: '把门关上！舒服多了。',
       sayTurbo: '哇，强力模式！',
       sayQuiet: '好安静……',
       saySelfClean: '正在自清洁……',
@@ -139,11 +146,16 @@ ARG.i18n = (function () {
       sayReset: '已恢复默认设置。',
 
       locked: '已锁定',
+      combo: '连击',
+      rodeItOut: '撑过去了！',
+      tapDoor: '点一下关门',
       eventHeatwave: '🔥 热浪来袭！外面要烤熟了！',
       eventColdSnap: '❄ 寒流来了！冷风灌进来！',
-      eventDoor: '🚪 门开了！冷气全跑掉了！',
+      eventDoor: '🚪 门开了！冷气全跑掉了！— 点一下门',
       eventHumid: '💧 湿度飙升！黏糊糊的！',
       eventBack: '空气恢复正常了。',
+      toastDoorShut: '🚪 门关上了 — 反应真快！',
+      sayDoorShutShort: '门关上了！',
 
       acOff: '关机',
       acClean: '自清洁',
@@ -157,8 +169,8 @@ ARG.i18n = (function () {
         <h3>遥控器按键</h3>
         <ul>
           <li><code>电源</code>（绿色圆键）— 开 / 关空调。</li>
-          <li><code>制冷</code> — 循环切换模式：制冷 → 制热 → 送风 → 制冷。（屏幕显示当前模式）</li>
-          <li><code>除湿</code> — 除湿模式，缓慢降低湿度。</li>
+          <li><code>制冷</code> — 模式键。每按一次切换到下一个模式：<b>制冷 → 除湿 → 制热 → 送风</b>。屏幕会显示当前模式。</li>
+          <li><code>除湿</code> — 直接切到除湿模式。</li>
           <li><code>温度 ▲ / ▼</code> — 设定 16 ℃ 到 30 ℃。</li>
           <li><code>摆风 ◀ / ▶</code> — 上下与左右导风板摆动。</li>
           <li><code>🌀</code>（中间）— 风速：自动 → 低 → 中 → 高。</li>

@@ -27,6 +27,7 @@ ARG.sim = (function () {
 
   const ACTIVATE_M = 300;        // crossing warns from this far out
   const CLEAR_M = 40;            // ... and clears this far past
+  const CROSSING_LIMIT = 80;     // km/h — you must ease off over a crossing
 
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
@@ -45,6 +46,10 @@ ARG.sim = (function () {
       served: 0,
       servedStations: {},
       overshot: {},
+      crossed: {},
+      roughCrossings: 0,
+      goodCrossings: 0,
+      missed: 0,
 
       msg: '',
       msgT: 0,
@@ -136,6 +141,8 @@ ARG.sim = (function () {
     }
   };
 
+  let onCross = null;
+
   function press(action) {
     const fn = ACTIONS[action];
     if (!fn) return null;
@@ -218,8 +225,11 @@ ARG.sim = (function () {
       if (!S.servedStations[pk] && !S.overshot[pk] && S.x > px + PLATFORM_LEN + 4) {
         S.overshot[pk] = true;
         S.servedStations[pk] = true;
-        S.score = Math.max(0, S.score - 20);
+        S.score = Math.max(0, S.score - 60);
+        S.missed++;
+        S.lastStopResult = 'msgOvershoot';
         say('msgOvershoot', false);
+        if (onCross) onCross('missed');
       }
     }
 
@@ -238,6 +248,25 @@ ARG.sim = (function () {
       const rate = target > cur ? 0.55 : 0.30;   // barrier drops faster than it lifts
       S.gates[gk] = cur + Math.sign(target - cur) * Math.min(rate * dt, Math.abs(target - cur));
       if (isActive) { active.push(i); bellOn = true; }
+
+      /* ── you must slow down over a crossing ──
+         A crossing has a speed restriction. Blast through it and it is a
+         rough ride for everyone on board; ease off and it is a good crossing. */
+      const ck = 'cx' + i;
+      if (!S.crossed[ck] && d < -6 && d > -40) {
+        S.crossed[ck] = true;
+        if (S.kmh > CROSSING_LIMIT) {
+          S.score = Math.max(0, S.score - 60);
+          S.roughCrossings++;
+          say('msgRoughCrossing', false);
+          if (onCross) onCross('rough');
+        } else if (S.kmh > 5) {
+          S.score += 40;
+          S.goodCrossings++;
+          say('msgGoodCrossing', true);
+          if (onCross) onCross('good');
+        }
+      }
     }
     S.activeCrossings = active;
     S.bellOn = bellOn || S.bellT > 0;
@@ -270,6 +299,7 @@ ARG.sim = (function () {
     get s() { return S; },
     press, tick,
     fresh: () => { S = fresh(); return S; },
+    setCrossHook: fn => { onCross = fn; },
     stationX, crossingX,
     THROTTLE, BRAKE, MAX_KMH, MAX_MS,
     TRAIN_LEN, LOCO_LEN, COACH_LEN, COACHES,

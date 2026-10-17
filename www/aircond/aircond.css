@@ -566,6 +566,68 @@
   box-shadow:0 0 12px rgba(140,200,255,.55);
 }
 
+/* ── the door, when the weather leaves it open ── */
+.room-door{
+  position:absolute;right:5%;bottom:22%;width:22%;max-width:78px;height:44%;
+  z-index:7;cursor:pointer;opacity:0;pointer-events:none;
+  transition:opacity .35s;
+}
+.room-door.on{opacity:1;pointer-events:auto;}
+.door-panel{
+  position:absolute;left:0;top:0;bottom:0;width:64%;
+  border-radius:6px 3px 3px 6px;
+  background:linear-gradient(100deg,#a9743f,#7d5230 60%,#5e3d22);
+  box-shadow:0 6px 18px rgba(0,0,0,.4), inset 0 0 0 2px rgba(255,255,255,.14);
+  transform-origin:left center;
+  animation:doorSwing 2.4s ease-in-out infinite;
+}
+@keyframes doorSwing{
+  0%,100%{ transform:perspective(320px) rotateY(-26deg); }
+  50%{ transform:perspective(320px) rotateY(-38deg); }
+}
+.door-gap{
+  position:absolute;right:0;top:4%;bottom:4%;width:26%;
+  border-radius:3px;
+  background:linear-gradient(180deg,#ffb45e,#f08a2a);
+  box-shadow:0 0 22px rgba(255,150,60,.75);
+  animation:doorGlow 1.4s ease-in-out infinite;
+}
+@keyframes doorGlow{0%,100%{opacity:.55;}50%{opacity:1;}}
+.door-hint{
+  position:absolute;left:50%;bottom:-22px;transform:translateX(-50%);
+  font-size:9px;font-weight:800;letter-spacing:.5px;white-space:nowrap;
+  color:#ffd9a8;text-shadow:0 1px 4px rgba(0,0,0,.8);
+  animation:doorHint 1.4s ease-in-out infinite;
+}
+@keyframes doorHint{0%,100%{opacity:.6;}50%{opacity:1;}}
+.room-door:active .door-panel{ transform:perspective(320px) rotateY(-2deg); }
+
+/* ═══════════════ CHARACTER IDLE ═══════════════ */
+/* he breathes when nothing else is happening, and blinks now and then */
+#boy-root{ animation:idleBreath 3.6s ease-in-out infinite; }
+@keyframes idleBreath{
+  0%,100%{ transform:translateY(0) scale(1); }
+  50%{ transform:translateY(-1.6px) scale(1.008); }
+}
+#boy .m-ok circle,
+#boy .m-hot circle{
+  animation:blink 5.4s ease-in-out infinite;
+  transform-box:fill-box; transform-origin:center;
+}
+@keyframes blink{
+  0%,92%,100%{ transform:scaleY(1); }
+  95%{ transform:scaleY(.12); }
+}
+
+/* squash and stretch when a key is pressed, so reactions feel physical */
+#boy-root.bump{ animation:boyBump .42s cubic-bezier(.34,1.56,.64,1); }
+@keyframes boyBump{
+  0%{ transform:scale(1,1); }
+  35%{ transform:scale(1.06,.94); }
+  65%{ transform:scale(.97,1.03); }
+  100%{ transform:scale(1,1); }
+}
+
 /* SPEECH */
 .speech{
   position:absolute;

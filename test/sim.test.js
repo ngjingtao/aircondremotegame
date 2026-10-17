@@ -57,28 +57,63 @@ function settle(sim, seconds, step) {
   const dt = step || 0.05;
   for (let i = 0; i < seconds / dt; i++) sim.tick(dt);
 }
-
 console.log('\n— Play Aircond —');
 {
   const ARG = load('aircond', ['aircond/js/state.js']);
   const sim = ARG.sim;
-  // a cool setting should reach the comfort band
-  sim.fresh(); sim.s.setTemp = 25; sim.s.fan = 'HIGH'; sim.s.roomTemp = 30; sim.s.humidity = 62; sim.s.outdoorTemp = 33;
-  settle(sim, 300);
+  const cur = () => sim.s;                    // fresh() swaps the object, so always re-read
+  const settle = (s) => { for (let i = 0; i < s / 0.05; i++) sim.tick(0.05); };
+  const set = (o) => { Object.assign(cur(), o); return cur(); };
+
+  set({ setTemp: 25, fan: 'HIGH', roomTemp: 30, humidity: 62, outdoorTemp: 33 });
+  settle(300);
   check('set 25 °C settles in the comfort band', sim.feelsLike(), 21, 27, ' °C');
   eq('  → mood is ok', sim.moodFor(sim.feelsLike()), 'ok');
-  // too high a setting should not
-  sim.fresh(); sim.s.setTemp = 30; sim.s.fan = 'HIGH'; sim.s.roomTemp = 30; sim.s.humidity = 62; sim.s.outdoorTemp = 33;
-  settle(sim, 300);
+
+  sim.fresh();
+  set({ setTemp: 30, fan: 'HIGH', roomTemp: 30, humidity: 62, outdoorTemp: 33 });
+  settle(300);
   eq('set 30 °C leaves him very hot', sim.moodFor(sim.feelsLike()), 'veryhot');
-  // too low
-  sim.fresh(); sim.s.setTemp = 16; sim.s.fan = 'HIGH'; sim.s.roomTemp = 30; sim.s.humidity = 62; sim.s.outdoorTemp = 33;
-  settle(sim, 300);
+
+  sim.fresh();
+  set({ setTemp: 16, fan: 'HIGH', roomTemp: 30, humidity: 62, outdoorTemp: 33 });
+  settle(300);
   eq('set 16 °C leaves him cold', sim.moodFor(sim.feelsLike()), 'cold');
-  // an open door beats the compressor
-  sim.fresh(); sim.s.setTemp = 24; sim.s.fan = 'HIGH'; sim.s.roomTemp = 26; sim.s.humidity = 70; sim.s.outdoorTemp = 33; sim.s.doorOpen = true;
-  settle(sim, 300);
-  check('open door defeats the aircon', sim.s.roomTemp, 27.5, 30, ' °C');
+
+  sim.fresh();
+  set({ setTemp: 24, fan: 'HIGH', roomTemp: 26, humidity: 70, outdoorTemp: 33, doorOpen: true });
+  settle(300);
+  check('open door defeats the aircon', cur().roomTemp, 27.5, 30, ' °C');
+
+  /* the door must be closable by the player */
+  sim.fresh();
+  set({ doorOpen: true });
+  sim.press('closedoor');
+  eq('an open door can be closed by the player', !cur().doorOpen, true);
+
+  /* the COOL key must reach every mode */
+  sim.fresh();
+  const seen = {};
+  for (let i = 0; i < 6; i++) { sim.press('mode', { dataset: { mode: 'COOL' } }); seen[cur().mode] = true; }
+  sim.press('mode', { dataset: { mode: 'DRY' } });
+  seen[cur().mode] = true;
+  eq('the mode key reaches COOL', !!seen.COOL, true);
+  eq('  → and DRY', !!seen.DRY, true);
+  eq('  → and HEAT', !!seen.HEAT, true);
+  eq('  → and FAN', !!seen.FAN, true);
+
+  /* challenge mode must reward rescuing him, not standing still */
+  sim.fresh();
+  set({ challenge: true, eventTimer: 9999, setTemp: 25, fan: 'HIGH', roomTemp: 25, humidity: 62, outdoorTemp: 33, mood: 'ok' });
+  settle(45);
+  check('idling in the comfort zone scores nothing', cur().score, 0, 0);
+
+  sim.fresh();
+  set({ challenge: true, eventTimer: 9999, setTemp: 25, fan: 'HIGH', roomTemp: 29, humidity: 62, outdoorTemp: 33, mood: 'hot' });
+  settle(40);
+  check('rescuing him scores', cur().score, 100, 1000);
+  eq('  → and a rescue is recorded', cur().rescues >= 1, true);
+  eq('  → and he ends up comfortable', cur().mood, 'ok');
 }
 
 console.log('\n— Food Eating —');
@@ -131,6 +166,34 @@ console.log('\n— Train Driving —');
   settle(sim, 1);
   eq('standing on the platform counts as this station', sim.s.nextIdx, 0);
   eq('  → atPlatform', sim.s.atPlatform, true);
+
+  /* ── a crossing now has consequences ── */
+  const cross = (speedKmh) => {
+    sim.fresh();
+    const S = sim.s;
+    S.x = 628;                        // just past the first crossing, at 620
+    S.speed = speedKmh / 3.6;
+    S.brake = 0;
+    S.crossed = {};
+    S.score = 500;                    // start with a score so a penalty is visible
+    S.servedStations.st0 = true;      // pretend we stopped at station 0 already
+    S.servedStations.st1 = true;
+    for (let i = 0; i < 12; i++) sim.tick(0.05);
+    return { after: S.score, good: S.goodCrossings, rough: S.roughCrossings };
+  };
+  const fast = cross(110);
+  const slow = cross(50);
+  eq('blasting a crossing costs 60 points', fast.after, 440);
+  eq('  → and is counted as rough', fast.rough, 1);
+  eq('easing off earns 40 points', slow.after, 540);
+  eq('  → and is counted as good', slow.good, 1);
+
+  /* ── missing a platform is a real miss ── */
+  sim.fresh();
+  sim.s.x = 340; sim.s.speed = 8;
+  settle(sim, 4);
+  eq('overshooting counts as a miss', sim.s.missed, 1);
+  check('  → and costs more than it used to', sim.s.score, 0, 0);
 }
 
 console.log('\n— Breathing & Blood —');
