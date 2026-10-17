@@ -8,6 +8,8 @@ ARG.scene = (function () {
   const T = () => ARG.i18n.t;
   const M = () => ARG.sim.s;
 
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
   const NOSE_FRAC = 0.30;        // where the front of the train sits on screen
   const TRAIN_FRAC = 0.62;       // the train takes this share of the scene width
   const SCENERY_SPACING = 18;    // metres between scenery items

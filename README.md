@@ -586,7 +586,8 @@ server.js                               zero-dependency static server ($PORT awa
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        36 assertions over the seven simulations
+test/sim.test.js                        56 assertions over the seven simulations
+test/render.test.js                     boots every page in a fake DOM and drives its loop
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json
@@ -596,7 +597,7 @@ capacitor.config.json
 ## Tests
 
 ```bash
-npm test           # the seven simulation models
+npm test              # the simulation models, then every page booted and run
 npm run test:server   # malformed URLs, traversal, security headers (needs npm start running)
 ```
 
@@ -604,6 +605,17 @@ npm run test:server   # malformed URLs, traversal, security headers (needs npm s
 numbers this README quotes — so if the thermal model, the braking distance, the flush timing or
 the breathing physiology drifts, the build fails. It caught two mistakes while it was being
 written. No framework, no dependencies; it runs in the GitHub Action before every APK build.
+
+`test/render.test.js` covers the half that `sim.test.js` cannot see. The simulation tests never
+call a scene, so a `render()` that throws still passes every one of them while the page is
+completely dead. It happened: the train's scene referenced an undefined `clamp`, which threw on
+every frame — and because `main.js` calls `render()` *before* it schedules
+`requestAnimationFrame`, the throw killed the animation loop at boot. Pressing the throttle did
+nothing at all, yet all 56 simulation assertions passed. So this test boots each of the eight
+pages for real — reading the exact `<script>` list out of its own HTML and loading it in order
+into a small fake DOM — then drives the `requestAnimationFrame` loop for ~3 seconds of frames and
+fails on any throw, on boot or on any later frame. The train is checked as behaviour too: apply
+the throttle, run the loop, and the train must actually roll.
 
 ### Adding your own artwork
 

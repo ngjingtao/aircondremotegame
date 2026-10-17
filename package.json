@@ -7,7 +7,7 @@
     "start": "node server.js",
     "serve": "node server.js",
     "stamp": "node scripts/stamp.js",
-    "test": "node test/sim.test.js",
+    "test": "node test/sim.test.js && node test/render.test.js",
     "test:server": "node test/server.test.js",
     "cap:sync": "cap sync android",
     "cap:open": "cap open android",
