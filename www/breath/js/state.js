@@ -36,6 +36,7 @@ ARG.sim = (function () {
       /* guided breathing */
       pattern: 'auto',
       pacerT: 0,
+      pacerRounds: 0,        // full guided rounds completed, for the sticker book
       pacerPhase: 'in',
       pacerLeft: 4,
       pacerProg: 0,
@@ -168,7 +169,7 @@ ARG.sim = (function () {
       /* a guided pattern drives the breath exactly */
       const total = P.phases.reduce((a, p) => a + p[1], 0);
       S.pacerT += dt;
-      if (S.pacerT >= total) S.pacerT -= total;
+      if (S.pacerT >= total) { S.pacerT -= total; S.pacerRounds++; }
 
       let acc = 0, ph = P.phases[0], idx = 0;
       for (let i = 0; i < P.phases.length; i++) {

@@ -123,6 +123,8 @@
 
     ARG.sim.setMissionHook((result, stars, reason) => {
       ARG.room.showResult(result, stars, reason);
+      /* the sticker book remembers the best you have done on this mission */
+      if (result === 'win') ARG.progress.award('air-' + ARG.sim.s.mission, stars);
     });
 
     /* tapping the open door closes it */

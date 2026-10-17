@@ -26,6 +26,23 @@
       tileIndahSub: 'Follow the wastewater from the house to the treatment plant — and see how the bacteria clean it',
       tileHoodTitle: 'Kitchen Hood',
       tileHoodSub: 'Turn the fan up and watch how it pulls the smoke, grease and smell out of the kitchen',
+
+      /* ── the sticker book ── */
+      bookTitle: 'My sticker book',
+      bookHint: 'Finish a run, or see an activity right through, to earn a sticker.',
+      bookAll: 'Every sticker collected!',
+      stAir0: 'Morning in the front room',
+      stAir1: 'Hold it steady through a heatwave',
+      stAir2: 'Warm him up in the cold snap',
+      stTrain0: 'Drive the early service',
+      stTrain1: 'Make it through the rush',
+      stTrain2: 'Bring the night run in',
+      stFood: 'See a meal all the way through',
+      stBreath: 'Breathe three rounds with the pacer',
+      stCare: 'Finish the whole wash',
+      stToilet: 'See a flush right through',
+      stIndah: 'Follow it to the end of the works',
+      stHood: 'Pull every bit of the smoke out',
       foot: 'Made for curious kids',
       help: '?',
       helpTitle: 'Eight activities',
@@ -109,6 +126,23 @@
       tileIndahSub: '跟着污水从住家一路走到污水厂 — 看细菌怎么把它变干净',
       tileHoodTitle: '抽油烟机',
       tileHoodSub: '把风速调大，看它怎么把油烟、油和味道抽走',
+
+      /* ── 贴纸本 ── */
+      bookTitle: '我的贴纸本',
+      bookHint: '通关一个任务，或者把一个活动从头玩到尾，就能拿到一张贴纸。',
+      bookAll: '贴纸全部集齐了！',
+      stAir0: '客厅的早晨',
+      stAir1: '热浪里一直让他舒服',
+      stAir2: '寒潮里把他暖回来',
+      stTrain0: '开好早班车',
+      stTrain1: '顺利赶过高峰',
+      stTrain2: '把夜班车开完',
+      stFood: '看着一顿饭走完全程',
+      stBreath: '跟着节拍器呼吸三轮',
+      stCare: '把整套清洗做完',
+      stToilet: '看完整一次冲水',
+      stIndah: '一路跟到污水厂最后一步',
+      stHood: '把油烟全部抽走',
       foot: '给充满好奇心的小朋友',
       help: '?',
       helpTitle: '八个小游戏',
@@ -178,6 +212,47 @@
   if (!lang || !DICT[lang]) lang = 'zh';   // Chinese unless you switch it
   if (ARG.config && ARG.config.lockLang) lang = ARG.config.lockLang;
 
+  /* ─────────── the sticker book ─────────── */
+  const ACTIVITY = {
+    aircond: { icon: '❄', tint: '#22a8c4' },
+    food:    { icon: '🍎', tint: '#e8935a' },
+    train:   { icon: '🚆', tint: '#e63946' },
+    breath:  { icon: '🫁', tint: '#e2445c' },
+    aircare: { icon: '🌀', tint: '#5fb6ef' },
+    toilet:  { icon: '🚽', tint: '#5fd0ff' },
+    indah:   { icon: '🚰', tint: '#3f9fd8' },
+    hood:    { icon: '🍳', tint: '#f0a03a' }
+  };
+
+  function renderBook() {
+    const host = $('book-grid');
+    if (!host || !ARG.progress) return;
+
+    const t = k => (DICT[lang][k] !== undefined ? DICT[lang][k] : k);
+    const cards = ARG.progress.book();
+    const got = ARG.progress.earned();
+
+    host.innerHTML = cards.map(c => {
+      const a = ACTIVITY[c.activity] || { icon: '★', tint: '#7aa2c8' };
+      const stars = [0, 1, 2].map(i => '<i class="' + (i < c.stars ? 'on' : '') + '">★</i>').join('');
+      return '<div class="sticker' + (c.stars ? ' got' : '') + '">' +
+        '<span class="st-icon">' + a.icon + '</span>' +
+        '<span class="st-stars">' + stars + '</span>' +
+        '<span class="st-label">' + t(c.label) + '</span>' +
+        '</div>';
+    }).join('');
+
+    /* the activity's colour goes on through the CSSOM rather than as a style=""
+       attribute, because the Content-Security-Policy has no 'unsafe-inline' */
+    Array.prototype.forEach.call(host.children, (el, i) => {
+      const a = ACTIVITY[cards[i].activity];
+      if (a && cards[i].stars) el.style.setProperty('--tint', a.tint);
+    });
+
+    $('book-count').textContent = got + ' / ' + ARG.progress.count;
+    $('book-note').textContent = t(got === ARG.progress.count ? 'bookAll' : 'bookHint');
+  }
+
   function apply() {
     document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -188,6 +263,7 @@
     if (ARG.config && ARG.config.lockLang) $('btn-lang').hidden = true;
     $('help-title').textContent = DICT[lang].helpTitle;
     $('help-body').innerHTML = DICT[lang].helpBody;
+    renderBook();
   }
 
   function boot() {

@@ -689,6 +689,18 @@ console.log('\n— Home tiles —');
     eq('the palette keeps Kai\u2019s ' + what + ' at ' + c, html.indexOf('"' + c + '"') >= 0, true));
 }
 
+/* ─────────── the sticker book draws on the home screen ─────────── */
+console.log('\n— Sticker book on the home screen —');
+{
+  const html = fs.readFileSync(path.join(WWW, 'index.html'), 'utf8');
+  eq('the home page has a book', /id="book-grid"/.test(html), true);
+  eq('  → with a counter', /id="book-count"/.test(html), true);
+
+  const p = boot('.');
+  if (p.bootError) bad('home — boots', p.bootError);
+  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 12');
+}
+
 /* ─────────── report ─────────── */
 console.log('\n' + '─'.repeat(72));
 console.log(passed + ' passed, ' + failed + ' failed');

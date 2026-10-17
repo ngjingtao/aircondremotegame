@@ -523,6 +523,48 @@ console.log('\n— Kitchen Hood —');
   check('  → and it catches less', sim.s.capture, 0.6, 0.85);
 }
 
+console.log('\n— The sticker book —');
+{
+  const ARG = load('shared', ['shared/progress.js']);
+  const p = ARG.progress;
+
+  p.reset();
+  eq('the book has twelve stickers', p.count, 12);
+  eq('and starts empty', p.earned(), 0);
+  eq('  → with no stars', p.total(), 0);
+
+  eq('earning one gives back its stars', p.award('toilet'), 1);
+  eq('  → it is remembered', p.starsOf('toilet'), 1);
+  eq('  → and it shows in the book', p.earned(), 1);
+
+  p.award('air-0', 3);
+  eq('a rated sticker keeps its rating', p.starsOf('air-0'), 3);
+  p.award('air-0', 1);
+  eq('and can never be lowered', p.starsOf('air-0'), 3);
+  eq('  → not even by a silly value', p.award('air-0', 99), 3);
+
+  eq('a sticker that does not exist is ignored', p.award('not-a-sticker', 3), 0);
+  eq('  → and never enters the book', p.earned(), 2);
+  eq('the total adds the stars up', p.total(), 4);
+
+  const book = p.book();
+  eq('every catalogue sticker is in the book', book.length, 12);
+  eq('  → each knows its activity', book[0].activity, 'aircond');
+  eq('  → and has a label to explain it', typeof book[0].label, 'string');
+  const acts = {};
+  book.forEach(c => { acts[c.activity] = (acts[c.activity] || 0) + 1; });
+  eq('every activity in the app contributes', Object.keys(acts).length, 8);
+  eq('  → the two with missions contribute three each',
+     acts.aircond === 3 && acts.train === 3, true);
+
+  /* a corrupt store must not take the home screen down with it */
+  const ARG2 = load('shared', ['shared/progress.js']);
+  ARG2.store.set('arg.progress', '{{{ not json at all');
+  eq('a corrupt book reads as empty rather than throwing', ARG2.progress.earned(), 0);
+  ARG2.store.set('arg.progress', '[1,2,3]');
+  eq('  → and so does one of the wrong shape', ARG2.progress.earned(), 0);
+}
+
 console.log('\n— Language lock —');
 {
   const ARG = load('aircond', ['shared/config.js', 'aircond/js/i18n.js']);

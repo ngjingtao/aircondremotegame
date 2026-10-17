@@ -97,6 +97,9 @@
     ARG.scene.render(dt);
     ARG.panel.render();
 
+    /* the sticker book: earned the first time it is really done */
+    if (!ARG.sim.s.flushing && ARG.sim.s.flushT < 0 && ARG.sim.s.step >= ARG.sim.FLUSH.length - 1) ARG.progress.award('toilet');
+
     requestAnimationFrame(loop);
   }
 

@@ -198,6 +198,10 @@ look like pages from the same book:
   `tl front`) which drift gently and separate on hover, and the whole set can
   be stilled by `prefers-reduced-motion`. `npm test` asserts the count, the
   canvas, the layers, and that no shape references a paint that does not exist.
+* **the sticker book** (`shared/progress.js`) — twelve stickers, one or three
+  per activity, so the eight activities that are otherwise separate all feed one
+  collection on the home screen. Each activity awards its own from its render
+  loop; awards only ever go up, so re-earning cannot lose a sticker.
 * **Kai appears in the tiles too** — the same skin, hair, shirt and remote as
   in Play Aircond, so the character is already shared between the menu and the
   activity.

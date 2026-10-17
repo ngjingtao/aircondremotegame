@@ -124,6 +124,9 @@
     ARG.body.render(dt);
     ARG.deck.render();
 
+    /* the sticker book: earned the first time it is really done */
+    if (ARG.sim.s.stage === 'OUT' && ARG.sim.s.stageT > 2.2) ARG.progress.award('food');
+
     requestAnimationFrame(loop);
   }
 

@@ -94,6 +94,9 @@
     ARG.scene.render(dt);
     ARG.panel.render();
 
+    /* the sticker book: earned the first time it is really done */
+    if (ARG.sim.s.tab === 'plant' && ARG.sim.s.step >= ARG.sim.PLANT.length - 1) ARG.progress.award('indah');
+
     requestAnimationFrame(loop);
   }
 

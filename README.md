@@ -30,6 +30,29 @@ painted from one shared palette and split into three depth layers that drift gen
 apart on hover. They are the only place the character guidelines in
 [`docs/character-bible.md`](docs/character-bible.md) are applied so far.
 
+### The sticker book
+
+Under the tiles is the one thing that ties the eight activities together: a collection that
+every activity writes to. Twelve stickers, earned by doing the thing the activity is about —
+`shared/progress.js` holds the catalogue and the storage, and each activity awards its own from
+its render loop.
+
+| Activity | Stickers | Earned by |
+|---|---|---|
+| ❄ Play Aircond | 3 | each of the three missions, with its star rating |
+| 🚆 Train Driving | 3 | each of the three timetabled runs, with its rating |
+| 🍎 Food Eating | 1 | seeing a meal all the way through |
+| 🫁 Breathing & Blood | 1 | three full rounds with the breathing pacer |
+| 🌀 Inside the Aircon | 1 | finishing the whole wash |
+| 🚽 Toilet | 1 | seeing a flush right through |
+| 🚰 Indah Water | 1 | following it to the last stage of the works |
+| 🍳 Kitchen Hood | 1 | pulling every bit of the smoke out |
+
+An earned sticker takes its activity's accent colour and shows the stars; the rest sit dimmed
+behind a dashed outline, so there is always something obviously missing. Awards only ever go
+up, so earning one twice cannot lose it, and a corrupt saved book reads as empty rather than
+taking the home screen down.
+
 ---
 
 ## 1 · ❄ Play Aircond
@@ -629,6 +652,7 @@ www/                          ← the whole app (no build step)
 │  ├─ config.js                         build switches — currently the language lock
 │  ├─ ui.css                            top bar, help overlay, toast, colour vars
 │  ├─ store.js                          ARG namespace + safe localStorage
+│  ├─ progress.js                       the sticker book every activity writes to
 │  ├─ audio.js                          WebAudio blips (no audio files)
 │  ├─ voice.js                          spoken narration (Web Speech API)
 │  ├─ shell.js                          the ◧ fold-away control panel
@@ -672,8 +696,8 @@ server.js                               zero-dependency static server ($PORT awa
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        130 assertions over the eight simulations
-test/render.test.js                     81 assertions: every page booted, the artwork, and nothing inline
+test/sim.test.js                        149 assertions over the eight simulations
+test/render.test.js                     84 assertions: every page booted, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json

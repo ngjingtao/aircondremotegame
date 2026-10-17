@@ -106,6 +106,9 @@
     ARG.panel.render();
     speakWatch();
 
+    /* the sticker book: earned the first time it is really done */
+    if (ARG.sim.s.pacerRounds >= 3) ARG.progress.award('breath');
+
     requestAnimationFrame(loop);
   }
 

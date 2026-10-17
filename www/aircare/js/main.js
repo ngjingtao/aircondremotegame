@@ -125,6 +125,9 @@
     ARG.scene.render(dt);
     ARG.panel.render();
 
+    /* the sticker book: earned the first time it is really done */
+    if (ARG.sim.s.mode === 'wash' && ARG.sim.s.step >= ARG.sim.STEPS.length - 1) ARG.progress.award('aircare');
+
     requestAnimationFrame(loop);
   }
 

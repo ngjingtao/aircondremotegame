@@ -95,6 +95,9 @@
     ARG.scene.render(dt);
     ARG.panel.render();
 
+    /* the sticker book: earned the first time it is really done */
+    if (ARG.sim.s.fan === 3 && !ARG.sim.s.dirty && ARG.sim.s.capture >= 0.95) ARG.progress.award('hood');
+
     requestAnimationFrame(loop);
   }
 

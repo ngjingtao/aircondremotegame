@@ -385,6 +385,18 @@
 
       </div>
 
+      <!-- ── the sticker book ──
+           The one thing that ties the eight activities together: each one
+           records what a child has managed, and it is collected here. -->
+      <section class="book" id="book">
+        <h2 class="book-title">
+          <span data-i18n="bookTitle">My sticker book</span>
+          <b id="book-count">0 / 12</b>
+        </h2>
+        <p class="book-note" id="book-note" data-i18n="bookHint">…</p>
+        <div class="book-grid" id="book-grid"></div>
+      </section>
+
       <div class="home-foot">
         <button class="tb-btn" id="btn-help" data-i18n="help">?</button>
         <span data-i18n="foot">Made for curious kids</span>
@@ -403,6 +415,7 @@
 </div>
 
 <script src="shared/store.js"></script>
+<script src="shared/progress.js"></script>
 
 <script src="shared/voice.js"></script>
 <script src="shared/a11y.js"></script>
