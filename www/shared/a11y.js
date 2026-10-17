@@ -75,6 +75,8 @@ ARG.a11y = (function () {
     label();
     keyboard();
     focusRing();
+    /* the language has now been applied — fade the app in */
+    document.documentElement.classList.remove('i18n-pending');
     /* some panels rebuild their buttons later */
     setTimeout(label, 400);
     setTimeout(label, 1500);

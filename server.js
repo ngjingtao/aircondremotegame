@@ -36,59 +36,137 @@ const MIME = {
   '.map': 'application/json; charset=utf-8'
 };
 
-function reply(res, status, body, type, head) {
-  res.writeHead(status, {
-    'Content-Type': type || 'text/plain; charset=utf-8',
-    'Cache-Control': 'no-cache',
-    'X-Content-Type-Options': 'nosniff'
-  });
-  if (head) return res.end();
+/* files that are long-lived and can be cached hard */
+const CACHEABLE = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.ico', '.svg', '.woff', '.woff2', '.ttf', '.mp3']);
+
+const SECURITY = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'geolocation=(), camera=(), microphone=()',
+  /* everything is local; nothing should ever be loaded from elsewhere */
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data:",
+    "media-src 'self'",
+    "font-src 'self'",
+    "connect-src 'self'",
+    "base-uri 'self'",
+    "form-action 'none'",
+    "frame-ancestors 'self'"
+  ].join('; ')
+};
+
+function reply(res, status, body, extra) {
+  res.writeHead(status, Object.assign({
+    'Content-Type': 'text/plain; charset=utf-8',
+    'Cache-Control': 'no-store'
+  }, SECURITY, extra || {}));
   res.end(body);
 }
 
+/* ─────────────────────────────────────────
+   Resolve a URL to a file inside ROOT.
+   Returns { file } or { status } — never throws.
+   ───────────────────────────────────────── */
 function resolveFile(urlPath) {
-  const clean = decodeURIComponent(urlPath.split('?')[0].split('#')[0]);
+  let clean;
+  try {
+    clean = decodeURIComponent(urlPath.split('?')[0].split('#')[0]);
+  } catch (e) {
+    /* malformed percent-encoding — a bad request, not a crash */
+    return { status: 400, message: 'Bad request' };
+  }
+
+  /* no NUL bytes or control characters */
+  if (/[\u0000-\u001f]/.test(clean)) return { status: 400, message: 'Bad request' };
+
   const withIndex = clean.endsWith('/') ? clean + 'index.html' : clean;
+
+  /* never serve the dev-only pages or dotfiles */
+  const parts = withIndex.split('/').filter(Boolean);
+  if (parts.some(seg => seg.startsWith('_') || seg.startsWith('.'))) {
+    return { status: 404, message: 'Not found' };
+  }
+
   const full = path.resolve(ROOT, '.' + withIndex);
 
   /* never escape the web root */
-  if (full !== ROOT && !full.startsWith(ROOT + path.sep)) return null;
-  return full;
+  if (full !== ROOT && !full.startsWith(ROOT + path.sep)) {
+    return { status: 403, message: 'Forbidden' };
+  }
+  return { file: full };
 }
 
-const server = http.createServer((req, res) => {
+function sendFile(res, file, stat, req) {
+  const ext = path.extname(file).toLowerCase();
+  const type = MIME[ext] || 'application/octet-stream';
+  const headers = Object.assign({
+    'Content-Type': type,
+    'Content-Length': stat.size
+  }, SECURITY);
+
+  if (CACHEABLE.has(ext)) {
+    /* icons, images, fonts — safe to keep for a day */
+    headers['Cache-Control'] = 'public, max-age=86400';
+  } else {
+    /* HTML, CSS and JS: the service worker handles offline, so always revalidate */
+    headers['Cache-Control'] = 'no-cache';
+  }
+
+  res.writeHead(200, headers);
+  if (req.method === 'HEAD') return res.end();
+
+  const stream = fs.createReadStream(file);
+  stream.on('error', () => { try { res.destroy(); } catch (e) {} });
+  stream.pipe(res);
+}
+
+/* ─────────────────────────────────────────
+   Request handler
+   ───────────────────────────────────────── */
+function handle(req, res) {
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     return reply(res, 405, 'Method not allowed');
   }
 
-  let file = resolveFile(req.url || '/');
-  if (!file) return reply(res, 403, 'Forbidden');
+  const resolved = resolveFile(req.url || '/');
+  if (resolved.status) return reply(res, resolved.status, resolved.message);
 
-  fs.stat(file, (err, stat) => {
+  fs.stat(resolved.file, (err, stat) => {
     /* "/train" without a trailing slash should still find /train/index.html */
-    if ((err || stat.isDirectory()) && !file.endsWith('index.html')) {
-      file = path.join(file, 'index.html');
-      return fs.stat(file, (err2, stat2) => {
+    if ((err || stat.isDirectory()) && !resolved.file.endsWith('index.html')) {
+      const asDir = path.join(resolved.file, 'index.html');
+      if (!asDir.startsWith(ROOT + path.sep)) return reply(res, 404, 'Not found');
+      return fs.stat(asDir, (err2, stat2) => {
         if (err2 || !stat2.isFile()) return reply(res, 404, 'Not found');
-        send(res, file, stat2, req);
+        sendFile(res, asDir, stat2, req);
       });
     }
     if (err || !stat.isFile()) return reply(res, 404, 'Not found');
-    send(res, file, stat, req);
+    sendFile(res, resolved.file, stat, req);
   });
+}
+
+const server = http.createServer((req, res) => {
+  /* a thrown handler must never take the whole site down */
+  try {
+    handle(req, res);
+  } catch (e) {
+    console.error('request failed:', req.method, req.url, e && e.message);
+    try { reply(res, 500, 'Server error'); } catch (e2) {}
+  }
 });
 
-function send(res, file, stat, req) {
-  const type = MIME[path.extname(file).toLowerCase()] || 'application/octet-stream';
-  res.writeHead(200, {
-    'Content-Type': type,
-    'Content-Length': stat.size,
-    'Cache-Control': 'no-cache',
-    'X-Content-Type-Options': 'nosniff'
-  });
-  if (req.method === 'HEAD') return res.end();
-  fs.createReadStream(file).pipe(res);
-}
+/* last-resort guards: log and keep serving */
+process.on('uncaughtException', err => {
+  console.error('uncaught:', err && err.stack ? err.stack : err);
+});
+process.on('unhandledRejection', err => {
+  console.error('unhandled rejection:', err);
+});
 
 server.listen(PORT, HOST, () => {
   console.log('Play & Learn — serving ' + ROOT);

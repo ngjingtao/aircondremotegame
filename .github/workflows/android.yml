@@ -63,6 +63,12 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
+      - name: Run the simulation tests
+        run: npm test
+
+      - name: Stamp the service worker version
+        run: npm run stamp
+
       - name: Sync web assets into the Android project
         run: npx cap sync android
 

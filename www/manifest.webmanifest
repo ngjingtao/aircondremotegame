@@ -1,7 +1,7 @@
 {
   "name": "Play & Learn",
   "short_name": "Play & Learn",
-  "description": "Four CSS-drawn activities for kids: Play Aircond, Food Eating, Train Driving and Breathing & Blood.",
+  "description": "Seven CSS-drawn activities for kids: Play Aircond, Food Eating, Train Driving, Breathing & Blood, Inside the Aircon, Toilet & Indah Water and Kitchen Hood.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

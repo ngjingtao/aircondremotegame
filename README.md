@@ -2,24 +2,28 @@
 
 [![Build Android APK](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml/badge.svg)](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml)
 
-One little app, three activities for a curious kid. The home screen shows three picture tiles —
-tap one and you are in.
+One little app, **seven** activities for a curious kid. The home screen shows seven picture
+tiles — tap one and you're in.
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│  ✦ Play & Learn                          EN  🔊              │
-│                                                              │
-│                 What shall we play?                          │
-│                                                              │
-│  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐          │
-│  │ [ air-con ]  │ │ [ innards  ] │ │  [ train ]   │          │
-│  │Play Aircond ›│ │Food Eating  ›│ │Train Driving ›│         │
-│  └──────────────┘ └──────────────┘ └──────────────┘          │
-└──────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────────┐
+│  ✦ Play & Learn                                  🗣️  EN  🔊  ◧  ?     │
+│                                                                       │
+│                    今天玩什么？ / What shall we play?                  │
+│                                                                       │
+│  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐          │
+│  │[ air-con ] │ │[ innards  ]│ │ [ train ]  │ │ [ lungs ]  │          │
+│  │玩空调    › │ │吃东西    › │ │开火车    › │ │呼吸与血液› │          │
+│  └────────────┘ └────────────┘ └────────────┘ └────────────┘          │
+│  ┌────────────┐ ┌────────────┐ ┌────────────┐                         │
+│  │[ cutaway ] │ │[ toilet ]  │ │ [ hood ]   │                         │
+│  │空调的秘密› │ │马桶与污水› │ │抽油烟机  › │                         │
+│  └────────────┘ └────────────┘ └────────────┘                         │
+└───────────────────────────────────────────────────────────────────────┘
 ```
 
 Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
-All three activities speak **English and 中文** and work offline.
+All seven activities speak **English and 中文**, work offline, and are installable as an app.
 
 ---
 
@@ -335,10 +339,13 @@ npm start
 # open http://localhost:5173
 ```
 
-…or just double-click `www/index.html`.
+…or just double-click `www/index.html`. Everything works from `file://` except two things that
+browsers only allow over http(s): the **service worker** (so no offline caching) and the
+**manifest install prompt**. Use `npm start` if you want to test those.
 
 `www/_devicelab.html` opens every screen at real phone **and** iPad sizes, portrait and
-landscape, side by side.
+landscape, side by side. It is dev-only — the server returns 404 for it, and for anything else
+starting with `_`.
 
 ### Hosting it as a website
 
@@ -492,14 +499,16 @@ cd android
 www/                          ← the whole app (no build step)
 ├─ index.html  home.css  home.js        the activity picker
 ├─ manifest.webmanifest                 PWA: standalone display, icons, shortcuts
-├─ sw.js                                service worker — caches all 44 files for offline
+├─ sw.js                                service worker — caches every page and asset
 ├─ pwa.js                               registers the service worker, detects standalone
 ├─ icons/                               120/152/167/180/192/512 px + maskable
 ├─ shared/
 │  ├─ ui.css                            top bar, help overlay, toast, colour vars
 │  ├─ store.js                          ARG namespace + safe localStorage
 │  ├─ audio.js                          WebAudio blips (no audio files)
-│  └─ voice.js                          spoken narration (Web Speech API)
+│  ├─ voice.js                          spoken narration (Web Speech API)
+│  ├─ shell.js                          the ◧ fold-away control panel
+│  └─ a11y.js                           aria labels + keyboard support
 ├─ aircond/                             ── activity 1 ──
 │  ├─ index.html
 │  ├─ aircond.css                       remote skin, LCD, room, character animations
@@ -532,10 +541,26 @@ www/                          ← the whole app (no build step)
 
 server.js                               zero-dependency static server ($PORT aware)
 render.yaml                             Render blueprint (build + start commands)
+scripts/stamp.js                        stamps the sw.js cache from the git commit
+scripts/build-apk.js                    cross-platform APK build
+test/sim.test.js                        36 assertions over the seven simulations
+test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json
-.github/workflows/android.yml           auto-builds the APK
+.github/workflows/android.yml           runs the tests, then builds the APK
 ```
+
+## Tests
+
+```bash
+npm test           # the seven simulation models
+npm run test:server   # malformed URLs, traversal, security headers (needs npm start running)
+```
+
+`test/sim.test.js` loads each `state.js` into a sandbox with a minimal `window` and asserts the
+numbers this README quotes — so if the thermal model, the braking distance, the flush timing or
+the breathing physiology drifts, the build fails. It caught two mistakes while it was being
+written. No framework, no dependencies; it runs in the GitHub Action before every APK build.
 
 ### Adding your own artwork
 

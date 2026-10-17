@@ -14,7 +14,7 @@ services:
     name: jk-play-n-learn
     runtime: node
     plan: free
-    buildCommand: npm ci --omit=dev
+    buildCommand: npm ci --omit=dev && npm run stamp
     startCommand: node server.js
     healthCheckPath: /
     autoDeploy: true

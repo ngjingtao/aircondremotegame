@@ -2,7 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<script>
+/* set the language before the first paint so there is no flash */
+(function () {
+  var d = document.documentElement, l = "zh";
+  try { l = localStorage.getItem("arg.lang") || "zh"; } catch (e) {}
+  if (l !== "zh" && l !== "en") l = "zh";
+  d.lang = l === "zh" ? "zh-CN" : "en";
+  d.classList.add("i18n-pending");
+  setTimeout(function () { d.classList.remove("i18n-pending"); }, 1500);
+})();
+</script>
 <meta name="theme-color" content="#0b1220" />
 <meta name="format-detection" content="telephone=no" />
 <!-- pwa -->

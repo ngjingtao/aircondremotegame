@@ -26,7 +26,7 @@
       tileHoodSub: 'Turn the fan up and watch how it pulls the smoke, grease and smell out of the kitchen',
       foot: 'Made for curious kids',
       help: '?',
-      helpTitle: 'Two activities',
+      helpTitle: 'Seven activities',
       helpBody: `
         <h3>❄ Play Aircond</h3>
         <ul>
@@ -101,7 +101,7 @@
       tileHoodSub: '把风速调大，看它怎么把油烟、油和味道抽走',
       foot: '给充满好奇心的小朋友',
       help: '?',
-      helpTitle: '两个小游戏',
+      helpTitle: '七个小游戏',
       helpBody: `
         <h3>❄ 玩空调</h3>
         <ul>

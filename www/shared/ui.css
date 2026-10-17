@@ -102,6 +102,12 @@ html.panel-collapsed #room-panel{
    whole screen to the view out of the cab */
 html.panel-collapsed #cab{ display:none; }
 
+/* ─────────────── FIRST-PAINT LANGUAGE ─────────────── */
+/* the language is set in <head> before paint; this hides the swap */
+html.i18n-pending header,
+html.i18n-pending main{ opacity:0; }
+header, main{ transition:opacity .2s ease; }
+
 /* ─────────────── TEXT-TO-SPEECH HIGHLIGHT ─────────────── */
 .tts-reading{
   box-shadow:0 0 0 2px rgba(120,200,255,.45) inset;

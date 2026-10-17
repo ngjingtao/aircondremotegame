@@ -2,14 +2,17 @@
   "name": "aircond-remote-game",
   "version": "1.0.0",
   "private": true,
-  "description": "Play & Learn — three CSS-drawn activities for kids: Play Aircond, Food Eating and Train Driving.",
+  "description": "Play & Learn — seven CSS-drawn activities for kids: Play Aircond, Food Eating, Train Driving, Breathing & Blood, Inside the Aircon, Toilet & Indah Water and Kitchen Hood.",
   "scripts": {
     "start": "node server.js",
     "serve": "node server.js",
+    "stamp": "node scripts/stamp.js",
+    "test": "node test/sim.test.js",
+    "test:server": "node test/server.test.js",
     "cap:sync": "cap sync android",
     "cap:open": "cap open android",
-    "android:apk": "cd android && gradlew.bat assembleDebug",
-    "android:apk:sh": "cd android && ./gradlew assembleDebug"
+    "android:apk": "node scripts/build-apk.js",
+    "android:apk:sh": "npm --prefix android run --silent assembleDebug --if-present || cd android && ./gradlew assembleDebug"
   },
   "engines": {
     "node": ">=18"
