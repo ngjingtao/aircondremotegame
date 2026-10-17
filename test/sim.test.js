@@ -68,7 +68,7 @@ function settle(sim, seconds, step) {
 }
 console.log('\n— Play Aircond —');
 {
-  const ARG = load('aircond', ['aircond/js/state.js']);
+  const ARG = load('aircond', ['shared/progress.js', 'aircond/js/state.js']);
   const sim = ARG.sim;
   const cur = () => sim.s;                    // fresh() swaps the object, so always re-read
   const settle = (s) => { for (let i = 0; i < s / 0.05; i++) sim.tick(0.05); };
@@ -127,7 +127,7 @@ console.log('\n— Play Aircond —');
 
 console.log('\n— Play Aircond: missions —');
 {
-  const ARG = load('aircond', ['aircond/js/state.js']);
+  const ARG = load('aircond', ['shared/progress.js', 'aircond/js/state.js']);
   const sim = ARG.sim;
   const cur = () => sim.s;
 
@@ -230,6 +230,15 @@ console.log('\n— Play Aircond: missions —');
   eq('a finished mission remembers its stars', ARG.sim.bestStars(0) >= 1, true);
   eq('and the first unfinished one is unlocked', ARG.sim.unlocked() >= 0, true);
 
+  /* ── and it lands in the sticker book ──
+     The book is the single record now, so finishing a mission has to write it. */
+  ARG.progress.reset();
+  const stamped = play(0, S => { S.mode = 'COOL'; S.setTemp = 25; S.fan = 'AUTO'; });
+  eq('finishing a mission earns its sticker', ARG.progress.starsOf('air-0'), stamped.stars);
+  eq('  → and the activity agrees', ARG.sim.bestStars(0), stamped.stars);
+  play(0, S => { S.power = false; });
+  eq('a worse run cannot take the sticker back', ARG.progress.starsOf('air-0'), stamped.stars);
+
   /* leaving a mission puts everything back */
   sim.leaveMission();
   eq('leaving the mission clears it', cur().mission, -1);
@@ -264,7 +273,7 @@ console.log('\n— Food Eating —');
 
 console.log('\n— Train Driving —');
 {
-  const ARG = load('train', ['train/js/state.js']);
+  const ARG = load('train', ['shared/progress.js', 'train/js/state.js']);
   const sim = ARG.sim;
   // acceleration from rest
   sim.fresh();
@@ -318,7 +327,7 @@ console.log('\n— Train Driving —');
 
 console.log('\n— Train Driving: missions —');
 {
-  const ARG = load('train', ['train/js/state.js']);
+  const ARG = load('train', ['shared/progress.js', 'train/js/state.js']);
   const sim = ARG.sim;
   const cur = () => sim.s;
 
@@ -395,6 +404,14 @@ console.log('\n— Train Driving: missions —');
 
   eq('a finished mission remembers its stars', ARG.sim.bestStars(0) >= 1, true);
   eq('and has a next one to unlock', ARG.sim.unlocked() >= 0, true);
+
+  /* ── and it lands in the sticker book ── */
+  ARG.progress.reset();
+  const stamped = run(0, { limit: 22, careCrossings: true });
+  eq('finishing a run earns its sticker', ARG.progress.starsOf('train-0'), stamped.stars);
+  eq('  → and the activity agrees', ARG.sim.bestStars(0), stamped.stars);
+  run(0, { limit: 12, careCrossings: true, margin: 0.98 });
+  eq('a worse run cannot take the sticker back', ARG.progress.starsOf('train-0'), stamped.stars);
 
   sim.leaveMission();
   eq('leaving the mission clears it', cur().mission, -1);

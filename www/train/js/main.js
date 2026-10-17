@@ -57,8 +57,7 @@
 
     ARG.sim.setMissionHook((result, stars, reason) => {
       ARG.scene.showResult(result, stars, reason);
-      /* the sticker book remembers the best you have done on this run */
-      if (result === 'win') ARG.progress.award('train-' + ARG.sim.s.mission, stars);
+      /* the sticker book is written by the model, in train/js/state.js */
     });
 
     /* ── free drive ↔ the timetabled run ── */

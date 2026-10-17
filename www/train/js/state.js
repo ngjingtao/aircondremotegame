@@ -166,8 +166,15 @@ ARG.sim = (function () {
   ];
 
   const STORE_STARS = n => 'arg.trainStars.' + n;
+  const BOOK = n => 'train-' + n;
 
-  function bestStars(n) { return Number(ARG.store.get(STORE_STARS(n)) || 0); }
+  /* The sticker book is the one place a result lives. The old per-mission key
+     is still read, so a player who earned stars before the book existed keeps
+     them — but nothing writes it any more. */
+  function bestStars(n) {
+    const book = ARG.progress ? ARG.progress.starsOf(BOOK(n)) : 0;
+    return Math.max(book, Number(ARG.store.get(STORE_STARS(n)) || 0));
+  }
 
   /* the mission you are allowed to start is the first one you have not aced */
   function unlocked() {
@@ -209,9 +216,8 @@ ARG.sim = (function () {
     S.stars = rateMission();
     S.result = S.stars > 0 ? 'win' : 'lose';
     S.failReason = S.result === 'lose' ? failReason() : '';
-    if (S.result === 'win' && S.stars > bestStars(S.mission)) {
-      ARG.store.set(STORE_STARS(S.mission), String(S.stars));
-    }
+    /* straight into the sticker book — the single record of a result */
+    if (ARG.progress) ARG.progress.award(BOOK(S.mission), S.stars);
     if (onMission) onMission(S.result, S.stars, S.failReason);
   }
 
