@@ -587,7 +587,7 @@ render.yaml                             Render blueprint (build + start commands
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
 test/sim.test.js                        56 assertions over the seven simulations
-test/render.test.js                     40 assertions: every page booted, plus the toilet cutaway
+test/render.test.js                     50 assertions: every page booted, plus the artwork
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json
@@ -632,6 +632,23 @@ the throttle, run the loop, and the train must actually roll.
   from how wide the scene is, so the train always fills the same share of the screen on a phone
   and on an iPad. The route is generated from `CYCLE`/`STATION_OFFSET`/`CROSSING_OFFSET` in
   `state.js` — change those to re-space the stations and crossings.
+
+  The track's vertical geometry lives in one block of custom properties at the top of
+  `train.css` (`--track-h`, `--rail-y`, `--ground-top`, and `--rail-top` derived from them).
+  Everything that has to line up reads from those: the rails, the scenery baseline, the
+  treeline, the pantograph wire and the train itself. `--rail-top` is what puts the wheels *on*
+  the rail rather than sunk below it, so if you move the track, move it there and not in five
+  places.
+
+  Two traps worth knowing about, both of which bit this scene:
+
+  * A `background-repeat: repeat-x` tile is still **clipped at its own height**, so a
+    `radial-gradient` puff that is taller than `background-size` gets sliced off flat — which is
+    what drew a straight horizontal seam across the sky. Every puff must fit inside the tile,
+    and the element must be at least as tall as the tile. `npm test` asserts both.
+  * Scenery is planted **on the far side** of the track. The baseline is derived from
+    `--rail-top`, not a bare percentage; a stray `31%` planted trunks and fence posts in the
+    middle of the sleepers.
 * **The blood circuit (breath)** — `www/breath/js/scene.js`. `CIRCUIT` is a list of points for
   one closed loop; it is smoothed into a path, sampled once into a lookup table, and the cells
   ride along it. `LUNG_I` / `BODY_I` mark the two points where a cell changes colour, so moving

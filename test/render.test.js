@@ -436,6 +436,46 @@ console.log('\n— Toilet: a real gravity-flush mechanism —');
   }
 }
 
+/* ─────────── the train's sky tiles must not clip their own clouds ─────────── */
+console.log('\n— Train: sky layers —');
+{
+  const css = fs.readFileSync(path.join(WWW, 'train', 'train.css'), 'utf8');
+
+  /* pull one rule body out of the stylesheet */
+  const rule = name => {
+    const i = css.indexOf(name + '{');
+    if (i < 0) return null;
+    return css.slice(i + name.length + 1, css.indexOf('}', i));
+  };
+
+  ['clouds', 'clouds2'].forEach(name => {
+    const body = rule('.' + name);
+    if (!body) { bad('.' + name + ' exists', 'rule not found'); return; }
+
+    const size = body.match(/background-size:\s*([\d.]+)px\s+([\d.]+)px/);
+    if (!size) { bad('.' + name + ' has a tile', 'no background-size'); return; }
+    const tileH = Number(size[2]);
+
+    /* the element must be at least as tall as the tile, or the bottom of the
+       tile — and anything drawn in it — gets sliced off flat */
+    const h = body.match(/height:\s*([\d.]+)px/);
+    const elH = h ? Number(h[1]) : null;
+    eq('.' + name + ' is tall enough for its tile', elH !== null && elH >= tileH, true);
+
+    /* and no single puff may overhang the tile */
+    const puffs = body.match(/circle\s+([\d.]+)px\s+at\s+[\d.]+px\s+([\d.]+)px/g) || [];
+    eq('.' + name + ' has puffs to check', puffs.length > 0, true);
+
+    let worst = 0;
+    puffs.forEach(p => {
+      const m = p.match(/circle\s+([\d.]+)px\s+at\s+[\d.]+px\s+([\d.]+)px/);
+      worst = Math.max(worst, Number(m[2]) + Number(m[1]));
+    });
+    /* a truncated puff is what drew the seam, so this must never come back */
+    eq('.' + name + ' puffs all fit inside the tile', worst <= tileH, true);
+  });
+}
+
 /* ─────────── report ─────────── */
 console.log('\n' + '─'.repeat(72));
 console.log(passed + ' passed, ' + failed + ' failed');

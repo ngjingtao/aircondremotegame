@@ -11,53 +11,72 @@
   flex:1 1 auto;min-height:0;overflow:hidden;
   --ppm:4;
   --nose-right:66%;
+  /* track geometry, in one place so the rails, the scenery baselines and the
+     wheels can never drift out of step with each other */
+  --track-h:40px;
+  --rail-y:34px;
+  --rail-h:5px;
+  --ground-top:70%;
+  --rail-top:calc(100% - var(--ground-top) + var(--track-h) - var(--rail-y));
   background:#0b1220;
 }
 
 .sky{
   position:absolute;left:0;right:0;top:0;bottom:26%;
-  background:linear-gradient(180deg,#4f9ada,#86c2ea 55%,#cbe6f7);
+  background:linear-gradient(180deg,#4a92d4 0%,#6aa9e0 32%,#9cc9ec 64%,#cbe6f7 100%);
+}
+/* a soft haze where the sky meets the hills, so the horizon is not a hard edge */
+.sky::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:38%;
+  background:linear-gradient(180deg,rgba(255,255,255,0),rgba(228,242,252,.62));
+  pointer-events:none;
 }
 .sun{
-  position:absolute;left:9%;top:8%;
+  position:absolute;right:9%;top:13%;
   width:clamp(34px,7vw,64px);height:clamp(34px,7vw,64px);
   border-radius:50%;
   background:radial-gradient(circle,#fffbe0 0 40%,#ffdc7a 55%,rgba(255,220,122,0) 72%);
 }
 
+/* ── clouds ──
+   The tile is 300x132 and every puff is sized and placed so it fits INSIDE
+   that tile. That matters: `background-repeat:repeat-x` still clips each tile
+   at its height, so a puff that overhangs the bottom gets sliced flat — which
+   is what drew a straight horizontal seam right across the sky. */
 .clouds{
-  position:absolute;left:-2200px;width:4400px;top:4%;height:26%;
+  position:absolute;left:-2200px;width:4400px;top:3%;height:132px;
   z-index:2;
   background-image:
-    radial-gradient(circle 46px at 68px 26px, rgba(255,255,255,.95), rgba(255,255,255,0) 100%),
-    radial-gradient(circle 33px at 122px 36px, rgba(255,255,255,.9), rgba(255,255,255,0) 100%),
-    radial-gradient(circle 27px at 30px 36px, rgba(255,255,255,.88), rgba(255,255,255,0) 100%),
-    radial-gradient(circle 22px at 96px 12px, rgba(255,255,255,.82), rgba(255,255,255,0) 100%),
-    radial-gradient(circle 30px at 214px 30px, rgba(255,255,255,.86), rgba(255,255,255,0) 100%),
-    radial-gradient(circle 20px at 248px 44px, rgba(255,255,255,.8), rgba(255,255,255,0) 100%);
-  background-size: 300px 70px, 300px 70px, 300px 70px, 300px 70px, 300px 70px, 300px 70px;
-  background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+    radial-gradient(circle 44px at 68px 62px, rgba(255,255,255,.95), rgba(255,255,255,0) 100%),
+    radial-gradient(circle 33px at 124px 74px, rgba(255,255,255,.9), rgba(255,255,255,0) 100%),
+    radial-gradient(circle 27px at 30px 66px, rgba(255,255,255,.88), rgba(255,255,255,0) 100%),
+    radial-gradient(circle 22px at 98px 40px, rgba(255,255,255,.82), rgba(255,255,255,0) 100%),
+    radial-gradient(circle 30px at 216px 68px, rgba(255,255,255,.86), rgba(255,255,255,0) 100%),
+    radial-gradient(circle 20px at 250px 46px, rgba(255,255,255,.8), rgba(255,255,255,0) 100%);
+  background-size: 300px 132px;
   background-repeat: repeat-x;
 }
 
 /* a closer band of clouds, drifting faster for depth */
 .clouds2{
-  position:absolute;left:-2200px;width:4400px;top:18%;height:22%;
+  position:absolute;left:-2200px;width:4400px;top:15%;height:150px;
   z-index:2;
   background-image:
-    radial-gradient(circle 58px at 90px 34px, rgba(255,255,255,.72), rgba(255,255,255,0) 100%),
-    radial-gradient(circle 40px at 156px 46px, rgba(255,255,255,.66), rgba(255,255,255,0) 100%),
-    radial-gradient(circle 34px at 36px 46px, rgba(255,255,255,.6), rgba(255,255,255,0) 100%),
-    radial-gradient(circle 46px at 250px 28px, rgba(255,255,255,.6), rgba(255,255,255,0) 100%);
-  background-size: 340px 80px;
+    radial-gradient(circle 58px at 96px 62px, rgba(255,255,255,.72), rgba(255,255,255,0) 100%),
+    radial-gradient(circle 40px at 166px 78px, rgba(255,255,255,.66), rgba(255,255,255,0) 100%),
+    radial-gradient(circle 34px at 38px 74px, rgba(255,255,255,.6), rgba(255,255,255,0) 100%),
+    radial-gradient(circle 46px at 270px 52px, rgba(255,255,255,.6), rgba(255,255,255,0) 100%);
+  background-size: 340px 150px;
   background-repeat: repeat-x;
   filter:blur(1.4px);
   opacity:.85;
 }
 
-/* mid-ground treeline — between the hills and the track */
+/* mid-ground treeline — planted just behind the rails, not floating above them */
 .mid{
-  position:absolute;left:-2200px;width:4400px;bottom:32%;height:7%;
+  position:absolute;left:-2200px;width:4400px;
+  bottom:calc(100% - var(--ground-top) + var(--track-h) - 20px);
+  height:7%;
   z-index:4;
   background-image:
     radial-gradient(closest-side, #4b7439 0 98%, rgba(75,116,57,0) 100%),
@@ -82,26 +101,46 @@
 }
 
 .ground{
-  position:absolute;left:0;right:0;top:70%;bottom:0;
+  position:absolute;left:0;right:0;top:var(--ground-top);bottom:0;
   z-index:4;
-  background:linear-gradient(180deg,#84ad63,#5f8a47 45%,#4a7038);
+  background:
+    /* the shadow the ballast casts on the grass */
+    linear-gradient(180deg,rgba(22,44,16,.5),rgba(22,44,16,0) 16%),
+    /* low sun raking across the field */
+    linear-gradient(180deg,rgba(255,246,208,.22),rgba(255,246,208,0) 46%),
+    /* nearer grass is darker, which pulls the eye down the field */
+    linear-gradient(180deg,#93bb6d,#7aa657 26%,#628c48 56%,#4b7038 86%,#3c5b2b),
+    /* and a soft vignette at the very bottom */
+    linear-gradient(180deg,rgba(16,30,10,0),rgba(16,30,10,.45));
 }
+/* scattered tufts, bare patches and light catching the grass. The layers are
+   deliberately sized to widths that share no common multiple, so the tiling
+   never reads as a pattern the way a single repeating tile does. */
 .ground::before{
-  content:"";position:absolute;left:0;right:0;top:0;height:16%;
-  background:linear-gradient(180deg,rgba(255,255,255,.16),transparent);
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:
+    radial-gradient(ellipse 34px 9px at 24px 30%, rgba(30,58,22,.38), rgba(30,58,22,0) 74%),
+    radial-gradient(ellipse 22px 6px at 120px 58%, rgba(255,247,210,.24), rgba(255,247,210,0) 76%),
+    radial-gradient(ellipse 46px 11px at 210px 20%, rgba(30,58,22,.28), rgba(30,58,22,0) 78%),
+    radial-gradient(ellipse 17px 5px at 300px 72%, rgba(255,247,210,.20), rgba(255,247,210,0) 78%),
+    radial-gradient(ellipse 28px 8px at 356px 44%, rgba(52,88,36,.34), rgba(52,88,36,0) 76%),
+    radial-gradient(ellipse 60px 14px at 150px 84%, rgba(30,58,22,.30), rgba(30,58,22,0) 80%),
+    radial-gradient(ellipse 38px 9px at 430px 66%, rgba(120,160,88,.22), rgba(120,160,88,0) 78%);
+  background-size: 397px 100%, 283px 100%, 461px 100%, 353px 100%, 311px 100%, 523px 100%, 241px 100%;
+  background-repeat: repeat-x;
 }
 
 /* ── track ── */
 .track{
   position:absolute;left:-200px;right:-200px;
-  top:calc(70% - 40px);height:40px;
+  top:calc(var(--ground-top) - var(--track-h));height:var(--track-h);
   z-index:5;
   background-image:
-    linear-gradient(180deg,#cfd6e0,#78828f),
+    linear-gradient(180deg,#e2e8f0,#8d97a4),
     linear-gradient(180deg,#b6bec9,#828d9b),
     linear-gradient(180deg,#a49b8a,#7d7668);
-  background-size: 100% 5px, 100% 3px, 100% 40px;
-  background-position: 0 34px, 0 8px, 0 0;
+  background-size: 100% var(--rail-h), 100% 3px, 100% var(--track-h);
+  background-position: 0 var(--rail-y), 0 8px, 0 0;
   background-repeat: repeat-x, repeat-x, repeat-x;
 }
 .sleepers{
@@ -110,31 +149,46 @@
 }
 .wire{
   position:absolute;left:0;right:0;z-index:7;
-  bottom:calc(30% + var(--ppm) * 6.9px);height:2px;
+  bottom:calc(var(--rail-top) + var(--ppm) * 6.9px);height:2px;
   background:linear-gradient(180deg,#93a0b1,#5f6875);
 }
 
-/* blurred grass rushing past in the foreground — sells the speed */
+/* blurred grass rushing past in the foreground — this is what sells the speed.
+   Five tuft layers at coprime-ish widths plus a soft vignette, rather than one
+   tile of identical ellipses. */
 .foreground{
-  position:absolute;left:-2200px;width:4400px;bottom:0;height:12%;
+  position:absolute;left:-2200px;width:4400px;bottom:0;height:15%;
   z-index:11;pointer-events:none;
   background-image:
-    radial-gradient(closest-side, #3f6b2c 0 62%, rgba(63,107,44,0) 80%),
-    radial-gradient(closest-side, #4b7a36 0 60%, rgba(75,122,54,0) 78%),
-    radial-gradient(closest-side, #56883e 0 58%, rgba(86,136,62,0) 76%);
-  background-size: 36px 100%, 28px 92%, 48px 76%;
-  background-position: 0 100%, 18px 100%, 9px 100%;
-  background-repeat: repeat-x;
-  filter:blur(1.2px);
-  opacity:.9;
+    linear-gradient(180deg,rgba(18,34,12,0),rgba(18,34,12,.5)),
+    radial-gradient(ellipse 30px 40px at 22px 100%, #2c5720 0 62%, rgba(44,87,32,0) 82%),
+    radial-gradient(ellipse 20px 29px at 94px 100%, #3d7030 0 60%, rgba(61,112,48,0) 80%),
+    radial-gradient(ellipse 38px 50px at 168px 100%, #23491a 0 64%, rgba(35,73,26,0) 84%),
+    radial-gradient(ellipse 25px 33px at 246px 100%, #4a8434 0 62%, rgba(74,132,52,0) 82%),
+    radial-gradient(ellipse 16px 24px at 316px 100%, #35632a 0 60%, rgba(53,99,42,0) 78%);
+  background-size: 100% 100%, 311px 100%, 197px 100%, 419px 100%, 263px 100%, 173px 100%;
+  background-repeat: no-repeat, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x;
+  filter:blur(1.6px);
 }
 
 /* ── scenery layer ── */
+/* Everything in here stands on the FAR side of the track. The baseline used to
+   be 31%, which planted trunks, fence posts and masts in the middle of the
+   sleepers. It is now just past the top edge of the rails, so the track hides
+   their feet. */
 .objs{
-  position:absolute;left:0;right:0;bottom:31%;height:44%;
+  position:absolute;left:0;right:0;
+  bottom:calc(100% - var(--ground-top) + var(--track-h) - 10px);
+  height:44%;
   z-index:6;pointer-events:none;
 }
 .obj{position:absolute;left:0;bottom:0;}
+/* a far object is smaller and sits higher up the field. Note this applies to
+   scenery only — catenary masts are never tagged `far`, because a mast's
+   dropper is measured from the rail and any rescale would leave it hanging
+   short of the contact wire. */
+.obj.far{filter:saturate(.68) brightness(.94);bottom:calc(var(--ppm) * 1.7px);}
+.obj.far > *{transform:scale(.82);transform-origin:50% 100%;}
 
 /* trees */
 .o-tree{position:relative;width:calc(var(--ppm) * 5px);height:calc(var(--ppm) * 9px);}
@@ -174,7 +228,14 @@
 .o-pole{position:relative;width:calc(var(--ppm) * 4px);height:calc(var(--ppm) * 9.5px);}
 .o-pole .post{position:absolute;left:8%;bottom:0;width:9%;height:100%;background:linear-gradient(90deg,#5d6673,#39414c);}
 .o-pole .arm{position:absolute;left:14%;top:6%;width:78%;height:4%;background:#5d6673;}
-.o-pole .drop{position:absolute;left:88%;top:6%;width:3%;height:16%;background:#5d6673;}
+/* the dropper has to actually reach the contact wire, or the wire reads as a
+   stray line hanging in the sky. The wire sits 6.9 units above the rail, and
+   the mast is 9.5 units tall planted 24px above it. */
+.o-pole .drop{
+  position:absolute;left:88%;top:6%;width:3%;
+  height:calc(24px + var(--ppm) * 2.05px);
+  background:#5d6673;
+}
 
 /* signals */
 .o-signal{position:relative;width:calc(var(--ppm) * 2.2px);height:calc(var(--ppm) * 6px);}
@@ -286,13 +347,12 @@
 .o-crossing .c-w1{left:12%;} .o-crossing .c-w2{right:12%;}
 .o-crossing .c-lamp{position:absolute;right:2%;bottom:32%;width:calc(var(--ppm) * .5px);height:calc(var(--ppm) * .5px);border-radius:50%;background:#fff3b0;box-shadow:0 0 calc(var(--ppm) * .5px) #ffd166;}
 
-/* scenery distance tint */
-.obj.far{filter:saturate(.72) brightness(.92);}
-.obj.far.o-pole, .obj.far.pole{filter:saturate(.6) brightness(.9);}
+/* scenery distance tint — position, size and the pole exclusion live with
+   .objs, above. */
 
 /* ═══════════════ TRAIN ═══════════════ */
 .train{
-  position:absolute;bottom:30%;right:var(--nose-right);
+  position:absolute;bottom:var(--rail-top);right:var(--nose-right);
   display:flex;align-items:flex-end;
   height:calc(var(--ppm) * 7.2px);
   z-index:8;
@@ -306,11 +366,17 @@
 }
 .veh{position:relative;flex:0 0 auto;}
 .veh.loco{height:calc(var(--ppm) * 5.6px);}
-.veh.coach{height:calc(var(--ppm) * 4.9px);}
-.veh::after{
-  content:"";position:absolute;right:calc(var(--ppm) * -.5px);bottom:24%;
-  width:calc(var(--ppm) * 1px);height:7%;
-  background:#20262f;border-radius:2px;
+.veh.coach{height:calc(var(--ppm) * 5.15px);}
+/* a concertina gangway between coaches, so the join reads as a coupling
+   rather than two boxes butted together. Only coaches get one: the loco's
+   right-hand end is its nose. */
+.veh.coach::after{
+  content:"";position:absolute;right:calc(var(--ppm) * -.8px);bottom:16%;
+  width:calc(var(--ppm) * 1.6px);height:58%;
+  background:repeating-linear-gradient(180deg,#2b3542 0 3px,#141b24 3px 6px);
+  border-radius:2px;
+  box-shadow:inset 0 0 0 1px rgba(160,185,215,.22);
+  z-index:2;
 }
 
 .v-body{position:absolute;left:1%;right:1%;bottom:13%;height:83%;overflow:hidden;}
@@ -357,9 +423,15 @@
   background:repeating-linear-gradient(90deg,#2b3b52 0 20%,#c9d4e2 20% 23%,transparent 23% 31%);
   border-radius:calc(var(--ppm) * .18px);
 }
-.coach-body .livery{position:absolute;left:0;right:0;bottom:22%;height:12%;background:linear-gradient(180deg,#2f5f9c,#24497a);}
+/* the coach carries the same red-over-yellow waist stripe as the loco, at the
+   same height, so the two vehicles read as one train */
+.coach-body .livery{
+  position:absolute;left:0;right:0;bottom:20%;height:15%;
+  background:linear-gradient(180deg,#e63946,#ae2733);
+}
+.coach-body .livery::after{content:"";position:absolute;left:0;right:0;bottom:0;height:32%;background:#f4d35e;}
 .coach-body .doors{
-  position:absolute;left:0;right:0;top:20%;bottom:16%;
+  position:absolute;left:0;right:0;top:20%;bottom:37%;
   background:repeating-linear-gradient(90deg,transparent 0 43%,rgba(0,0,0,.10) 43% 48%,rgba(255,255,255,.5) 48% 52%,rgba(0,0,0,.10) 52% 57%,transparent 57% 100%);
 }
 
@@ -401,7 +473,7 @@
 
 /* headlight glow */
 .headlight{
-  position:absolute;bottom:30%;right:var(--nose-right);
+  position:absolute;bottom:var(--rail-top);right:var(--nose-right);
   width:calc(var(--ppm) * 40px);height:calc(var(--ppm) * 9px);
   transform:translateX(50%);
   z-index:9;pointer-events:none;opacity:0;
@@ -421,13 +493,13 @@
   display:flex;align-items:baseline;gap:4px;
   background:rgba(6,12,22,.66);
   border:1px solid rgba(255,255,255,.14);
-  border-radius:12px;
-  padding:4px 12px;
+  border-radius:16px;
+  padding:4px 14px;
   backdrop-filter:blur(6px);
 }
 .sh-speed b{font-size:24px;font-weight:800;color:#8ef0b4;font-variant-numeric:tabular-nums;font-family:ui-monospace,monospace;line-height:1.1;
-  text-shadow:0 0 8px rgba(110,240,160,.85), 0 0 18px rgba(110,240,160,.45);}
-.sh-speed b.fast{color:#ffb37a;text-shadow:0 0 8px rgba(255,170,110,.9), 0 0 18px rgba(255,170,110,.5);}
+  text-shadow:0 0 7px rgba(140,230,180,.55);}
+.sh-speed b.fast{color:#ffb37a;text-shadow:0 0 7px rgba(255,185,135,.6);}
 .sh-speed span{font-size:10px;font-weight:700;color:#93a3bd;}
 
 .sh-right{display:flex;flex-direction:column;gap:6px;align-items:stretch;}
@@ -463,8 +535,8 @@
   display:flex;flex-direction:column;gap:1px;
   background:rgba(6,12,22,.66);
   border:1px solid rgba(255,255,255,.14);
-  border-radius:12px;
-  padding:5px 12px;
+  border-radius:16px;
+  padding:6px 14px;
   backdrop-filter:blur(6px);
   min-width:118px;
   transition:border-color .2s,background .2s;
@@ -502,9 +574,10 @@
   gap:10px;
   padding:10px 12px calc(10px + env(safe-area-inset-bottom));
   background:
-    linear-gradient(180deg,#1c2635,#111a26 70%,#0d141e);
-  border-top:2px solid #2b3a4e;
-  box-shadow:0 -8px 24px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
+    linear-gradient(180deg,#232b38,#141d29 70%,#0f1722);
+  border-top:2px solid #33455c;
+  border-radius:18px 18px 0 0;
+  box-shadow:0 -8px 24px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
   grid-template-columns:150px minmax(120px,1fr) minmax(120px,1fr) minmax(180px,1.05fr) minmax(140px,.9fr);
   grid-template-areas:"gauge thr brk btns status";
   z-index:20;
@@ -516,7 +589,7 @@
 #g-value{
   text-shadow:0 0 10px rgba(120,240,180,.9), 0 0 24px rgba(120,240,180,.45);
 }
-#g-needle line{filter:drop-shadow(0 0 5px rgba(255,90,77,.95));}
+#g-needle line{filter:drop-shadow(0 0 4px rgba(255,90,77,.8));}
 #g-needle circle{filter:drop-shadow(0 0 4px rgba(200,225,255,.5));}
 #g-ticks line{stroke:rgba(210,235,255,.75);}
 
@@ -525,7 +598,7 @@
   display:flex;flex-direction:column;gap:5px;
   background:linear-gradient(180deg,#202c3d,#172130);
   border:1px solid #2e3d52;
-  border-radius:12px;
+  border-radius:15px;
   padding:7px 9px;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
 }
@@ -549,7 +622,7 @@
 .lv-btn{
   flex:1 1 auto;
   padding:9px 0;
-  border-radius:9px;
+  border-radius:12px;
   border:1px solid #34435a;
   background:linear-gradient(180deg,#31415a,#1e2a3c);
   box-shadow:0 2px 0 #16202e, inset 0 1px 0 rgba(255,255,255,.08);
@@ -566,7 +639,7 @@
   position:relative;
   display:flex;align-items:center;gap:6px;
   padding:8px 9px;
-  border-radius:11px;
+  border-radius:14px;
   border:1px solid #34435a;
   background:linear-gradient(180deg,#2b3a4e,#1c2635);
   box-shadow:0 2px 0 #16202e, inset 0 1px 0 rgba(255,255,255,.07);
@@ -590,7 +663,7 @@
   display:flex;flex-direction:column;justify-content:center;gap:3px;
   background:linear-gradient(180deg,#111a26,#0b1220);
   border:1px solid #2b3a4e;
-  border-radius:12px;
+  border-radius:15px;
   padding:8px 11px;
 }
 .cs-row{display:flex;align-items:center;gap:7px;}
