@@ -187,38 +187,50 @@ look like pages from the same book:
 * the mission layer: goal, clock, three stars, a visible power meter, and a
   one-line reason when it goes wrong (`aircond/js/state.js`)
 * every stage in the cross-sections is nameable and highlightable
+* **the eight home tiles are illustrations**, drawn as SVG scenes in
+  `www/index.html` and painted from one shared palette declared at the top of
+  that file. Every tile has three depth layers (`tl back` / `tl mid` /
+  `tl front`) which drift gently and separate on hover, and the whole set can
+  be stilled by `prefers-reduced-motion`. `npm test` asserts the count, the
+  canvas, the layers, and that no shape references a paint that does not exist.
+* **Kai appears in the tiles too** — the same skin, hair, shirt and remote as
+  in Play Aircond, so the character is already shared between the menu and the
+  activity.
 
 **Not done yet — in the order I would do it**
 
-1. **The home tiles are still icons, not scenes.** This guide's biggest gap: each
-   tile should show a *moment* (see §5).
-2. **Kai only appears in one activity.** He needs to be a shared sprite so
-   Food Eating, Breathing and the rest can use the same face library.
-3. **Texture.** Everything is flat fills. A very light paper grain over each
+1. **Kai only exists in two places.** He is drawn separately in Play Aircond
+   and in two tiles. He should be a shared sprite (`shared/kai.svg` or a
+   `<symbol>`) so Food Eating, Breathing and the rest can use the same face
+   library instead of each inventing a figure.
+2. **Texture.** Everything is flat fills. A very light paper grain over each
    scene would soften the vector look — but only if it costs no frames.
-4. **A helper character** for the four cutaways, to point at the part being
+3. **A helper character** for the four cutaways, to point at the part being
    explained.
-5. **The remaining activities' art** (food as characters, the train's station
-   detail, the breathing lungs).
+4. **The remaining activities' art** (food as characters, the train's station
+   detail, the breathing lungs) — the tiles are the only part that has had the
+   treatment so far.
 
 ---
 
-## 5 · The home tiles, as scenes
+## 5 · The home tiles
 
-The tiles are the first thing a child sees, so each one should be a *moment*
-rather than an object. Sketch per tile:
+Done. Each tile is a *moment*, not an object — which is what makes a child want
+to tap it. All eight are SVG scenes in `www/index.html`, on one 96×96 canvas,
+painted from the shared `#t…` palette declared just above them.
 
 | Tile | The moment |
 |---|---|
 | Play Aircond | Kai holding the remote up, snow outside the window, sweat on his forehead |
-| Food Eating | an apple with a bite taken out, half-transparent, the digestive tract behind it |
-| Train Driving | the train bursting out of a tunnel towards a flashing crossing |
-| Breathing & Blood | Kai panting on a hill with O₂ bubbles drifting past |
-| Inside the Aircon | the unit with its front panel off, and one pipe glowing red |
-| Toilet | the S-bend in section, water climbing the weir |
-| Indah Water | a pipe leaving a house, diving underground, arriving at the plant |
-| Kitchen Hood | a wok smoking, the fan turning, the smoke bending towards the hood |
+| Food Eating | an apple with a bite taken out, with the tract it is about to travel down behind it |
+| Train Driving | the loco bursting out of a tunnel, the crossing lamp already flashing |
+| Breathing & Blood | Kai on the hill, out of breath, O₂ drifting past |
+| Inside the Aircon | the panel off, one pipe glowing red and one blue |
+| Toilet | the real cutaway scaled down, water climbing to the weir |
+| Indah Water | out of the house, under the garden, down the pipe to the works |
+| Kitchen Hood | the wok smoking, the fan turning, the smoke bending up into the hood |
 
-Each tile should get **two or three parallax layers** that shift slightly on
-scroll, and should use its own accent colour from the table in §2 so the tile is
-recognisable at a glance.
+Each tile uses its own accent from the table in §2, so it is recognisable at a
+glance, and each has **three depth layers** that drift slowly and pull apart on
+hover or focus. The idle drift is deliberately tiny (1–2 px): enough that the
+menu is not a static wall of pictures, not enough to be busy.

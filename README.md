@@ -12,11 +12,11 @@ tiles — tap one and you're in.
 │                    今天玩什么？ / What shall we play?                  │
 │                                                                       │
 │  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐          │
-│  │[ air-con ] │ │[ innards  ]│ │ [ train ]  │ │ [ lungs ]  │          │
+│  │[ warm boy ]│ │[ apple    ]│ │[ tunnel   ]│ │[ the hill ]│          │
 │  │玩空调    › │ │吃东西    › │ │开火车    › │ │呼吸与血液› │          │
 │  └────────────┘ └────────────┘ └────────────┘ └────────────┘          │
 │  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐          │
-│  │[ cutaway ] │ │[ toilet ]  │ │[ manhole ] │ │ [ hood ]   │          │
+│  │[ pipes    ]│ │[ S-bend   ]│ │[ the works]│ │[ the wok  ]│          │
 │  │空调的秘密› │ │马桶      › │ │英达丽水  › │ │抽油烟机  › │          │
 │  └────────────┘ └────────────┘ └────────────┘ └────────────┘          │
 └───────────────────────────────────────────────────────────────────────┘
@@ -24,6 +24,11 @@ tiles — tap one and you're in.
 
 Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
 All eight activities speak **English and 中文**, work offline, and are installable as an app.
+
+The eight tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
+painted from one shared palette and split into three depth layers that drift gently and pull
+apart on hover. They are the only place the character guidelines in
+[`docs/character-bible.md`](docs/character-bible.md) are applied so far.
 
 ---
 
@@ -640,7 +645,7 @@ server.js                               zero-dependency static server ($PORT awa
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        97 assertions over the eight simulations
+test/sim.test.js                        106 assertions over the eight simulations
 test/render.test.js                     64 assertions: every page booted, plus the artwork
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)

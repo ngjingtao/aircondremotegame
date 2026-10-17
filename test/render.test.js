@@ -650,6 +650,45 @@ console.log('\n— Nothing inline —');
   eq('no script builds a style="..." string', jsStyle.join(' ') || 'none', 'none');
 }
 
+/* ─────────── the home tiles are illustrations ─────────── */
+console.log('\n— Home tiles —');
+{
+  const html = fs.readFileSync(path.join(WWW, 'index.html'), 'utf8');
+
+  const tiles = html.match(/class="tile tile-[a-z]+"/g) || [];
+  eq('the home screen has eight tiles', tiles.length, 8);
+
+  const svgs = html.match(/class="tile-svg"[^>]*viewBox="([^"]+)"/g) || [];
+  eq('every tile is an illustration, not a stack of spans', svgs.length, 8);
+  eq('  → all on one 96×96 canvas', svgs.every(s => /viewBox="0 0 96 96"/.test(s)), true);
+
+  /* three depth layers — the parallax and the idle drift both count on them */
+  const layer = n => (html.match(new RegExp('class="tl ' + n + '"', 'g')) || []).length;
+  eq('every scene has a back, mid and front layer',
+     layer('back') === 8 && layer('mid') === 8 && layer('front') === 8, true);
+
+  /* the tile illustrations use one shared palette. Every paint a shape asks for
+     has to exist, or the shape silently renders black — and a paint nobody uses
+     is dead weight. Tile-owned ids are all `t` + a capital. */
+  const ids = new Set();
+  let m; const idRe = /\bid="(t[A-Z][\w]*)"/g;
+  while ((m = idRe.exec(html))) ids.add(m[1]);
+
+  const used = new Set();
+  const uRe = /url\(#(t[A-Z][\w]*)\)/g;
+  while ((m = uRe.exec(html))) used.add(m[1]);
+
+  eq('the shared palette is defined', ids.size >= 6, true);
+  eq('  → nothing references a paint that does not exist',
+     [...used].filter(id => !ids.has(id)).sort().join(' ') || 'none', 'none');
+  eq('  → and nothing is defined but never used',
+     [...ids].filter(id => !used.has(id)).sort().join(' ') || 'none', 'none');
+
+  /* the character bible's own values, so a tile cannot drift off-palette */
+  [['skin', '#ffd7b0'], ['hair', '#2f2a35'], ['shirt', '#67e8f9']].forEach(([what, c]) =>
+    eq('the palette keeps Kai\u2019s ' + what + ' at ' + c, html.indexOf('"' + c + '"') >= 0, true));
+}
+
 /* ─────────── report ─────────── */
 console.log('\n' + '─'.repeat(72));
 console.log(passed + ' passed, ' + failed + ' failed');
