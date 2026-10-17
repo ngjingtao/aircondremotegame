@@ -354,12 +354,18 @@ provides one, so it drops straight onto Render / Railway / Fly with no configura
 
 | Setting | Value |
 |---|---|
-| Build command | `npm ci --omit=dev` |
+| Build command | `npm ci --omit=dev && npm run stamp` |
 | Start command | `node server.js` |
 | Health check | `/` |
 
-`render.yaml` in the repo root is a ready-made Render blueprint; if your service was created
-by hand in the dashboard, just copy those three values into Settings.
+`render.yaml` in the repo root is a ready-made Render blueprint — **but it is only applied to
+services created from the blueprint.** If you created the service by hand in the dashboard,
+set those three values in *Settings* yourself, otherwise the build command stays `yarn` and the
+cache stamp never runs.
+
+That said, nothing breaks if the stamp is skipped: `sw.js` serves **page loads network-first**,
+so a new deploy is picked up on the next launch anyway. The stamp only keeps the *asset* cache
+fresh, and `npm run stamp` also runs in CI before every APK build.
 
 Live: **https://jk-play-n-learn.onrender.com**
 

@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-aa95a8e';
+const CACHE = 'play-learn-a31a8f2';
 
 const ASSETS = [
   './',
@@ -114,9 +114,26 @@ self.addEventListener('fetch', event => {
   try { url = new URL(req.url); } catch (e) { return; }
   if (url.origin !== self.location.origin) return;
 
+  /* Page loads go to the network first, so a new deploy is picked up on the
+     very next launch — no waiting for a cache-version bump or a double refresh.
+     If there is no connection, we fall back to the cached copy. */
+  if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
+    event.respondWith(
+      fetch(req).then(res => {
+        if (res && res.status === 200 && res.type === 'basic') {
+          const copy = res.clone();
+          caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
+        }
+        return res;
+      }).catch(() => caches.match(req).then(hit => hit || caches.match('index.html')))
+    );
+    return;
+  }
+
+  /* Everything else is cache-first with a background refresh: instant, and
+     still available with no connection. */
   event.respondWith(
     caches.match(req).then(hit => {
-      /* refresh the cached copy in the background */
       const fresh = fetch(req).then(res => {
         if (res && res.status === 200 && res.type === 'basic') {
           const copy = res.clone();
