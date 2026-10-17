@@ -398,9 +398,20 @@ Live: **https://jk-play-n-learn.onrender.com**
 
 ## Languages and voice
 
-**The interface starts in 中文.** It stays in Chinese unless you press the language button in
-the top bar — that choice is remembered on the device. Every label, speech bubble, science fact
-and help screen exists in both English and Chinese.
+**The interface is currently locked to Chinese.** The EN / 中文 button is hidden and every page
+forces `zh` — this is deliberate, so it can't be switched by accident.
+
+> **To bring the English option back:** open `www/shared/config.js` and change
+> `lockLang: 'zh'` to `lockLang: null`. That one word is the only edit needed — the button
+> reappears and the switcher works again. `'en'` locks it to English instead.
+
+The lock beats a previously saved choice too: if a device still has `en` in local storage, the
+locked language wins and the page never flashes English. There is a test for all of this
+(`— Language lock —` in `npm test`).
+
+With the lock off, the interface starts in Chinese and stays there unless the button is pressed,
+and that choice is remembered on the device. Every label, speech bubble, science fact and help
+screen exists in both languages.
 
 **🗣️ Voice** — every activity has a voice button next to the sound button. Narration uses the
 browser's built-in speech voices (Web Speech API), so nothing is downloaded and it works
@@ -534,6 +545,7 @@ www/                          ← the whole app (no build step)
 ├─ pwa.js                               registers the service worker, detects standalone
 ├─ icons/                               120/152/167/180/192/512 px + maskable
 ├─ shared/
+│  ├─ config.js                         build switches — currently the language lock
 │  ├─ ui.css                            top bar, help overlay, toast, colour vars
 │  ├─ store.js                          ARG namespace + safe localStorage
 │  ├─ audio.js                          WebAudio blips (no audio files)

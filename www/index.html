@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="shared/config.js"></script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <script>
 /* set the language before the first paint so there is no flash */
 (function () {
   var d = document.documentElement, l = "zh";
-  try { l = localStorage.getItem("arg.lang") || "zh"; } catch (e) {}
+  var lock = (window.ARG && ARG.config) ? ARG.config.lockLang : null;
+  try { l = lock || localStorage.getItem("arg.lang") || "zh"; } catch (e) { l = lock || "zh"; }
   if (l !== "zh" && l !== "en") l = "zh";
   d.lang = l === "zh" ? "zh-CN" : "en";
   d.classList.add("i18n-pending");

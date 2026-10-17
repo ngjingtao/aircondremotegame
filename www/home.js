@@ -160,6 +160,7 @@
 
   let lang = ARG.store.get('arg.lang');
   if (!lang || !DICT[lang]) lang = 'zh';   // Chinese unless you switch it
+  if (ARG.config && ARG.config.lockLang) lang = ARG.config.lockLang;
 
   function apply() {
     document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
@@ -168,14 +169,17 @@
       if (v !== undefined) el.textContent = v;
     });
     $('btn-lang').textContent = lang === 'en' ? 'EN' : '中文';
+    if (ARG.config && ARG.config.lockLang) $('btn-lang').hidden = true;
     $('help-title').textContent = DICT[lang].helpTitle;
     $('help-body').innerHTML = DICT[lang].helpBody;
   }
 
   function boot() {
     $('btn-lang').addEventListener('click', () => {
-      lang = lang === 'en' ? 'zh' : 'en';
-      ARG.store.set('arg.lang', lang);
+      if (!(ARG.config && ARG.config.lockLang)) {
+        lang = lang === 'en' ? 'zh' : 'en';
+        ARG.store.set('arg.lang', lang);
+      }
       apply();
       ARG.voice.syncLang();
       ARG.audio.blip();

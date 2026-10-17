@@ -44,7 +44,16 @@ function load(app, files) {
     })()
   };
   sandbox.window = sandbox;
-  sandbox.document = { querySelectorAll: () => [], getElementById: () => null, addEventListener() {}, removeEventListener() {} };
+  sandbox.document = {
+    querySelectorAll: () => [],
+    getElementById: () => null,
+    addEventListener() {},
+    removeEventListener() {},
+    documentElement: {
+      lang: '',
+      classList: { add() {}, remove() {}, toggle() {}, contains: () => false }
+    }
+  };
   vm.createContext(sandbox);
 
   const load = f => vm.runInContext(fs.readFileSync(path.join(WWW, f), 'utf8'), sandbox, { filename: f });
@@ -266,6 +275,20 @@ console.log('\n— Kitchen Hood —');
   check('a dirty filter halves the airflow', sim.s.air, 400, 500, ' m³/h');
   check('  → and it is louder too', sim.s.noise, 64, 72, ' dB');
   check('  → and it catches less', sim.s.capture, 0.6, 0.85);
+}
+
+console.log('\n— Language lock —');
+{
+  const ARG = load('aircond', ['shared/config.js', 'aircond/js/i18n.js']);
+  const lock = ARG.config.lockLang;
+  eq('a language lock is configured', !!lock, true);
+  eq('the interface starts in the locked language', ARG.i18n.lang, lock);
+  ARG.i18n.toggle();
+  eq('  → and the toggle cannot move it', ARG.i18n.lang, lock);
+  ARG.i18n.setLang('en');
+  eq('  → and setLang cannot either', ARG.i18n.lang, lock);
+  eq('  → and the strings really are the locked ones',
+     ARG.i18n.t('title') !== 'Play Aircond', true);
 }
 
 console.log('\n' + '─'.repeat(72));

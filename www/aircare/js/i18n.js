@@ -193,6 +193,7 @@ ARG.i18n = (function () {
 
   let lang = ARG.store.get('arg.lang');
   if (!lang || !DICT[lang]) lang = 'zh';   // Chinese unless you switch it
+  if (ARG.config && ARG.config.lockLang) lang = ARG.config.lockLang;
 
   function t(key) {
     const v = DICT[lang][key];
@@ -211,10 +212,14 @@ ARG.i18n = (function () {
     const hb = document.getElementById('help-body');
     if (hb) hb.innerHTML = DICT[lang].helpBody;
     const bl = document.getElementById('btn-lang');
-    if (bl) bl.textContent = lang === 'en' ? 'EN' : '中文';
+    if (bl) {
+    bl.textContent = lang === 'en' ? 'EN' : '中文';
+    if (ARG.config && ARG.config.lockLang) bl.hidden = true;
+  }
   }
 
   function setLang(l) {
+    if (ARG.config && ARG.config.lockLang) l = ARG.config.lockLang;
     if (!DICT[l]) l = 'en';
     lang = l;
     ARG.store.set('arg.lang', l);
