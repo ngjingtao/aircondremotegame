@@ -117,10 +117,10 @@
               <stop offset="100%" stop-color="#48a9e0"/>
             </linearGradient>
             <clipPath id="clipBowl">
-              <path d="M100,206 C100,300 122,372 170,384 C218,372 240,300 240,206 Z"/>
+              <path d="M106,208 C106,298 128,366 170,376 C212,366 234,298 234,208 Z"/>
             </clipPath>
             <clipPath id="clipCistern">
-              <rect x="76" y="64" width="188" height="122" rx="8"/>
+              <rect x="80" y="70" width="180" height="110" rx="8"/>
             </clipPath>
             <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
               <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0b1220" flood-opacity="0.35"/>
@@ -134,50 +134,106 @@
             <rect x="0" y="500" width="340" height="20" fill="#2a3646"/>
             <path d="M0 500 H340" stroke="#3c4c60" stroke-width="2"/>
 
-            <!-- ── cistern ── -->
-            <g id="cistern" filter="url(#soft)">
-              <rect x="70" y="60" width="200" height="130" rx="12" fill="url(#porcGrad)" stroke="#c8d1dd" stroke-width="1.6"/>
-              <g clip-path="url(#clipCistern)">
-                <rect id="cisternWater" x="76" y="64" width="188" height="122" fill="url(#waterGrad)" opacity="0.85"/>
-              </g>
-              <!-- fill valve + float -->
-              <rect x="242" y="74" width="10" height="112" rx="4" fill="#c3ccd8"/>
-              <ellipse id="floatBall" cx="247" cy="110" rx="13" ry="11" fill="#e8eef6" stroke="#b9c4d2" stroke-width="1.4"/>
-              <!-- flapper -->
-              <rect id="flapper" x="146" y="182" width="48" height="10" rx="5" fill="#2f3a4a"/>
-              <rect id="flapperArm" x="192" y="168" width="6" height="16" rx="3" fill="#3c4a5c"/>
-              <!-- lid + button -->
-              <rect x="64" y="48" width="212" height="14" rx="7" fill="#eef2f8" stroke="#c8d1dd" stroke-width="1.4"/>
-              <g id="flushButton">
-                <rect x="152" y="34" width="36" height="16" rx="8" fill="#c8d1dd"/>
-                <rect x="156" y="38" width="28" height="8" rx="4" fill="#9fb0c4"/>
-              </g>
+            <!-- ── pedestal, in section: the ceramic wall has thickness ── -->
+            <g id="pedestal" filter="url(#soft)">
+              <path d="M100,338 C94,432 108,506 170,506 C232,506 246,432 240,338 Z"
+                    fill="url(#porcGrad)" stroke="#c8d1dd" stroke-width="1.6"/>
+              <path d="M119,352 C113,436 125,492 170,492 C215,492 227,436 221,352"
+                    fill="none" stroke="#d8e0ea" stroke-width="1.6"/>
             </g>
 
-            <!-- ── bowl ── -->
+            <!-- ── bowl: outer shell, then the cavity it holds ── -->
             <g id="bowl" filter="url(#soft)">
-              <path d="M96,196 H244 V214 C244,330 216,392 170,404 C124,392 96,330 96,214 Z" fill="url(#porcGrad)" stroke="#c8d1dd" stroke-width="1.6"/>
-              <g clip-path="url(#clipBowl)">
-                <rect id="bowlWater" x="90" y="300" width="160" height="120" fill="url(#waterGrad)" opacity="0.92"/>
-              </g>
-              <ellipse id="bowlWave" class="wave" cx="170" cy="310" rx="52" ry="6" opacity="0"/>
-              <ellipse id="bowlWave2" class="wave w2" cx="170" cy="310" rx="40" ry="4" opacity="0"/>
-              <path d="M100,210 C104,300 124,368 170,380 C216,368 236,300 240,210" fill="none" stroke="#d8e0ea" stroke-width="2"/>
+              <path d="M92,196 H248 V216 C248,332 220,392 170,404 C120,392 92,332 92,216 Z"
+                    fill="url(#porcGrad)" stroke="#c8d1dd" stroke-width="1.6"/>
+              <path d="M106,208 C106,298 128,366 170,376 C212,366 234,298 234,208 Z"
+                    fill="#e4ecf6" stroke="#d8e0ea" stroke-width="1.6"/>
             </g>
 
-            <!-- ── the S-bend and the drain ── -->
+            <!-- ── the trapway ──
+                 ONE continuous pipe: down out of the bowl, round the U, up over
+                 the weir, then straight down through the floor. The crest of the
+                 weir sits at y=344, which is exactly where the still bowl water
+                 sits — that is what makes it a water seal. -->
             <g id="trap">
-              <path id="trapTube" d="M170,396 C170,424 190,438 210,428 C226,420 228,404 228,384 L228,506"
-                    fill="none" stroke="#dfe6ef" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
-              <path id="trapWater" d="M170,396 C170,424 190,438 210,428 C226,420 228,404 228,384"
-                    fill="none" stroke="url(#waterGrad)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
-              <path id="trapLine" d="M170,396 C170,424 190,438 210,428 C226,420 228,404 228,384"
+              <path id="trapOut" d="M170,368 C170,404 178,420 190,424 C202,428 208,418 208,404 L208,344 A12,12 0 0 1 232,344 L232,522"
+                    fill="none" stroke="#1b2432" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+              <path id="trapTube" d="M170,368 C170,404 178,420 190,424 C202,428 208,418 208,404 L208,344 A12,12 0 0 1 232,344 L232,522"
+                    fill="none" stroke="#dbe5f0" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+              <path id="trapWater" d="M170,368 C170,404 178,420 190,424 C202,428 208,418 208,404 L208,344 A12,12 0 0 1 220,332"
+                    fill="none" stroke="url(#waterGrad)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+              <path id="trapLine" d="M170,368 C170,404 178,420 190,424 C202,428 208,418 208,404 L208,344 A12,12 0 0 1 232,344 L232,522"
                     fill="none" stroke="#b9c6d6" stroke-width="1.4"/>
             </g>
 
-            <!-- base -->
-            <path d="M118,392 C118,470 130,506 170,506 C210,506 222,470 222,392 Z" fill="url(#porcGrad)" stroke="#c8d1dd" stroke-width="1.6"/>
-            <path d="M228,506 V520" stroke="#dfe6ef" stroke-width="30" stroke-linecap="round"/>
+            <!-- bowl water, drawn over the trapway so it reads as flowing in -->
+            <g clip-path="url(#clipBowl)">
+              <rect id="bowlWater" x="100" y="332" width="140" height="44" fill="url(#waterGrad)" opacity="0.92"/>
+            </g>
+            <ellipse id="bowlWave" class="wave" cx="170" cy="335" rx="50" ry="6" opacity="0"/>
+            <ellipse id="bowlWave2" class="wave w2" cx="170" cy="335" rx="38" ry="4" opacity="0"/>
+
+            <!-- the siphon jet: a hole low in the bowl that fires into the trapway -->
+            <g id="siphonJet"><ellipse cx="148" cy="362" rx="8" ry="6"/></g>
+
+            <!-- the holes under the rim that rinse the bowl -->
+            <g id="rimJets">
+              <circle cx="124" cy="212" r="3.2"/><circle cx="148" cy="212" r="3.2"/>
+              <circle cx="170" cy="212" r="3.2"/><circle cx="192" cy="212" r="3.2"/>
+              <circle cx="216" cy="212" r="3.2"/>
+            </g>
+
+            <!-- ── cistern ── -->
+            <g id="cistern" filter="url(#soft)">
+              <rect x="70" y="60" width="200" height="130" rx="12" fill="url(#porcGrad)" stroke="#c8d1dd" stroke-width="1.6"/>
+              <rect x="80" y="70" width="180" height="110" rx="8" fill="#f7fafd" stroke="#d8e0ea" stroke-width="1.4"/>
+
+              <g clip-path="url(#clipCistern)">
+                <rect id="cisternWater" x="80" y="80" width="180" height="100" fill="url(#waterGrad)" opacity="0.85"/>
+              </g>
+
+              <!-- the overflow tube: open at the top, and the flapper hinges on it -->
+              <rect id="overflowTube" x="196" y="84" width="16" height="98" rx="5" fill="#dfe6ef" stroke="#b9c6d6" stroke-width="1.2"/>
+              <rect x="199" y="82" width="10" height="6" rx="2" fill="#5a6a7d"/>
+
+              <!-- refill tube: from the top of the fill valve into the overflow tube,
+                   so the bowl's water seal is topped up after every flush -->
+              <path d="M252,92 H206 V99" fill="none" stroke="#9fb0c4" stroke-width="4.5"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+
+              <!-- the flush valve opening in the floor of the cistern -->
+              <rect x="146" y="180" width="50" height="12" rx="3" fill="#16202e"/>
+
+              <!-- the flapper, hinged on the overflow tube -->
+              <g id="flapper">
+                <path d="M148,180 Q148,168 172,168 Q196,168 198,178 L198,186 Q172,192 148,184 Z"
+                      fill="#2f3a4a" stroke="#1d2734" stroke-width="1.2"/>
+                <circle cx="196" cy="180" r="4.5" fill="#43536a"/>
+              </g>
+
+              <!-- push rod, lever arm and the chain down to the flapper -->
+              <rect x="110" y="50" width="8" height="22" fill="#b9c4d2"/>
+              <rect x="110" y="72" width="48" height="7" rx="3.5" fill="#b9c4d2"/>
+              <path id="chain" d="M152,79 L148,178" fill="none" stroke="#cbd6e4" stroke-width="3"
+                    stroke-dasharray="4 3" stroke-linecap="round"/>
+
+              <!-- fill valve, its float, and the supply pipe up from the floor -->
+              <path d="M254,186 V196 H286 V500" fill="none" stroke="#c3ccd8" stroke-width="10"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="246" y="92" width="16" height="94" rx="5" fill="#dfe6ef" stroke="#b9c6d6" stroke-width="1.2"/>
+              <rect x="243" y="85" width="22" height="9" rx="4" fill="#c9d4e2"/>
+              <g id="float">
+                <rect x="234" y="69" width="14" height="5" rx="2.5" fill="#b9c4d2"/>
+                <ellipse id="floatBall" cx="226" cy="72" rx="12" ry="10" fill="#e8eef6" stroke="#b9c4d2" stroke-width="1.4"/>
+              </g>
+
+              <!-- lid + button -->
+              <rect x="64" y="48" width="212" height="14" rx="7" fill="#eef2f8" stroke="#c8d1dd" stroke-width="1.4"/>
+              <g id="flushButton">
+                <rect x="96" y="32" width="36" height="16" rx="8" fill="#c8d1dd"/>
+                <rect x="100" y="36" width="28" height="8" rx="4" fill="#9fb0c4"/>
+              </g>
+            </g>
 
             <!-- flow particles -->
             <g id="flushFlow"></g>
@@ -197,11 +253,43 @@
 
           <!-- ═════ labels ═════ -->
           <g id="labels-flush">
-            <g class="lab" data-lab="cistern"><text x="60" y="96" text-anchor="end" data-i18n="oCistern">cistern</text></g>
-            <g class="lab" data-lab="flapper"><text x="300" y="190" text-anchor="start" data-i18n="oFlapper">flapper</text></g>
-            <g class="lab" data-lab="trap"><text x="120" y="430" text-anchor="end" data-i18n="oTrap">S-bend</text></g>
-            <g class="lab" data-lab="seal"><text x="140" y="460" text-anchor="end" data-i18n="oSeal">water seal</text></g>
-            <g class="lab" data-lab="drain"><text x="250" y="490" text-anchor="start" data-i18n="oDrain">drain</text></g>
+            <!-- the cistern and everything in it -->
+            <g class="lab" data-lab="button"><text x="88" y="44" text-anchor="end" data-i18n="oButton">button</text></g>
+            <g class="lab" data-lab="cistern"><text x="62" y="112" text-anchor="end" data-i18n="oCistern">cistern</text></g>
+            <g class="lab" data-lab="float">
+              <text x="300" y="74" text-anchor="start" data-i18n="oFloat">float</text>
+              <path class="lead" d="M296,71 L242,72"/></g>
+            <g class="lab" data-lab="fill">
+              <text x="300" y="112" text-anchor="start" data-i18n="oFill">fill valve</text>
+              <path class="lead" d="M296,109 L266,120"/></g>
+            <g class="lab" data-lab="overflow">
+              <text x="184" y="160" text-anchor="end" data-i18n="oOverflow">overflow tube</text>
+              <path class="lead" d="M188,157 L200,146"/></g>
+            <g class="lab" data-lab="flapper">
+              <text x="300" y="200" text-anchor="start" data-i18n="oFlapper">flapper</text>
+              <path class="lead" d="M296,197 L210,186"/></g>
+
+            <!-- the bowl -->
+            <g class="lab" data-lab="rim">
+              <text x="86" y="240" text-anchor="end" data-i18n="oRim">rim jets</text>
+              <path class="lead" d="M90,237 L122,218"/></g>
+            <g class="lab" data-lab="seal">
+              <text x="86" y="332" text-anchor="end" data-i18n="oSeal">water seal</text>
+              <path class="lead" d="M90,329 L122,332"/></g>
+            <g class="lab" data-lab="jet">
+              <text x="86" y="392" text-anchor="end" data-i18n="oJet">siphon jet</text>
+              <path class="lead" d="M90,389 L142,364"/></g>
+
+            <!-- the trapway and the drain -->
+            <g class="lab" data-lab="trap">
+              <text x="86" y="442" text-anchor="end" data-i18n="oTrap">S-bend</text>
+              <path class="lead" d="M90,439 L178,428"/></g>
+            <g class="lab" data-lab="weir">
+              <text x="300" y="326" text-anchor="start" data-i18n="oWeir">weir</text>
+              <path class="lead" d="M296,323 L238,338"/></g>
+            <g class="lab" data-lab="drain">
+              <text x="300" y="492" text-anchor="start" data-i18n="oDrain">drain</text>
+              <path class="lead" d="M296,489 L250,486"/></g>
           </g>
           <g id="labels-treat" hidden></g>
         </svg>

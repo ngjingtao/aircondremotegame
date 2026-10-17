@@ -149,8 +149,15 @@
   0%,100%{ transform:translateX(-4px) scaleX(1); }
   50%{ transform:translateX(4px) scaleX(1.08); }
 }
-#floatBall{transition:cy .12s linear;}
+#float{transition:transform .12s linear;}
 #flapper,#flushButton{transition:transform .15s;}
+#chain{transition:d .15s linear;}
+
+/* the holes under the rim, and the jet at the bottom of the bowl */
+#rimJets circle{fill:#8b98aa;}
+#siphonJet ellipse{fill:#8b98aa;}
+/* the dark outline that separates the trapway from the ceramic around it */
+#trapOut{opacity:.6;}
 
 /* ── treatment bits ── */
 .tank .tank-water{transition:opacity .3s, filter .3s;}
@@ -185,6 +192,12 @@
   transition:fill .25s;
 }
 #labels-flush .lab.on text{fill:#5fd0ff;}
+/* the thin line from a label to the part it names */
+#labels-flush .lab .lead{
+  fill:none;stroke:rgba(150,180,215,.4);stroke-width:1;stroke-dasharray:2.5 2;
+  transition:stroke .25s;
+}
+#labels-flush .lab.on .lead{stroke:#5fd0ff;stroke-dasharray:none;}
 #labels-treat .tlab{display:none;}
 
 /* ═══════════════ RESPONSIVE ═══════════════ */

@@ -55,6 +55,8 @@ ARG.i18n = (function () {
 
       oCistern: 'cistern', oFlapper: 'flapper', oWeir: 'weir',
       oTrap: 'S-bend', oSeal: 'water seal', oDrain: 'drain',
+      oButton: 'flush button', oFill: 'fill valve', oFloat: 'float',
+      oOverflow: 'overflow tube', oRim: 'rim jets', oJet: 'siphon jet',
       pScreen: 'screen', pGrit: 'grit', pPrimary: 'primary',
       pAeration: 'aeration', pClarifier: 'clarifier', pDisinfect: 'disinfection',
       pRiver: 'river', pSludge: 'sludge',
@@ -134,6 +136,8 @@ ARG.i18n = (function () {
 
       oCistern: '水箱', oFlapper: '橡胶阀', oWeir: '溢流堰',
       oTrap: 'S 形弯管', oSeal: '水封', oDrain: '排水管',
+      oButton: '冲水按钮', oFill: '进水阀', oFloat: '浮球',
+      oOverflow: '溢流管', oRim: '冲水孔', oJet: '喷射孔',
       pScreen: '格栅', pGrit: '沉砂池', pPrimary: '初沉池',
       pAeration: '曝气池', pClarifier: '二沉池', pDisinfect: '消毒',
       pRiver: '河流', pSludge: '污泥',

@@ -587,7 +587,7 @@ render.yaml                             Render blueprint (build + start commands
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
 test/sim.test.js                        56 assertions over the seven simulations
-test/render.test.js                     boots every page in a fake DOM and drives its loop
+test/render.test.js                     40 assertions: every page booted, plus the toilet cutaway
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json
@@ -648,6 +648,22 @@ the throttle, run the loop, and the train must actually roll.
   `lit` part to highlight. The scene writes `data-wash-step` on `#scene`, and all the animation
   lives in plain CSS keyed off that attribute — add a step by adding an entry to `STEPS` and a
   `#scene[data-wash-step="N"]` rule.
+* **The toilet cutaway (toilet)** — `www/toilet/index.html`, the `#flushScene` group. It is drawn
+  as a real gravity-flush toilet: a chain from the button down to a rubber flapper that is hinged
+  on the overflow tube, a fill valve with a float and a refill tube, holes under the rim, a
+  siphon jet, and **one continuous trapway** running from the bowl, round the U and over the weir
+  to the drain. The ceramic is drawn twice (outer shell + inner cavity) so the wall thickness and
+  the water path both read.
+
+  Two numbers in that drawing are physically tied together and must be changed as a pair:
+  the crest of the weir (`#trapWater`, currently ending at `220,332`) and the resting bowl water
+  level (`bowlTop` in `www/toilet/js/scene.js`, `280 + (1 - bowl) * 208`, which gives 332 at the
+  idle `bowl = 0.75`). Water can only stand as high as the weir, so the seal line and the weir
+  crest **have** to be the same height — `npm test` asserts it.
+
+  Note on tab switching: `hidden` is an HTML property and is **not** reflected on SVG elements,
+  so `someGroup.hidden = true` is a silent no-op on a `<g>`. Use the `show()` helper in
+  `toilet/js/scene.js` (or `setAttribute('hidden', '')`) instead.
 
 ### Adding a language
 

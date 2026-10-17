@@ -24,6 +24,15 @@ ARG.scene = (function () {
 
   const X0 = 40, X1 = 300;
 
+  /* `hidden` is an HTML property — it is NOT reflected on SVG elements, so
+     `svgGroup.hidden = true` silently does nothing and an authored `hidden`
+     attribute can never be turned back off. Toggle the attribute instead. */
+  function show(el, on) {
+    if (!el) return;
+    if (on) el.removeAttribute('hidden');
+    else el.setAttribute('hidden', '');
+  }
+
   let els = {};
   let parts = [];          // flush particles
   let treatParts = [];     // treatment particles
@@ -33,8 +42,7 @@ ARG.scene = (function () {
   function build() {
     els.scene = document.getElementById('scene');
     els.flushScene = document.getElementById('flushScene');
-    els.treatScene = document.getElementById('treatScene');
-    els.labelsFlush = document.getElementById('labels-flush');
+    els.treatScene = document.getElementById('treatScene');    els.labelsFlush = document.getElementById('labels-flush');
     els.labelsTreat = document.getElementById('labels-treat');
     els.flushFlow = document.getElementById('flushFlow');
     els.treatFlow = document.getElementById('treatFlow');
@@ -45,8 +53,9 @@ ARG.scene = (function () {
     els.bowlWave2 = document.getElementById('bowlWave2');
     els.trapWater = document.getElementById('trapWater');
     els.flapper = document.getElementById('flapper');
+    els.chain = document.getElementById('chain');
     els.flushButton = document.getElementById('flushButton');
-    els.floatBall = document.getElementById('floatBall');
+    els.float = document.getElementById('float');
     els.paneNote = document.getElementById('pane-note');
     els.status = document.getElementById('scene-status');
     els.lead = document.getElementById('scene-lead');
@@ -169,10 +178,10 @@ ARG.scene = (function () {
     els.scene.classList.toggle('mode-flush', flushMode);
     els.scene.classList.toggle('mode-treat', !flushMode);
     els.scene.dataset.step = String(S.step);
-    els.flushScene.hidden = !flushMode;
-    els.treatScene.hidden = flushMode;
-    els.labelsFlush.hidden = !flushMode;
-    els.labelsTreat.hidden = flushMode;
+    show(els.flushScene, flushMode);
+    show(els.treatScene, !flushMode);
+    show(els.labelsFlush, flushMode);
+    show(els.labelsTreat, !flushMode);
 
     if (flushMode) renderFlush(S, t, d);
     else renderTreat(S, t, d);
@@ -194,7 +203,9 @@ ARG.scene = (function () {
     /* ── which part is highlighted ── */
     if (seen.lit !== st.lit) {
       seen.lit = st.lit;
-      els.labelsFlush.querySelectorAll('.lab').forEach(l => l.classList.toggle('on', l.dataset.lab === st.lit));
+      /* one step can point at several parts, so `lit` is a space-separated list */
+      const want = String(st.lit || '').split(/\s+/).filter(Boolean);
+      els.labelsFlush.querySelectorAll('.lab').forEach(l => l.classList.toggle('on', want.indexOf(l.dataset.lab) >= 0));
       els.tanks.querySelectorAll('.tank').forEach((el, i) => el.classList.toggle('on', i === S.step));
       els.labelsTreat.querySelectorAll('.tlab').forEach((el, i) => el.classList.toggle('on', i === S.step));
     }
@@ -233,24 +244,51 @@ ARG.scene = (function () {
     }
   }
 
+  /* the trapway centreline, so the flow particles can follow the pipe
+     instead of guessing at it */
+  const TRAP_PTS = [
+    [170, 368], [172, 392], [178, 410], [190, 424],
+    [202, 427], [208, 412], [208, 380], [208, 352],
+    [214, 340], [226, 340], [232, 356], [232, 460]
+  ];
+
+  function trapAt(k) {
+    const n = TRAP_PTS.length - 1;
+    const f = clamp(k, 0, 1) * n;
+    const i = Math.min(n - 1, Math.floor(f));
+    const u = f - i;
+    const a = TRAP_PTS[i], b = TRAP_PTS[i + 1];
+    return [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u];
+  }
+
   function renderFlush(S, t, d) {
-    /* cistern water level */
-    const cH = 122 * clamp(S.cistern, 0, 1);
-    els.cisternWater.setAttribute('y', (186 - cH).toFixed(1));
+    /* cistern water level (the tank interior is 100 units deep) */
+    const cH = 100 * clamp(S.cistern, 0, 1);
+    els.cisternWater.setAttribute('y', (180 - cH).toFixed(1));
     els.cisternWater.setAttribute('height', cH.toFixed(1));
 
-    /* the float rides on the water */
-    els.floatBall.setAttribute('cy', (186 - cH - 8).toFixed(1));
+    /* the float rides on the water; it is drawn at y=72 when the tank is full */
+    const floatY = 172 - cH;
+    els.float.setAttribute('transform', 'translate(0 ' + (floatY - 72).toFixed(1) + ')');
 
-    /* the flapper lifts while it is flushing */
-    const lift = S.flushing && S.flushT < 3.2 ? -12 : 0;
-    els.flapper.setAttribute('transform', `translate(0 ${lift})`);
+    /* pressing the button lifts the chain, and the chain lifts the far end of
+       the flapper — which is hinged on the overflow tube at (196,180) */
+    const lift = S.flushing && S.flushT < 3.2;
+    const deg = lift ? 40 : 0;
+    els.flapper.setAttribute('transform', 'rotate(' + deg + ' 196 180)');
+    const rad = deg * Math.PI / 180;
+    els.chain.setAttribute('d', 'M152,79 L' +
+      (196 - 48 * Math.cos(rad)).toFixed(1) + ',' + (180 - 48 * Math.sin(rad)).toFixed(1));
     els.flushButton.setAttribute('transform', S.flushing && S.flushT < 0.35 ? 'translate(0 5)' : 'translate(0 0)');
 
-    /* bowl water surface */
-    const bowlTop = 386 - 100 * clamp(S.bowl, 0, 1);
+    /* bowl water surface.
+       At rest (bowl = 0.75) this lands on y = 332, which is exactly the crest
+       of the weir — water can only stand as high as the weir, so the seal
+       level and the weir are the same height. Raising the weir without moving
+       this line would leave the seal sitting at the wrong level. */
+    const bowlTop = 280 + (1 - clamp(S.bowl, 0, 1)) * 208;
     els.bowlWater.setAttribute('y', bowlTop.toFixed(1));
-    els.bowlWater.setAttribute('height', (500 - bowlTop).toFixed(1));
+    els.bowlWater.setAttribute('height', Math.max(0, 376 - bowlTop).toFixed(1));
     if (els.bowlWave) {
       els.bowlWave.setAttribute('cy', (bowlTop + 3).toFixed(1));
       els.bowlWave.setAttribute('opacity', S.flushing ? '0.75' : '0.5');
@@ -262,26 +300,26 @@ ARG.scene = (function () {
     els.trapWater.setAttribute('opacity', S.siphoning ? '1' : (S.flushing ? '0.95' : '0.85'));
     els.trapWater.setAttribute('stroke-width', S.siphoning ? '26' : '22');
 
-    /* flow particles: from the cistern, around the rim, down the trap  */
+    /* flow particles: cistern → under the rim → down the bowl → round the trap */
     const active = S.flushing && S.flushT >= 0;
     els.flushFlow.setAttribute('opacity', active ? '1' : '0');
     if (active) {
       for (let i = 0; i < parts.length; i++) {
         const p = parts[i];
-        let f = ((S.flushT * 0.55) + i / parts.length) % 1;
+        const f = ((S.flushT * 0.55) + i / parts.length) % 1;
         let x, y;
-        if (f < 0.30) {                       /* falling out of the cistern */
-          const k = f / 0.30;
-          x = 170; y = 190 + k * 60;
-        } else if (f < 0.55) {                /* across the rim */
-          const k = (f - 0.30) / 0.25;
-          x = 170 - k * 70; y = 250 + k * 40;
-        } else if (f < 0.80) {                /* down the bowl */
-          const k = (f - 0.55) / 0.25;
-          x = 100 + k * 70; y = 290 + k * 96;
-        } else {                              /* round the S-bend */
-          const k = (f - 0.80) / 0.20;
-          x = 170 + k * 58; y = 396 + Math.sin(k * Math.PI) * 30 + k * 60;
+        if (f < 0.28) {                       /* falling out of the cistern */
+          const k = f / 0.28;
+          x = 170; y = 184 + k * 24;
+        } else if (f < 0.52) {                /* out from under the rim */
+          const k = (f - 0.28) / 0.24;
+          x = 170 - k * 56; y = 210 + k * 40;
+        } else if (f < 0.78) {                /* down the bowl to the outlet */
+          const k = (f - 0.52) / 0.26;
+          x = 114 + k * 56; y = 250 + k * 122;
+        } else {                              /* round the U and over the weir */
+          const q = trapAt((f - 0.78) / 0.22);
+          x = q[0]; y = q[1];
         }
         p.setAttribute('cx', x.toFixed(1));
         p.setAttribute('cy', y.toFixed(1));

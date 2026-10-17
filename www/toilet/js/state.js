@@ -7,14 +7,16 @@ ARG.sim = (function () {
 
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-  /* the six moments of a flush */
+  /* the six moments of a flush.
+     `lit` names the parts to highlight — a space-separated list, so one step
+     can point at the whole mechanism it is describing. */
   const FLUSH = [
     { key: 'f0', fact: 'd0', lit: 'button' },
-    { key: 'f1', fact: 'd1', lit: 'cistern' },
-    { key: 'f2', fact: 'd2', lit: 'trap' },
-    { key: 'f3', fact: 'd3', lit: 'trap' },
-    { key: 'f4', fact: 'd4', lit: 'drain' },
-    { key: 'f5', fact: 'd5', lit: 'seal' }
+    { key: 'f1', fact: 'd1', lit: 'cistern flapper overflow rim' },
+    { key: 'f2', fact: 'd2', lit: 'jet weir trap' },
+    { key: 'f3', fact: 'd3', lit: 'trap seal' },
+    { key: 'f4', fact: 'd4', lit: 'drain trap' },
+    { key: 'f5', fact: 'd5', lit: 'seal fill float' }
   ];
 
   /* the eight stages of an Indah Water treatment plant */

@@ -37,6 +37,10 @@ function bad(label, err) {
   failures.push(line);
   console.log('  FAIL ' + label.padEnd(54) + err);
 }
+function eq(label, actual, want) {
+  if (actual === want) ok(label, String(actual));
+  else bad(label, 'got ' + actual + ', expected ' + want);
+}
 
 /* ─────────── the smallest DOM the pages need ─────────── */
 
@@ -282,7 +286,7 @@ function boot(pageDir) {
     }
   }
 
-  return { ARG: sandbox.ARG, errors, pump, get rafCount() { return rafCount; }, bootError };
+  return { ARG: sandbox.ARG, document, errors, pump, get rafCount() { return rafCount; }, bootError };
 }
 
 /* ─────────── run ─────────── */
@@ -359,6 +363,76 @@ console.log('\n— Train: the throttle actually moves it —');
 
     if (p.errors.length) bad('train — no errors while driving', p.errors[0]);
     else ok('train — no errors while driving');
+  }
+}
+
+/* ─────────── the toilet cutaway must be mechanically honest ─────────── */
+console.log('\n— Toilet: a real gravity-flush mechanism —');
+{
+  const html = fs.readFileSync(path.join(WWW, 'toilet', 'index.html'), 'utf8');
+  const attr = (id, name) => {
+    const re = new RegExp('id="' + id + '"[^>]*?\\s' + name + '="([^"]+)"');
+    const m = html.match(re);
+    return m ? m[1] : null;
+  };
+
+  /* every part the drawing claims to have must actually be drawn */
+  ['chain', 'float', 'flapper', 'rimJets', 'siphonJet', 'trapTube', 'trapWater', 'overflowTube']
+    .forEach(id => eq('the diagram draws the ' + id, html.indexOf('id="' + id + '"') >= 0, true));
+
+  /* the trapway is ONE continuous pipe, not a cup under the bowl */
+  const tube = attr('trapTube', 'd') || '';
+  eq('the trapway is a single unbroken path', (tube.match(/M/g) || []).length, 1);
+  const tubeEnd = (tube.trim().split(/\s+/).pop() || '0,0').split(',');
+  eq('  → and it runs through the floor', Number(tubeEnd[1]) >= 500, true);
+
+  /* the still water can only stand as high as the weir, so the two must be
+     the same height. Moving one without the other breaks the physics. */
+  const waterD = attr('trapWater', 'd') || '';
+  const crest = (waterD.trim().split(/\s+/).pop() || '0,0').split(',');
+  const crestY = Number(crest[1]);
+  eq('the trapway water tops out at the weir', isFinite(crestY), true);
+
+  const p = boot('toilet');
+  if (p.bootError) { bad('toilet — boots', p.bootError); }
+  else {
+    const s = p.ARG.sim.s;
+    s.bowl = 0.75;                       // the level it rests at when idle
+    s.cistern = 1;
+    p.ARG.scene.render(0.016);
+    const waterY = Number(p.document.getElementById('bowlWater')._attrs.y);
+    eq('the resting water seal is level with the weir', waterY, crestY);
+
+    /* a step that points at a part which does not exist highlights nothing */
+    const labels = new Set();
+    let m2;
+    const labRe = /data-lab="([^"]+)"/g;
+    while ((m2 = labRe.exec(html))) labels.add(m2[1]);
+
+    const lit = new Set();
+    p.ARG.sim.FLUSH.forEach(st => String(st.lit).split(/\s+/).filter(Boolean).forEach(k => lit.add(k)));
+
+    const missing = [...lit].filter(k => !labels.has(k));
+    eq('every step points at a part that exists', missing.join(' ') || 'none', 'none');
+
+    const unlit = [...labels].filter(k => !lit.has(k));
+    eq('every labelled part is used by some step', unlit.join(' ') || 'none', 'none');
+
+    /* switching tabs must really swap the two scenes. `hidden` is an HTML
+       property and is NOT reflected on SVG elements, so `svgGroup.hidden = x`
+       is a silent no-op — which left the treatment tab showing a toilet. */
+    const sd = p.document;
+    const isHidden = id => 'hidden' in sd.getElementById(id)._attrs;
+
+    p.ARG.sim.press('mode', { dataset: { mode: 'treat' } });
+    p.ARG.scene.render(0.016);
+    eq('the treatment tab hides the toilet scene', isHidden('flushScene'), true);
+    eq('  → and reveals the treatment scene', isHidden('treatScene'), false);
+
+    p.ARG.sim.press('mode', { dataset: { mode: 'flush' } });
+    p.ARG.scene.render(0.016);
+    eq('  → and switching back brings the toilet back', isHidden('flushScene'), false);
+    eq('  → and hides the treatment scene again', isHidden('treatScene'), true);
   }
 }
 
