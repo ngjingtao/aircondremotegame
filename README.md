@@ -47,7 +47,40 @@ the compressor has a rate ceiling, humidity shifts the feels-like temperature, a
 cools, and an open door beats the air-con entirely.
 
 **Free Play** to explore. **Challenge** for score, combo and random weather events
-(heatwave, cold snap, open door, humidity surge).
+(heatwave, cold snap, open door, humidity surge). **Mission** for a goal and a clock.
+
+### Missions — a goal, a clock and a price
+
+The mode button cycles Free Play → Challenge → Mission. A mission hands you an
+uncomfortable room and a countdown, and pays up to three stars:
+
+| ★ | For |
+|---|---|
+| ★ | finishing with him comfortable |
+| ★★ | never letting him slip back out once you had him there |
+| ★★★ | doing it without spending more than the power budget |
+
+The second and third stars pull against each other, which is the whole point: the
+easy way to never slip is to run the machine hard, and that is exactly what costs
+you the power star. Measured, from the tests:
+
+| Mission | Setting | Outcome | Power used |
+|---|---|---|---|
+| Spring afternoon (90 s, 29° outside) | 20 °C, HIGH, TURBO | win, **2 ★** | 51 Wh |
+| | 25 °C, AUTO | win, **3 ★** | 20 Wh |
+| | 26 °C, LOW, ECO | win, **3 ★** | 12 Wh |
+| | 30 °C | **lose** — "set warmer than the comfort zone" | 17 Wh |
+| Summer heatwave (120 s, 38° outside) | 20 °C, HIGH, TURBO | win, **2 ★** | 77 Wh |
+| | 24 °C, AUTO | win, **3 ★** | 36 Wh |
+| | 26 °C, LOW, ECO | **lose** — too gentle to make it in time | 19 Wh |
+| Winter cold snap (120 s, 11° outside) | 24 °C, HEAT | win, **3 ★** | 38 Wh |
+| | 30 °C, HEAT, TURBO | **lose** — overshoots, then he is too cold | 85 Wh |
+
+When a mission ends the card says *which* star you missed and why, in one line —
+"you left it set warmer than the comfort zone", "he slipped back out of the
+comfort zone", "the door was still open the whole time". The retry button
+restarts the same mission with a fresh clock, and the next one only unlocks once
+you have passed it.
 
 **Challenge points come from results, not from waiting** — you score when you actually *rescue*
 him back into the comfort zone:
@@ -599,13 +632,14 @@ www/                          ← the whole app (no build step)
 │  ├─ index.html
 │  ├─ hood.css                          kitchen, blower, damper, smoke, airflow
 │  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
-└─ _devicelab.html                      dev-only: phone & iPad previews
+├─ _devicelab.html                      dev-only: phone & iPad previews
+docs/character-bible.md                 the character, the palettes and the house style
 
 server.js                               zero-dependency static server ($PORT aware)
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        71 assertions over the eight simulations
+test/sim.test.js                        97 assertions over the eight simulations
 test/render.test.js                     64 assertions: every page booted, plus the artwork
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)

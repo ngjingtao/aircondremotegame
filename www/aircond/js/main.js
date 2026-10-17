@@ -121,8 +121,63 @@
       }
     });
 
+    ARG.sim.setMissionHook((result, stars, reason) => {
+      ARG.room.showResult(result, stars, reason);
+    });
+
     /* tapping the open door closes it */
     ARG.room.onDoor(() => handleAction('closedoor'));
+
+    /* ── free play → challenge → mission → free play ── */
+    const ORDER = ['free', 'challenge', 'mission'];
+    const modeKey = m => (m === 'mission' ? 'mission' : (m === 'challenge' ? 'challenge' : 'freePlay'));
+    const uiMode = () => (ARG.sim.s.mission >= 0 ? 'mission' : (ARG.sim.s.challenge ? 'challenge' : 'free'));
+
+    function paintMode() {
+      $('btn-mode-label').textContent = ARG.i18n.t(modeKey(uiMode()));
+    }
+
+    function setMode(m) {
+      ARG.room.hideResult();
+      /* leaving a mission is the only thing that rebuilds the world */
+      if (ARG.sim.s.mission >= 0) ARG.sim.leaveMission();
+
+      if (m === 'mission') {
+        const n = ARG.sim.unlocked();
+        ARG.sim.startMission(n);
+        ARG.room.toast(ARG.i18n.t(ARG.sim.MISSIONS[n].key), true);
+      } else {
+        ARG.sim.s.challenge = (m === 'challenge');
+        if (!ARG.sim.s.challenge) {
+          ARG.sim.s.score = 0; ARG.sim.s.combo = 1;
+          if (ARG.sim.s.event) { ARG.sim.s.event.undo(); ARG.sim.s.event = null; ARG.sim.s.eventLeft = 0; }
+        }
+        ARG.room.toast(ARG.i18n.t(modeKey(m)), true);
+      }
+      ARG.audio.chime();
+      paintMode();
+      ARG.room.render();
+    }
+
+    $('btn-mode').addEventListener('click', () => {
+      setMode(ORDER[(ORDER.indexOf(uiMode()) + 1) % ORDER.length]);
+    });
+
+    $('mr-retry').addEventListener('click', () => {
+      ARG.room.hideResult();
+      ARG.sim.startMission(ARG.sim.s.mission);
+      ARG.room.render();
+    });
+
+    $('mr-next').addEventListener('click', () => {
+      ARG.room.hideResult();
+      const n = Math.min(ARG.sim.s.mission + 1, ARG.sim.MISSIONS.length - 1);
+      ARG.sim.startMission(n);
+      ARG.room.toast(ARG.i18n.t(ARG.sim.MISSIONS[n].key), true);
+      ARG.room.render();
+    });
+
+    paintMode();
 
     /* top bar */
     $('btn-lang').addEventListener('click', () => {
@@ -131,6 +186,10 @@
       ARG.i18n.apply();
       ARG.remote.render();
       ARG.room.render();
+      paintMode();
+      /* the result card is written imperatively, so rebuild it in the new language */
+      const s = ARG.sim.s;
+      if (!$('mission-result').hidden && s.result) ARG.room.showResult(s.result, s.stars, s.failReason);
     });
 
     $('btn-sound').addEventListener('click', e => {
@@ -139,18 +198,7 @@
     });
     $('btn-sound').textContent = ARG.audio.enabled ? '🔊' : '🔇';
 
-    $('btn-mode').addEventListener('click', () => {
-      const s = ARG.sim.s;
-      s.challenge = !s.challenge;
-      $('btn-mode-label').textContent = ARG.i18n.t(s.challenge ? 'challenge' : 'freePlay');
-      if (!s.challenge) {
-        s.score = 0; s.combo = 1;
-        if (s.event) { s.event.undo(); s.event = null; s.eventLeft = 0; }
-      }
-      ARG.audio.chime();
-      ARG.room.toast(ARG.i18n.t(s.challenge ? 'challenge' : 'freePlay'), true);
-      ARG.room.render();
-    });
+    /* the mode button itself is wired above, with the missions */
 
     const overlay = $('help-overlay');
     $('btn-help').addEventListener('click', () => { overlay.hidden = false; });

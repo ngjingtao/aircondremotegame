@@ -125,6 +125,83 @@ console.log('\n— Play Aircond —');
   eq('  → and he ends up comfortable', cur().mood, 'ok');
 }
 
+console.log('\n— Play Aircond: missions —');
+{
+  const ARG = load('aircond', ['aircond/js/state.js']);
+  const sim = ARG.sim;
+  const cur = () => sim.s;
+
+  /* play a whole mission with one strategy and report how it ended */
+  function play(n, strat, watchful) {
+    sim.startMission(n);
+    let t = 0;
+    strat(cur());
+    while (!cur().result && t < 400) {
+      sim.tick(0.05); t += 0.05;
+      strat(cur());
+      if (watchful && cur().doorOpen) sim.press('closedoor');
+    }
+    return cur();
+  }
+
+  eq('there are three missions', ARG.sim.MISSIONS.length, 3);
+  eq('the first one has no weather events', ARG.sim.MISSIONS[0].events.length, 0);
+
+  /* a mission hands you an uncomfortable room and a running clock */
+  sim.startMission(0);
+  eq('a mission takes over the model', cur().mission, 0);
+  eq('  → the clock is set to its length', cur().missionT, ARG.sim.MISSIONS[0].len);
+  eq('  → and he does not start comfortable', cur().mood === 'ok', false);
+  eq('  → and the power is already on', cur().power, true);
+  settle(sim, 5);
+  eq('  → the clock counts down', cur().missionT < ARG.sim.MISSIONS[0].len, true);
+  check('  → and the meter is running', cur().energyWh, 0.01, 200, ' Wh');
+
+  /* the goal: comfortable when the clock stops */
+  const good = play(0, S => { S.mode = 'COOL'; S.setTemp = 25; S.fan = 'AUTO'; });
+  eq('a sensible setting wins the mission', good.result, 'win');
+  eq('  → and it pays at least one star', good.stars >= 1, true);
+
+  const lazy = play(0, S => { S.mode = 'COOL'; S.setTemp = 30; });
+  eq('an unreasonable setting loses it', lazy.result, 'lose');
+  eq('  → with no stars', lazy.stars, 0);
+  eq('  → and a reason it can name', lazy.failReason, 'failSetHigh');
+
+  const off = play(0, S => { S.power = false; });
+  eq('so does never switching it on', off.failReason, 'failPower');
+  const fan = play(0, S => { S.mode = 'FAN'; });
+  eq('and so does fan-only', fan.failReason, 'failFan');
+
+  /* ── the trade-off ──
+     blasting it cold gets the room right but costs the energy star, while the
+     thrifty setting keeps the star — that is the whole design */
+  const blast = play(0, S => { S.mode = 'COOL'; S.setTemp = 20; S.fan = 'HIGH'; S.turbo = 'TURBO'; });
+  const thrift = play(0, S => { S.mode = 'COOL'; S.setTemp = 26; S.fan = 'LOW'; S.eco = true; });
+  eq('blasting it cold burns more power', blast.energyWh > thrift.energyWh * 2, true);
+  eq('  → so it loses the energy star', blast.stars < 3, true);
+  eq('the thrifty setting keeps the energy star', thrift.stars, 3);
+
+  /* ── the second star: holding it steady ── */
+  const overshoot = play(2, S => { S.mode = 'HEAT'; S.setTemp = 30; S.fan = 'HIGH'; S.turbo = 'TURBO'; }, true);
+  eq('overshooting in winter costs the steady-hand star', overshoot.missionSlips >= 1, true);
+  eq('  → and the mission too', overshoot.result, 'lose');
+
+  /* ── summer is winnable, but not by every strategy ── */
+  const summerGood = play(1, S => { S.mode = 'COOL'; S.setTemp = 24; S.fan = 'AUTO'; }, true);
+  eq('summer can be won', summerGood.result, 'win');
+  const summerSlow = play(1, S => { S.mode = 'COOL'; S.setTemp = 26; S.fan = 'LOW'; S.eco = true; }, true);
+  eq('  → but not by being too gentle', summerSlow.result, 'lose');
+
+  /* ── stars are remembered, and unlock the next mission ── */
+  eq('a finished mission remembers its stars', ARG.sim.bestStars(0) >= 1, true);
+  eq('and the first unfinished one is unlocked', ARG.sim.unlocked() >= 0, true);
+
+  /* leaving a mission puts everything back */
+  sim.leaveMission();
+  eq('leaving the mission clears it', cur().mission, -1);
+  eq('  → and the clock with it', cur().missionT, 0);
+}
+
 console.log('\n— Food Eating —');
 {
   const ARG = load('food', ['food/js/state.js']);

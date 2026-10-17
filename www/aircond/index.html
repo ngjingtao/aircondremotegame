@@ -220,11 +220,22 @@
         <span class="door-hint" data-i18n="tapDoor">TAP TO CLOSE</span>
       </div>
 
-      <div class="env-bar" id="env-bar">
-        <span class="env-item"><i>🌡</i><b id="env-out">33.0°</b></span>
-        <span class="env-item"><i>🏠</i><b id="env-room">30.0°</b></span>
-        <span class="env-item"><i>💧</i><b id="env-hum">65%</b></span>
-        <span class="env-item"><i>🕐</i><b id="env-clock">14:00</b></span>
+      <!-- ── the room HUD: environment readings, then the mission ── -->
+      <div class="room-hud" id="room-hud">
+        <div class="env-bar" id="env-bar">
+          <span class="env-item"><i>🌡</i><b id="env-out">33.0°</b></span>
+          <span class="env-item"><i>🏠</i><b id="env-room">30.0°</b></span>
+          <span class="env-item"><i>💧</i><b id="env-hum">65%</b></span>
+          <span class="env-item"><i>🕐</i><b id="env-clock">14:00</b></span>
+        </div>
+
+        <!-- the mission: clock, the stars you are on track for, and the meter -->
+        <div class="mission-bar" id="mission-bar" hidden>
+          <span class="mb-name" id="mb-name">—</span>
+          <span class="mb-item"><i>⏱</i><b id="mb-time">1:30</b></span>
+          <span class="mb-stars" id="mb-stars"><i>★</i><i>★</i><i>★</i></span>
+          <span class="mb-item"><i>⚡</i><b id="mb-energy">0</b><em>/</em><u id="mb-budget">0</u></span>
+        </div>
       </div>
 
       <!-- AC UNIT -->
@@ -443,6 +454,19 @@
 
       <!-- event toast -->
       <div class="toast" id="toast"></div>
+
+      <!-- ── how the mission ended, with a reason you can act on ── -->
+      <div class="mission-result" id="mission-result" hidden>
+        <div class="mr-card">
+          <div class="mr-stars" id="mr-stars"><i>★</i><i>★</i><i>★</i></div>
+          <h2 id="mr-title"></h2>
+          <ul class="mr-list" id="mr-list"></ul>
+          <div class="mr-btns">
+            <button class="mr-btn" id="mr-retry">TRY AGAIN</button>
+            <button class="mr-btn go" id="mr-next">NEXT MISSION</button>
+          </div>
+        </div>
+      </div>
 
       <div class="lock-banner" id="lock-banner" hidden data-i18n="lockBanner">🔒 Remote Locked</div>
     </section>

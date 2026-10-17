@@ -67,6 +67,19 @@ ARG.room = (function () {
     els.scoreChip = document.getElementById('hud-score-chip');
     els.door     = document.getElementById('room-door');
 
+    els.missionBar = document.getElementById('mission-bar');
+    els.mbName = document.getElementById('mb-name');
+    els.mbTime = document.getElementById('mb-time');
+    els.mbStars = document.getElementById('mb-stars');
+    els.mbEnergy = document.getElementById('mb-energy');
+    els.mbBudget = document.getElementById('mb-budget');
+    els.missionResult = document.getElementById('mission-result');
+    els.mrStars = document.getElementById('mr-stars');
+    els.mrTitle = document.getElementById('mr-title');
+    els.mrList = document.getElementById('mr-list');
+    els.mrRetry = document.getElementById('mr-retry');
+    els.mrNext = document.getElementById('mr-next');
+
     /* build airflow streams + direction arrows */
     els.airflow.innerHTML = '';
     for (let i = 0; i < 10; i++) {
@@ -257,11 +270,83 @@ ARG.room = (function () {
 
     if (changed('lockBan', s.lock)) els.lockBan.hidden = !s.lock;
 
+    renderMission(s, t);
+
     /* the open door is tappable — closer on the left, or press Enter on it */
     if (changed('doorOn', !!s.doorOpen)) {
       els.door.classList.toggle('on', !!s.doorOpen);
       els.door.setAttribute('aria-hidden', s.doorOpen ? 'false' : 'true');
     }
+  }
+
+  /* ─────────── the mission ─────────── */
+  function renderMission(s, t) {
+    const inMission = s.mission >= 0;
+
+    if (changed('mbOn', inMission)) els.missionBar.hidden = !inMission;
+    if (!inMission) return;
+
+    const m = ARG.sim.MISSIONS[s.mission];
+
+    /* the clock */
+    const left = Math.ceil(s.missionT);
+    const mm = Math.floor(left / 60), ss = left % 60;
+    const clock = mm + ':' + (ss < 10 ? '0' : '') + ss;
+    if (changed('mbClock', clock)) els.mbTime.textContent = clock;
+    if (changed('mbLow', left <= 15)) els.missionBar.classList.toggle('low', left <= 15);
+
+    /* the mission's name */
+    if (changed('mbName', m.key)) els.mbName.textContent = t(m.key);
+
+    /* the stars still in play: you lose one the moment he slips or you overspend */
+    const over = s.energyWh > m.energy;
+    const earned = [true, s.missionSlips === 0, !over];
+    if (changed('mbStars', earned.join())) {
+      earned.forEach((on, i) => els.mbStars.children[i].classList.toggle('on', on));
+    }
+
+    const wh = Math.round(s.energyWh);
+    if (changed('mbWh', wh)) els.mbEnergy.textContent = wh;
+    if (changed('mbBudget', m.energy)) els.mbBudget.textContent = m.energy;
+    if (changed('mbOver', over)) els.missionBar.classList.toggle('over', over);
+  }
+
+  /* ─────────── the result card ─────────── */
+  function showResult(result, stars, reason) {
+    const s = ARG.sim.s;
+    const t = ARG.i18n.t;
+    const m = ARG.sim.MISSIONS[s.mission];
+    const won = result === 'win';
+    const last = s.mission >= ARG.sim.MISSIONS.length - 1;
+
+    els.mrTitle.textContent = t(won ? 'mrWon' : 'mrLost');
+    els.mrTitle.className = won ? 'win' : 'lose';
+
+    els.mrStars.querySelectorAll('i').forEach((el, i) => el.classList.toggle('on', i < stars));
+
+    const lines = [];
+    if (won) {
+      lines.push({ ok: true, txt: t('star1') });
+      lines.push({ ok: stars >= 2, txt: t(stars >= 2 ? 'star2' : 'miss2') });
+      lines.push({ ok: stars >= 3, txt: t(stars >= 3 ? 'star3' : 'miss3') });
+    } else {
+      lines.push({ ok: false, txt: t(reason || 'failTime') });
+      lines.push({ ok: false, txt: t('missionGoal') });
+    }
+    els.mrList.innerHTML = lines
+      .map(l => '<li class="' + (l.ok ? '' : 'no') + '">' + l.txt + '</li>').join('');
+
+    els.mrRetry.textContent = t('tryAgain');
+    els.mrNext.textContent = t(last ? 'nextMission' : 'nextMission');
+    els.mrNext.hidden = !last && !won;      // only offer the next one once you have passed this one
+    els.mrNext.textContent = t('nextMission');
+
+    els.missionResult.hidden = false;
+    ARG.audio[won ? 'cheer' : 'warn']();
+  }
+
+  function hideResult() {
+    els.missionResult.hidden = true;
   }
 
   /* let the page wire the door to the sim */
@@ -324,5 +409,5 @@ ARG.room = (function () {
     toastTimer = setTimeout(() => els.toast.classList.remove('show'), 2400);
   }
 
-  return { init: cache, render, say, signal, toast, onDoor };
+  return { init: cache, render, say, signal, toast, onDoor, showResult, hideResult };
 })();

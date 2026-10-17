@@ -61,6 +61,19 @@ ARG.sim = (function () {
       eventLeft: 0,
       doorOpen: false,
 
+      /* ── mission ── */
+      mission: -1,          // -1 = free play / challenge
+      missionT: 0,          // seconds left
+      missionLen: 0,
+      missionIn: 0,         // seconds spent comfortable
+      missionFirstOk: -1,   // when he first got comfortable, in seconds
+      missionSlips: 0,      // times he fell back out of the comfort zone
+      energyWh: 0,
+      stars: 0,
+      result: null,         // 'win' | 'lose' | null
+      failReason: '',
+      toastId: 0,
+
       /* ── derived (updated by tick) ── */
       mood: 'hot',
       feelsLike: 31,
@@ -261,9 +274,117 @@ ARG.sim = (function () {
     }
   ];
 
+  /* ─────────── missions ───────────
+     Same thermal model, but with a goal, a clock and a price.
+
+     The star rules are deliberately in tension: getting him comfortable FAST
+     means turbo and a high fan, which burns energy — so three stars means
+     finding the balance rather than just blasting the cold. */
+  const MISSIONS = [
+    { key: 'mSpring', day: 'daySpring', weather: 'mild',
+      len: 90, outdoor: 29, humBase: 52, clock: 14, start: 31, setStart: 26,
+      energy: 20, events: [] },
+    { key: 'mSummer', day: 'daySummer', weather: 'heat',
+      len: 120, outdoor: 38, humBase: 80, clock: 15, start: 34, setStart: 27,
+      energy: 46, events: ['heatwave', 'door', 'humid'] },
+    { key: 'mWinter', day: 'dayWinter', weather: 'cold',
+      len: 120, outdoor: 11, humBase: 56, clock: 18, start: 12, setStart: 22,
+      energy: 54, events: ['coldsnap', 'door'] }
+  ];
+
+  const STORE_STARS = n => 'arg.stars.' + n;
+
+  function bestStars(n) { return Number(ARG.store.get(STORE_STARS(n)) || 0); }
+
+  /* the mission you are allowed to start is the first one you have not aced */
+  function unlocked() {
+    for (let i = 0; i < MISSIONS.length; i++) if (bestStars(i) < 3) return i;
+    return MISSIONS.length - 1;
+  }
+
+  function startMission(n) {
+    n = clamp(Math.floor(n) || 0, 0, MISSIONS.length - 1);
+    const m = MISSIONS[n];
+    const keep = { best: S.best, score: S.score, challenge: S.challenge };
+    S = fresh();
+    S.best = keep.best; S.score = keep.score; S.challenge = keep.challenge;
+
+    S.mission = n;
+    S.missionLen = m.len;
+    S.missionT = m.len;
+    S.outdoorTemp = m.outdoor;
+    S.humBase = m.humBase;
+    S.clockH = m.clock;
+    S.setTemp = m.setStart;
+    S.roomTemp = m.start;
+    S.humidity = clamp(m.humBase + 6, 20, 98);
+    S.energyWh = 0;
+
+    /* a mission starts with the room shut and the machine ready */
+    S.doorOpen = false;
+    S.power = true;
+    S.mode = m.weather === 'cold' ? 'HEAT' : 'COOL';
+    S.event = null; S.eventLeft = 0; S.eventTimer = 20;
+    return S;
+  }
+
+  function leaveMission() {
+    const keep = { best: S.best, score: S.score, challenge: S.challenge };
+    S = fresh();
+    S.best = keep.best; S.score = keep.score; S.challenge = keep.challenge;
+    return S;
+  }
+
+  /* the price of comfort, in watts, right now */
+  function powerNow() {
+    if (!S.power) return 0;
+    if (S.selfClean > 0) return 30;
+    if (S.mode === 'FAN') return 60;
+    /* the compressor works harder the further the room is from the set point */
+    const gap = Math.abs(S.roomTemp - S.setTemp);
+    let w = 620 + Math.min(680, gap * 90);
+    if (S.fan === 'HIGH') w *= 1.25;
+    else if (S.fan === 'LOW') w *= 0.85;
+    if (S.turbo === 'TURBO') w *= 1.45;
+    else if (S.turbo === 'QUIET') w *= 0.75;
+    if (S.eco) w *= 0.72;
+    if (S.mode === 'HEAT') w *= 1.15;
+    return Math.round(w);
+  }
+
+  /* why it went wrong — the screen has to be able to say, in one line */
+  function failReason() {
+    if (!S.power) return 'failPower';
+    if (S.doorOpen) return 'failDoor';
+    if (S.mode === 'FAN') return 'failFan';
+    if (S.setTemp >= 28) return 'failSetHigh';
+    if (S.setTemp <= 19) return 'failSetLow';
+    if (S.mood === 'hot' || S.mood === 'veryhot') return 'failNotEnough';
+    if (S.mood === 'cold' || S.mood === 'freezing') return 'failTooMuch';
+    return 'failTime';
+  }
+
+  /* 1 star for finishing with him comfortable, +1 for never letting him slip
+     back out once you had him there, +1 for doing it without burning through
+     the power.
+
+     The second star is what makes it a game rather than a thermostat: holding
+     a room steady through a heatwave and a door left open takes attention.
+     And it is in direct tension with the third — the easy way to never slip is
+     to run the machine hard, which is exactly what costs you the energy star. */
+  function rateMission() {
+    const m = MISSIONS[S.mission];
+    if (!m || S.mood !== 'ok') return 0;
+    let stars = 1;
+    if (S.missionSlips === 0) stars++;
+    if (S.energyWh <= m.energy) stars++;
+    return stars;
+  }
+
   let onEvent = null;      // callback(event | null)
   let onScore = null;      // callback('recover'|'slip'|'weather', combo)
   let onClockHour = null;
+  let onMission = null;    // callback(result, stars, reason)
 
   /* ─────────── main tick ─────────── */
   function tick(dt) {
@@ -337,13 +458,21 @@ ARG.sim = (function () {
 
     S.roomTemp = clamp(S.roomTemp, 5, 48);
 
+    /* what it is costing, right now */
+    S.energyWh += powerNow() * dt / 3600;
+
     /* mood */
     S.feelsLike = feelsLike();
     const prevMood = S.mood;
     S.mood = moodFor(S.feelsLike);
 
-    /* weather events (challenge only) */
-    if (S.challenge) {
+    /* weather events: endless in challenge, and the mission's own list in a
+       mission — which is how the spring mission stays a calm tutorial */
+    if (S.challenge || S.mission >= 0) {
+      const pool = S.mission >= 0
+        ? MISSIONS[S.mission].events.map(id => EVENTS.find(e => e.id === id)).filter(Boolean)
+        : EVENTS;
+
       if (S.event) {
         S.eventLeft -= dt;
         if (S.eventLeft <= 0) {
@@ -352,16 +481,35 @@ ARG.sim = (function () {
           S.eventJustEnded = true;
           if (onEvent) onEvent(null);
         }
-      } else {
+      } else if (pool.length) {
         S.eventTimer -= dt;
         if (S.eventTimer <= 0) {
-          const ev = EVENTS[Math.floor(Math.random() * EVENTS.length)];
+          const ev = pool[Math.floor(Math.random() * pool.length)];
           ev.apply();
           S.event = ev;
           S.eventLeft = ev.dur;
           S.eventTimer = 15 + Math.random() * 12;
           if (onEvent) onEvent(ev);
         }
+      }
+    }
+
+    /* ── the mission clock ── */
+    if (S.mission >= 0 && !S.result) {
+      S.missionT = Math.max(0, S.missionT - dt);
+      if (S.mood === 'ok') {
+        S.missionIn += dt;
+        if (S.missionFirstOk < 0) S.missionFirstOk = S.missionLen - S.missionT;
+      } else if (prevMood === 'ok' && S.missionFirstOk >= 0) {
+        /* he was comfortable and he is not any more — that costs the second star */
+        S.missionSlips++;
+      }
+      if (S.missionT <= 0) {
+        S.stars = rateMission();
+        S.result = S.stars > 0 ? 'win' : 'lose';
+        S.failReason = S.result === 'lose' ? failReason() : '';
+        if (S.stars > bestStars(S.mission)) ARG.store.set(STORE_STARS(S.mission), String(S.stars));
+        if (onMission) onMission(S.result, S.stars, S.failReason);
       }
     }
 
@@ -417,7 +565,10 @@ ARG.sim = (function () {
     setEventHook: fn => { onEvent = fn; },
     setScoreHook: fn => { onScore = fn; },
     setHourHook: fn => { onClockHour = fn; },
+    setMissionHook: fn => { onMission = fn; },
+    startMission, leaveMission, bestStars, unlocked,
     MODES, FANS, TURBO, MODE_ICON, HOUR_SECONDS,
+    MISSIONS, powerNow,
     feelsLike, moodFor, clamp
   };
 })();

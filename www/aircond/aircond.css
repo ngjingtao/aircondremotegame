@@ -307,10 +307,14 @@
 }
 @keyframes snowFall{ from{ background-position:0 0, 7px 9px; } to{ background-position:6px 56px, 13px 65px; } }
 
+/* the room HUD stacks: readings first, the mission underneath */
+.room-hud{
+  position:absolute;top:6px;left:6px;right:6px;z-index:7;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  pointer-events:none;
+}
 .env-bar{
-  position:absolute;top:6px;left:6px;right:6px;
   display:flex;gap:4px;flex-wrap:wrap;justify-content:center;
-  z-index:6;pointer-events:none;
 }
 .env-item{
   display:flex;align-items:center;gap:3px;
@@ -324,6 +328,91 @@
   font-variant-numeric:tabular-nums;
 }
 .env-item i{font-style:normal;font-size:9.5px;opacity:.85;}
+
+/* ═══════════ the mission bar ═══════════ */
+.mission-bar{
+  display:flex;align-items:center;gap:6px;justify-content:center;flex-wrap:wrap;
+}
+.mission-bar[hidden]{display:none;}
+.mission-bar > span{
+  display:flex;align-items:center;gap:3px;
+  background:rgba(11,18,32,.7);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:999px;padding:3px 9px;
+  font-size:10px;font-weight:800;color:#eaf2ff;
+  backdrop-filter:blur(6px);
+  font-variant-numeric:tabular-nums;
+}
+.mission-bar i{font-style:normal;opacity:.85;}
+.mission-bar em{font-style:normal;opacity:.45;padding:0 1px;}
+.mission-bar u{text-decoration:none;opacity:.6;font-weight:700;}
+.mb-name{
+  color:#8ef0b4 !important;
+  background:rgba(6,44,24,.72) !important;
+  border-color:rgba(61,220,132,.45) !important;
+  letter-spacing:.3px;
+}
+/* the clock turns urgent in the last stretch */
+.mission-bar.low #mb-time{color:#ffb37a;}
+.mission-bar.low{animation:mbPulse 1s ease-in-out infinite;}
+@keyframes mbPulse{ 0%,100%{opacity:1;} 50%{opacity:.72;} }
+/* the meter goes red the moment you have spent the budget */
+.mission-bar.over #mb-energy{color:#ff8b7a;}
+.mission-bar.over u{color:#ff8b7a;opacity:.9;}
+.mb-stars i{
+  font-style:normal;font-size:13px;line-height:1;
+  color:rgba(255,255,255,.22);
+  transition:color .3s, transform .3s, text-shadow .3s;
+}
+.mb-stars i.on{color:#ffd166;text-shadow:0 0 8px rgba(255,209,102,.7);transform:scale(1.14);}
+
+/* ═══════════ the mission result ═══════════ */
+.mission-result{
+  position:absolute;inset:0;z-index:30;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(4,9,18,.72);backdrop-filter:blur(4px);
+  padding:16px;
+}
+.mission-result[hidden]{display:none;}
+.mr-card{
+  width:min(340px,100%);
+  background:linear-gradient(165deg,#1b2740,#111a2b);
+  border:1px solid rgba(140,190,255,.28);
+  border-radius:20px;padding:18px 18px 14px;
+  box-shadow:0 24px 60px rgba(0,0,0,.6);
+  text-align:center;
+}
+.mr-stars{display:flex;justify-content:center;gap:8px;margin-bottom:6px;}
+.mr-stars i{
+  font-style:normal;font-size:34px;line-height:1;
+  color:rgba(255,255,255,.16);
+  transform:scale(.8);
+  transition:color .4s, transform .4s, text-shadow .4s;
+}
+.mr-stars i.on{color:#ffd166;text-shadow:0 0 14px rgba(255,209,102,.8);transform:scale(1);}
+.mr-card h2{margin:0 0 8px;font-size:16px;color:#eaf2ff;}
+.mr-card h2.win{color:#8ef0b4;}
+.mr-card h2.lose{color:#ffb37a;}
+.mr-list{list-style:none;margin:0 0 14px;padding:0;text-align:left;}
+.mr-list li{
+  font-size:11.5px;line-height:1.45;color:#b9c9dd;
+  padding:4px 0 4px 20px;position:relative;
+}
+.mr-list li::before{content:"✓";position:absolute;left:2px;color:#6ee89a;font-weight:800;}
+.mr-list li.no{color:#8b9bb0;}
+.mr-list li.no::before{content:"✕";color:#ff8b7a;}
+.mr-btns{display:flex;gap:8px;}
+.mr-btn{
+  flex:1 1 auto;padding:11px 8px;border-radius:12px;
+  border:1px solid #34435a;background:linear-gradient(180deg,#2b3a4e,#1c2635);
+  color:#d6e4f5;font-family:inherit;font-size:11px;font-weight:800;
+  letter-spacing:.4px;cursor:pointer;
+  box-shadow:0 2px 0 #16202e;
+  transition:transform .07s, box-shadow .07s;
+}
+.mr-btn:active{transform:translateY(2px);box-shadow:0 0 0 #16202e;}
+.mr-btn.go{background:linear-gradient(180deg,#a8e2ff,#5fb6ef);border-color:#3d90d0;color:#06344f;box-shadow:0 2px 0 #3d90d0;}
+.mr-btn[hidden]{display:none;}
 
 /* AC */
 .ac-wrap{
