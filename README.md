@@ -154,6 +154,36 @@ harder for a lower result.
 You cannot cheat it. Once the urge maxes out (or oxygen drops far enough) the body takes over
 and gasps for you.
 
+### 🫁 Guided breathing — actually breathe with it
+
+A pacer circle expands and contracts over the boy while a countdown tells you what to do, and the
+physiology responds for real. Measured after settling:
+
+| Pattern | Breaths/min | Heart rate | CO₂ |
+|---|---|---|---|
+| Normal (your own) | 14 | 75 | 39.0 |
+| **Box 4-4-4-4** | 4 | **69** | 47.2 |
+| **Relax 4-7-8** | 3 | **66** | 49.3 |
+| **Fast** | 30 | **93** | **37.4** |
+
+That is real physiology, not decoration:
+
+- Slow patterns **calm the heart** — 4-7-8 drops it to 66 bpm.
+- Slow breathing **retains carbon dioxide**, so CO₂ climbs to 49.
+- Fast breathing **blows CO₂ off** — it falls to 37.4, which is exactly why you feel light-headed
+  when you hyperventilate. The note card says so while you do it.
+
+A soft breath sound plays on each phase change, and tapping **NORMAL** hands the breathing back
+to you.
+
+### Look closer, and check what you learned
+
+- **Tap the alveoli bubble** for a magnified gas-exchange view: one alveolus with a capillary
+  wrapped round it, red blood cells flowing past, and O₂ and CO₂ crossing the membrane in the
+  right directions — read aloud.
+- **Quiz** in the top bar: four questions on what breathing does, what carries oxygen, what fast
+  breathing does to CO₂, and why your heart speeds up when you run.
+
 **What to watch on the boy**
 
 - **Lungs** inflate and deflate with every breath, and air particles move down the windpipe as you inhale and back up as you exhale.
@@ -391,12 +421,22 @@ You should get a full-screen app with the ✦ icon, a black status bar, and no S
 | `manifest.webmanifest` with `"display": "standalone"` | the modern equivalent (iOS 16.4+, and Chrome/Android) |
 | `apple-touch-icon` at 120/152/167/180 px | a real icon instead of a screenshot of the page |
 | `apple-mobile-web-app-status-bar-style` | a black status bar that matches the dark theme |
-| `sw.js` service worker | caches all 44 files, so it opens instantly and works with no wifi |
+| `sw.js` service worker | caches all 68 files, so it opens instantly and works with no wifi |
 | `viewport-fit=cover` + `env(safe-area-inset-*)` | keeps controls clear of the notch and home indicator |
 
 Android works the same way — Chrome will offer **Install app** automatically.
 
 > Bump `CACHE` in `www/sw.js` whenever you ship a change, so installed copies pick it up.
+
+---
+
+## Accessibility
+
+- Every icon-only button carries a real `aria-label` (language, sound, voice, help, fold, quiz).
+- **Full keyboard support** — the controls listen on `pointerdown` for instant response, which a
+  keyboard never fires, so `shared/a11y.js` bridges Enter/Space into the same path.
+- Keyboard users get a visible focus ring; mouse and touch users do not.
+- Decorative SVGs are `aria-hidden` so screen readers skip them.
 
 ---
 

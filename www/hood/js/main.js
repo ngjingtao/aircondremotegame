@@ -104,6 +104,7 @@
     ARG.i18n.apply();
     ARG.voice.attach();
     ARG.shell.attach();
+    ARG.a11y.init();
 
     $('btn-lang').addEventListener('click', () => {
       ARG.i18n.toggle();

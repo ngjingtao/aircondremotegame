@@ -192,7 +192,8 @@
     ARG.deck.build(handleAction);
     ARG.i18n.apply();
     ARG.voice.attach();
-    ARG.shell.attach();          // after the decks exist, so every label is translated
+    ARG.shell.attach();
+    ARG.a11y.init();          // after the decks exist, so every label is translated
 
     ARG.sim.setToastHook((key, kind) => {
       if (!key) return;

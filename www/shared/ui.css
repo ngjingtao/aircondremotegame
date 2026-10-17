@@ -114,6 +114,17 @@ mark.tts-word{
   padding:0 1px;
 }
 
+/* keyboard users get a visible focus ring; touch and mouse do not */
+html.kb-nav :focus{ outline:none; }
+html.kb-nav button:focus-visible,
+html.kb-nav a:focus-visible{
+  outline:3px solid #7dd3fc;
+  outline-offset:2px;
+  border-radius:10px;
+}
+/* keep the tap targets comfortably large */
+button{ min-height:28px; }
+
 /* ─────────────── HELP OVERLAY ─────────────── */
 .overlay{
   position:fixed;inset:0;z-index:100;

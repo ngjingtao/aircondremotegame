@@ -188,6 +188,7 @@
     $('btn-sound').textContent = ARG.audio.enabled ? '🔊' : '🔇';
 
     ARG.voice.attach();
+    ARG.a11y.init();
 
     const overlay = $('help-overlay');
     $('btn-help').addEventListener('click', () => { overlay.hidden = false; });

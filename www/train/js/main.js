@@ -51,6 +51,7 @@
     ARG.i18n.apply();
     ARG.voice.attach();
     ARG.shell.attach();
+    ARG.a11y.init();
     ARG.scene.build();
     ARG.cab.build(handleAction);
 

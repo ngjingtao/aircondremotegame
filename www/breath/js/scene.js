@@ -77,6 +77,9 @@ ARG.scene = (function () {
     els.speech = document.getElementById('speech');
     els.status = document.getElementById('scene-status');
     els.alveoli = document.getElementById('alveoli');
+    els.pacer = document.getElementById('pacer');
+    els.pacerCount = document.getElementById('pacer-count');
+    els.pacerPhase = document.getElementById('pacer-phase');
     els.lungs = document.getElementById('lungs');
     els.heart = document.getElementById('heart');
     els.trachea = document.getElementById('trachea');
@@ -182,6 +185,20 @@ ARG.scene = (function () {
 
     /* the oxygen-rich stretch of the vessel glows brighter when blood is well loaded */
     els.vesselRed.setAttribute('opacity', (0.35 + S.redness * 0.5).toFixed(2));
+
+    /* ── the breathing pacer ── */
+    if (els.pacer && !els.pacer.hidden) {
+      const v = clamp(S.pacerVol, 0, 1);
+      const scale = 0.68 + v * 0.42;
+      els.pacer.style.transform = `translate(-50%,-52%) scale(${scale.toFixed(3)})`;
+      const ph = S.pacerPhase;
+      els.pacer.classList.toggle('hold', ph === 'hold' || ph === 'rest');
+      els.pacer.classList.toggle('out', ph === 'out');
+      const word = t('pace' + ph.charAt(0).toUpperCase() + ph.slice(1));
+      if (seen.paceWord !== word) { seen.paceWord = word; els.pacerPhase.textContent = word; }
+      const sec = Math.max(1, Math.ceil(S.pacerLeft));
+      if (seen.paceSec !== sec) { seen.paceSec = sec; els.pacerCount.textContent = sec; }
+    }
 
     /* ── the alveolus bubble breathes at the same rate ── */
     const gasPeriod = clamp(60 / Math.max(6, S.breathsPerMin), 0.9, 5.5);

@@ -36,6 +36,7 @@
       <div class="hud-chip"><span class="hud-label" data-i18n="mHeart">Heart rate</span><b id="hud-hr">70</b></div>
     </div>
     <div class="tb-buttons">
+      <button class="tb-btn" id="btn-quiz" data-i18n="quizBtn">Quiz</button>
       <button class="tb-btn" id="btn-lang">EN</button>
       <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
       <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
@@ -67,6 +68,11 @@
               <i class="lung-fill" id="lung-fill"></i>
               <div class="lung-ticks"><span></span><span></span><span></span><span></span></div>
             </div>
+          </div>
+
+          <div class="pl-block">
+            <div class="pl-label" data-i18n="pattern">Breathing pattern</div>
+            <div class="patterns" id="patterns"></div>
           </div>
 
           <div class="pl-actions">
@@ -104,6 +110,14 @@
       </div>
 
       <div class="body-wrap">
+        <div class="pacer" id="pacer" hidden>
+          <div class="pacer-ring"></div>
+          <div class="pacer-ring r2"></div>
+          <div class="pacer-core">
+            <b id="pacer-count">4</b>
+            <span id="pacer-phase">Breathe in</span>
+          </div>
+        </div>
         <svg id="body" viewBox="0 0 260 540" preserveAspectRatio="xMidYMid meet">
           <defs>
             <linearGradient id="skinGrad" x1="0" y1="0" x2="0" y2="1">
@@ -225,6 +239,7 @@
             <text class="gt o2t" x="54" y="24" text-anchor="middle">O₂</text>
             <text class="gt co2t" x="22" y="118" text-anchor="middle">CO₂</text>
           </svg>
+          <span class="zoom-hint" data-i18n="zoomHint">tap to look closer</span>
         </div>
       </div>
 
@@ -249,11 +264,85 @@
   </div>
 </div>
 
+<!-- ══════════ ALVEOLI ZOOM ══════════ -->
+<div id="zoom-overlay" class="overlay" hidden>
+  <div class="overlay-card zoom-card">
+    <h2 id="zoom-title" data-i18n="zoomTitle">Inside one alveolus</h2>
+    <svg class="zoom-art" viewBox="0 0 320 210" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <radialGradient id="zAir" cx="40%" cy="35%">
+          <stop offset="0%" stop-color="#eaf7ff"/>
+          <stop offset="100%" stop-color="#a8d8f5"/>
+        </radialGradient>
+        <linearGradient id="zBlood" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#8f2f28"/>
+          <stop offset="55%" stop-color="#d94a3d"/>
+          <stop offset="100%" stop-color="#8f2f28"/>
+        </linearGradient>
+        <filter id="zSoft" x="-40%" y="-40%" width="180%" height="180%">
+          <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0b1220" flood-opacity=".45"/>
+        </feDropShadow>
+        </filter>
+      </defs>
+
+      <!-- the alveolus, blown up big -->
+      <circle cx="118" cy="102" r="76" fill="url(#zAir)" stroke="#7fc4ee" stroke-width="2.5"/>
+      <circle cx="118" cy="102" r="68" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.4" stroke-dasharray="4 6"/>
+
+      <!-- the capillary wrapped round the outside -->
+      <path d="M42,168 C90,196 210,196 268,150 C292,130 292,80 268,58"
+            fill="none" stroke="url(#zBlood)" stroke-width="26" stroke-linecap="round"/>
+      <path d="M42,168 C90,196 210,196 268,150 C292,130 292,80 268,58"
+            fill="none" stroke="rgba(255,255,255,.22)" stroke-width="4" stroke-dasharray="8 10"/>
+
+      <!-- red blood cells inside the capillary -->
+      <g id="zCells">
+        <ellipse cx="100" cy="184" rx="9" ry="6.5" fill="#e2574a" stroke="#8f2f28" stroke-width="1.4"/>
+        <ellipse cx="150" cy="188" rx="9" ry="6.5" fill="#e2574a" stroke="#8f2f28" stroke-width="1.4"/>
+        <ellipse cx="206" cy="180" rx="9" ry="6.5" fill="#c94a3e" stroke="#8f2f28" stroke-width="1.4"/>
+        <ellipse cx="250" cy="146" rx="9" ry="6.5" fill="#c94a3e" stroke="#8f2f28" stroke-width="1.4"/>
+        <ellipse cx="266" cy="96" rx="9" ry="6.5" fill="#8f4a6a" stroke="#6d3550" stroke-width="1.4"/>
+      </g>
+
+      <!-- O2 going in, CO2 coming out -->
+      <g class="zgas zo2">
+        <text x="86" y="86">O₂</text><text x="104" y="112">O₂</text>
+        <text x="72" y="128">O₂</text><text x="124" y="76">O₂</text>
+      </g>
+      <g class="zgas zco2">
+        <text x="152" y="164">CO₂</text><text x="188" y="158">CO₂</text>
+        <text x="222" y="150">CO₂</text>
+      </g>
+
+      <!-- labels -->
+      <text class="zlabel" x="118" y="18" text-anchor="middle" id="zLabelAir">alveolus</text>
+      <text class="zlabel blood" x="268" y="200" text-anchor="end" id="zLabelBlood">blood</text>
+    </svg>
+    <div class="zoom-legend">
+      <span><i class="lg o2"></i><b id="zoom-o2" data-i18n="zoomO2">Oxygen in</b></span>
+      <span><i class="lg co2"></i><b id="zoom-co2" data-i18n="zoomCo2">Carbon dioxide out</b></span>
+    </div>
+    <p class="zoom-body" id="zoom-body" data-i18n="zoomBody"></p>
+    <button class="overlay-close" id="zoom-close">OK</button>
+  </div>
+</div>
+
+<!-- ══════════ QUIZ ══════════ -->
+<div id="quiz-overlay" class="overlay" hidden>
+  <div class="overlay-card quiz-card">
+    <h2 id="quiz-title">Quick quiz</h2>
+    <div id="quiz-body"></div>
+    <button class="overlay-close" id="quiz-close">OK</button>
+  </div>
+</div>
+
 <script src="../shared/store.js"></script>
 
 <script src="../shared/voice.js"></script>
 
 <script src="../shared/shell.js"></script>
+
+<script src="../shared/a11y.js"></script>
 <script src="../shared/audio.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/state.js"></script>

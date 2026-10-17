@@ -28,12 +28,14 @@ ARG.panel = (function () {
   let els = {};
   let onAction = null;
   let lastScenario = null;
+  let lastPattern = null;
   let lastHold = null;
   const seen = {};
 
   function build(handler) {
     onAction = handler;
     els.scenarios = document.getElementById('scenarios');
+    els.patterns = document.getElementById('patterns');
     els.meters = document.getElementById('meters');
     els.lungFill = document.getElementById('lung-fill');
     els.holdBtn = document.getElementById('hold-btn');
@@ -50,6 +52,16 @@ ARG.panel = (function () {
          <span class="sc-txt" data-i18n="sc${s.id.charAt(0).toUpperCase() + s.id.slice(1)}">${s.id}</span>
        </button>`).join('');
 
+    if (els.patterns) {
+      const PATS = [
+        ['auto', 'pAuto'], ['box', 'pBox'], ['relax', 'pRelax'], ['fast', 'pFast']
+      ];
+      els.patterns.innerHTML = PATS.map(([id, key]) =>
+        `<button class="pat" data-action="pattern" data-pattern="${id}">
+           <b data-i18n="${key}">${key}</b>
+         </button>`).join('');
+    }
+
     els.meters.innerHTML = METERS.map(([label]) =>
       `<div class="meter" data-meter="${label}">
          <span class="meter-label" data-i18n="${label}">${label}</span>
@@ -57,7 +69,7 @@ ARG.panel = (function () {
          <b class="meter-val">0</b>
        </div>`).join('');
 
-    document.querySelectorAll('.sc, .pl-btn').forEach(b => {
+    document.querySelectorAll('[data-action]').forEach(b => {
       b.addEventListener('pointerdown', ev => {
         ev.preventDefault();
         if (navigator.vibrate) { try { navigator.vibrate(10); } catch (e) {} }
@@ -78,6 +90,18 @@ ARG.panel = (function () {
       els.scenarios.querySelectorAll('.sc').forEach(b => {
         b.classList.toggle('on', b.dataset.scenario === S.scenario);
       });
+    }
+
+    /* pattern buttons */
+    if (els.patterns && lastPattern !== S.pattern) {
+      lastPattern = S.pattern;
+      els.patterns.querySelectorAll('.pat').forEach(b => {
+        b.classList.toggle('on', b.dataset.pattern === S.pattern);
+      });
+      document.getElementById('pacer').hidden = (S.pattern === 'auto');
+      /* the guide buttons only make sense when you are breathing on your own */
+      const guided = S.pattern !== 'auto';
+      els.holdBtn.classList.toggle('muted', guided);
     }
 
     /* lungs */
@@ -150,7 +174,7 @@ ARG.panel = (function () {
     if (seen.hudHr !== bpm) { seen.hudHr = bpm; els.hudHr.textContent = bpm; }
   }
 
-  function refresh() { for (const k in seen) delete seen[k]; lastScenario = null; lastHold = null; }
+  function refresh() { for (const k in seen) delete seen[k]; lastScenario = null; lastPattern = null; lastHold = null; }
 
   return { build, render, refresh };
 })();

@@ -14,7 +14,17 @@ ARG.sim = (function () {
     alt:   { demand: 0.58, alt: 1 }
   };
 
+  /* guided breathing patterns. 'auto' just follows the scenario above. */
+  const PATTERNS = {
+    auto:  null,
+    box:   { phases: [['in', 4], ['hold', 4], ['out', 4], ['rest', 4]] },
+    relax: { phases: [['in', 4], ['hold', 7], ['out', 8]] },
+    fast:  { phases: [['in', 1], ['out', 1]] }
+  };
+
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  /* ease so the lungs fill and empty the way real ones do, not linearly */
+  const ease = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
   function fresh() {
     return {
@@ -22,6 +32,16 @@ ARG.sim = (function () {
       demand: 0.14,          // smoothed
       alt: 0,                // 0..1 thin-air factor (smoothed)
       o2Avail: 1,            // 1 = sea level, 0.74 = high altitude
+
+      /* guided breathing */
+      pattern: 'auto',
+      pacerT: 0,
+      pacerPhase: 'in',
+      pacerLeft: 4,
+      pacerProg: 0,
+      pacerVol: 0.35,
+      pacerCue: '',
+      pacerIdx: -1,
 
       breathing: true,
       holding: false,
@@ -74,6 +94,16 @@ ARG.sim = (function () {
       return { sound: id === 'run' ? 'alarm' : 'blip' };
     },
 
+    pattern(el) {
+      const id = el && el.dataset ? el.dataset.pattern : null;
+      if (!PATTERNS.hasOwnProperty(id)) return { sound: 'deny' };
+      S.pattern = id;
+      S.pacerT = 0;
+      S.pacerCue = '';
+      say(id === 'auto' ? 'paceOff' : 'msg' + id.charAt(0).toUpperCase() + id.slice(1));
+      return { sound: 'blip' };
+    },
+
     breathe() {
       if (S.holding) return { sound: 'warn' };
       S.deep = 1;
@@ -84,6 +114,7 @@ ARG.sim = (function () {
     },
 
     hold() {
+      if (S.pattern !== 'auto') return { sound: 'deny', say: 'paceOff' };
       if (S.holding) {
         S.holding = false;
         S.holdT = 0;
@@ -120,7 +151,9 @@ ARG.sim = (function () {
     S.o2Avail = 1 - S.alt * 0.26;             // thin air = ~74 % of the oxygen
 
     /* ── how fast the heart and lungs should run ── */
-    const hrTarget = 58 + S.demand * 118 + S.alt * 16 + (S.holding ? 10 + S.urge * 22 : 0);
+    /* a slow guided pattern calms the heart, fast panting winds it up */
+    const paceHR = S.pattern === 'fast' ? 18 : S.pattern === 'relax' ? -9 : S.pattern === 'box' ? -6 : 0;
+    const hrTarget = 58 + S.demand * 118 + S.alt * 16 + paceHR + (S.holding ? 10 + S.urge * 22 : 0);
     S.heartRate += (hrTarget - S.heartRate) * 0.55 * dt;
 
     const brTarget = 10 + S.demand * 30 + S.alt * 12 + (S.spo2 < 94 ? (94 - S.spo2) * 1.2 : 0);
@@ -130,14 +163,46 @@ ARG.sim = (function () {
     S.deep = Math.max(0, S.deep - dt * 0.55);
     const amplitude = 0.55 + S.deep * 0.45;
 
-    if (S.holding) {
+    const P = PATTERNS[S.pattern];
+    if (P) {
+      /* a guided pattern drives the breath exactly */
+      const total = P.phases.reduce((a, p) => a + p[1], 0);
+      S.pacerT += dt;
+      if (S.pacerT >= total) S.pacerT -= total;
+
+      let acc = 0, ph = P.phases[0], idx = 0;
+      for (let i = 0; i < P.phases.length; i++) {
+        if (S.pacerT < acc + P.phases[i][1]) { ph = P.phases[i]; idx = i; break; }
+        acc += P.phases[i][1];
+      }
+      const wasCue = S.pacerCue;
+      S.pacerPhase = ph[0];
+      S.pacerLeft = acc + ph[1] - S.pacerT;
+      S.pacerProg = clamp((S.pacerT - acc) / ph[1], 0, 1);
+      S.pacerCue = (S.pacerProg < 0.06 || idx !== S.pacerIdx) ? ph[0] : '';
+      S.pacerIdx = idx;
+
+      const FULL = 0.92, EMPTY = 0.20;
+      if (ph[0] === 'in') S.pacerVol = EMPTY + (FULL - EMPTY) * ease(S.pacerProg);
+      else if (ph[0] === 'out') S.pacerVol = FULL - (FULL - EMPTY) * ease(S.pacerProg);
+      else S.pacerVol = idx === 0 ? EMPTY : FULL;
+
+      S.lungVol = S.pacerVol;
+      S.breathsPerMin = 60 / total;
+      S.phase = (S.pacerT / total) * Math.PI * 2;
+      S.holding = false;
+    } else if (S.holding) {
       S.holdT += dt;
       S.lungVol += (0.85 - S.lungVol) * 2.0 * dt;
+      S.pacerVol = S.lungVol;
+      S.pacerCue = '';
     } else {
       S.phase += (S.breathsPerMin / 60) * Math.PI * 2 * dt;
       if (S.phase > Math.PI * 2) { S.phase -= Math.PI * 2; S.breaths++; }
       const inhale = Math.sin(S.phase - Math.PI / 2);      // -1 exhaled … +1 inhaled
       S.lungVol = 0.22 + ((inhale + 1) / 2) * amplitude * 0.78;
+      S.pacerVol = S.lungVol;
+      S.pacerCue = '';
     }
 
     /* how much fresh air is arriving right now */
@@ -219,6 +284,6 @@ ARG.sim = (function () {
     get s() { return S; },
     press, tick,
     fresh: () => { S = fresh(); breatheSound = 0; return S; },
-    clamp
+    PATTERNS, clamp
   };
 })();

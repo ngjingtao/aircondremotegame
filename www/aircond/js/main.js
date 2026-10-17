@@ -88,6 +88,7 @@
     ARG.i18n.apply();
     ARG.voice.attach();
     ARG.shell.attach();
+    ARG.a11y.init();
 
     ARG.remote.init(handleAction);
     ARG.room.init();
