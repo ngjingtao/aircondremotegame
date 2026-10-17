@@ -121,17 +121,21 @@
             <rect x="0" y="500" width="340" height="20" fill="#2a3646"/>
             <path d="M0 500 H340" stroke="#3c4c60" stroke-width="2"/>
 
-            <!-- ── pedestal, in section: the ceramic wall has thickness ── -->
-            <g id="pedestal" filter="url(#soft)">
-              <path d="M100,338 C94,432 108,506 170,506 C232,506 246,432 240,338 Z"
-                    fill="url(#porcGrad)" stroke="#c8d1dd" stroke-width="1.6"/>
-              <path d="M119,352 C113,436 125,492 170,492 C215,492 227,436 221,352"
-                    fill="none" stroke="#d8e0ea" stroke-width="1.6"/>
-            </g>
-
-            <!-- ── bowl: outer shell, then the cavity it holds ── -->
-            <g id="bowl" filter="url(#soft)">
-              <path d="M92,196 H248 V216 C248,332 220,392 170,404 C120,392 92,332 92,216 Z"
+            <!-- ── the toilet, in one piece ──
+                 The bowl and the pedestal are ONE continuous silhouette. Drawn
+                 as two overlapping shapes they read as two vases stacked up,
+                 which is exactly how it looked. The inside of the bowl is a
+                 second path painted on top, so the ceramic wall thickness still
+                 reads without adding a second outline. -->
+            <g id="toilet-body" filter="url(#soft)">
+              <path d="M92,196 H248 V216
+                       C248,300 242,352 214,392
+                       C196,418 188,450 190,486
+                       C191,500 194,506 200,506
+                       H140
+                       C146,506 149,500 150,486
+                       C152,450 144,418 126,392
+                       C98,352 92,300 92,216 Z"
                     fill="url(#porcGrad)" stroke="#c8d1dd" stroke-width="1.6"/>
               <path d="M106,208 C106,298 128,366 170,376 C212,366 234,298 234,208 Z"
                     fill="#e4ecf6" stroke="#d8e0ea" stroke-width="1.6"/>

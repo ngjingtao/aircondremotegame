@@ -423,6 +423,19 @@ console.log('\n— Toilet: a real gravity-flush mechanism —');
   ['chain', 'float', 'flapper', 'rimJets', 'siphonJet', 'trapTube', 'trapWater', 'overflowTube']
     .forEach(id => eq('the diagram draws the ' + id, html.indexOf('id="' + id + '"') >= 0, true));
 
+  /* The toilet is ONE piece of ceramic. Drawn as a bowl plus an overlapping
+     pedestal it read as two vases stacked up — a real user reported exactly
+     that. So: a single body path that spans rim to floor, and no second
+     ceramic shape behind it. */
+  const body = html.match(/id="toilet-body"[\s\S]*?<path d="([^"]+)"/);
+  eq('the toilet body is a single path', !!body, true);
+  if (body) {
+    const d = body[1];
+    eq('  → it reaches the rim', /M92,196/.test(d), true);
+    eq('  → and the floor', /\b506\b/.test(d), true);
+  }
+  eq('there is no second ceramic shape behind it', html.indexOf('id="pedestal"') < 0, true);
+
   /* the trapway is ONE continuous pipe, not a cup under the bowl */
   const tube = attr('trapTube', 'd') || '';
   eq('the trapway is a single unbroken path', (tube.match(/M/g) || []).length, 1);
