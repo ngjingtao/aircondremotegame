@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-4e33cfd';
+const CACHE = 'play-learn-5178dbd';
 
 const ASSETS = [
   './',
@@ -80,6 +80,14 @@ const ASSETS = [
   'toilet/js/scene.js',
   'toilet/js/panel.js',
   'toilet/js/main.js',
+
+  'indah/index.html',
+  'indah/indah.css',
+  'indah/js/i18n.js',
+  'indah/js/state.js',
+  'indah/js/scene.js',
+  'indah/js/panel.js',
+  'indah/js/main.js',
 
   'hood/index.html',
   'hood/hood.css',

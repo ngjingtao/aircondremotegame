@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   Toilet & Indah Water — activity styles
+   Toilet — activity styles
    (shell: ../shared/ui.css)
    ═══════════════════════════════════════════════════════════ */
 
@@ -35,20 +35,6 @@
   color:#26404f;
 }
 
-.ctl-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;flex:0 0 auto;}
-.tab{
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:9px 4px 8px;border-radius:12px;
-  border:1px solid #bfd0dc;background:linear-gradient(180deg,#ffffff,#eaf3f8);
-  box-shadow:0 2px 0 #bfd0dc;font-family:inherit;cursor:pointer;
-  transition:transform .08s, box-shadow .08s, background .15s;
-}
-.tab:active,.tab.pressed{transform:translateY(2px);box-shadow:0 0 0 #bfd0dc;}
-.tab span{font-size:16px;line-height:1;}
-.tab b{font-size:9px;font-weight:800;color:#5b7180;letter-spacing:.2px;text-align:center;}
-.tab.on{background:linear-gradient(180deg,#a8e2ff,#5fb6ef);border-color:#3d90d0;box-shadow:0 2px 0 #3d90d0;}
-.tab.on b{color:#083049;}
-
 .pane{flex:1 1 auto;display:flex;flex-direction:column;gap:9px;min-height:0;}
 .pane[hidden]{display:none;}
 
@@ -64,18 +50,6 @@
 .flush-btn:active,.flush-btn.pressed{transform:translateY(4px);box-shadow:0 0 0 #3d90d0;}
 .flush-btn.busy{background:linear-gradient(180deg,#a8f0e0,#4fd0b0);border-color:#2aa88c;box-shadow:0 4px 0 #2aa88c;color:#04372c;}
 .fb-ico{font-size:17px;}
-
-.air-btn{
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  padding:11px 8px;border-radius:13px;
-  border:1px solid #7bbf6a;background:linear-gradient(180deg,#d6f5c8,#9fdc88);
-  box-shadow:0 3px 0 #6aa85a;font-family:inherit;cursor:pointer;
-  font-size:12px;font-weight:800;color:#1e4a13;
-  transition:transform .08s, box-shadow .08s;
-}
-.air-btn:active,.air-btn.pressed{transform:translateY(3px);box-shadow:0 0 0 #6aa85a;}
-.air-btn.off{background:linear-gradient(180deg,#e6ecf2,#c8d4de);border-color:#a9b8c6;box-shadow:0 3px 0 #a9b8c6;color:#5b6b7a;}
-.ab-ico{font-size:15px;}
 
 .steps{flex:1 1 auto;display:flex;flex-direction:column;gap:5px;overflow-y:auto;min-height:0;}
 .step{
@@ -159,33 +133,8 @@
 /* the dark outline that separates the trapway from the ceramic around it */
 #trapOut{opacity:.6;}
 
-/* ── treatment bits ── */
-.tank .tank-water{transition:opacity .3s, filter .3s;}
-.tank.on .tank-water{filter:brightness(1.35) saturate(1.2);}
-.tank.on > rect:first-of-type{stroke:#5fb6ef;}
-.tank-name{
-  font-size:8.5px;font-weight:800;fill:rgba(226,240,255,.75);
-  stroke:rgba(8,14,26,.8);stroke-width:2.2;paint-order:stroke fill;
-}
-.tp{stroke:rgba(255,255,255,.4);stroke-width:0.6;}
-.grit ellipse{fill:#c9a86a;}
-.sludge-bed rect{fill:#6b4a25;}
-.grease ellipse{fill:#c8b48a;opacity:.85;}
-.aerator circle{fill:#3c4a5c;}
-.no-air .aerator circle{fill:#2a3442;}
-.bubbles circle{fill:rgba(190,235,255,.85);}
-.no-air .bubbles circle{opacity:0;}
-.uv rect{fill:#8fd0ff;opacity:.55;}
-.river{stroke-dasharray:8 6;animation:riverFlow 2s linear infinite;}
-@keyframes riverFlow{ to{ stroke-dashoffset:-28; } }
-.sludge-txt{
-  font-size:8.5px;font-weight:800;fill:#c9a86a;text-anchor:middle;
-  stroke:rgba(8,14,26,.8);stroke-width:2.2;paint-order:stroke fill;
-}
-
 /* ── labels ── */
-#labels-flush .lab text,
-#labels-treat .tlab text{
+#labels-flush .lab text{
   font-size:8.5px;font-weight:800;
   fill:rgba(214,232,255,.5);
   stroke:rgba(8,14,26,.85);stroke-width:2.2;paint-order:stroke fill;
@@ -198,7 +147,6 @@
   transition:stroke .25s;
 }
 #labels-flush .lab.on .lead{stroke:#5fd0ff;stroke-dasharray:none;}
-#labels-treat .tlab{display:none;}
 
 /* ═══════════════ RESPONSIVE ═══════════════ */
 @media (max-width:520px){

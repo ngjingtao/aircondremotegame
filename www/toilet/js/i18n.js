@@ -1,5 +1,7 @@
 /* ═══════════════════════════════════════════
-   Toilet & Indah Water — i18n
+   Toilet — i18n
+
+   The journey to the treatment plant is its own activity now.
    ═══════════════════════════════════════════ */
 window.ARG = window.ARG || {};
 
@@ -7,10 +9,9 @@ ARG.i18n = (function () {
 
   const DICT = {
     en: {
-      title: 'Toilet & Indah Water',
+      title: 'Toilet',
       menu: 'Menu',
       tabFlush: 'How it flushes',
-      tabTreat: 'How it gets cleaned',
 
       flushBtn: 'PRESS TO FLUSH',
       flushing: 'Flushing…',
@@ -31,24 +32,6 @@ ARG.i18n = (function () {
       d4: 'The siphon keeps pulling until air gets in and breaks it. That is the gurgle you hear at the end.',
       d5: 'Fresh water refills the bowl down to the water line. That little pool, the water seal, is what stops sewer smells coming back up into the room.',
 
-      s0: 'Wastewater arrives',
-      s1: 'Screening',
-      s2: 'Grit removal',
-      s3: 'Primary tank',
-      s4: 'Aeration tank',
-      s5: 'Secondary clarifier',
-      s6: 'Disinfection',
-      s7: 'Out to the river',
-
-      e0: 'Everything from your house — toilet, shower, sink, washing machine — flows downhill through pipes to a sewage treatment plant. In Malaysia most of these plants are run by Indah Water.',
-      e1: 'Big bar screens catch rags, wet wipes, cotton buds and plastic. These are the worst things for blocking pipes, so they come out first.',
-      e2: 'The flow slows right down so sand, grit and coffee grounds sink to the bottom and are scraped away.',
-      e3: 'The water is left to sit still. Heavy solids sink to the bottom as sludge, and grease and oil float to the top where they are skimmed off.',
-      e4: 'This is the clever part. Air is pumped in and billions of bacteria eat the organic waste. It is a biological process — exactly how a river cleans itself, only thousands of times faster.',
-      e5: 'The water is left to settle again. The bacteria clump together and sink to the bottom. Some are pumped back to the aeration tank to keep working — that is called return activated sludge.',
-      e6: 'The now-clear water is disinfected to kill the germs that are left, so it is safe to release.',
-      e7: 'Now it is clean enough to meet the government standard and go back into the river. The leftover sludge is thickened, dried and used as fertiliser.',
-
       next: 'NEXT',
       prev: 'BACK',
       restart: 'START AGAIN',
@@ -57,41 +40,40 @@ ARG.i18n = (function () {
       oTrap: 'S-bend', oSeal: 'water seal', oDrain: 'drain',
       oButton: 'flush button', oFill: 'fill valve', oFloat: 'float',
       oOverflow: 'overflow tube', oRim: 'rim jets', oJet: 'siphon jet',
-      pScreen: 'screen', pGrit: 'grit', pPrimary: 'primary',
-      pAeration: 'aeration', pClarifier: 'clarifier', pDisinfect: 'disinfection',
-      pRiver: 'river', pSludge: 'sludge',
 
       yes: 'yes',
-      airOn: 'AIR ON',
-      airOff: 'AIR OFF',
-      sludge: 'SLUDGE → fertiliser',
-      clean: 'clean water',
 
-      helpTitle: 'Where it goes after you flush',
+      helpTitle: 'What a flush really does',
       helpBody: `
-        <h3>Two halves</h3>
+        <h3>The one big idea</h3>
         <ul>
-          <li><code>How it flushes</code> — what actually happens inside a toilet when you press the button.</li>
-          <li><code>How it gets cleaned</code> — the journey through an Indah Water sewage treatment plant, all the way back to the river.</li>
+          <li>A toilet does not <b>push</b> the waste away — it <b>siphons</b> it. Once the S-bend fills with water, the falling water pulls the rest after it.</li>
+          <li>You hear the siphon break at the end of every flush. That is the gurgle.</li>
+          <li>The little pool of water left in the bowl is the <b>water seal</b>. It is the only thing stopping sewer smells coming back up into the room.</li>
         </ul>
-        <h3>The two big ideas</h3>
+        <h3>The parts, in the order they do something</h3>
         <ul>
-          <li>A toilet does not push the waste away — it <b>siphons</b> it. Once the S-bend fills with water, the falling water pulls the rest after it.</li>
-          <li>The little pool of water left in the bowl, the <b>water seal</b>, is what stops sewer smells coming back up.</li>
-          <li>Sewage is cleaned mostly by <b>living bacteria</b>. People build tanks and pump in air; the bacteria do the actual work.</li>
+          <li><b>Button → chain → flapper.</b> The flapper is hinged on the overflow tube and seals the big hole in the floor of the cistern.</li>
+          <li><b>Rim jets.</b> Holes under the rim rinse the sides of the bowl on the way past.</li>
+          <li><b>Siphon jet.</b> A second jet low in the bowl pushes water into the trapway to get the siphon going.</li>
+          <li><b>Overflow tube.</b> A safety pipe: if the fill valve ever sticks, the water runs down here into the bowl instead of over the floor.</li>
+          <li><b>Fill valve and float.</b> The float rides on the water and shuts the valve off when the cistern is full. The refill tube tops the bowl's water seal back up.</li>
+        </ul>
+        <h3>Where it goes next</h3>
+        <ul>
+          <li>Out of the S-bend and into the drain. To follow it from there — through your own pipes, the manhole at the boundary and on to the treatment plant — open <b>Indah Water</b> on the menu.</li>
         </ul>
         <h3>Never flush</h3>
         <ul>
-          <li>Wet wipes, cotton buds, cooking oil or sanitary items. They do not break down and they block the pumps.</li>
+          <li>Wet wipes, cotton buds, cooking oil or sanitary items. They do not break down and they block the pumps downstream.</li>
         </ul>
       `
     },
 
     zh: {
-      title: '马桶与英达丽水',
+      title: '马桶',
       menu: '菜单',
       tabFlush: '怎么冲水',
-      tabTreat: '怎么变干净',
 
       flushBtn: '按一下冲水',
       flushing: '正在冲水……',
@@ -112,24 +94,6 @@ ARG.i18n = (function () {
       d4: '虹吸会一直拉，直到空气进去把它打断。最后那声“咕噜”就是这么来的。',
       d5: '新水重新注入，停在存水线那里。这一小池水叫做水封，就是它挡住下水道的臭气，不让气味跑回房间。',
 
-      s0: '污水来了',
-      s1: '格栅拦污',
-      s2: '沉砂',
-      s3: '初沉池',
-      s4: '曝气池',
-      s5: '二沉池',
-      s6: '消毒',
-      s7: '排回河里',
-
-      e0: '家里所有用过的水 — 马桶、洗澡、洗碗、洗衣机 — 顺着管道一路流到污水处理厂。在马来西亚，这些厂大多由英达丽水（Indah Water）运营。',
-      e1: '粗格栅先把抹布、湿纸巾、棉签和塑料拦住。这些东西最容易堵管道，所以要最先拿掉。',
-      e2: '水流慢下来，沙子、砂砾和咖啡渣沉到底部，被刮走。',
-      e3: '让水静静待着。重的固体沉到池底变成污泥，油脂浮到水面被刮掉。',
-      e4: '这是最聪明的一步。往水里打空气，上亿个细菌把有机废物吃掉。这是生物过程 — 河流自净也是靠它，只是这里快上几千倍。',
-      e5: '再让水静下来。细菌抱团沉到池底。一部分被抽回曝气池继续干活，这叫回流污泥。',
-      e6: '已经变清的水要消毒，把剩下的病菌杀掉，才能安全排放。',
-      e7: '这时水已经干净到符合政府标准，可以排回河里。剩下的污泥经过浓缩、干化，还能当肥料。',
-
       next: '下一步',
       prev: '上一步',
       restart: '重新开始',
@@ -138,32 +102,32 @@ ARG.i18n = (function () {
       oTrap: 'S 形弯管', oSeal: '水封', oDrain: '排水管',
       oButton: '冲水按钮', oFill: '进水阀', oFloat: '浮球',
       oOverflow: '溢流管', oRim: '冲水孔', oJet: '喷射孔',
-      pScreen: '格栅', pGrit: '沉砂池', pPrimary: '初沉池',
-      pAeration: '曝气池', pClarifier: '二沉池', pDisinfect: '消毒',
-      pRiver: '河流', pSludge: '污泥',
 
       yes: '有',
-      airOn: '曝气中',
-      airOff: '停止曝气',
-      sludge: '污泥 → 肥料',
-      clean: '干净的水',
 
-      helpTitle: '冲完之后它去了哪里',
+      helpTitle: '冲水到底做了什么',
       helpBody: `
-        <h3>两个部分</h3>
+        <h3>最重要的一个概念</h3>
         <ul>
-          <li><code>怎么冲水</code> — 按下按钮时，马桶内部到底发生了什么。</li>
-          <li><code>怎么变干净</code> — 跟着水流走一趟英达丽水的污水处理厂，一直到回到河里。</li>
+          <li>马桶不是把脏东西<b>推</b>走，而是<b>虹吸</b>拉走。弯管灌满水之后，下落的水会把后面的水一起拉下去。</li>
+          <li>每次冲水最后那一声“咕噜”，就是虹吸被空气打断的声音。</li>
+          <li>马桶里留下的那一小池水叫<b>水封</b>，就是它挡住下水道的臭气，不让气味跑回房间。</li>
         </ul>
-        <h3>两个重点</h3>
+        <h3>按干活的先后顺序看这些零件</h3>
         <ul>
-          <li>马桶不是把脏东西“推”走，而是<b>虹吸</b>拉走。弯管灌满水之后，下落的水会把后面的水一起拉下去。</li>
-          <li>马桶里留下的那一小池水叫<b>水封</b>，就是它挡住下水道的臭气。</li>
-          <li>污水主要是靠<b>活着的细菌</b>变干净的。人只是建池子、打空气；真正干活的是细菌。</li>
+          <li><b>按钮 → 链条 → 橡胶阀。</b>橡胶阀铰在溢流管上，平时封住水箱底部那个大出水口。</li>
+          <li><b>冲水孔。</b>马桶边缘下面一圈小孔，冲水时把内壁冲洗干净。</li>
+          <li><b>喷射孔。</b>碗底另一个小孔，往弯管里射一股水，把虹吸带起来。</li>
+          <li><b>溢流管。</b>保险用的：万一进水阀坏了关不上，水会顺着它流进马桶，而不是溢到地板上。</li>
+          <li><b>进水阀和浮球。</b>浮球浮在水面上，水箱满就把进水关掉；补水软管顺便把马桶的水封补回原来的水位。</li>
+        </ul>
+        <h3>接下来它去哪里</h3>
+        <ul>
+          <li>出弯管，进排水管。想继续跟着走 — 经过自家的管子、围墙下的人孔，一直到污水厂 — 请打开菜单里的<b>英达丽水</b>。</li>
         </ul>
         <h3>这些东西千万别冲</h3>
         <ul>
-          <li>湿纸巾、棉签、废油、卫生用品。它们不会分解，还会堵住水泵。</li>
+          <li>湿纸巾、棉签、废油、卫生用品。它们不会分解，会堵住下游的水泵。</li>
         </ul>
       `
     }
@@ -191,9 +155,9 @@ ARG.i18n = (function () {
     if (hb) hb.innerHTML = DICT[lang].helpBody;
     const bl = document.getElementById('btn-lang');
     if (bl) {
-    bl.textContent = lang === 'en' ? 'EN' : '中文';
-    if (ARG.config && ARG.config.lockLang) bl.hidden = true;
-  }
+      bl.textContent = lang === 'en' ? 'EN' : '中文';
+      if (ARG.config && ARG.config.lockLang) bl.hidden = true;
+    }
   }
 
   function setLang(l) {

@@ -44,7 +44,7 @@
   /* ─────────── narration ─────────── */
   function speakStep() {
     const S = ARG.sim.s;
-    const list = S.mode === 'flush' ? ARG.sim.FLUSH : ARG.sim.TREAT;
+    const list = ARG.sim.FLUSH;
     const st = list[S.step];
     if (!st) return;
     const n = S.step + 1;
@@ -71,12 +71,7 @@
     if (action === 'stepUp' || action === 'stepDown') speakStep();
     if (action === 'flush') {
       ARG.voice.stop();
-      ARG.voice.speak(ARG.i18n.t(ARG.sim.s.mode === 'flush' ? 'd3' : 'e4'));
-    }
-    if (action === 'mode') {
-      ARG.voice.stop();
-      const S = ARG.sim.s;
-      ARG.voice.speak(S.mode === 'flush' ? ARG.i18n.t('d0') : ARG.i18n.t('e0'));
+      ARG.voice.speak(ARG.i18n.t('d3'));
     }
 
     ARG.panel.render();
@@ -84,7 +79,7 @@
   }
 
   /* ─────────── loop ─────────── */
-  let last = 0, running = true, lastStep = -1, lastMode = null;
+  let last = 0, running = true, lastStep = -1, primed = false;
 
   function loop(now) {
     if (!running) return;
@@ -93,9 +88,9 @@
 
     const S = ARG.sim.tick(dt);
 
-    /* announce each stage as the water reaches it */
+    /* announce each stage as the flush reaches it */
     if (ARG.voice.enabled) {
-      if (lastMode !== S.mode) { lastMode = S.mode; lastStep = S.step; }
+      if (!primed) { primed = true; lastStep = S.step; }
       else if (S.step !== lastStep) { lastStep = S.step; speakStep(); }
     }
 

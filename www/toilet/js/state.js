@@ -1,5 +1,7 @@
 /* ═══════════════════════════════════════════
-   toilet/js/state.js — the flush cycle + the treatment train
+   toilet/js/state.js — what a flush actually does
+
+   The journey to the treatment plant lives in the Indah Water activity now.
    ═══════════════════════════════════════════ */
 window.ARG = window.ARG || {};
 
@@ -19,41 +21,20 @@ ARG.sim = (function () {
     { key: 'f5', fact: 'd5', lit: 'seal fill float' }
   ];
 
-  /* the eight stages of an Indah Water treatment plant */
-  const TREAT = [
-    { key: 's0', fact: 'e0', lit: 'inlet' },
-    { key: 's1', fact: 'e1', lit: 'screen' },
-    { key: 's2', fact: 'e2', lit: 'grit' },
-    { key: 's3', fact: 'e3', lit: 'primary' },
-    { key: 's4', fact: 'e4', lit: 'aeration' },
-    { key: 's5', fact: 'e5', lit: 'clarifier' },
-    { key: 's6', fact: 'e6', lit: 'disinfect' },
-    { key: 's7', fact: 'e7', lit: 'river' }
-  ];
-
   function fresh() {
     return {
-      mode: 'flush',        // flush | treat
       step: 0,
 
-      /* ── flush ── */
       flushT: -1,           // seconds into a flush, -1 = idle
       flushing: false,
       cistern: 1,           // 1 full .. 0 empty
       bowl: 0.75,           // bowl water level (1 = at the rim)
       trap: 0.35,           // how full the S-bend is
-      siphoning: false,
-      airT: 0,
-
-      /* ── treatment ── */
-      flow: 0,              // 0..1 how far the water has travelled
-      air: true,
-      bubbles: []
+      siphoning: false
     };
   }
 
   let S = fresh();
-  let autoT = 0;
 
   /* ─────────── actions ─────────── */
   const ACTIONS = {
@@ -65,21 +46,12 @@ ARG.sim = (function () {
       return { sound: 'flush' };
     },
 
-    mode(el) {
-      const m = el && el.dataset ? el.dataset.mode : null;
-      if (m !== 'flush' && m !== 'treat') return { sound: 'deny' };
-      if (S.mode === m) return { sound: 'blip' };
-      S.mode = m;
-      S.step = 0;
-      return { sound: m === 'treat' ? 'air' : 'blip' };
-    },
-
     stepUp() {
-      const list = S.mode === 'flush' ? FLUSH : TREAT;
-      if (S.step < list.length - 1) {
+      if (S.step < FLUSH.length - 1) {
         S.step++;
-        if (S.mode === 'flush') { S.flushing = true; S.flushT = 0; }
-        return { sound: S.mode === 'treat' && S.step === 4 ? 'air' : 'blip', cheer: S.step === list.length - 1 };
+        S.flushing = true;
+        S.flushT = 0;
+        return { sound: 'blip', cheer: S.step === FLUSH.length - 1 };
       }
       return { sound: 'blip' };
     },
@@ -87,7 +59,8 @@ ARG.sim = (function () {
     stepDown() {
       if (S.step > 0) {
         S.step--;
-        if (S.mode === 'flush') { S.flushing = true; S.flushT = 0; }
+        S.flushing = true;
+        S.flushT = 0;
         return { sound: 'notch' };
       }
       return { sound: 'deny' };
@@ -97,14 +70,10 @@ ARG.sim = (function () {
 
     jump(el) {
       const n = el && el.dataset ? +el.dataset.step : 0;
-      S.step = clamp(n, 0, (S.mode === 'flush' ? FLUSH : TREAT).length - 1);
-      if (S.mode === 'flush') { S.flushing = true; S.flushT = 0; }
+      S.step = clamp(n, 0, FLUSH.length - 1);
+      S.flushing = true;
+      S.flushT = 0;
       return { sound: 'blip' };
-    },
-
-    air() {
-      S.air = !S.air;
-      return { sound: S.air ? 'air' : 'blip' };
     }
   };
 
@@ -120,7 +89,6 @@ ARG.sim = (function () {
   function tick(dt) {
     dt = Math.min(dt, 0.08);
 
-    /* ── flush ── */
     if (S.flushing) {
       S.flushT += dt;
 
@@ -154,26 +122,14 @@ ARG.sim = (function () {
       S.cistern = clamp(S.cistern + dt * 0.25, 0, 1);
     }
 
-    /* ── treatment: the water creeps along the train ── */
-    const target = (S.step + 0.5) / TREAT.length;
-    S.flow += (target - S.flow) * 2.2 * dt;
-
-    /* auto-advance while you watch */
-    autoT += dt;
-    if (autoT > 3.6) {
-      autoT = 0;
-      if (!S.flushing) {
-        if (S.mode === 'treat' && S.step < TREAT.length - 1) S.step++;
-      }
-    }
-
     return S;
   }
 
   return {
     get s() { return S; },
     press, tick,
-    fresh: () => { S = fresh(); autoT = 0; return S; },
-    FLUSH, TREAT, clamp
+    fresh: () => { S = fresh(); return S; },
+    FLUSH,
+    clamp
   };
 })();

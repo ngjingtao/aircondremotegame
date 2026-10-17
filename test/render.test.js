@@ -52,8 +52,7 @@ function makeStyle() {
   return s;
 }
 
-function makeClassList() {
-  const set = new Set();
+function makeClassList(set) {
   return {
     add: (...c) => { c.forEach(x => set.add(x)); },
     remove: (...c) => { c.forEach(x => set.delete(x)); },
@@ -69,12 +68,38 @@ function makeClassList() {
   };
 }
 
+/* A very small selector matcher: tag names, .classes and [attributes], with no
+   combinators and no pseudo-classes. That is all the activities ever query, and
+   it means a test can build a few stub elements and check what the renderer
+   actually applies its classes to. */
+function matchesSel(el, sel) {
+  const tag = (sel.match(/^[a-zA-Z][\w-]*/) || [])[0];
+  if (tag && el.tagName !== tag.toUpperCase()) return false;
+  const classes = (sel.match(/\.([\w-]+)/g) || []).map(c => c.slice(1));
+  for (const c of classes) if (!el.classList.contains(c)) return false;
+  const attrs = (sel.match(/\[([\w-]+)\]/g) || []).map(a => a.slice(1, -1));
+  for (const a of attrs) if (!(a in el._attrs)) return false;
+  return classes.length > 0 || attrs.length > 0 || !!tag;
+}
+
+function queryAll(root, sel) {
+  const sels = String(sel).split(',').map(s => s.trim()).filter(Boolean);
+  const out = [];
+  (function walk(el) {
+    for (const c of el.children) {
+      if (sels.some(s => matchesSel(c, s))) out.push(c);
+      walk(c);
+    }
+  })(root);
+  return out;
+}
+
 function makeEl(tag) {
+  const classSet = new Set();
   const el = {
     tagName: String(tag || 'div').toUpperCase(),
     nodeType: 1,
     id: '',
-    className: '',
     hidden: false,
     disabled: false,
     checked: false,
@@ -83,7 +108,6 @@ function makeEl(tag) {
     textContent: '',
     innerHTML: '',
     style: makeStyle(),
-    dataset: {},
     children: [],
     childNodes: [],
     parentNode: null,
@@ -128,12 +152,30 @@ function makeEl(tag) {
     getBBox() { return { x: 0, y: 0, width: 10, height: 10 }; },
     getScreenCTM() { return { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0, inverse() { return this; } }; },
     getCTM() { return { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 }; },
-    querySelector(sel) { return bySelector(sel); },
-    querySelectorAll() { return []; },
+    querySelector(sel) { return queryAll(this, sel)[0] || bySelector(sel); },
+    querySelectorAll(sel) { return queryAll(this, sel); },
     getElementsByTagName() { return []; },
     getElementsByClassName() { return []; }
   };
-  el.classList = makeClassList();
+  el.classList = makeClassList(classSet);
+
+  /* dataset writes the real data-* attribute, the way a browser does — the
+     activities read parts back with `el.dataset.lab`, and a matcher that could
+     not see [data-lab] would silently match nothing. */
+  const camel = k => String(k).replace(/[A-Z]/g, m => '-' + m.toLowerCase());
+  el.dataset = new Proxy({}, {
+    get: (t, k) => (k in t ? t[k] : el._attrs['data-' + camel(k)]),
+    set: (t, k, v) => { t[k] = String(v); el._attrs['data-' + camel(k)] = String(v); return true; },
+    has: (t, k) => (k in t) || ('data-' + camel(k)) in el._attrs
+  });
+
+  Object.defineProperty(el, 'className', {
+    get: () => Array.from(classSet).join(' '),
+    set: v => {
+      classSet.clear();
+      String(v).split(/\s+/).filter(Boolean).forEach(c => classSet.add(c));
+    }
+  });
   return el;
 }
 
@@ -186,7 +228,7 @@ function boot(pageDir) {
       return byId.get(id);
     },
     querySelector: sel => bySelector(sel),
-    querySelectorAll: () => [],
+    querySelectorAll: sel => queryAll(document.documentElement, sel),
     getElementsByTagName: () => [],
     getElementsByClassName: () => [],
     addEventListener() {}, removeEventListener() {}, dispatchEvent() { return true; }
@@ -298,7 +340,8 @@ const PAGES = [
   { dir: 'train', name: 'Train Driving' },
   { dir: 'breath', name: 'Breathing & Blood' },
   { dir: 'aircare', name: 'Inside the Aircon' },
-  { dir: 'toilet', name: 'Toilet & Indah Water' },
+  { dir: 'toilet', name: 'Toilet' },
+  { dir: 'indah', name: 'Indah Water' },
   { dir: 'hood', name: 'Kitchen Hood' }
 ];
 
@@ -417,22 +460,99 @@ console.log('\n— Toilet: a real gravity-flush mechanism —');
 
     const unlit = [...labels].filter(k => !lit.has(k));
     eq('every labelled part is used by some step', unlit.join(' ') || 'none', 'none');
+  }
+}
 
-    /* switching tabs must really swap the two scenes. `hidden` is an HTML
-       property and is NOT reflected on SVG elements, so `svgGroup.hidden = x`
-       is a silent no-op — which left the treatment tab showing a toilet. */
+/* ─────────── the sewer journey and the works ─────────── */
+console.log('\n— Indah Water: the journey and the works —');
+{
+  const html = fs.readFileSync(path.join(WWW, 'indah', 'index.html'), 'utf8');
+
+  /* the two halves must really swap. `hidden` is an HTML property and is NOT
+     reflected on SVG elements, so `svgGroup.hidden = x` is a silent no-op —
+     which once left the second tab permanently invisible. */
+  const p = boot('indah');
+  if (p.bootError) { bad('indah — boots', p.bootError); }
+  else {
     const sd = p.document;
     const isHidden = id => 'hidden' in sd.getElementById(id)._attrs;
 
-    p.ARG.sim.press('mode', { dataset: { mode: 'treat' } });
-    p.ARG.scene.render(0.016);
-    eq('the treatment tab hides the toilet scene', isHidden('flushScene'), true);
-    eq('  → and reveals the treatment scene', isHidden('treatScene'), false);
+    eq('the journey tab shows the journey scene', isHidden('networkScene'), false);
+    eq('  → and hides the works', isHidden('plantScene'), true);
 
-    p.ARG.sim.press('mode', { dataset: { mode: 'flush' } });
+    p.ARG.sim.press('tab', { dataset: { tab: 'plant' } });
     p.ARG.scene.render(0.016);
-    eq('  → and switching back brings the toilet back', isHidden('flushScene'), false);
-    eq('  → and hides the treatment scene again', isHidden('treatScene'), true);
+    eq('switching to the works hides the journey', isHidden('networkScene'), true);
+    eq('  → and reveals the works', isHidden('plantScene'), false);
+
+    p.ARG.sim.press('tab', { dataset: { tab: 'network' } });
+    p.ARG.scene.render(0.016);
+    eq('  → and switching back restores the journey', isHidden('networkScene'), false);
+
+    /* six stages, in the order the diagram labels them */
+    eq('the works has six stages', p.ARG.scene.STAGES.length, 6);
+    eq('  → the first is the pumping station', p.ARG.scene.STAGES[0].tag, 'pump');
+    eq('  → the last is the outfall', p.ARG.scene.STAGES[5].tag, 'effluent');
+
+    /* every stage has a step pointing at it, and every step names a stage */
+    const stageTags = p.ARG.scene.STAGES.map(s => s.tag);
+    const litTags = p.ARG.sim.PLANT.map(s => s.lit);
+    eq('every stage is pointed at by a step', stageTags.filter(t => litTags.indexOf(t) < 0).join(' ') || 'none', 'none');
+    eq('every plant step names a real stage', litTags.filter(t => stageTags.indexOf(t) < 0).join(' ') || 'none', 'none');
+
+    /* and the same for the journey */
+    const parts = new Set();
+    let m;
+    const labRe = /data-lab="([^"]+)"/g;
+    while ((m = labRe.exec(html))) parts.add(m[1]);
+    const netLit = new Set();
+    p.ARG.sim.NETWORK.forEach(s => String(s.lit).split(/\s+/).filter(Boolean).forEach(k => netLit.add(k)));
+    eq('every journey step points at a part that exists', [...netLit].filter(k => !parts.has(k)).join(' ') || 'none', 'none');
+    eq('every labelled part is used by some step', [...parts].filter(k => !netLit.has(k)).join(' ') || 'none', 'none');
+
+    /* the blowers are the whole teaching point of the aeration stage */
+    const s2 = p.ARG.sim.s;
+    s2.tab = 'plant';
+    eq('the blowers start on', s2.air, true);
+    p.pump(120);
+    const spun = s2.blower;
+    p.ARG.sim.press('air');
+    p.pump(120);
+    eq('switching them off does spin them down', s2.blower < spun, true);
+
+    /* every single step, on both tabs, must light something up on screen.
+       A `lit` key with a typo — or a part that never got a data-lab — silently
+       highlights nothing, and no screenshot of any other step would show it.
+       The fake DOM has no HTML parser, so hand the renderer the same parts the
+       real markup has, read straight out of it. */
+    const labs = new Set();
+    let lm; const labRe2 = /data-lab="([^"]+)"/g;
+    while ((lm = labRe2.exec(html))) labs.add(lm[1]);
+
+    const mk = (cls, lab) => {
+      const e = p.document.createElement('g');
+      e.className = cls;
+      e.dataset.lab = lab;
+      return e;
+    };
+    const netHost = p.document.getElementById('networkScene');
+    const labHost = p.document.getElementById('labels-network');
+    labs.forEach(l => { netHost.appendChild(mk('part', l)); labHost.appendChild(mk('lab', l)); });
+    const stageHost = p.document.getElementById('stages');
+    p.ARG.scene.STAGES.forEach(s => stageHost.appendChild(mk('stage', s.tag)));
+
+    const misses = [];
+    ['network', 'plant'].forEach(tab => {
+      p.ARG.sim.press('tab', { dataset: { tab } });
+      const list = tab === 'network' ? p.ARG.sim.NETWORK : p.ARG.sim.PLANT;
+      const host = tab === 'network' ? netHost : stageHost;
+      for (let i = 0; i < list.length; i++) {
+        p.ARG.sim.s.step = i;
+        p.ARG.scene.render(0.016);
+        if (!host.querySelectorAll('.on').length) misses.push(tab + '#' + (i + 1) + ' ' + list[i].key);
+      }
+    });
+    eq('every step lights something up on screen', misses.join(', ') || 'none', 'none');
   }
 }
 

@@ -245,7 +245,7 @@ console.log('\n— Inside the Aircon —');
   check('switched off, the coil warms up', sim.s.evapTemp, 20, 34, ' °C');
 }
 
-console.log('\n— Toilet & Indah Water —');
+console.log('\n— Toilet —');
 {
   const ARG = load('toilet', ['toilet/js/state.js']);
   const sim = ARG.sim;
@@ -259,6 +259,56 @@ console.log('\n— Toilet & Indah Water —');
   check('a full flush takes', t, 5, 8, ' s');
   eq('the cistern refills', sim.s.cistern > 0.95, true);
   check('the water seal is restored', sim.s.bowl, 0.7, 0.8);
+}
+
+console.log('\n— Indah Water —');
+{
+  const ARG = load('indah', ['indah/js/state.js']);
+  const sim = ARG.sim;
+  const cur = () => sim.s;
+
+  /* the two halves of the connected-sewerage diagram */
+  eq('the journey has six steps', ARG.sim.NETWORK.length, 6);
+  eq('the works has six stages', ARG.sim.PLANT.length, 6);
+
+  sim.fresh();
+  eq('it opens on the journey', cur().tab, 'network');
+  eq('  → at step 0', cur().step, 0);
+
+  /* each step must name a part, and no step may be left pointing at nothing */
+  const noLit = ARG.sim.NETWORK.concat(ARG.sim.PLANT).filter(s => !s.lit || !s.lit.trim());
+  eq('every step highlights something', noLit.length, 0);
+
+  /* the water creeps towards the stage you are reading about */
+  sim.fresh();
+  const f0 = cur().flow;
+  settle(sim, 3);
+  eq('the wastewater moves along', cur().flow > f0, true);
+
+  /* raw all the way to the plant; clean only once the works has done its job */
+  sim.fresh();
+  for (let i = 0; i < 5; i++) { sim.press('stepUp'); settle(sim, 3); }
+  check('it is still raw sewage on the journey', cur().clean, 0, 0.1);
+
+  sim.press('tab', { dataset: { tab: 'plant' } });
+  eq('switching to the works resets to stage 0', cur().step, 0);
+  eq('  → and to the start of the pipe', cur().flow < 0.2, true);
+  for (let i = 0; i < 5; i++) { sim.press('stepUp'); settle(sim, 4); }
+  check('by the outfall it is clean', cur().clean, 0.85, 1);
+
+  /* the blowers are the teaching point of the aeration stage */
+  sim.fresh();
+  sim.press('tab', { dataset: { tab: 'plant' } });
+  settle(sim, 3);
+  eq('the blowers run', cur().blower > 0.8, true);
+  eq('  → and the return sludge is pumping', cur().sludge > 0.8, true);
+  sim.press('air');
+  settle(sim, 5);
+  eq('switching the blowers off spins them down', cur().blower < 0.1, true);
+  eq('  → and the sludge pump stops with them', cur().sludge < 0.1, true);
+  sim.press('air');
+  settle(sim, 5);
+  eq('  → and switching them back on restarts them', cur().blower > 0.8, true);
 }
 
 console.log('\n— Kitchen Hood —');

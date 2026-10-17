@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<script>
+/* set the language before the first paint so there is no flash */
+(function () {
+  var d = document.documentElement, l = "zh";
+  var lock = (window.ARG && ARG.config) ? ARG.config.lockLang : null;
+  try { l = lock || localStorage.getItem("arg.lang") || "zh"; } catch (e) { l = lock || "zh"; }
+  if (l !== "zh" && l !== "en") l = "zh";
+  d.lang = l === "zh" ? "zh-CN" : "en";
+  d.classList.add("i18n-pending");
+  setTimeout(function () { d.classList.remove("i18n-pending"); }, 1500);
+})();
+</script>
+<meta name="theme-color" content="#0b1220" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="Indah Water" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<meta name="format-detection" content="telephone=no" />
+<title>Indah Water · Play &amp; Learn</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="indah.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">🚰</span>
+      <span class="tb-title" data-i18n="title">Indah Water</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="stage">Stage</span><b id="hud-stage">1 / 6</b></div>
+      <div class="hud-chip"><span class="hud-label" id="hud-label2">出水</span><b id="hud-val">原污水</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ══════════ LEFT PANEL ══════════ -->
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl">
+
+          <div class="ctl-tabs">
+            <button class="tab on" data-action="tab" data-tab="network">
+              <span>🏠</span><b data-i18n="tabNetwork">How it gets there</b></button>
+            <button class="tab" data-action="tab" data-tab="plant">
+              <span>🏭</span><b data-i18n="tabPlant">How it gets cleaned</b></button>
+          </div>
+
+          <!-- ── the journey ── -->
+          <div class="pane" id="pane-network">
+            <div class="steps" id="steps-network"></div>
+          </div>
+
+          <!-- ── the plant ── -->
+          <div class="pane" id="pane-plant" hidden>
+            <button class="air-btn" data-action="air" id="air-btn">
+              <span class="ab-ico">💨</span><span id="air-txt" data-i18n="airOn">BLOWERS ON</span>
+            </button>
+            <div class="steps" id="steps-plant"></div>
+          </div>
+
+          <div class="fact" id="fact"></div>
+
+          <div class="nav">
+            <button class="ctl-btn small" data-action="stepDown" data-i18n="prev">BACK</button>
+            <button class="ctl-btn go" data-action="stepUp" id="next-btn" data-i18n="next">NEXT</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ SCENE ══════════ -->
+    <section id="scene" class="tab-network" data-step="0">
+
+      <div class="scene-top">
+        <span class="scene-lead" id="scene-lead" data-i18n="tabNetwork">How it gets there</span>
+        <span class="scene-status" id="scene-status" data-i18n="menu">…</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4f9ada"/>
+              <stop offset="100%" stop-color="#cbe6f7"/>
+            </linearGradient>
+            <linearGradient id="earthGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#7a6248"/>
+              <stop offset="45%" stop-color="#5f4b36"/>
+              <stop offset="100%" stop-color="#41321f"/>
+            </linearGradient>
+            <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="60%" stop-color="#f0ece2"/>
+              <stop offset="100%" stop-color="#d8d2c4"/>
+            </linearGradient>
+            <linearGradient id="sewage" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#a98a5a"/>
+              <stop offset="100%" stop-color="#7a5f36"/>
+            </linearGradient>
+            <linearGradient id="clearWater" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#a8e2ff"/>
+              <stop offset="100%" stop-color="#4aa8de"/>
+            </linearGradient>
+            <linearGradient id="tankGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#243449"/>
+              <stop offset="100%" stop-color="#151f2e"/>
+            </linearGradient>
+            <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0b1220" flood-opacity="0.4"/>
+            </filter>
+          </defs>
+
+          <!-- ═════════ NETWORK SCENE ═════════ -->
+          <g id="networkScene">
+
+            <!-- sky, grass, earth -->
+            <rect x="0" y="0" width="340" height="190" fill="url(#skyGrad)"/>
+            <rect x="0" y="172" width="340" height="20" fill="#5f8a47"/>
+            <path d="M0 172 H340" stroke="#7aa657" stroke-width="2"/>
+            <rect x="0" y="190" width="340" height="330" fill="url(#earthGrad)"/>
+            <!-- a little texture in the soil so it does not read as a flat block -->
+            <g id="soil">
+              <ellipse cx="42" cy="250" rx="9" ry="5" fill="#6b5540" opacity=".7"/>
+              <ellipse cx="286" cy="236" rx="7" ry="4" fill="#6b5540" opacity=".6"/>
+              <ellipse cx="70" cy="392" rx="11" ry="6" fill="#3a2c1c" opacity=".5"/>
+              <ellipse cx="180" cy="470" rx="13" ry="6" fill="#3a2c1c" opacity=".45"/>
+              <ellipse cx="60" cy="466" rx="8" ry="4" fill="#6b5540" opacity=".5"/>
+              <ellipse cx="300" cy="330" rx="10" ry="5" fill="#6b5540" opacity=".45"/>
+            </g>
+
+            <!-- ── the pipe, drawn first so the chambers sit on top of it ──
+                 It is split at the manhole because that is the real boundary:
+                 everything before it is the owner's, everything after is
+                 Indah Water's. Both halves share a stroke, so it still reads
+                 as one continuous sewer — but each half can light up. -->
+            <g id="netPipes">
+              <path class="pipe-out" data-lab="private" d="M96,184 L132,266 L184,288 L218,318 L240,336"
+                    fill="none" stroke="#2b2015" stroke-width="23" stroke-linecap="round" stroke-linejoin="round"/>
+              <path class="pipe" data-lab="private" d="M96,184 L132,266 L184,288 L218,318 L240,336"
+                    fill="none" stroke="#9aa5b2" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+              <path class="pipe-out" data-lab="public" d="M240,336 L280,412 L314,488"
+                    fill="none" stroke="#2b2015" stroke-width="23" stroke-linecap="round" stroke-linejoin="round"/>
+              <path class="pipe" data-lab="public" d="M240,336 L280,412 L314,488"
+                    fill="none" stroke="#9aa5b2" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+              <path id="netWater" d="M96,184 L132,266 L184,288 L218,318 L240,336 L280,412 L314,488"
+                    fill="none" stroke="url(#sewage)" stroke-width="12" stroke-linecap="round"
+                    stroke-linejoin="round" pathLength="1" stroke-dasharray="0 1"/>
+            </g>
+
+            <!-- ── the house, in section ── -->
+            <g class="part" data-lab="house" filter="url(#soft)">
+              <path d="M16,74 L96,40 L176,74 Z" fill="#b8543f" stroke="#8e3c2c" stroke-width="1.6" stroke-linejoin="round"/>
+              <rect x="26" y="74" width="140" height="110" fill="url(#wallGrad)" stroke="#b9b2a2" stroke-width="1.6"/>
+              <!-- upstairs: the bathroom -->
+              <rect x="32" y="82" width="128" height="42" rx="3" fill="#eaf3fa"/>
+              <rect x="38" y="104" width="34" height="16" rx="3" fill="#ffffff" stroke="#c3d3e0" stroke-width="1.2"/>
+              <circle cx="94" cy="110" r="7" fill="#ffffff" stroke="#c3d3e0" stroke-width="1.2"/>
+              <rect x="122" y="96" width="28" height="24" rx="2" fill="#cfe6f5" stroke="#a8c4d8" stroke-width="1"/>
+              <!-- downstairs: kitchen + toilet -->
+              <line x1="26" y1="128" x2="166" y2="128" stroke="#c9c2b2" stroke-width="2"/>
+              <rect x="32" y="136" width="128" height="42" rx="3" fill="#f6f0e4"/>
+              <rect x="38" y="156" width="40" height="12" rx="2" fill="#bcae95"/>
+              <rect x="86" y="150" width="20" height="18" rx="2" fill="#d9d2c4"/>
+              <rect x="122" y="150" width="26" height="20" rx="3" fill="#ffffff" stroke="#c3d3e0" stroke-width="1.2"/>
+              <!-- the waste stack, with a branch from each floor -->
+              <rect x="150" y="86" width="7" height="96" rx="3" fill="#b9c4d2" stroke="#96a3b3" stroke-width="1"/>
+              <path d="M94,118 H150" stroke="#b9c4d2" stroke-width="5" stroke-linecap="round"/>
+              <path d="M134,164 H150" stroke="#b9c4d2" stroke-width="5" stroke-linecap="round"/>
+              <path d="M94,118 V126" stroke="#b9c4d2" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <!-- ── inspection chamber ── -->
+            <g class="part" data-lab="chamber">
+              <rect x="130" y="246" width="56" height="62" rx="5" fill="#42505f" stroke="#2b3541" stroke-width="2"/>
+              <rect x="136" y="252" width="44" height="50" rx="3" fill="#2a3540"/>
+              <rect x="126" y="240" width="64" height="10" rx="4" fill="#7d8794" stroke="#5d6673" stroke-width="1.4"/>
+              <circle cx="158" cy="245" r="3" fill="#5d6673"/>
+            </g>
+
+            <!-- ── the boundary wall, with the manhole at its foot ── -->
+            <g class="part" data-lab="boundary">
+              <rect x="204" y="118" width="20" height="72" rx="2" fill="#cbbf9f" stroke="#a99a78" stroke-width="1.4"/>
+              <rect x="200" y="112" width="28" height="9" rx="3" fill="#bdb08d" stroke="#a99a78" stroke-width="1.2"/>
+            </g>
+            <g class="part" data-lab="manhole">
+              <rect x="220" y="190" width="38" height="150" fill="#42505f" stroke="#2b3541" stroke-width="2"/>
+              <rect x="226" y="196" width="26" height="138" fill="#2a3540"/>
+              <ellipse cx="239" cy="192" rx="24" ry="8" fill="#7d8794" stroke="#5d6673" stroke-width="1.6"/>
+              <ellipse cx="239" cy="192" rx="15" ry="5" fill="#5d6673"/>
+            </g>
+
+            <!-- ── where it arrives at the plant ── -->
+            <g class="part" data-lab="inlet">
+              <rect x="292" y="470" width="44" height="40" rx="5" fill="#42505f" stroke="#2b3541" stroke-width="2"/>
+              <rect x="298" y="476" width="32" height="28" rx="3" fill="#2a3540"/>
+              <path d="M300,490 H328" stroke="url(#sewage)" stroke-width="8" stroke-linecap="round"/>
+            </g>
+
+            <!-- the wastewater travelling along -->
+            <g id="netFlow"></g>
+          </g>
+
+          <!-- ═════════ PLANT SCENE ═════════ -->
+          <g id="plantScene" hidden>
+            <rect x="0" y="0" width="340" height="520" fill="#101a26"/>
+            <g id="stages"></g>
+            <g id="plantFlow"></g>
+            <g id="sludgeLine">
+              <path d="M296,412 H322 V214 H300" fill="none" stroke="#8b6a3a" stroke-width="7"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <circle class="sludge-pump" cx="322" cy="330" r="7"/>
+              <text class="sludge-txt" x="330" y="300" data-i18n="oSludge">return sludge</text>
+            </g>
+          </g>
+
+          <!-- ═════════ labels ═════════ -->
+          <g id="labels-network">
+            <g class="lab" data-lab="house"><text x="96" y="30" text-anchor="middle" data-i18n="oHouse">house</text></g>
+            <g class="lab" data-lab="private">
+              <text x="104" y="232" text-anchor="middle" data-i18n="oPrivate">private pipeline</text>
+              <path class="lead" d="M104,236 L110,252"/></g>
+            <g class="lab" data-lab="chamber">
+              <text x="124" y="290" text-anchor="end" data-i18n="oChamber">inspection chamber</text>
+              <path class="lead" d="M128,287 L132,282"/></g>
+            <g class="lab" data-lab="boundary">
+              <text x="196" y="140" text-anchor="end" data-i18n="oBoundary">boundary wall</text>
+              <path class="lead" d="M200,137 L206,132"/></g>
+            <g class="lab" data-lab="manhole">
+              <text x="266" y="248" text-anchor="start" data-i18n="oManhole">manhole</text>
+              <path class="lead" d="M262,245 L256,238"/></g>
+            <g class="lab" data-lab="public">
+              <text x="238" y="404" text-anchor="end" data-i18n="oPublic">public pipeline</text>
+              <path class="lead" d="M242,401 L266,410"/></g>
+            <g class="lab" data-lab="inlet">
+              <text x="286" y="462" text-anchor="end" data-i18n="oInlet">raw sewage</text>
+              <path class="lead" d="M290,465 L300,478"/></g>
+          </g>
+          <g id="labels-plant" hidden></g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+      <div class="toast" id="toast"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">Where it goes after you flush</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

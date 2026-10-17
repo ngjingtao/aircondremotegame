@@ -23,14 +23,14 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<meta name="apple-mobile-web-app-title" content="Toilet &amp; Indah Water" />
+<meta name="apple-mobile-web-app-title" content="Toilet" />
 <link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
 <link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
 <link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
 <link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
 <!-- /pwa -->
-<title>Toilet &amp; Indah Water · Play &amp; Learn</title>
+<title>Toilet · Play &amp; Learn</title>
 <link rel="stylesheet" href="../shared/ui.css" />
 <link rel="stylesheet" href="toilet.css" />
 </head>
@@ -42,7 +42,7 @@
     <a class="tb-btn home" href="../index.html" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
     <div class="tb-brand">
       <span class="tb-logo">🚽</span>
-      <span class="tb-title" data-i18n="title">Toilet &amp; Indah Water</span>
+      <span class="tb-title" data-i18n="title">Toilet</span>
     </div>
     <div class="tb-hud">
       <div class="hud-chip"><span class="hud-label" data-i18n="stage">Stage</span><b id="hud-stage">1 / 6</b></div>
@@ -64,25 +64,12 @@
       <div id="ctl-scaler">
         <div class="ctl">
 
-          <div class="ctl-tabs">
-            <button class="tab on" data-action="mode" data-mode="flush"><span>🚽</span><b data-i18n="tabFlush">How it flushes</b></button>
-            <button class="tab" data-action="mode" data-mode="treat"><span>🏭</span><b data-i18n="tabTreat">How it gets cleaned</b></button>
-          </div>
-
           <!-- ── flush ── -->
           <div class="pane" id="pane-flush">
             <button class="flush-btn" data-action="flush" id="flush-btn">
               <span class="fb-ico">🚽</span><span data-i18n="flushBtn">PRESS TO FLUSH</span>
             </button>
             <div class="steps" id="steps-flush"></div>
-          </div>
-
-          <!-- ── treat ── -->
-          <div class="pane" id="pane-treat" hidden>
-            <button class="air-btn" data-action="air" id="air-btn">
-              <span class="ab-ico">💨</span><span id="air-txt" data-i18n="airOn">AIR ON</span>
-            </button>
-            <div class="steps" id="steps-treat"></div>
           </div>
 
           <div class="fact" id="fact"></div>
@@ -239,18 +226,6 @@
             <g id="flushFlow"></g>
           </g>
 
-          <!-- ═════ TREATMENT SCENE ═════ -->
-          <g id="treatScene" hidden>
-            <g id="tanks"></g>
-            <g id="treatFlow"></g>
-            <g id="sludgeLine">
-              <path d="M300,214 H326" stroke="#8b6a3a" stroke-width="8" stroke-linecap="round"/>
-              <path d="M326,214 V330" stroke="#8b6a3a" stroke-width="8" stroke-linecap="round"/>
-              <path d="M300,378 H326" stroke="#8b6a3a" stroke-width="8" stroke-linecap="round"/>
-              <text class="sludge-txt" x="326" y="352" text-anchor="middle" data-i18n="pSludge">sludge</text>
-            </g>
-          </g>
-
           <!-- ═════ labels ═════ -->
           <g id="labels-flush">
             <!-- the cistern and everything in it -->
@@ -291,7 +266,6 @@
               <text x="300" y="492" text-anchor="start" data-i18n="oDrain">drain</text>
               <path class="lead" d="M296,489 L250,486"/></g>
           </g>
-          <g id="labels-treat" hidden></g>
         </svg>
       </div>
 

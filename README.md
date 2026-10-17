@@ -2,7 +2,7 @@
 
 [![Build Android APK](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml/badge.svg)](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml)
 
-One little app, **seven** activities for a curious kid. The home screen shows seven picture
+One little app, **eight** activities for a curious kid. The home screen shows eight picture
 tiles — tap one and you're in.
 
 ```
@@ -15,15 +15,15 @@ tiles — tap one and you're in.
 │  │[ air-con ] │ │[ innards  ]│ │ [ train ]  │ │ [ lungs ]  │          │
 │  │玩空调    › │ │吃东西    › │ │开火车    › │ │呼吸与血液› │          │
 │  └────────────┘ └────────────┘ └────────────┘ └────────────┘          │
-│  ┌────────────┐ ┌────────────┐ ┌────────────┐                         │
-│  │[ cutaway ] │ │[ toilet ]  │ │ [ hood ]   │                         │
-│  │空调的秘密› │ │马桶与污水› │ │抽油烟机  › │                         │
-│  └────────────┘ └────────────┘ └────────────┘                         │
+│  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐          │
+│  │[ cutaway ] │ │[ toilet ]  │ │[ manhole ] │ │ [ hood ]   │          │
+│  │空调的秘密› │ │马桶      › │ │英达丽水  › │ │抽油烟机  › │          │
+│  └────────────┘ └────────────┘ └────────────┘ └────────────┘          │
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
 Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
-All seven activities speak **English and 中文**, work offline, and are installable as an app.
+All eight activities speak **English and 中文**, work offline, and are installable as an app.
 
 ---
 
@@ -270,11 +270,9 @@ the mesh*, *sharp fins, go gently*, *run FAN only for two hours to dry the insid
 
 ---
 
-## 6 · 🚽 Toilet & Indah Water
+## 6 · 🚽 Toilet
 
-Where it actually goes. Two tabs: what a flush does, and the journey through the treatment works.
-
-### How it flushes
+What a flush actually does, drawn as a real gravity-flush toilet in section.
 
 Press **PRESS TO FLUSH** and watch the whole sequence run — verified timing:
 
@@ -288,38 +286,55 @@ Press **PRESS TO FLUSH** and watch the whole sequence run — verified timing:
 | 6.2 s | settled, water seal restored | 1.00 | 0.75 | 0.68 |
 
 The float rides down with the water and shuts the fill valve when the cistern is full. Six steps
-you can also tap through by hand, with the relevant part highlighted (cistern, flapper, S-bend,
-water seal, drain).
+you can also tap through by hand, with the mechanism highlighted as you go: the button and chain,
+then the cistern, flapper, overflow tube and rim jets, then the siphon jet and the weir, then the
+water seal, the drain, and finally the fill valve and float topping the seal back up.
 
 The point of the whole thing: **a toilet does not push the waste away — it siphons it.** Once
 the S-bend is completely full, the falling water drags the rest after it. And the little pool
 left behind, the **water seal**, is what stops sewer smells coming back up.
 
-### How it gets cleaned — an Indah Water plant
+---
 
-Eight stages, top to bottom, with the water getting visibly cleaner as it goes:
+## 7 · 🚰 Indah Water
+
+Where the water goes next, following the connected-sewerage diagram. Two tabs.
+
+### How it gets there — six steps
 
 | # | Stage | What happens |
 |---|---|---|
-| 1 | Arrives | everything from the house flows downhill to the plant |
-| 2 | **Screening** | bar screens catch rags, wet wipes and plastic |
-| 3 | **Grit removal** | sand and coffee grounds sink out |
-| 4 | **Primary tank** | solids sink as sludge, grease floats and is skimmed |
-| 5 | **Aeration tank** | air is pumped in and **bacteria eat the waste** |
-| 6 | **Secondary clarifier** | the bacteria clump and settle; some go back to work |
-| 7 | **Disinfection** | the remaining germs are killed |
-| 8 | **Out to the river** | clean enough to meet the standard; sludge becomes fertiliser |
+| 1 | **Sewage leaves the house** | toilet, kitchen, shower and washing machine all start here |
+| 2 | **Private sewerage pipeline** | runs downhill to your boundary; the owner's responsibility |
+| 3 | **Inspection chamber** | the little box with a lid you open to see if it is still flowing |
+| 4 | **The manhole at the boundary** | the handover point — after this, it belongs to Indah Water |
+| 5 | **Public sewerage pipeline** | collects the whole neighbourhood, under the road |
+| 6 | **Raw sewage reaches the plant** | still dirty; pumped up into the works |
 
-The aeration tank is the big one, and it has a working **AIR ON / AIR OFF** button — switch it
-off and the bubbles stop and the tank greys out, which is exactly what happens when a blower
-fails. The sludge line runs off to the side, ending at *sludge → fertiliser*.
+The one idea worth keeping: **sewage moves by gravity, not pressure.** Every pipe is laid on a
+slight fall, which is why the treatment plant is usually the lowest ground around.
 
-There is no fake chemistry here on purpose: the honest answer is that **living bacteria do the
-work**, and people just build tanks and pump air for them.
+### How it gets cleaned — the extended-aeration works
+
+The six stages labelled down the middle of the diagram, in order:
+
+| # | Stage | What happens |
+|---|---|---|
+| 1 | **Pumping station** | the incoming pipe is lower than the tanks, so it is pumped up |
+| 2 | **Screens, grit removal, flow measurement** | a comb catches wipes and plastic; sand settles; a flume measures the flow |
+| 3 | **Aeration tank** | air is pumped in and **billions of bacteria eat the waste** |
+| 4 | **Flow distribution** | a dividing weir splits the flow evenly between the clarifiers |
+| 5 | **Final clarifier** | the bacteria clump and settle; some go back to work as return sludge |
+| 6 | **Effluent to drain** | clear enough to meet the standard, and out to the river |
+
+The aeration tank has a working **BLOWERS ON / OFF** button — switch it off and the bubbles stop,
+the tank greys out and the return-sludge pump stops with it. That is exactly what happens when a
+blower fails, and it makes the point better than any caption: the cleaning is done by **living
+bacteria**, and people only build the tanks and pump air for them.
 
 ---
 
-## 7 · 🍳 Kitchen Hood
+## 8 · 🍳 Kitchen Hood
 
 Turn the fan up and watch where the smoke goes. Everything reacts live, and I measured it:
 
@@ -574,9 +589,13 @@ www/                          ← the whole app (no build step)
 │  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
 ├─ toilet/                              ── activity 6 ──
 │  ├─ index.html
-│  ├─ toilet.css                        flush cutaway, treatment train, step animations
+│  ├─ toilet.css                        flush cutaway, mechanism, step animations
 │  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
-├─ hood/                                ── activity 7 ──
+├─ indah/                               ── activity 7 ──
+│  ├─ index.html
+│  ├─ indah.css                         sewer journey, works, step animations
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ hood/                                ── activity 8 ──
 │  ├─ index.html
 │  ├─ hood.css                          kitchen, blower, damper, smoke, airflow
 │  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
@@ -586,8 +605,8 @@ server.js                               zero-dependency static server ($PORT awa
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        56 assertions over the seven simulations
-test/render.test.js                     50 assertions: every page booted, plus the artwork
+test/sim.test.js                        71 assertions over the eight simulations
+test/render.test.js                     64 assertions: every page booted, plus the artwork
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json
@@ -679,8 +698,18 @@ the throttle, run the loop, and the train must actually roll.
   crest **have** to be the same height — `npm test` asserts it.
 
   Note on tab switching: `hidden` is an HTML property and is **not** reflected on SVG elements,
-  so `someGroup.hidden = true` is a silent no-op on a `<g>`. Use the `show()` helper in
-  `toilet/js/scene.js` (or `setAttribute('hidden', '')`) instead.
+  so `someGroup.hidden = true` is a silent no-op on a `<g>`. Both the toilet and Indah Water use
+  the `show()` helper in their `scene.js` (or `setAttribute('hidden', '')`) instead. There is a
+  test for this in each activity, because it once left Indah Water's second tab permanently
+  invisible.
+* **The sewer and the works (indah)** — `www/indah/js/scene.js`. `NET_PTS` is the wastewater's
+  route from the house to the plant, and the works is a **serpentine**: `plantPts()` walks
+  `STAGES` and turns the direction each tank, so adding a stage re-routes the flow automatically.
+  Both the pipe-fill animation and the moving dots are driven off that route, so they can never
+  disagree with the drawing.
+
+  The pipe "fills up" as you advance because it carries `pathLength="1"` and the renderer sets
+  `stroke-dasharray` to `<flow> 1` — no `getTotalLength()` call, which keeps it testable in Node.
 
 ### Adding a language
 

@@ -318,6 +318,73 @@
   100%{transform:translateY(22px) scaleY(1.3);opacity:0;}
 }
 
+/* ── indah water art ── */
+.tile-indah .tile-art{background:linear-gradient(160deg,#1b3050,#0b1726);}
+.art-indah{position:absolute;inset:0;}
+
+/* the house, on its patch of road */
+.ai-house{
+  position:absolute;left:9px;top:19px;width:30px;height:21px;
+  border-radius:2px;background:linear-gradient(180deg,#f2f6fb,#cbd6e3);
+  box-shadow:0 2px 5px rgba(0,0,0,.45);
+}
+.ai-house::before{
+  content:"";position:absolute;left:-5px;right:-5px;top:-10px;height:11px;
+  background:linear-gradient(180deg,#c25f47,#98412f);
+  clip-path:polygon(50% 0,100% 100%,0 100%);
+}
+.ai-house i{
+  position:absolute;left:6px;top:7px;width:8px;height:7px;border-radius:1px;
+  background:#8fd0ff;box-shadow:15px 0 0 #8fd0ff;
+}
+/* the ground the sewer is buried under */
+.ai-ground{
+  position:absolute;left:0;right:0;top:41px;height:5px;
+  background:linear-gradient(180deg,#7aa657,#4d7137);
+}
+/* the sewer, falling downhill the whole way to the plant */
+.ai-pipe{
+  position:absolute;left:20px;top:48px;width:54px;height:7px;border-radius:4px;
+  background:linear-gradient(180deg,#b3bdca,#7d8794);
+  transform:rotate(21deg);transform-origin:left center;
+  box-shadow:0 1px 3px rgba(0,0,0,.5);
+}
+.ai-chamber{
+  position:absolute;left:33px;top:56px;width:13px;height:13px;border-radius:2px;
+  background:#2a3540;box-shadow:inset 0 0 0 2px #8fa0b4;
+}
+.ai-wall{
+  position:absolute;left:49px;top:25px;width:6px;height:16px;border-radius:1px;
+  background:#cbbf9f;
+}
+.ai-manhole{
+  position:absolute;left:53px;top:41px;width:13px;height:23px;border-radius:2px;
+  background:#2a3540;box-shadow:inset 0 0 0 2px #8fa0b4;
+}
+/* the works, with the water getting clearer down the tanks */
+.ai-plant{
+  position:absolute;left:71px;top:58px;width:22px;height:29px;border-radius:4px;
+  background:#0e1a2b;box-shadow:inset 0 0 0 2px #3f6ea8;
+  display:flex;flex-direction:column;gap:2px;padding:3px;
+}
+.ai-plant i{flex:1 1 auto;border-radius:2px;}
+.ai-plant i:nth-child(1){background:linear-gradient(90deg,#6b4a25,#8a6a3a);}
+.ai-plant i:nth-child(2){background:linear-gradient(90deg,#7d7a45,#9fb3a6);}
+.ai-plant i:nth-child(3){background:linear-gradient(90deg,#5aa8d8,#a8e2ff);}
+.ai-drop{
+  position:absolute;width:5px;height:5px;border-radius:50%;background:#d8b070;
+  opacity:0;animation:indahDrop 2.6s linear infinite;
+}
+.ai-drop.d1{left:22px;top:46px;}
+.ai-drop.d2{left:40px;top:54px;animation-delay:.9s;}
+.ai-drop.d3{left:58px;top:62px;animation-delay:1.8s;}
+@keyframes indahDrop{
+  0%{transform:translate(0,0);opacity:0;}
+  15%{opacity:1;}
+  78%{transform:translate(14px,7px);opacity:1;}
+  100%{transform:translate(18px,9px);opacity:0;}
+}
+
 /* ── kitchen hood art ── */
 .tile-hood .tile-art{background:linear-gradient(160deg,#3a3226,#231e16);}
 .art-hood{position:absolute;inset:0;}

@@ -20,13 +20,15 @@
       tileBreathSub: 'Run experiments: breathe, hold your breath, run and climb a mountain',
       tileCareTitle: 'Inside the Aircon',
       tileCareSub: 'See how it works — then learn how to wash it, step by step',
-      tileToiletTitle: 'Toilet & Indah Water',
-      tileToiletSub: 'See what a flush really does — then follow the water to the treatment plant',
+      tileToiletTitle: 'Toilet',
+      tileToiletSub: 'See what a flush really does — the button, the flapper, the siphon and the water seal',
+      tileIndahTitle: 'Indah Water',
+      tileIndahSub: 'Follow the wastewater from the house to the treatment plant — and see how the bacteria clean it',
       tileHoodTitle: 'Kitchen Hood',
       tileHoodSub: 'Turn the fan up and watch how it pulls the smoke, grease and smell out of the kitchen',
       foot: 'Made for curious kids',
       help: '?',
-      helpTitle: 'Seven activities',
+      helpTitle: 'Eight activities',
       helpBody: `
         <h3>❄ Play Aircond</h3>
         <ul>
@@ -61,11 +63,17 @@
           <li>Watch the tube turn red where it is hot and blue where it is cold, and see heat coming in from your room and going out of the outdoor unit.</li>
           <li><code>How to wash it</code> — an eight-step service, from unplugging it to running the fan dry.</li>
         </ul>
-        <h3>🚽 Toilet &amp; Indah Water</h3>
+        <h3>🚽 Toilet</h3>
         <ul>
-          <li><code>How it flushes</code> — press the button and watch the cistern empty, the jet fill the S-bend, and the siphon pull everything away.</li>
-          <li><code>How it gets cleaned</code> — eight stages through an Indah Water plant: screens, grit, primary tank, aeration, clarifier, disinfection, river.</li>
+          <li>Press the button and watch the chain lift the flapper, the cistern empty, the rim jets rinse the bowl and the siphon pull everything over the weir.</li>
+          <li>The cutaway is a real gravity-flush toilet: fill valve, float, refill tube, overflow tube, siphon jet and one continuous trapway.</li>
           <li>Tap any stage, or use NEXT, to hear what happens at each one.</li>
+        </ul>
+        <h3>🚰 Indah Water</h3>
+        <ul>
+          <li><code>How it gets there</code> — from the house, through your own pipes and the inspection chamber, to the manhole at the boundary and into the public sewer.</li>
+          <li><code>How it gets cleaned</code> — the extended-aeration plant: pumping station, screens and grit, aeration tank, flow distribution, final clarifier, out to the drain.</li>
+          <li>On the plant tab you can switch the <code>blowers</code> off and watch the bacteria stop working.</li>
         </ul>
         <h3>🍳 Kitchen Hood</h3>
         <ul>
@@ -95,13 +103,15 @@
       tileBreathSub: '做实验：呼吸、屏气、跑步、上高山',
       tileCareTitle: '空调的秘密',
       tileCareSub: '看它怎么工作 — 再一步步学会清洗空调',
-      tileToiletTitle: '马桶与英达丽水',
-      tileToiletSub: '看看冲水到底发生了什么 — 再跟着水去污水厂走一趟',
+      tileToiletTitle: '马桶',
+      tileToiletSub: '看看冲水到底做了什么 — 按钮、橡胶阀、虹吸和水封',
+      tileIndahTitle: '英达丽水',
+      tileIndahSub: '跟着污水从住家一路走到污水厂 — 看细菌怎么把它变干净',
       tileHoodTitle: '抽油烟机',
       tileHoodSub: '把风速调大，看它怎么把油烟、油和味道抽走',
       foot: '给充满好奇心的小朋友',
       help: '?',
-      helpTitle: '七个小游戏',
+      helpTitle: '八个小游戏',
       helpBody: `
         <h3>❄ 玩空调</h3>
         <ul>
@@ -136,11 +146,17 @@
           <li>看管子哪里变红（热）、哪里变蓝（冷），屋里吸热、室外放热。</li>
           <li><code>怎么清洗</code> — 从断电到开送风干燥，一共八个步骤。</li>
         </ul>
-        <h3>🚽 马桶与英达丽水</h3>
+        <h3>🚽 马桶</h3>
         <ul>
-          <li><code>怎么冲水</code> — 按下按钮，看水箱排空、水流灌满 S 形弯管、虹吸把东西拉走。</li>
-          <li><code>怎么变干净</code> — 走过污水厂的八个阶段：格栅、沉砂、初沉、曝气、二沉、消毒、排河。</li>
+          <li>按下按钮，看链条把橡胶阀抬起、水箱排空、冲水孔冲洗内壁，最后虹吸把东西拉过溢流堰。</li>
+          <li>这张剖面图是真的重力冲水马桶：进水阀、浮球、补水软管、溢流管、喷射孔，还有一整条连通的弯管。</li>
           <li>点任意一个阶段，或按“下一步”，听听每一段发生了什么。</li>
+        </ul>
+        <h3>🚰 英达丽水</h3>
+        <ul>
+          <li><code>污水怎么来</code> — 从住家出来，经过自己的管子和检查井，到围墙下的人孔，进入公共污水管。</li>
+          <li><code>污水厂怎么清洁</code> — 延时曝气厂：抽水站、格栅与沉砂、曝气池、配水、最终沉淀池，最后出水排走。</li>
+          <li>在污水厂那页可以把<code>鼓风机</code>关掉，看细菌怎么停工。</li>
         </ul>
         <h3>🍳 抽油烟机</h3>
         <ul>
