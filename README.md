@@ -183,6 +183,33 @@ So you have to plan your braking for the crossing as well as the platform, which
 what a real driver does. The little track under the station sign shows your progress between the
 two stations.
 
+### Missions — a timetable, a clock and three stars
+
+The mode button in the top bar switches between **Free drive** and a timetabled run. A mission
+hands you a clock and a number of stations to serve, and pays up to three stars:
+
+| ★ | For |
+|---|---|
+| ★ | getting everyone to the stations before the clock runs out |
+| ★★ | never running past a platform |
+| ★★★ | and never taking a level crossing over the limit |
+
+The second and third stars pull against the clock: the only way to miss the deadline is to drive
+slowly, and the only way to be rough is to drive fast. Measured, and asserted in the tests:
+
+| Mission | Driver | Outcome | Time |
+|---|---|---|---|
+| Morning service (2 stops, 150 s) | careful, slows at crossings | win, **3 ★** | 107 s |
+| | ignores the crossings | win, **2 ★** — one crossing over the limit | 108 s |
+| The rush (3 stops, 190 s) | careful | win, **3 ★** | 184 s |
+| | crawls at 12 m/s | **lose** — the clock ran out | 190 s |
+| Night run (3 stops, 178 s) | careful | **lose** — 6 s too slow | 178 s |
+| | brakes late, keeps to the limits | win, **3 ★** | 175 s |
+
+When a run ends the card says which star you missed and why in one line — "you ran past a
+platform", "you took a crossing too fast", "the clock ran out". Retry restarts the same run with
+a fresh clock, and the next mission only opens once you have passed this one.
+
 ---
 
 ## 4 · 🫁 Breathing & Blood
@@ -645,8 +672,8 @@ server.js                               zero-dependency static server ($PORT awa
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        106 assertions over the eight simulations
-test/render.test.js                     64 assertions: every page booted, plus the artwork
+test/sim.test.js                        130 assertions over the eight simulations
+test/render.test.js                     81 assertions: every page booted, the artwork, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json

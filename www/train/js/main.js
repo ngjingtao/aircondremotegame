@@ -55,6 +55,42 @@
     ARG.scene.build();
     ARG.cab.build(handleAction);
 
+    ARG.sim.setMissionHook((result, stars, reason) => {
+      ARG.scene.showResult(result, stars, reason);
+    });
+
+    /* ── free drive ↔ the timetabled run ── */
+    function paintMode() {
+      $('btn-mode-label').textContent = ARG.i18n.t(ARG.sim.s.mission >= 0 ? 'mission' : 'freeDrive');
+    }
+
+    function setMode(on) {
+      ARG.scene.hideResult();
+      if (on) ARG.sim.startMission(ARG.sim.unlocked());
+      else ARG.sim.leaveMission();
+      ARG.audio.chime();
+      paintMode();
+      ARG.scene.render(0.016);
+      ARG.cab.refresh();
+      ARG.cab.render();
+    }
+
+    $('btn-mode').addEventListener('click', () => setMode(ARG.sim.s.mission < 0));
+
+    $('mr-retry').addEventListener('click', () => {
+      ARG.scene.hideResult();
+      ARG.sim.startMission(ARG.sim.s.mission);
+      ARG.scene.render(0.016);
+    });
+
+    $('mr-next').addEventListener('click', () => {
+      ARG.scene.hideResult();
+      ARG.sim.startMission(Math.min(ARG.sim.s.mission + 1, ARG.sim.MISSIONS.length - 1));
+      ARG.scene.render(0.016);
+    });
+
+    paintMode();
+
     $('btn-lang').addEventListener('click', () => {
       ARG.i18n.toggle();
       ARG.voice.syncLang();
@@ -62,6 +98,10 @@
       ARG.cab.refresh();
       /* station name plates are refreshed by scene.render */
       ARG.cab.render();
+      paintMode();
+      /* the result card is written imperatively, so rebuild it in the new language */
+      const S = ARG.sim.s;
+      if (!$('mission-result').hidden && S.result) ARG.scene.showResult(S.result, S.stars, S.failReason);
     });
 
     $('btn-sound').addEventListener('click', e => {

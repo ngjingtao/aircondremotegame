@@ -39,6 +39,7 @@
       <div class="hud-chip"><span class="hud-label" data-i18n="distance">Distance</span><b id="hud-dist">0 m</b></div>
     </div>
     <div class="tb-buttons">
+      <button class="tb-btn" id="btn-mode" title="Free drive / Mission"><span id="btn-mode-label">Mission</span></button>
       <button class="tb-btn" id="btn-lang">EN</button>
       <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
       <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
@@ -80,16 +81,37 @@
             <span class="st-station to"></span>
             <span class="st-train" id="st-train">🚆</span>
           </div>
-        </div>
-      </div>
+          </div>
 
-      <div class="crossing-flag" id="crossing-flag">
+          <!-- ── the timetabled run: the clock, the stations, and the stars in play ── -->
+          <div class="sh-mission" id="mission-bar" hidden>
+            <span class="sm-name" id="mb-name">—</span>
+            <span class="sm-item"><i>⏱</i><b id="mb-time">2:30</b></span>
+            <span class="sm-item"><i>🚉</i><b id="mb-stops">0 / 2</b></span>
+            <span class="sm-stars" id="mb-stars"><i>★</i><i>★</i><i>★</i></span>
+          </div>
+        </div>
+
+        <div class="crossing-flag" id="crossing-flag">
         <span class="cf-lamp"></span>
         <span class="cf-text" data-i18n="crossingActive">CROSSING ACTIVE</span>
         <span class="cf-ding" data-i18n="ding">DING</span>
       </div>
 
       <div class="toast" id="toast"></div>
+
+      <!-- ── how the run ended, with a reason you can act on ── -->
+      <div class="mission-result" id="mission-result" hidden>
+        <div class="mr-card">
+          <div class="mr-stars" id="mr-stars"><i>★</i><i>★</i><i>★</i></div>
+          <h2 id="mr-title"></h2>
+          <ul class="mr-list" id="mr-list"></ul>
+          <div class="mr-btns">
+            <button class="mr-btn" id="mr-retry">TRY AGAIN</button>
+            <button class="mr-btn go" id="mr-next">NEXT MISSION</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ══════════ CAB DESK ══════════ -->

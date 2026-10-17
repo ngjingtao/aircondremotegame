@@ -51,6 +51,14 @@ ARG.sim = (function () {
       goodCrossings: 0,
       missed: 0,
 
+      /* ── mission ── */
+      mission: -1,
+      misLen: 0,
+      misT: 0,
+      stars: 0,
+      result: null,         // 'win' | 'lose' | null
+      failReason: '',
+
       msg: '',
       msgT: 0,
       msgGood: true,
@@ -142,6 +150,72 @@ ARG.sim = (function () {
   };
 
   let onCross = null;
+
+  /* ─────────── missions ───────────
+     A timetabled run. Get the passengers to N stations before the clock runs
+     out, without running past a platform and without taking a level crossing
+     too fast.
+
+     The stars pull against each other exactly as they do in Play Aircond:
+     hurrying is what makes you overshoot a platform and what makes a crossing
+     rough, so three stars means driving it properly rather than quickly. */
+  const MISSIONS = [
+    { key: 'mMorning', len: 150, stops: 2 },
+    { key: 'mRush',    len: 190, stops: 3 },
+    { key: 'mNight',   len: 178, stops: 3 }
+  ];
+
+  const STORE_STARS = n => 'arg.trainStars.' + n;
+
+  function bestStars(n) { return Number(ARG.store.get(STORE_STARS(n)) || 0); }
+
+  /* the mission you are allowed to start is the first one you have not aced */
+  function unlocked() {
+    for (let i = 0; i < MISSIONS.length; i++) if (bestStars(i) < 3) return i;
+    return MISSIONS.length - 1;
+  }
+
+  function startMission(n) {
+    n = clamp(Math.floor(n) || 0, 0, MISSIONS.length - 1);
+    S = fresh();
+    S.mission = n;
+    S.misLen = MISSIONS[n].len;
+    S.misT = MISSIONS[n].len;
+    S.doors = false;
+    return S;
+  }
+
+  function leaveMission() { S = fresh(); return S; }
+
+  /* 1 star for getting everyone there in time, +1 for never running past a
+     platform, +1 for never taking a crossing over the limit */
+  function rateMission() {
+    const m = MISSIONS[S.mission];
+    if (!m || S.served < m.stops) return 0;
+    let stars = 1;
+    if (S.missed === 0) stars++;
+    if (S.roughCrossings === 0) stars++;
+    return stars;
+  }
+
+  /* why it went wrong, in one line the screen can show */
+  function failReason() {
+    if (S.missed > 0) return 'failOverrun';
+    if (S.roughCrossings > 0) return 'failRough';
+    return 'failLate';
+  }
+
+  function finishMission() {
+    S.stars = rateMission();
+    S.result = S.stars > 0 ? 'win' : 'lose';
+    S.failReason = S.result === 'lose' ? failReason() : '';
+    if (S.result === 'win' && S.stars > bestStars(S.mission)) {
+      ARG.store.set(STORE_STARS(S.mission), String(S.stars));
+    }
+    if (onMission) onMission(S.result, S.stars, S.failReason);
+  }
+
+  let onMission = null;
 
   function press(action) {
     const fn = ACTIONS[action];
@@ -292,6 +366,14 @@ ARG.sim = (function () {
     /* gentle nudge about station speed */
     S.overspeed = S.atPlatform && S.kmh > 60;
 
+    /* ── the mission ──
+       It ends the moment the last passenger is delivered, or when the clock
+       runs out. rateMission() decides whether that counts. */
+    if (S.mission >= 0 && !S.result) {
+      S.misT = Math.max(0, S.misT - dt);
+      if (S.served >= MISSIONS[S.mission].stops || S.misT <= 0) finishMission();
+    }
+
     return S;
   }
 
@@ -300,6 +382,9 @@ ARG.sim = (function () {
     press, tick,
     fresh: () => { S = fresh(); return S; },
     setCrossHook: fn => { onCross = fn; },
+    setMissionHook: fn => { onMission = fn; },
+    startMission, leaveMission, bestStars, unlocked, rateNow: rateMission,
+    MISSIONS,
     stationX, crossingX,
     THROTTLE, BRAKE, MAX_KMH, MAX_MS,
     TRAIN_LEN, LOCO_LEN, COACH_LEN, COACHES,

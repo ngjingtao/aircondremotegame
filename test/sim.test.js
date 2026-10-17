@@ -316,6 +316,91 @@ console.log('\n— Train Driving —');
   check('  → and costs more than it used to', sim.s.score, 0, 0);
 }
 
+console.log('\n— Train Driving: missions —');
+{
+  const ARG = load('train', ['train/js/state.js']);
+  const sim = ARG.sim;
+  const cur = () => sim.s;
+
+  /* a simple driver: ease off in time to stop on the mark, and slow down for a
+     crossing when told to */
+  function drive(opts) {
+    const S = cur();
+    let i = S.nextIdx;
+    while (S.servedStations['st' + i]) i++;          // the next station that needs serving
+    const canStop = Math.sqrt(Math.max(0, (sim.stationX(i) + 40) - S.x) * 1.05) * (opts.margin || 0.92);
+
+    let cap = opts.limit;
+    if (opts.careCrossings) {
+      const base = Math.floor(S.x / sim.CYCLE);
+      for (let k = base; k < base + 4; k++) {
+        const d = sim.crossingX(k) - S.x;
+        if (d > 0 && d < 170) cap = Math.min(cap, 21.5);   // just under the 80 km/h limit
+      }
+    }
+
+    const want = Math.min(cap, canStop);
+    if (S.speed > want + 0.4) { if (S.throttle > 0) sim.press('throttleDown'); else sim.press('brakeUp'); }
+    else if (S.speed < want - 0.6) { if (S.brake > 0) sim.press('brakeDown'); else if (S.throttle < 4) sim.press('throttleUp'); }
+    else if (S.throttle > 2) sim.press('throttleDown');
+  }
+
+  function run(n, opts) {
+    sim.startMission(n);
+    let t = 0;
+    while (!cur().result && t < 600) { drive(opts); sim.tick(0.05); t += 0.05; }
+    return cur();
+  }
+
+  eq('there are three missions', ARG.sim.MISSIONS.length, 3);
+  eq('each asks for at least as much as the last',
+     ARG.sim.MISSIONS[1].stops >= ARG.sim.MISSIONS[0].stops &&
+     ARG.sim.MISSIONS[2].stops >= ARG.sim.MISSIONS[1].stops, true);
+  eq('and the night run is tighter than the rush',
+     ARG.sim.MISSIONS[2].len < ARG.sim.MISSIONS[1].len, true);
+
+  sim.startMission(0);
+  eq('a mission takes over the model', cur().mission, 0);
+  eq('  → the clock is set to its length', cur().misT, ARG.sim.MISSIONS[0].len);
+  eq('  → the train is at a standstill', cur().kmh, 0);
+  eq('  → and the brake is on, as it always starts', cur().brake > 0, true);
+  eq('  → with nothing served yet', cur().served, 0);
+
+  const careful = run(0, { limit: 22, careCrossings: true });
+  eq('a careful run delivers everyone', careful.result, 'win');
+  eq('  → with all three stars', careful.stars, 3);
+  eq('  → having served every station asked for', careful.served, 2);
+
+  const rough = run(0, { limit: 25, careCrossings: false });
+  eq('ignoring the crossings still gets there', rough.result, 'win');
+  eq('  → but it really did take one too fast', rough.roughCrossings > 0, true);
+  eq('  → and that costs the crossing star', rough.stars < 3, true);
+
+  /* the rush is tight enough that crawling does not make it */
+  const rush = run(1, { limit: 22, careCrossings: true });
+  eq('the second mission is winnable', rush.result, 'win');
+  const crawl = run(1, { limit: 12, careCrossings: true, margin: 0.98 });
+  eq('  → but crawling does not make it', crawl.result, 'lose');
+  eq('  → and it says the clock ran out', crawl.failReason, 'failLate');
+  eq('  → with no stars', crawl.stars, 0);
+
+  /* running past a platform is the other way to fail, and it is named */
+  sim.startMission(0);
+  cur().served = 1;            // pretend the first stop happened
+  cur().missed = 1;            // and that we ran past the second
+  cur().misT = 0.01;           // with the clock about to stop
+  settle(sim, 0.2);
+  eq('running past a platform is named as the reason', cur().failReason, 'failOverrun');
+  eq('  → and that is a loss', cur().result, 'lose');
+
+  eq('a finished mission remembers its stars', ARG.sim.bestStars(0) >= 1, true);
+  eq('and has a next one to unlock', ARG.sim.unlocked() >= 0, true);
+
+  sim.leaveMission();
+  eq('leaving the mission clears it', cur().mission, -1);
+  eq('  → and the train goes back to the start', cur().x, 150);
+}
+
 console.log('\n— Breathing & Blood —');
 {
   const ARG = load('breath', ['breath/js/state.js']);

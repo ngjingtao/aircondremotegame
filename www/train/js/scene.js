@@ -179,6 +179,18 @@ ARG.scene = (function () {
     els.flag = document.getElementById('crossing-flag');
     els.toast = document.getElementById('toast');
 
+    els.missionBar = document.getElementById('mission-bar');
+    els.mbName = document.getElementById('mb-name');
+    els.mbTime = document.getElementById('mb-time');
+    els.mbStops = document.getElementById('mb-stops');
+    els.mbStars = document.getElementById('mb-stars');
+    els.missionResult = document.getElementById('mission-result');
+    els.mrStars = document.getElementById('mr-stars');
+    els.mrTitle = document.getElementById('mr-title');
+    els.mrList = document.getElementById('mr-list');
+    els.mrRetry = document.getElementById('mr-retry');
+    els.mrNext = document.getElementById('mr-next');
+
     buildTrain();
     layoutPixels();
   }
@@ -346,7 +358,69 @@ ARG.scene = (function () {
     } else if (seen.msg) {
       seen.msg = '';
     }
+
+    renderMission(S, T());
   }
 
-  return { build, render, layoutPixels, toast, get ppm() { return ppm; } };
+  /* ─────────── the mission ─────────── */
+  function renderMission(S, t) {
+    const on = S.mission >= 0;
+    if (seen.mbOn !== on) { seen.mbOn = on; els.missionBar.hidden = !on; }
+    if (!on) return;
+
+    const m = ARG.sim.MISSIONS[S.mission];
+
+    if (seen.mbName !== m.key) { seen.mbName = m.key; els.mbName.textContent = t(m.key); }
+
+    const left = Math.ceil(S.misT);
+    const clock = Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0');
+    if (seen.mbClock !== clock) { els.mbTime.textContent = clock; seen.mbClock = clock; }
+    if (seen.mbLow !== (left <= 20)) { seen.mbLow = left <= 20; els.missionBar.classList.toggle('low', left <= 20); }
+
+    const stops = S.served + ' / ' + m.stops;
+    if (seen.mbStops !== stops) { els.mbStops.textContent = stops; seen.mbStops = stops; }
+
+    /* the stars still in play: you lose one the moment you run past a platform,
+       and another the moment a crossing is taken too fast */
+    const earned = [true, S.missed === 0, S.roughCrossings === 0];
+    if (seen.mbStars !== earned.join()) {
+      seen.mbStars = earned.join();
+      earned.forEach((v, i) => els.mbStars.children[i].classList.toggle('on', v));
+    }
+  }
+
+  /* ─────────── the result card ─────────── */
+  function showResult(result, stars, reason) {
+    const S = ARG.sim.s;
+    const t = T();
+    const won = result === 'win';
+    const last = S.mission >= ARG.sim.MISSIONS.length - 1;
+    const m = ARG.sim.MISSIONS[S.mission];
+
+    els.mrTitle.textContent = t(won ? 'trWin' : 'trLose');
+    els.mrTitle.className = won ? 'win' : 'lose';
+    els.mrStars.querySelectorAll('i').forEach((el, i) => el.classList.toggle('on', i < stars));
+
+    const lines = [];
+    if (won) {
+      lines.push({ ok: true, txt: t('trStar1') + ' (' + S.served + '/' + m.stops + ')' });
+      lines.push({ ok: stars >= 2, txt: t(stars >= 2 ? 'trStar2' : 'trMiss2') });
+      lines.push({ ok: stars >= 3, txt: t(stars >= 3 ? 'trStar3' : 'trMiss3') });
+    } else {
+      lines.push({ ok: false, txt: t(reason || 'failLate') });
+      lines.push({ ok: false, txt: t('goalStops') + ' ' + S.served + ' / ' + m.stops });
+    }
+    els.mrList.innerHTML = lines.map(l => '<li class="' + (l.ok ? '' : 'no') + '">' + l.txt + '</li>').join('');
+
+    els.mrRetry.textContent = t('tryAgain');
+    els.mrNext.textContent = t('nextMission');
+    els.mrNext.hidden = !won || last;
+
+    els.missionResult.hidden = false;
+    ARG.audio[won ? 'cheer' : 'warn']();
+  }
+
+  function hideResult() { els.missionResult.hidden = true; }
+
+  return { build, render, layoutPixels, toast, showResult, hideResult, get ppm() { return ppm; } };
 })();

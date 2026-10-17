@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-6b33e17';
+const CACHE = 'play-learn-537510b';
 
 const ASSETS = [
   './',

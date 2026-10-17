@@ -187,6 +187,11 @@ look like pages from the same book:
 * the mission layer: goal, clock, three stars, a visible power meter, and a
   one-line reason when it goes wrong (`aircond/js/state.js`)
 * every stage in the cross-sections is nameable and highlightable
+* **both Play Aircond and Train Driving run on the same mission pattern** — a
+  goal, a clock, three stars that pull against each other, a named reason when
+  it goes wrong, a retry, and missions that unlock as you pass them. The train's
+  is in `train/js/state.js`: ★ for delivering everyone before the clock, ★★ for
+  never running past a platform, ★★★ for never taking a crossing over the limit.
 * **the eight home tiles are illustrations**, drawn as SVG scenes in
   `www/index.html` and painted from one shared palette declared at the top of
   that file. Every tile has three depth layers (`tl back` / `tl mid` /
