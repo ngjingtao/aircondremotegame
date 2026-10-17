@@ -135,7 +135,10 @@
 /* ── blower ── */
 .blade{fill:#aab6c6;stroke:#8b97a6;stroke-width:0.8;}
 .hub{fill:#6d7a8a;}
-#blower{transform-box:view-box;transform-origin:170px 214px;}
+/* NOTE: the rotation centre is supplied by the transform attribute on #blower
+   (`rotate(angle 170 214)`). Do NOT also set transform-box / transform-origin
+   here — the browser would re-origin the attribute transform and the blades
+   would orbit a point somewhere off the screen instead of the hub. */
 
 /* ── labels ── */
 #labels .lab text{
