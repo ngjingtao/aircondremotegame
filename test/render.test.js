@@ -609,6 +609,47 @@ console.log('\n— Train: sky layers —');
   });
 }
 
+/* ─────────── nothing inline: the CSP has no 'unsafe-inline' ─────────── */
+console.log('\n— Nothing inline —');
+{
+  const pages = ['index.html', 'aircond/index.html', 'food/index.html', 'train/index.html',
+    'breath/index.html', 'aircare/index.html', 'toilet/index.html', 'indah/index.html', 'hood/index.html'];
+
+  const inlineScript = [], inlineStyle = [];
+  for (const rel of pages) {
+    const s = fs.readFileSync(path.join(WWW, rel), 'utf8');
+    if (/<script(?![^>]*\bsrc=)[^>]*>/.test(s)) inlineScript.push(rel);
+    if (/\sstyle="/.test(s)) inlineStyle.push(rel);
+  }
+
+  /* the same thing built in script is just as blocked — that is how the train
+     lost its vehicle widths: an innerHTML string with style="width:calc(...)" */
+  const jsFiles = [];
+  (function walk(dir) {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (e.name.endsWith('.js')) jsFiles.push(p);
+    }
+  })(WWW);
+
+  const jsStyle = [];
+  for (const f of jsFiles) {
+    /* strip comments first — this file's own explanation of the rule would
+       otherwise trip it */
+    const src = fs.readFileSync(f, 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^[ \t]*\/\/.*$/gm, '');
+    if (/style\s*=\s*["']/.test(src) || /setAttribute\(\s*['"]style['"]/.test(src)) {
+      jsStyle.push(path.relative(WWW, f).split(path.sep).join('/'));
+    }
+  }
+
+  eq('no page has an inline <script>', inlineScript.join(' ') || 'none', 'none');
+  eq('no page has a style="..." attribute', inlineStyle.join(' ') || 'none', 'none');
+  eq('no script builds a style="..." string', jsStyle.join(' ') || 'none', 'none');
+}
+
 /* ─────────── report ─────────── */
 console.log('\n' + '─'.repeat(72));
 console.log(passed + ' passed, ' + failed + ' failed');

@@ -44,15 +44,20 @@ const SECURITY = {
   'X-Frame-Options': 'SAMEORIGIN',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'geolocation=(), camera=(), microphone=()',
-  /* everything is local; nothing should ever be loaded from elsewhere */
+  /* everything is local; nothing should ever be loaded from elsewhere.
+     No 'unsafe-inline' anywhere: the pre-paint language script lives in
+     shared/prepaint.js and the last two inline style attributes moved into the
+     stylesheets. Adding an inline <script> or style="..." back will now break
+     on the next deploy, which is the point — test/server.test.js checks. */
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline'",
-    "style-src 'self' 'unsafe-inline'",
+    "script-src 'self'",
+    "style-src 'self'",
     "img-src 'self' data:",
     "media-src 'self'",
     "font-src 'self'",
     "connect-src 'self'",
+    "object-src 'none'",
     "base-uri 'self'",
     "form-action 'none'",
     "frame-ancestors 'self'"

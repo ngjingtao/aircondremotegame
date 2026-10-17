@@ -29,7 +29,7 @@ function req(path, method) {
         status: res.statusCode,
         type: res.headers['content-type'],
         cache: res.headers['cache-control'],
-        csp: !!res.headers['content-security-policy'],
+        csp: res.headers['content-security-policy'] || '',
         bytes: n
       }));
     });
@@ -55,6 +55,20 @@ function req(path, method) {
   /* the whole point: is it still alive afterwards? */
   const alive = await req('/');
   console.log('\nafter everything, GET / -> ' + (alive.status || alive.error));
+
+  /* ── the CSP must not need 'unsafe-inline' ──
+     It only did because of the pre-paint language script in every <head> and
+     two stray style="..." attributes. Both are gone, so if this ever comes back
+     an inline script or style has crept in again. */
+  console.log('\n— Content-Security-Policy —');
+  const csp = alive.csp || '';
+  const inline = /unsafe-inline/.test(csp);
+  console.log((inline ? 'FAIL' : 'ok  ') + ' no unsafe-inline in the CSP');
+  if (inline) bad++;
+  const hasBoth = /script-src 'self'(;|$)/.test(csp) && /style-src 'self'(;|$)/.test(csp);
+  console.log((hasBoth ? 'ok  ' : 'FAIL') + " script-src and style-src both 'self' only");
+  if (!hasBoth) bad++;
+  console.log('     ' + csp);
 
   /* and a HEAD, which health checks use */
   const head = await req('/', 'HEAD');

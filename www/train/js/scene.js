@@ -70,10 +70,20 @@ ARG.scene = (function () {
     const train = els.train;
     let html = '';
     for (let i = 0; i < ARG.sim.COACHES; i++) {
-      html += '<div class="veh coach" style="width:calc(var(--ppm) * ' + ARG.sim.COACH_LEN + 'px)">' + coachHTML() + '</div>';
+      html += '<div class="veh coach">' + coachHTML() + '</div>';
     }
-    html += '<div class="veh loco" style="width:calc(var(--ppm) * ' + ARG.sim.LOCO_LEN + 'px)">' + locoHTML() + '</div>';
+    html += '<div class="veh loco">' + locoHTML() + '</div>';
     train.innerHTML = html;
+
+    /* The width of each vehicle comes from its length in metres, so it has to
+       be set in script. It goes on through the CSSOM rather than as an inline
+       style="" attribute, because the Content-Security-Policy has no
+       'unsafe-inline' and a style attribute in innerHTML is blocked. */
+    train.querySelectorAll('.veh').forEach(v => {
+      const len = v.classList.contains('loco') ? ARG.sim.LOCO_LEN : ARG.sim.COACH_LEN;
+      v.style.width = 'calc(var(--ppm) * ' + len + 'px)';
+    });
+
     wheels = Array.prototype.slice.call(train.querySelectorAll('.wh'));
     /* the leading coach of the train is the loco, drawn last so it is on the right */
   }

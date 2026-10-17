@@ -171,3 +171,6 @@
   .pane-note{font-size:14px;padding:13px 16px;border-radius:16px;}
   .toast{font-size:15px;}
 }
+
+/* the light cone fades in and out rather than snapping */
+#lightCone{transition:opacity .3s;}

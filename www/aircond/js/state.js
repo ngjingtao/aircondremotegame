@@ -68,6 +68,7 @@ ARG.sim = (function () {
       missionIn: 0,         // seconds spent comfortable
       missionFirstOk: -1,   // when he first got comfortable, in seconds
       missionSlips: 0,      // times he fell back out of the comfort zone
+      eventIndex: 0,        // how far through the mission's event schedule we are
       energyWh: 0,
       stars: 0,
       result: null,         // 'win' | 'lose' | null
@@ -250,17 +251,32 @@ ARG.sim = (function () {
     return fn(el) || { sound: 'beep' };
   }
 
-  /* ─────────── weather events ─────────── */
+  /* ─────────── weather events ───────────
+     Each event saves what it is about to change and puts it back afterwards.
+     They used to restore hard-coded defaults (33 °C, 62 % humidity), which is
+     right in challenge mode but wrong the moment a mission changes the weather
+     — a cold snap in the winter mission used to "end" by turning it into a
+     33 °C summer afternoon. */
   const EVENTS = [
     {
       id: 'heatwave', key: 'eventHeatwave', dur: 18,
-      apply() { S.outdoorTemp = 42; S.humBase = 82; S.humidity = Math.min(96, S.humidity + 12); },
-      undo() { S.outdoorTemp = 33; S.humBase = 62; }
+      apply() {
+        this._prev = { outdoorTemp: S.outdoorTemp, humBase: S.humBase };
+        S.outdoorTemp = 42; S.humBase = 82; S.humidity = Math.min(96, S.humidity + 12);
+      },
+      undo() {
+        if (this._prev) { S.outdoorTemp = this._prev.outdoorTemp; S.humBase = this._prev.humBase; }
+      }
     },
     {
       id: 'coldsnap', key: 'eventColdSnap', dur: 16,
-      apply() { S.outdoorTemp = 18; S.humBase = 58; },
-      undo() { S.outdoorTemp = 33; S.humBase = 62; }
+      apply() {
+        this._prev = { outdoorTemp: S.outdoorTemp, humBase: S.humBase };
+        S.outdoorTemp = 18; S.humBase = 58;
+      },
+      undo() {
+        if (this._prev) { S.outdoorTemp = this._prev.outdoorTemp; S.humBase = this._prev.humBase; }
+      }
     },
     {
       id: 'door', key: 'eventDoor', dur: 12,
@@ -269,8 +285,11 @@ ARG.sim = (function () {
     },
     {
       id: 'humid', key: 'eventHumid', dur: 20,
-      apply() { S.humBase = 88; S.humidity = Math.min(96, S.humidity + 20); },
-      undo() { S.humBase = 62; }
+      apply() {
+        this._prev = { humBase: S.humBase };
+        S.humBase = 88; S.humidity = Math.min(96, S.humidity + 20);
+      },
+      undo() { if (this._prev) S.humBase = this._prev.humBase; }
     }
   ];
 
@@ -286,10 +305,14 @@ ARG.sim = (function () {
       energy: 20, events: [] },
     { key: 'mSummer', day: 'daySummer', weather: 'heat',
       len: 120, outdoor: 38, humBase: 80, clock: 15, start: 34, setStart: 27,
-      energy: 46, events: ['heatwave', 'door', 'humid'] },
+      energy: 46,
+      /* a designed sequence, not dice: a heatwave early, the door at the
+         halfway mark, then a humidity surge to finish on */
+      events: [ { at: 28, id: 'heatwave' }, { at: 62, id: 'door' }, { at: 94, id: 'humid' } ] },
     { key: 'mWinter', day: 'dayWinter', weather: 'cold',
       len: 120, outdoor: 11, humBase: 56, clock: 18, start: 12, setStart: 22,
-      energy: 54, events: ['coldsnap', 'door'] }
+      energy: 54,
+      events: [ { at: 34, id: 'coldsnap' }, { at: 76, id: 'door' } ] }
   ];
 
   const STORE_STARS = n => 'arg.stars.' + n;
@@ -324,7 +347,7 @@ ARG.sim = (function () {
     S.doorOpen = false;
     S.power = true;
     S.mode = m.weather === 'cold' ? 'HEAT' : 'COOL';
-    S.event = null; S.eventLeft = 0; S.eventTimer = 20;
+    S.event = null; S.eventLeft = 0; S.eventIndex = 0;
     return S;
   }
 
@@ -466,31 +489,50 @@ ARG.sim = (function () {
     const prevMood = S.mood;
     S.mood = moodFor(S.feelsLike);
 
-    /* weather events: endless in challenge, and the mission's own list in a
-       mission — which is how the spring mission stays a calm tutorial */
-    if (S.challenge || S.mission >= 0) {
-      const pool = S.mission >= 0
-        ? MISSIONS[S.mission].events.map(id => EVENTS.find(e => e.id === id)).filter(Boolean)
-        : EVENTS;
+    /* ── weather events ──
+       In challenge they are random, because that mode is meant to be endless
+       and varied. In a MISSION they run on a fixed schedule.
 
-      if (S.event) {
-        S.eventLeft -= dt;
-        if (S.eventLeft <= 0) {
-          S.event.undo();
-          S.event = null;
-          S.eventJustEnded = true;
-          if (onEvent) onEvent(null);
-        }
-      } else if (pool.length) {
-        S.eventTimer -= dt;
-        if (S.eventTimer <= 0) {
-          const ev = pool[Math.floor(Math.random() * pool.length)];
+       Two reasons. A two-minute challenge with a designed sequence of problems
+       is a better game than random noise — the child can learn "the door goes
+       at about the halfway mark". And a random mission makes the outcome
+       unreproducible, which made the test suite flaky: the same play could win
+       or lose depending on the dice. */
+    const inMission = S.mission >= 0;
+
+    if (S.event) {
+      S.eventLeft -= dt;
+      if (S.eventLeft <= 0) {
+        S.event.undo();
+        S.event = null;
+        S.eventJustEnded = true;
+        if (onEvent) onEvent(null);
+      }
+    }
+
+    if (inMission && !S.result) {
+      const next = MISSIONS[S.mission].events[S.eventIndex];
+      if (next && (S.missionLen - S.missionT) >= next.at) {
+        S.eventIndex++;
+        /* a scheduled event always fires, replacing whatever is running */
+        if (S.event) { S.event.undo(); S.event = null; }
+        const ev = EVENTS.find(e => e.id === next.id);
+        if (ev) {
           ev.apply();
           S.event = ev;
-          S.eventLeft = ev.dur;
-          S.eventTimer = 15 + Math.random() * 12;
+          S.eventLeft = next.dur || ev.dur;
           if (onEvent) onEvent(ev);
         }
+      }
+    } else if (S.challenge && !S.event) {
+      S.eventTimer -= dt;
+      if (S.eventTimer <= 0) {
+        const ev = EVENTS[Math.floor(Math.random() * EVENTS.length)];
+        ev.apply();
+        S.event = ev;
+        S.eventLeft = ev.dur;
+        S.eventTimer = 15 + Math.random() * 12;
+        if (onEvent) onEvent(ev);
       }
     }
 
@@ -568,7 +610,7 @@ ARG.sim = (function () {
     setMissionHook: fn => { onMission = fn; },
     startMission, leaveMission, bestStars, unlocked,
     MODES, FANS, TURBO, MODE_ICON, HOUR_SECONDS,
-    MISSIONS, powerNow,
+    MISSIONS, EVENTS, powerNow, rateNow: rateMission,
     feelsLike, moodFor, clamp
   };
 })();

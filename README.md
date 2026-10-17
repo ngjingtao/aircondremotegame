@@ -433,8 +433,9 @@ provides one, so it drops straight onto Render / Railway / Fly with no configura
 
 `render.yaml` in the repo root is a ready-made Render blueprint — **but it is only applied to
 services created from the blueprint.** If you created the service by hand in the dashboard,
-set those three values in *Settings* yourself, otherwise the build command stays `yarn` and the
-cache stamp never runs.
+set those three values in *Settings* yourself. There is no `yarn.lock` in the repo, so a Node
+service created by hand will get Render's own default build command rather than the one above,
+and the cache stamp will never run.
 
 That said, nothing breaks if the stamp is skipped: `sw.js` serves **page loads network-first**,
 so a new deploy is picked up on the next launch anyway. The stamp only keeps the *asset* cache

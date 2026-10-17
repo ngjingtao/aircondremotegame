@@ -135,10 +135,10 @@ console.log('\n— Play Aircond: missions —');
   function play(n, strat, watchful) {
     sim.startMission(n);
     let t = 0;
-    strat(cur());
+    strat(cur(), t);
     while (!cur().result && t < 400) {
       sim.tick(0.05); t += 0.05;
-      strat(cur());
+      strat(cur(), t);
       if (watchful && cur().doorOpen) sim.press('closedoor');
     }
     return cur();
@@ -146,6 +146,13 @@ console.log('\n— Play Aircond: missions —');
 
   eq('there are three missions', ARG.sim.MISSIONS.length, 3);
   eq('the first one has no weather events', ARG.sim.MISSIONS[0].events.length, 0);
+  /* every event a mission schedules must be a real event, at a real time */
+  const badSched = [];
+  ARG.sim.MISSIONS.forEach((m, i) => m.events.forEach(e => {
+    if (typeof e.at !== 'number' || e.at <= 0 || e.at >= m.len) badSched.push(i + ':' + e.at);
+    if (!ARG.sim.EVENTS.some(ev => ev.id === e.id)) badSched.push(i + ':' + e.id);
+  }));
+  eq('every scheduled event is real and inside the clock', badSched.join(' ') || 'none', 'none');
 
   /* a mission hands you an uncomfortable room and a running clock */
   sim.startMission(0);
@@ -181,10 +188,37 @@ console.log('\n— Play Aircond: missions —');
   eq('  → so it loses the energy star', blast.stars < 3, true);
   eq('the thrifty setting keeps the energy star', thrift.stars, 3);
 
-  /* ── the second star: holding it steady ── */
-  const overshoot = play(2, S => { S.mode = 'HEAT'; S.setTemp = 30; S.fan = 'HIGH'; S.turbo = 'TURBO'; }, true);
-  eq('overshooting in winter costs the steady-hand star', overshoot.missionSlips >= 1, true);
-  eq('  → and the mission too', overshoot.result, 'lose');
+  /* ── the second star: the steady hand ──
+     Tested on the mechanic itself rather than on a strategy, because a strategy
+     is a moving target. Put him in the band, shove the room out, and the
+     counter has to notice. */
+  sim.startMission(0);
+  cur().roomTemp = 24; cur().outdoorTemp = 24; cur().humidity = 55; cur().power = false;
+  settle(sim, 1);
+  eq('he can be comfortable mid-mission', cur().mood, 'ok');
+  eq('  → and the moment is recorded', cur().missionFirstOk >= 0, true);
+  const slipsBefore = cur().missionSlips;
+  cur().roomTemp = 40;
+  settle(sim, 2);
+  eq('letting the room drift out is counted', cur().missionSlips, slipsBefore + 1);
+  eq('  → and it costs the steady-hand star', ARG.sim.rateNow() < 3, true);
+
+  /* ── a weather event must give the mission's own weather back ──
+     They used to restore hard-coded defaults, so the winter mission's cold snap
+     "ended" by turning it into a 33 °C summer afternoon. */
+  sim.startMission(2);
+  const winterOut = ARG.sim.MISSIONS[2].outdoor;
+  eq('winter starts at its own outdoor temperature', cur().outdoorTemp, winterOut);
+  settle(sim, 36);                                  // the cold snap fires at 34 s
+  eq('  → the cold snap is running', cur().outdoorTemp, 18);
+  settle(sim, 20);                                  // and lasts 16 s
+  eq('  → and it hands the winter weather back', cur().outdoorTemp, winterOut);
+  eq('  → not the default', cur().outdoorTemp !== 33, true);
+
+  /* ── winter: heating to below the band is a real, nameable failure ── */
+  const tooCold = play(2, S => { S.mode = 'HEAT'; S.setTemp = 20; S.fan = 'AUTO'; });
+  eq('heating to below the comfort band loses winter', tooCold.result, 'lose');
+  eq('  → and it says he ended up too cold', tooCold.failReason, 'failTooMuch');
 
   /* ── summer is winnable, but not by every strategy ── */
   const summerGood = play(1, S => { S.mode = 'COOL'; S.setTemp = 24; S.fan = 'AUTO'; }, true);
