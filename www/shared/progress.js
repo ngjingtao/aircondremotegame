@@ -2,7 +2,7 @@
    shared/progress.js — the sticker book
 
    Every activity records what a child has managed; the home screen shows it
-   all as one collection. That is the only thing that ties the nine activities
+   all as one collection. That is the only thing that ties the ten activities
    together into one world, so it lives here rather than in any of them.
 
    Ids are strings and the value is 1..3 stars, or 0 for "not done yet".
@@ -29,7 +29,8 @@ ARG.progress = (function () {
     { id: 'indah',   activity: 'indah',   label: 'stIndah' },
     { id: 'hood',    activity: 'hood',    label: 'stHood' },
     { id: 'laundry-wash', activity: 'laundry', label: 'stWash' },
-    { id: 'laundry-dry',  activity: 'laundry', label: 'stDry' }
+    { id: 'laundry-dry',  activity: 'laundry', label: 'stDry' },
+    { id: 'tree',    activity: 'tree',    label: 'stTree' }
   ];
 
   const IDS = STICKERS.map(s => s.id);

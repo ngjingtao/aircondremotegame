@@ -626,13 +626,87 @@ console.log('\n— Laundry Day —');
   eq('  → so it cannot earn more than one star', woolHotAir.dryStars <= 1, true);
 }
 
+console.log('\n— From Seed to Tree —');
+{
+  const ARG = load('tree', ['tree/js/state.js']);
+  const sim = ARG.sim;
+  const cur = () => sim.s;
+
+  function care(S, st) {
+    if (S.sun !== st.sun) {
+      sim.press('set', { dataset: { key: 'sun', value: String(st.sun) } });
+    }
+    if (S.water < st.water[0] + 0.03) sim.press('water');
+  }
+
+  function grow(strategy, max) {
+    sim.fresh();
+    sim.press('start');
+    let t = 0;
+    while (cur().phase === 'growing' && t < (max || 200)) {
+      const st = ARG.sim.STAGES[cur().stage];
+      strategy(cur(), st, t);
+      sim.tick(0.05);
+      t += 0.05;
+    }
+    return cur();
+  }
+
+  eq('the life cycle has eight phases', ARG.sim.STAGES.length, 8);
+  eq('it starts with a seed', ARG.sim.stage().key, 's0');
+
+  sim.fresh();
+  sim.press('start');
+  eq('starting puts it in the growing state', cur().phase, 'growing');
+  eq('  → with full health', cur().health, 1);
+  eq('  → and a damp seed', cur().water, 0.6);
+
+  const good = grow(care);
+  eq('a careful gardener reaches seed dispersal', good.phase, 'done');
+  eq('  → all the way through the last phase', good.stage, 7);
+  eq('  → with all three stars', good.stars, 3);
+  eq('  → and never lost health', good.minHealth, 1);
+  eq('  → without wilting', good.health > 0.85, true);
+
+  /* one rough patch is survivable, but it costs the calm-hand star */
+  let lastStage = -1, stageT = 0;
+  const stressed = grow((S, st) => {
+    if (S.stage !== lastStage) { lastStage = S.stage; stageT = 0; }
+    stageT += 0.05;
+    const wantSun = (S.stage === 2 && stageT < 3) ? 0 : st.sun;
+    if (S.sun !== wantSun) {
+      sim.press('set', { dataset: { key: 'sun', value: String(wantSun) } });
+    }
+    if (S.water < st.water[0] + 0.03) sim.press('water');
+  });
+  eq('a short rough patch still reaches the end', stressed.phase, 'done');
+  check('  → but health dipped', stressed.minHealth, 0.75, 0.95);
+  eq('  → and that costs a star', stressed.stars, 2);
+  eq('  → with the careful card', stressed.reason, 'treeCareful');
+
+  const wrongLight = grow((S) => {
+    if (S.sun !== 2) sim.press('set', { dataset: { key: 'sun', value: '2' } });
+    if (S.water < 0.65) sim.press('water');
+  }, 60);
+  eq('full sun on a seed is the wrong light', wrongLight.phase, 'wilted');
+  eq('  → and it names the light as the cause', wrongLight.reason, 'treeSunburn');
+
+  const drowned = grow(() => { sim.press('water'); }, 60);
+  eq('watering without stopping drowns it', drowned.phase, 'wilted');
+  eq('  → and it names the wet soil', drowned.reason, 'treeDrowned');
+
+  const dry = grow(() => {}, 60);
+  eq('never watering dries it out', dry.phase, 'wilted');
+  eq('  → and it names the thirst', dry.reason, 'treeThirsty');
+}
+
 console.log('\n— The sticker book —');
 {
   const ARG = load('shared', ['shared/progress.js']);
   const p = ARG.progress;
 
   p.reset();
-  eq('the book has fourteen stickers', p.count, 14);
+  eq('the book has fifteen stickers', p.count, 15);
   eq('and starts empty', p.earned(), 0);
   eq('  → with no stars', p.total(), 0);
 
@@ -651,14 +725,14 @@ console.log('\n— The sticker book —');
   eq('the total adds the stars up', p.total(), 4);
 
   const book = p.book();
-  eq('every catalogue sticker is in the book', book.length, 14);
+  eq('every catalogue sticker is in the book', book.length, 15);
   eq('  → each knows its activity', book[0].activity, 'aircond');
   eq('  → and has a label to explain it', typeof book[0].label, 'string');
   const acts = {};
   book.forEach(c => { acts[c.activity] = (acts[c.activity] || 0) + 1; });
-  eq('every activity in the app contributes', Object.keys(acts).length, 9);
-  eq('  → the two with missions contribute three each, and the laundry two',
-     acts.aircond === 3 && acts.train === 3 && acts.laundry === 2, true);
+  eq('every activity in the app contributes', Object.keys(acts).length, 10);
+  eq('  → the two with missions contribute three each, the laundry two and the tree one',
+     acts.aircond === 3 && acts.train === 3 && acts.laundry === 2 && acts.tree === 1, true);
 
   /* a corrupt store must not take the home screen down with it */
   const ARG2 = load('shared', ['shared/progress.js']);

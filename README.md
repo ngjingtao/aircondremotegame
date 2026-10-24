@@ -2,7 +2,7 @@
 
 [![Build Android APK](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml/badge.svg)](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml)
 
-One little app, **nine** activities for a curious kid. The home screen shows nine picture
+One little app, **ten** activities for a curious kid. The home screen shows ten picture
 tiles — tap one and you're in.
 
 ```
@@ -19,26 +19,26 @@ tiles — tap one and you're in.
 │  │[ pipes    ]│ │[ S-bend   ]│ │[ the works]│ │[ the wok  ]│          │
 │  │空调的秘密› │ │马桶      › │ │英达丽水  › │ │抽油烟机  › │          │
 │  └────────────┘ └────────────┘ └────────────┘ └────────────┘          │
-│  ┌────────────┐                                                       │
-│  │[ washer & ]│                                                       │
-│  │[ dryer    ]│                                                       │
-│  │洗衣日    › │                                                       │
-│  └────────────┘                                                       │
+│  ┌────────────┐ ┌────────────┐                                       │
+│  │[ washer & ]│ │[ seed →   ]│                                       │
+│  │[ dryer    ]│ │[ tree     ]│                                       │
+│  │洗衣日    › │ │从种子到大树›│                                       │
+│  └────────────┘ └────────────┘                                       │
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
 Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
-All nine activities speak **English and 中文**, work offline, and are installable as an app.
+All ten activities speak **English and 中文**, work offline, and are installable as an app.
 
-The nine tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
+The ten tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
 painted from one shared palette and split into three depth layers that drift gently and pull
 apart on hover. They are the only place the character guidelines in
 [`docs/character-bible.md`](docs/character-bible.md) are applied so far.
 
 ### The sticker book
 
-Under the tiles is the one thing that ties the nine activities together: a collection that
-every activity writes to. Fourteen stickers, earned by doing the thing the activity is about —
+Under the tiles is the one thing that ties the ten activities together: a collection that
+every activity writes to. Fifteen stickers, earned by doing the thing the activity is about —
 `shared/progress.js` holds the catalogue and the storage, and each activity awards its own from
 its render loop.
 
@@ -53,6 +53,7 @@ its render loop.
 | 🚰 Indah Water | 1 | following it to the last stage of the works |
 | 🍳 Kitchen Hood | 1 | pulling every bit of the smoke out |
 | 🧺 Laundry Day | 2 | a clean wash, and a dry that stops in time, each with its star rating |
+| 🌱 From Seed to Tree | 1 | growing a seed all the way to seed dispersal, with its star rating |
 
 An earned sticker takes its activity's accent colour and shows the stars; the rest sit dimmed
 behind a dashed outline, so there is always something obviously missing. Awards only ever go
@@ -520,6 +521,60 @@ away as the moisture falls.
 
 ---
 
+## 10 · 🌱 From Seed to Tree
+
+A seed in a soil cutaway, the sun overhead, a watering can, and eight phases to keep alive.
+
+**It is a watering game, not a waiting game.** The tree only grows while the soil moisture is
+inside the green band and the light matches what that phase needs. Get it wrong and growth
+stops and health falls; leave it wrong and the seedling wilts. Every phase changes the target,
+so you cannot leave one setting on and walk away.
+
+| # | Phase | What happens | Soil band | Light |
+|---|---|---|---|---|
+| 1 | 🌰 **Seed** | A tiny plant in a tough coat, carrying its own food, waiting for warmth and moisture | 45–85 % | Shade |
+| 2 | 🌱 **Germination** | Water softens the coat; the root pushes down, the shoot pushes up — still on stored food | 55–90 % | Shade |
+| 3 | 🌿 **Seedling** | The first true leaves open and photosynthesis begins; the roots are still shallow | 40–75 % | Part sun |
+| 4 | 🌳 **Sapling** | A woody stem, taller than a seedling; roots spread wider than the branches above | 35–70 % | Full sun |
+| 5 | 🌳 **Young tree** | A new ring of wood under the bark every year; the canopy catches light and the roots store food | 30–65 % | Full sun |
+| 6 | 🌸 **Flowering** | Flowers are the reproductive organs; pollen travels between them by insects, birds or wind | 35–70 % | Full sun |
+| 7 | 🍎 **Fruiting** | The ovary swells into fruit, protecting the seeds and attracting animals with its ripe colour | 30–65 % | Full sun |
+| 8 | 🌰 **Dispersal** | Seeds leave by wind, water or animals; a few land somewhere with light, water and space | 20–55 % | Full sun |
+
+The measured behaviour, asserted in the tests:
+
+| Run | Outcome | Health |
+|---|---|---|
+| Careful gardener, all eight phases | **3 ★** — seed dispersal reached, no stress | 100 % |
+| One three-second wrong-light patch at the seedling phase | **2 ★** — survives, but the calm-hand star is gone | min 83 % |
+| Full sun on the seed and keep it watered | **wilts** — *"It could not cope with the light at that phase."* | 0 % |
+| Water every frame | **wilts** — *"Its roots drowned in too much water."* | 0 % |
+| Never water after planting | **wilts** — *"It dried out and wilted before it could make seeds."* | 0 % |
+
+### The three stars
+
+| ★ | For |
+|---|---|
+| ★ | reaching the seed-dispersal phase |
+| ★★ | finishing with health never below **75 %** |
+| ★★★ | finishing with health never below **95 %** — a calm, steady hand throughout |
+
+The stars watch the **lowest** health the tree ever reached, not just the final number, so a
+brief slip cannot be healed back into a perfect score. The water count sits in the top bar as a
+visible record of how often you watered; full sun dries the soil about four times as fast as
+shade, so the marker on the moisture bar is the thing to watch.
+
+### What the scene shows
+
+The seed sits under the soil; the root and shoot appear at germination; two cotyledons open at
+the seedling phase; the sapling grows a woody stem; the young tree gets a canopy and a wider root
+system; flowers appear; the flowers become fruit; and at dispersal the fruit opens and seeds
+drift away on the wind while a new sprout starts at the edge of the soil. A shade net drops over
+the tree in shade, the sun dims, the soil turns blue as it gets wetter, the watering can pours
+when you press **WATER**, and the leaves lose their colour when the tree is in trouble.
+
+---
+
 ## Play it in a browser (fastest)
 
 Everything is plain HTML/CSS/JS — no build step.
@@ -597,6 +652,7 @@ Where it speaks:
 | **Food Eating** | Each stop is announced with its science fact as the food arrives, and the fact card highlights word by word. |
 | **Breathing & Blood** | Each experiment is announced with what it does to the body. Tap the fact card to hear it again. |
 | **Laundry Day** | The instructions when either machine starts, and the result card when a wash or dry finishes. |
+| **From Seed to Tree** | Each phase is announced with its science fact as the tree reaches it, and the result card is read out. |
 | **All activities** | Tap the help text to have the instructions read out. |
 
 If the device has no speech voices, the button hides itself and nothing else changes.
@@ -756,6 +812,10 @@ www/                          ← the whole app (no build step)
 │  ├─ index.html
 │  ├─ laundry.css                       both machines, drums, water, foam, steam
 │  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ tree/                                ── activity 10 ──
+│  ├─ index.html
+│  ├─ tree.css                          seed, roots, eight tree phases, shade net, weather
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
 ├─ _devicelab.html                      dev-only: phone & iPad previews
 docs/character-bible.md                 the character, the palettes and the house style
 
@@ -763,8 +823,8 @@ server.js                               zero-dependency static server ($PORT awa
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        182 assertions over the nine simulations
-test/render.test.js                     94 assertions: every page booted, the artwork, the book, and nothing inline
+test/sim.test.js                        202 assertions over the ten simulations
+test/render.test.js                     104 assertions: every page booted, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json
@@ -788,7 +848,7 @@ call a scene, so a `render()` that throws still passes every one of them while t
 completely dead. It happened: the train's scene referenced an undefined `clamp`, which threw on
 every frame — and because `main.js` calls `render()` *before* it schedules
 `requestAnimationFrame`, the throw killed the animation loop at boot. Pressing the throttle did
-nothing at all, yet all 56 simulation assertions passed. So this test boots each of the nine
+nothing at all, yet all 56 simulation assertions passed. So this test boots each of the ten
 pages for real — reading the exact `<script>` list out of its own HTML and loading it in order
 into a small fake DOM — then drives the `requestAnimationFrame` loop for ~3 seconds of frames and
 fails on any throw, on boot or on any later frame. The train is checked as behaviour too: apply
@@ -877,6 +937,13 @@ the throttle, run the loop, and the train must actually roll.
   `DRY_PROGRAMS`, `DRYNESS` and `HEATS` set the dry. Change a number there and the panel, the
   measured result and the star rating all follow. The spin you choose writes `wetness`, which is
   handed to the dryer as its starting `moisture` — that is the link between the two machines.
+* **The tree (tree)** — `www/tree/index.html` holds all eight stage drawings. The young tree is
+  defined once in `<defs>` as `#treeBody` and reused for phases 4–7, with flowers, fruit and
+  seeds layered on top. `#t0`…`#t7` are crossfaded by the `data-stage` attribute on `#scene`;
+  `www/tree/js/state.js` holds `STAGES`, where each phase's moisture band and light requirement
+  live, plus the growth and health model. The active stage is scaled from its base by
+  `growth`, so you can see it swell a little inside each phase. Water drops and wind-blown
+  seeds are built with `createElementNS` and animated in `scene.js`.
 
 ### Adding a language
 

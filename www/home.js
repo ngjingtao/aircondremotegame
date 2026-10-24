@@ -28,6 +28,8 @@
       tileHoodSub: 'Turn the fan up and watch how it pulls the smoke, grease and smell out of the kitchen',
       tileLaundryTitle: 'Laundry Day',
       tileLaundrySub: 'Wash the clothes, then dry them — without shrinking anything',
+      tileTreeTitle: 'From Seed to Tree',
+      tileTreeSub: 'Grow a seed into a tree — and learn what happens at every phase',
 
       /* ── the sticker book ── */
       bookTitle: 'My sticker book',
@@ -47,9 +49,10 @@
       stHood: 'Pull every bit of the smoke out',
       stWash: 'Wash a load really clean',
       stDry: 'Dry it just right',
+      stTree: 'Grow a seed all the way to a new seed',
       foot: 'Made for curious kids',
       help: '?',
-      helpTitle: 'Nine activities',
+      helpTitle: 'Ten activities',
       helpBody: `
         <h3>❄ Play Aircond</h3>
         <ul>
@@ -108,6 +111,12 @@
           <li>Warm water cleans better, but hot water shrinks wool and fades colours. A fast spin leaves less water for the dryer.</li>
           <li>Switch to <code>DRY</code>: <code>SENSOR</code> stops when the clothes are ready, while <code>TIMED</code> keeps going. Low heat protects wool and gym kit.</li>
         </ul>
+        <h3>🌱 From Seed to Tree</h3>
+        <ul>
+          <li>Plant a seed, then keep the soil moisture in the green band and the light right for each of the eight phases.</li>
+          <li>Press <code>WATER</code> to top up the soil. Full sun dries it faster, so watch the marker.</li>
+          <li>Too dry, too wet or the wrong light stalls growth and drains health. Reach seed dispersal with a healthy tree to earn the stars.</li>
+        </ul>
         <h3>Buttons in the top bar</h3>
         <ul>
           <li><code>‹ Menu</code> — back to this screen (inside an activity).</li>
@@ -138,6 +147,8 @@
       tileHoodSub: '把风速调大，看它怎么把油烟、油和味道抽走',
       tileLaundryTitle: '洗衣日',
       tileLaundrySub: '先把衣服洗干净，再烘干 — 一件都不要缩水',
+      tileTreeTitle: '从种子到大树',
+      tileTreeSub: '把一颗种子种成大树 — 看看它一生里的每个阶段',
 
       /* ── 贴纸本 ── */
       bookTitle: '我的贴纸本',
@@ -157,9 +168,10 @@
       stHood: '把油烟全部抽走',
       stWash: '把一桶衣服洗得干干净净',
       stDry: '把衣服烘得刚刚好',
+      stTree: '把一颗种子种成大树，再结出新的种子',
       foot: '给充满好奇心的小朋友',
       help: '?',
-      helpTitle: '九个小游戏',
+      helpTitle: '十个小游戏',
       helpBody: `
         <h3>❄ 玩空调</h3>
         <ul>
@@ -218,6 +230,12 @@
           <li>温水洗得更干净，但热水会让羊毛缩水、颜色变淡。脱水转得快，衣服带的水少，烘干就更省时间。</li>
           <li>切到 <code>烘干</code>：<code>湿度感应</code>在衣服干时自动停，<code>定时</code>时间到了才停。羊毛和运动服要用低温。</li>
         </ul>
+        <h3>🌱 从种子到大树</h3>
+        <ul>
+          <li>种下一颗种子，然后让土壤水分保持在绿色区域，并给每个阶段配对的光照。</li>
+          <li>按 <code>浇水</code> 给土加水。全日照下干得快，要盯着水分标记。</li>
+          <li>太干、太湿或光照不对，生长就会停下，健康也会下降。让树健康地走到传播种子，就能拿到星星。</li>
+        </ul>
         <h3>顶栏按钮</h3>
         <ul>
           <li><code>‹ 菜单</code> — 回到这个页面（在小游戏里）。</li>
@@ -242,7 +260,8 @@
     toilet:  { icon: '🚽', tint: '#5fd0ff' },
     indah:   { icon: '🚰', tint: '#3f9fd8' },
     hood:    { icon: '🍳', tint: '#f0a03a' },
-    laundry: { icon: '🧺', tint: '#5fb6ef' }
+    laundry: { icon: '🧺', tint: '#5fb6ef' },
+    tree:    { icon: '🌱', tint: '#6fbf5f' }
   };
 
   function renderBook() {

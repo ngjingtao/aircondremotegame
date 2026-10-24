@@ -343,7 +343,8 @@ const PAGES = [
   { dir: 'toilet', name: 'Toilet' },
   { dir: 'indah', name: 'Indah Water' },
   { dir: 'hood', name: 'Kitchen Hood' },
-  { dir: 'laundry', name: 'Laundry Day' }
+  { dir: 'laundry', name: 'Laundry Day' },
+  { dir: 'tree', name: 'From Seed to Tree' }
 ];
 
 console.log('\n— Every page boots —');
@@ -598,6 +599,47 @@ console.log('\n— Laundry Day: both machines run —');
   }
 }
 
+/* ─────────── the seed grows all the way to a tree ─────────── */
+console.log('\n— From Seed to Tree: the whole life cycle —');
+{
+  const p = boot('tree');
+  if (p.bootError) bad('tree — boots', p.bootError);
+  else {
+    const sim = p.ARG.sim;
+
+    const grow = (frames, care) => {
+      sim.fresh();
+      sim.press('start');
+      for (let i = 0; i < frames; i++) {
+        const st = sim.STAGES[sim.s.stage];
+        if (sim.s.phase === 'growing') {
+          if (sim.s.sun !== st.sun) {
+            sim.press('set', { dataset: { key: 'sun', value: String(st.sun) } });
+          }
+          if (care && sim.s.water < st.water[0] + 0.04) sim.press('water');
+          if (!care && i % 4 === 0) sim.press('water');
+        }
+        p.pump(1);
+        if (sim.s.phase === 'done' || sim.s.phase === 'wilted') break;
+      }
+      return sim.s;
+    };
+
+    const good = grow(8000, true);
+    eq('the tree reaches seed dispersal', good.phase, 'done');
+    eq('  → having been through every phase', good.stage, 7);
+    eq('  → with all three stars', good.stars, 3);
+    eq('  → and never lost health', good.minHealth, 1);
+
+    const drowned = grow(3000, false);
+    eq('overwatering kills the tree', drowned.phase, 'wilted');
+    eq('  → and it says the roots drowned', drowned.reason, 'treeDrowned');
+
+    if (p.errors.length) bad('tree — no errors while growing', p.errors[0]);
+    else ok('tree — no errors while growing');
+  }
+}
+
 /* ─────────── the train's sky tiles must not clip their own clouds ─────────── */
 console.log('\n— Train: sky layers —');
 {
@@ -643,7 +685,7 @@ console.log('\n— Nothing inline —');
 {
   const pages = ['index.html', 'aircond/index.html', 'food/index.html', 'train/index.html',
     'breath/index.html', 'aircare/index.html', 'toilet/index.html', 'indah/index.html', 'hood/index.html',
-    'laundry/index.html'];
+    'laundry/index.html', 'tree/index.html'];
 
   const inlineScript = [], inlineStyle = [];
   for (const rel of pages) {
@@ -686,16 +728,16 @@ console.log('\n— Home tiles —');
   const html = fs.readFileSync(path.join(WWW, 'index.html'), 'utf8');
 
   const tiles = html.match(/class="tile tile-[a-z]+"/g) || [];
-  eq('the home screen has nine tiles', tiles.length, 9);
+  eq('the home screen has ten tiles', tiles.length, 10);
 
   const svgs = html.match(/class="tile-svg"[^>]*viewBox="([^"]+)"/g) || [];
-  eq('every tile is an illustration, not a stack of spans', svgs.length, 9);
+  eq('every tile is an illustration, not a stack of spans', svgs.length, 10);
   eq('  → all on one 96×96 canvas', svgs.every(s => /viewBox="0 0 96 96"/.test(s)), true);
 
   /* three depth layers — the parallax and the idle drift both count on them */
   const layer = n => (html.match(new RegExp('class="tl ' + n + '"', 'g')) || []).length;
   eq('every scene has a back, mid and front layer',
-     layer('back') === 9 && layer('mid') === 9 && layer('front') === 9, true);
+     layer('back') === 10 && layer('mid') === 10 && layer('front') === 10, true);
 
   /* the tile illustrations use one shared palette. Every paint a shape asks for
      has to exist, or the shape silently renders black — and a paint nobody uses
@@ -728,7 +770,7 @@ console.log('\n— Sticker book on the home screen —');
 
   const p = boot('.');
   if (p.bootError) bad('home — boots', p.bootError);
-  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 14');
+  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 15');
 }
 
 /* ─────────── report ─────────── */

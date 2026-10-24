@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="From Seed to Tree" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>From Seed to Tree · Play &amp; Learn</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="tree.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">🌱</span>
+      <span class="tb-title" data-i18n="title">From Seed to Tree</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudStage">Phase</span><b id="hud-stage">1 / 8</b></div>
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudHealth">Health</span><b id="hud-health">100%</b></div>
+      <div class="hud-chip hud-score hud-water-chip"><span class="hud-label" data-i18n="hudWater">Water</span><b id="hud-water">0</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ══════════ LEFT PANEL ══════════ -->
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl" id="ctl">
+
+          <div class="phase-strip" id="phase-strip"></div>
+
+          <div class="stage-card">
+            <h2 id="stage-title">Seed</h2>
+            <p id="stage-fact"></p>
+            <div class="stage-need"><span class="need-ico">🌤️</span><span id="stage-need"></span></div>
+          </div>
+
+          <div class="moisture-card">
+            <div class="moisture-label" data-i18n="moisture">SOIL MOISTURE</div>
+            <div class="moisture-bar">
+              <i id="moist-band"></i>
+              <b id="moist-mark"></b>
+            </div>
+          </div>
+
+          <div class="ctl-block">
+            <div class="ctl-label" data-i18n="sunLabel">LIGHT</div>
+            <div class="seg three" id="sun-row"></div>
+          </div>
+
+          <button class="water-btn" data-action="water" id="water-btn">
+            <span class="wb-ico">💧</span>
+            <span data-i18n="waterBtn">WATER</span>
+            <b id="water-count">0</b>
+          </button>
+
+          <button class="start-btn" data-action="start" id="plant-start" data-i18n="plantBtn">PLANT THE SEED</button>
+
+          <div class="result" id="tree-result" hidden>
+            <div class="res-stars" id="tree-stars">☆☆☆</div>
+            <p id="tree-res-text"></p>
+            <button class="res-btn" data-action="again" data-i18n="again">PLANT AGAIN</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ SCENE ══════════ -->
+    <section id="scene" data-stage="0" data-sun="0">
+
+      <div class="scene-top">
+        <span class="scene-lead" id="scene-lead" data-i18n="lead">Life cycle</span>
+        <span class="scene-status" id="scene-status" data-i18n="statusIdle">Ready</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#17324d"/>
+              <stop offset="55%" stop-color="#2a5870"/>
+              <stop offset="100%" stop-color="#7fa77f"/>
+            </linearGradient>
+            <linearGradient id="soilGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#6b4a2a"/>
+              <stop offset="55%" stop-color="#53381f"/>
+              <stop offset="100%" stop-color="#3b2615"/>
+            </linearGradient>
+            <linearGradient id="soilWet" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3c8fc0"/>
+              <stop offset="100%" stop-color="#1d4f70"/>
+            </linearGradient>
+            <linearGradient id="trunkGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#a8824d"/>
+              <stop offset="45%" stop-color="#8a6236"/>
+              <stop offset="100%" stop-color="#6b4a2a"/>
+            </linearGradient>
+            <linearGradient id="leafGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#8ecf72"/>
+              <stop offset="100%" stop-color="#4f8a3c"/>
+            </linearGradient>
+            <radialGradient id="sunGlowGrad">
+              <stop offset="0%" stop-color="rgba(255,220,120,.95)"/>
+              <stop offset="55%" stop-color="rgba(255,200,90,.35)"/>
+              <stop offset="100%" stop-color="rgba(255,200,90,0)"/>
+            </radialGradient>
+            <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0b1220" flood-opacity="0.35"/>
+            </filter>
+
+            <!-- the young tree, reused for the later phases -->
+            <g id="treeBody">
+              <g fill="none" stroke="#8a6236" stroke-width="4" stroke-linecap="round" opacity=".85">
+                <path d="M170 400 C168 425 140 438 118 462"/>
+                <path d="M170 400 C172 430 196 446 220 470"/>
+                <path d="M170 400 C166 432 172 455 164 486"/>
+                <path d="M146 432 L126 442 M196 438 L216 448"/>
+              </g>
+              <path d="M164 402 C166 360 162 325 168 286 L176 286 C182 326 178 362 180 402 Z" fill="url(#trunkGrad)" stroke="#6b4a2a" stroke-width="1.4"/>
+              <path d="M168 340 C156 330 146 322 136 318 M176 330 C188 320 198 314 208 310" fill="none" stroke="#8a6236" stroke-width="5" stroke-linecap="round"/>
+              <g class="canopy" fill="url(#leafGrad)" stroke="#3f7a32" stroke-width="1.2" filter="url(#soft)">
+                <circle cx="170" cy="258" r="48"/>
+                <circle cx="138" cy="276" r="30"/>
+                <circle cx="202" cy="276" r="30"/>
+                <circle cx="152" cy="238" r="28"/>
+                <circle cx="190" cy="240" r="26"/>
+              </g>
+              <g fill="#a8e08a" opacity=".55">
+                <ellipse cx="150" cy="246" rx="16" ry="10"/>
+                <ellipse cx="194" cy="262" rx="18" ry="11"/>
+                <ellipse cx="168" cy="284" rx="20" ry="10"/>
+              </g>
+            </g>
+
+            <g id="saplingBody">
+              <g fill="none" stroke="#8a6236" stroke-width="3" stroke-linecap="round" opacity=".85">
+                <path d="M170 400 C168 420 152 434 138 450"/>
+                <path d="M170 400 C172 424 188 436 202 452"/>
+                <path d="M170 400 C166 428 174 444 168 466"/>
+              </g>
+              <path d="M166 402 C168 372 164 346 170 318 L177 318 C181 348 177 376 180 402 Z" fill="url(#trunkGrad)" stroke="#6b4a2a" stroke-width="1.2"/>
+              <path d="M170 348 C160 338 152 334 142 330 M176 340 C186 332 194 328 202 326" fill="none" stroke="#8a6236" stroke-width="4" stroke-linecap="round"/>
+              <g fill="url(#leafGrad)" stroke="#3f7a32" stroke-width="1">
+                <ellipse cx="142" cy="326" rx="18" ry="13" transform="rotate(-18 142 326)"/>
+                <ellipse cx="202" cy="322" rx="18" ry="13" transform="rotate(18 202 322)"/>
+                <ellipse cx="170" cy="310" rx="20" ry="15"/>
+                <ellipse cx="156" cy="344" rx="14" ry="10" transform="rotate(-24 156 344)"/>
+                <ellipse cx="188" cy="342" rx="14" ry="10" transform="rotate(24 188 342)"/>
+              </g>
+            </g>
+          </defs>
+
+          <!-- sky -->
+          <rect x="0" y="0" width="340" height="400" fill="url(#skyGrad)"/>
+          <g fill="#ffffff" opacity=".14">
+            <ellipse cx="60" cy="90" rx="38" ry="13"/>
+            <ellipse cx="82" cy="82" rx="24" ry="10"/>
+            <ellipse cx="220" cy="120" rx="30" ry="10"/>
+          </g>
+
+          <!-- sun -->
+          <g id="sun">
+            <circle id="sunGlow" cx="292" cy="64" r="58" fill="url(#sunGlowGrad)" opacity=".9"/>
+            <g id="sunRays" stroke="#ffd166" stroke-width="3" stroke-linecap="round">
+              <path d="M292 8 V22 M292 106 V120 M236 64 H250 M334 64 H338 M252 24 L262 34 M322 94 L332 104 M332 24 L322 34 M262 94 L252 104"/>
+            </g>
+            <circle cx="292" cy="64" r="20" fill="#ffd166" stroke="#f0a03a" stroke-width="2"/>
+          </g>
+
+          <!-- shade net -->
+          <g id="shadeNet" opacity="0">
+            <path d="M50 132 Q170 108 290 132 L296 152 Q170 128 44 152 Z" fill="#6f8f5a" stroke="#4f6b3f" stroke-width="1.6"/>
+            <path d="M58 136 L62 400 M282 136 L286 400" stroke="#7a5b33" stroke-width="4"/>
+            <path d="M70 145 L280 145" stroke="#7a5b33" stroke-width="2"/>
+            <g stroke="#4f6b3f" stroke-width="1" opacity=".55">
+              <path d="M72 132 L92 152 M104 127 L124 148 M136 123 L156 146 M168 121 L188 145 M200 123 L220 146 M232 127 L252 148 M264 132 L284 152"/>
+            </g>
+          </g>
+
+          <!-- soil cutaway -->
+          <rect x="0" y="400" width="340" height="120" fill="url(#soilGrad)"/>
+          <rect id="soilMoisture" x="0" y="400" width="340" height="120" fill="url(#soilWet)" opacity=".3"/>
+          <g fill="#8a6236" opacity=".5">
+            <ellipse cx="48" cy="470" rx="7" ry="3"/>
+            <ellipse cx="280" cy="500" rx="9" ry="4"/>
+            <ellipse cx="120" cy="508" rx="6" ry="3"/>
+          </g>
+          <path d="M0 400 H340" stroke="#3f5f35" stroke-width="4"/>
+          <g stroke="#4f8a3c" stroke-width="2" stroke-linecap="round" opacity=".85">
+            <path d="M20 400 q2 -12 5 -16 M30 400 q-2 -9 2 -14 M48 400 q1 -10 6 -15 M304 400 q-2 -12 -6 -16 M316 400 q2 -9 -1 -14"/>
+          </g>
+
+          <!-- ═════ stage 0 · seed ═════ -->
+          <g id="t0" class="tstage">
+            <g transform="translate(170 438) rotate(-16)">
+              <ellipse rx="12" ry="8" fill="#a8824d" stroke="#6b4a2a" stroke-width="1.3"/>
+              <path d="M-5 -1 Q0 3 5 -1" fill="none" stroke="#6b4a2a" stroke-width="1"/>
+            </g>
+            <circle cx="170" cy="438" r="20" fill="#ffd166" opacity=".1"/>
+          </g>
+
+          <!-- ═════ stage 1 · germination ═════ -->
+          <g id="t1" class="tstage">
+            <g transform="translate(170 440) rotate(-8)">
+              <ellipse rx="12" ry="8" fill="#a8824d" stroke="#6b4a2a" stroke-width="1.3"/>
+              <path d="M-1 8 L-4 18 M1 8 L4 18" stroke="#f6f1e6" stroke-width="1.2"/>
+            </g>
+            <path d="M170 438 C168 452 170 466 162 486" fill="none" stroke="#a8824d" stroke-width="3" stroke-linecap="round"/>
+            <path d="M170 438 C176 420 164 410 170 398" fill="none" stroke="#7fc45f" stroke-width="3" stroke-linecap="round"/>
+            <path d="M170 398 q7 -9 13 -2 q-6 8 -13 2" fill="url(#leafGrad)" stroke="#4f8a3c" stroke-width="1"/>
+          </g>
+
+          <!-- ═════ stage 2 · seedling ═════ -->
+          <g id="t2" class="tstage">
+            <g fill="none" stroke="#a8824d" stroke-width="2.4" stroke-linecap="round">
+              <path d="M170 400 C168 422 158 438 146 458"/>
+              <path d="M170 400 C172 426 182 440 194 460"/>
+              <path d="M170 400 C166 430 172 448 166 468"/>
+            </g>
+            <path d="M170 402 Q166 386 170 368" fill="none" stroke="#6fae50" stroke-width="4" stroke-linecap="round"/>
+            <path d="M170 370 q-20 -16 -30 2 q18 12 30 -2" fill="url(#leafGrad)" stroke="#3f7a32" stroke-width="1.1"/>
+            <path d="M170 370 q20 -16 30 2 q-18 12 -30 -2" fill="url(#leafGrad)" stroke="#3f7a32" stroke-width="1.1"/>
+            <path d="M167 380 q-8 -8 -14 -2" fill="none" stroke="#7fc45f" stroke-width="1.6" stroke-linecap="round"/>
+          </g>
+
+          <!-- ═════ stage 3 · sapling ═════ -->
+          <g id="t3" class="tstage"><use href="#saplingBody"/></g>
+
+          <!-- ═════ stage 4 · young tree ═════ -->
+          <g id="t4" class="tstage"><use href="#treeBody"/></g>
+
+          <!-- ═════ stage 5 · flowering ═════ -->
+          <g id="t5" class="tstage">
+            <use href="#treeBody"/>
+            <g fill="#ff9ec4" stroke="#e26a9a" stroke-width=".8">
+              <circle cx="132" cy="252" r="4.5"/><circle cx="148" cy="226" r="4.2"/>
+              <circle cx="176" cy="216" r="4.6"/><circle cx="204" cy="232" r="4.2"/>
+              <circle cx="216" cy="260" r="4.6"/><circle cx="196" cy="286" r="4.2"/>
+              <circle cx="150" cy="292" r="4.4"/><circle cx="122" cy="274" r="4.1"/>
+              <circle cx="170" cy="266" r="4.8"/><circle cx="188" cy="252" r="4.1"/>
+            </g>
+            <g fill="#fff0a8">
+              <circle cx="132" cy="252" r="1.3"/><circle cx="176" cy="216" r="1.3"/>
+              <circle cx="216" cy="260" r="1.3"/><circle cx="150" cy="292" r="1.3"/>
+            </g>
+          </g>
+
+          <!-- ═════ stage 6 · fruiting ═════ -->
+          <g id="t6" class="tstage">
+            <use href="#treeBody"/>
+            <g fill="#e2453c" stroke="#a82f28" stroke-width=".9">
+              <circle cx="136" cy="290" r="5.4"/><circle cx="158" cy="306" r="5.8"/>
+              <circle cx="184" cy="302" r="5.5"/><circle cx="206" cy="284" r="5.2"/>
+              <circle cx="214" cy="260" r="4.8"/><circle cx="124" cy="270" r="4.8"/>
+            </g>
+            <g stroke="#6b4a2a" stroke-width="1.2" stroke-linecap="round">
+              <path d="M136 285 V279 M158 300 V294 M184 296 V290 M206 279 V273"/>
+            </g>
+            <g fill="#8ecf72" opacity=".8">
+              <path d="M134 278 q5 -5 9 0 q-4 4 -9 0"/>
+              <path d="M156 293 q5 -5 9 0 q-4 4 -9 0"/>
+              <path d="M182 289 q5 -5 9 0 q-4 4 -9 0"/>
+            </g>
+          </g>
+
+          <!-- ═════ stage 7 · dispersal ═════ -->
+          <g id="t7" class="tstage">
+            <use href="#treeBody"/>
+            <g fill="#e2453c" opacity=".85" stroke="#a82f28" stroke-width=".8">
+              <path d="M130 286 q7 -8 14 0 q-7 6 -14 0"/>
+              <path d="M196 290 q7 -8 14 0 q-7 6 -14 0"/>
+              <path d="M166 306 q7 -8 14 0 q-7 6 -14 0"/>
+            </g>
+            <g transform="translate(268 400)">
+              <path d="M0 0 V-16" stroke="#6fae50" stroke-width="2.6" stroke-linecap="round"/>
+              <path d="M0 -16 q-9 -9 -14 -2 q8 8 14 2" fill="url(#leafGrad)" stroke="#3f7a32" stroke-width=".8"/>
+              <path d="M0 -16 q9 -9 14 -2 q-8 8 -14 2" fill="url(#leafGrad)" stroke="#3f7a32" stroke-width=".8"/>
+            </g>
+          </g>
+
+          <!-- seeds on the wind -->
+          <g id="seedParticles"></g>
+
+          <!-- the watering can -->
+          <g id="waterCan" opacity="0" transform="translate(34 170) rotate(16)">
+            <rect x="0" y="6" width="42" height="30" rx="7" fill="#8fd0ff" stroke="#4aa8de" stroke-width="2"/>
+            <path d="M42 12 L66 2 L66 13 L44 23" fill="#8fd0ff" stroke="#4aa8de" stroke-width="2"/>
+            <path d="M10 6 q11 -12 22 0" fill="none" stroke="#4aa8de" stroke-width="2.4"/>
+            <rect x="8" y="12" width="8" height="18" rx="3" fill="#bfe8ff" opacity=".7"/>
+          </g>
+          <g id="waterDrops"></g>
+
+          <!-- fallen leaves when it is in trouble -->
+          <g id="wiltLeaves" opacity="0">
+            <path d="M132 398 q10 -8 16 0 q-8 6 -16 0" fill="#a8824d" opacity=".8"/>
+            <path d="M146 402 q8 -6 13 0 q-7 5 -13 0" fill="#b8955d" opacity=".7"/>
+            <path d="M196 400 q9 -7 14 0 q-7 5 -14 0" fill="#a8824d" opacity=".75"/>
+          </g>
+
+          <!-- labels -->
+          <g id="labels">
+            <g class="lab" data-lab="seed" data-from="0" data-to="1"><text x="198" y="456" text-anchor="start" data-i18n="lSeed">seed</text></g>
+            <g class="lab" data-lab="roots" data-from="0" data-to="7"><text x="110" y="482" text-anchor="end" data-i18n="lRoots">roots</text></g>
+            <g class="lab" data-lab="shoot" data-from="1" data-to="1"><text x="190" y="392" text-anchor="start" data-i18n="lShoot">shoot</text></g>
+            <g class="lab" data-lab="leaves" data-from="2" data-to="3"><text x="210" y="356" text-anchor="start" data-i18n="lLeaves">leaves</text></g>
+            <g class="lab" data-lab="trunk" data-from="4" data-to="7"><text x="192" y="356" text-anchor="start" data-i18n="lTrunk">trunk</text></g>
+            <g class="lab" data-lab="canopy" data-from="4" data-to="7"><text x="244" y="236" text-anchor="start" data-i18n="lCanopy">canopy</text></g>
+            <g class="lab" data-lab="flowers" data-from="5" data-to="5"><text x="244" y="258" text-anchor="start" data-i18n="lFlowers">flowers</text></g>
+            <g class="lab" data-lab="fruit" data-from="6" data-to="6"><text x="224" y="308" text-anchor="start" data-i18n="lFruit">fruit</text></g>
+            <g class="lab" data-lab="seeds" data-from="7" data-to="7"><text x="304" y="218" text-anchor="end" data-i18n="lSeeds">seeds</text></g>
+            <g class="lab" data-lab="sun" data-from="0" data-to="7"><text x="292" y="28" text-anchor="middle" data-i18n="lSun">sun</text></g>
+            <g class="lab" data-lab="soil" data-from="0" data-to="7"><text x="34" y="494" text-anchor="start" data-i18n="lSoil">soil</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+      <div class="toast" id="toast"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">From seed to tree</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

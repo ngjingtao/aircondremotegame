@@ -46,7 +46,7 @@
       <p class="home-sub" data-i18n="pickSub">Tap a picture to start</p>
 
       <!-- ── shared paints for the tile illustrations ──
-           One hidden SVG so the nine scenes below share one palette. Every
+           One hidden SVG so the ten scenes below share one palette. Every
            value is straight out of docs/character-bible.md. -->
       <svg class="tile-defs" width="0" height="0" aria-hidden="true" focusable="false">
         <defs>
@@ -419,15 +419,48 @@
           <span class="tile-go">›</span>
         </a>
 
+        <!-- ⑩ From Seed to Tree — a seed under the soil becoming a sapling -->
+        <a class="tile tile-tree" href="tree/index.html">
+          <div class="tile-art">
+            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+              <g class="tl back">
+                <rect x="0" y="0" width="96" height="62" fill="#15352c"/>
+                <circle cx="76" cy="19" r="16" fill="#ffd166" opacity=".16"/>
+                <circle cx="76" cy="19" r="10" fill="#ffd166"/>
+                <path d="M0 62 H96 V96 H0 Z" fill="#5a3f26"/>
+                <path d="M0 62 q18 -8 34 0 q18 8 34 0 q16 -6 28 0 v5 H0 Z" fill="#6b4a2a"/>
+              </g>
+              <g class="tl mid">
+                <ellipse cx="48" cy="74" rx="9" ry="6" fill="#a8824d" stroke="#6b4a2a" stroke-width="1.2" transform="rotate(-14 48 74)"/>
+                <path d="M48 80 v10 M48 84 l-5 6 M48 86 l5 5" fill="none" stroke="#d9b77c" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M20 16 q4 8 1 14 M29 10 q3 10 0 16" fill="none" stroke="url(#tWater)" stroke-width="2.2" stroke-linecap="round" opacity=".75"/>
+                <circle cx="20" cy="20" r="2" fill="#8fd0ff"/>
+                <circle cx="27" cy="16" r="1.6" fill="#8fd0ff"/>
+              </g>
+              <g class="tl front">
+                <path d="M48 70 V42" fill="none" stroke="#6fae50" stroke-width="4" stroke-linecap="round"/>
+                <path d="M48 50 q-17 -13 -24 1 q15 11 24 -1" fill="url(#tLeaf)" stroke="#3f7a32" stroke-width="1"/>
+                <path d="M48 43 q17 -13 24 1 q-15 11 -24 -1" fill="url(#tLeaf)" stroke="#3f7a32" stroke-width="1"/>
+                <path d="M48 58 q-12 8 -18 2" fill="none" stroke="#8ecf72" stroke-width="1.6" stroke-linecap="round" opacity=".7"/>
+              </g>
+            </svg>
+          </div>
+          <div class="tile-text">
+            <h2 data-i18n="tileTreeTitle">From Seed to Tree</h2>
+            <p data-i18n="tileTreeSub">Grow a seed into a tree — and learn what happens at every phase</p>
+          </div>
+          <span class="tile-go">›</span>
+        </a>
+
       </div>
 
       <!-- ── the sticker book ──
-           The one thing that ties the nine activities together: each one
+           The one thing that ties the ten activities together: each one
            records what a child has managed, and it is collected here. -->
       <section class="book" id="book">
         <h2 class="book-title">
           <span data-i18n="bookTitle">My sticker book</span>
-          <b id="book-count">0 / 14</b>
+          <b id="book-count">0 / 15</b>
         </h2>
         <p class="book-note" id="book-note" data-i18n="bookHint">…</p>
         <div class="book-grid" id="book-grid"></div>

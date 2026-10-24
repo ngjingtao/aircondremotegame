@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-75b6834';
+const CACHE = 'play-learn-a7b161b';
 
 const ASSETS = [
   './',
@@ -105,7 +105,15 @@ const ASSETS = [
   'laundry/js/state.js',
   'laundry/js/scene.js',
   'laundry/js/panel.js',
-  'laundry/js/main.js'
+  'laundry/js/main.js',
+
+  'tree/index.html',
+  'tree/tree.css',
+  'tree/js/i18n.js',
+  'tree/js/state.js',
+  'tree/js/scene.js',
+  'tree/js/panel.js',
+  'tree/js/main.js'
 ];
 
 self.addEventListener('install', event => {
