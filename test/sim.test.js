@@ -540,13 +540,99 @@ console.log('\n— Kitchen Hood —');
   check('  → and it catches less', sim.s.capture, 0.6, 0.85);
 }
 
+console.log('\n— Laundry Day —');
+{
+  const ARG = load('laundry', ['laundry/js/state.js']);
+  const sim = ARG.sim;
+  const cur = () => sim.s;
+
+  function choose(key, value) {
+    sim.press('set', { dataset: { key: key, value: String(value) } });
+  }
+
+  function wash(opts) {
+    sim.fresh();
+    choose('load', opts.load || 'mixed');
+    choose('program', opts.program || 'cotton');
+    choose('temp', opts.temp == null ? 40 : opts.temp);
+    choose('spin', opts.spin == null ? 1000 : opts.spin);
+    choose('detergent', opts.detergent || 'normal');
+    sim.press('start');
+    let t = 0;
+    while (cur().phase !== 'done' && t < 120) { sim.tick(0.05); t += 0.05; }
+    return cur();
+  }
+
+  function dry(opts) {
+    sim.fresh();
+    choose('load', opts.load || 'mixed');
+    if (opts.wetness != null) { cur().wetness = opts.wetness; cur().moisture = opts.wetness; }
+    sim.press('tab', { dataset: { tab: 'dry' } });
+    choose('dryProgram', opts.dryProgram || 'sensor');
+    choose('dryness', opts.dryness || 'cupboard');
+    choose('heat', opts.heat || 'high');
+    sim.press('start');
+    let t = 0;
+    while (cur().phase !== 'done' && t < 120) { sim.tick(0.05); t += 0.05; }
+    return cur();
+  }
+
+  eq('there are three loads', ARG.sim.LOADS.length, 3);
+  eq('and four wash programmes', ARG.sim.PROG_ORDER.length, 4);
+
+  const mixed = wash({});
+  eq('a sensible cotton wash finishes', mixed.phase, 'done');
+  check('  → the clothes come out clean', mixed.clean, 0.85, 1);
+  eq('  → and it earns all three stars', mixed.washStars, 3);
+  check('  → with some water left for the dryer', mixed.wetness, 0.25, 0.6);
+
+  const cold = wash({ program: 'quick', temp: 20, spin: 600, detergent: 'low' });
+  eq('a cold quick wash leaves them dirty', cold.washStars, 0);
+  eq('  → and says exactly that', cold.washReason, 'washDirty');
+
+  const woolGood = wash({ load: 'wool', program: 'wool', temp: 30, spin: 600 });
+  check('a wool programme cleans wool', woolGood.clean, 0.85, 1);
+  eq('  → without damaging it', woolGood.care, 1);
+  eq('  → and earns three stars', woolGood.washStars, 3);
+
+  const gym = wash({ load: 'gym', program: 'heavy', temp: 40, spin: 1000 });
+  check('sweaty gym kit needs the heavy programme', gym.clean, 0.85, 1);
+  eq('  → and can still earn three stars', gym.washStars, 3);
+
+  const woolHot = wash({ load: 'wool', program: 'cotton', temp: 60, spin: 1400, detergent: 'high' });
+  check('hot water and a fast spin damage wool', woolHot.care, 0, 0.5);
+  eq('  → so it cannot earn a star', woolHot.washStars, 0);
+  eq('  → and the card explains why', woolHot.washReason, 'washDamage');
+
+  const slow = wash({ spin: 600 });
+  const fast = wash({ spin: 1400 });
+  eq('a faster spin leaves less water in the clothes', fast.wetness < slow.wetness, true);
+
+  const sensor = dry({ wetness: 0.52, dryProgram: 'sensor', heat: 'high' });
+  eq('the sensor dry finishes', sensor.phase, 'done');
+  check('  → dry enough to put away', sensor.moisture, 0.02, 0.08);
+  eq('  → and earns three stars', sensor.dryStars, 3);
+  check('  → using only a little energy', sensor.dryEnergy, 0, 24);
+
+  const timed = dry({ wetness: 0.32, dryProgram: 'timed', heat: 'high' });
+  eq('a timed cycle keeps going after the clothes are dry', timed.dryReason, 'dryOver');
+  eq('  → so it loses the over-dry star', timed.dryStars, 1);
+  eq('  → and ends drier than the sensor cycle', timed.moisture < sensor.moisture, true);
+
+  const woolAir = dry({ load: 'wool', wetness: 0.75, dryProgram: 'sensor', heat: 'low' });
+  eq('wool likes a low, gentle dry', woolAir.dryStars, 3);
+  const woolHotAir = dry({ load: 'wool', wetness: 0.75, dryProgram: 'sensor', heat: 'high' });
+  check('high heat damages wool in the dryer', woolHotAir.care, 0, 0.75);
+  eq('  → so it cannot earn more than one star', woolHotAir.dryStars <= 1, true);
+}
+
 console.log('\n— The sticker book —');
 {
   const ARG = load('shared', ['shared/progress.js']);
   const p = ARG.progress;
 
   p.reset();
-  eq('the book has twelve stickers', p.count, 12);
+  eq('the book has fourteen stickers', p.count, 14);
   eq('and starts empty', p.earned(), 0);
   eq('  → with no stars', p.total(), 0);
 
@@ -565,14 +651,14 @@ console.log('\n— The sticker book —');
   eq('the total adds the stars up', p.total(), 4);
 
   const book = p.book();
-  eq('every catalogue sticker is in the book', book.length, 12);
+  eq('every catalogue sticker is in the book', book.length, 14);
   eq('  → each knows its activity', book[0].activity, 'aircond');
   eq('  → and has a label to explain it', typeof book[0].label, 'string');
   const acts = {};
   book.forEach(c => { acts[c.activity] = (acts[c.activity] || 0) + 1; });
-  eq('every activity in the app contributes', Object.keys(acts).length, 8);
-  eq('  → the two with missions contribute three each',
-     acts.aircond === 3 && acts.train === 3, true);
+  eq('every activity in the app contributes', Object.keys(acts).length, 9);
+  eq('  → the two with missions contribute three each, and the laundry two',
+     acts.aircond === 3 && acts.train === 3 && acts.laundry === 2, true);
 
   /* a corrupt store must not take the home screen down with it */
   const ARG2 = load('shared', ['shared/progress.js']);

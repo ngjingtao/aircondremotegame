@@ -342,7 +342,8 @@ const PAGES = [
   { dir: 'aircare', name: 'Inside the Aircon' },
   { dir: 'toilet', name: 'Toilet' },
   { dir: 'indah', name: 'Indah Water' },
-  { dir: 'hood', name: 'Kitchen Hood' }
+  { dir: 'hood', name: 'Kitchen Hood' },
+  { dir: 'laundry', name: 'Laundry Day' }
 ];
 
 console.log('\n— Every page boots —');
@@ -569,6 +570,34 @@ console.log('\n— Indah Water: the journey and the works —');
   }
 }
 
+/* ─────────── the washer and the dryer actually run ─────────── */
+console.log('\n— Laundry Day: both machines run —');
+{
+  const p = boot('laundry');
+  if (p.bootError) bad('laundry — boots', p.bootError);
+  else {
+    const sim = p.ARG.sim;
+    eq('it opens on the wash tab', sim.s.tab, 'wash');
+
+    /* the loop alone must take a whole wash cycle to the end */
+    sim.press('set', { dataset: { key: 'temp', value: '40' } });
+    sim.press('start');
+    p.pump(2100);                       // ~34 s of frames
+    eq('the wash cycle finishes', sim.s.washDone, true);
+    eq('  → and it is clean', sim.s.clean >= 0.85, true);
+    eq('  → with a rating to show', sim.s.washStars >= 1, true);
+
+    sim.press('tab', { dataset: { tab: 'dry' } });
+    sim.press('start');
+    p.pump(1800);                       // ~29 s of frames
+    eq('the dryer cycle finishes', sim.s.dryDone, true);
+    eq('  → dry enough to put away', sim.s.moisture <= 0.08, true);
+
+    if (p.errors.length) bad('laundry — no errors while running', p.errors[0]);
+    else ok('laundry — no errors while running');
+  }
+}
+
 /* ─────────── the train's sky tiles must not clip their own clouds ─────────── */
 console.log('\n— Train: sky layers —');
 {
@@ -613,7 +642,8 @@ console.log('\n— Train: sky layers —');
 console.log('\n— Nothing inline —');
 {
   const pages = ['index.html', 'aircond/index.html', 'food/index.html', 'train/index.html',
-    'breath/index.html', 'aircare/index.html', 'toilet/index.html', 'indah/index.html', 'hood/index.html'];
+    'breath/index.html', 'aircare/index.html', 'toilet/index.html', 'indah/index.html', 'hood/index.html',
+    'laundry/index.html'];
 
   const inlineScript = [], inlineStyle = [];
   for (const rel of pages) {
@@ -656,16 +686,16 @@ console.log('\n— Home tiles —');
   const html = fs.readFileSync(path.join(WWW, 'index.html'), 'utf8');
 
   const tiles = html.match(/class="tile tile-[a-z]+"/g) || [];
-  eq('the home screen has eight tiles', tiles.length, 8);
+  eq('the home screen has nine tiles', tiles.length, 9);
 
   const svgs = html.match(/class="tile-svg"[^>]*viewBox="([^"]+)"/g) || [];
-  eq('every tile is an illustration, not a stack of spans', svgs.length, 8);
+  eq('every tile is an illustration, not a stack of spans', svgs.length, 9);
   eq('  → all on one 96×96 canvas', svgs.every(s => /viewBox="0 0 96 96"/.test(s)), true);
 
   /* three depth layers — the parallax and the idle drift both count on them */
   const layer = n => (html.match(new RegExp('class="tl ' + n + '"', 'g')) || []).length;
   eq('every scene has a back, mid and front layer',
-     layer('back') === 8 && layer('mid') === 8 && layer('front') === 8, true);
+     layer('back') === 9 && layer('mid') === 9 && layer('front') === 9, true);
 
   /* the tile illustrations use one shared palette. Every paint a shape asks for
      has to exist, or the shape silently renders black — and a paint nobody uses
@@ -698,7 +728,7 @@ console.log('\n— Sticker book on the home screen —');
 
   const p = boot('.');
   if (p.bootError) bad('home — boots', p.bootError);
-  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 12');
+  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 14');
 }
 
 /* ─────────── report ─────────── */

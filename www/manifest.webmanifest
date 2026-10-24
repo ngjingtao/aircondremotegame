@@ -1,7 +1,7 @@
 {
   "name": "Play & Learn",
   "short_name": "Play & Learn",
-  "description": "Eight CSS-drawn activities for kids: Play Aircond, Food Eating, Train Driving, Breathing & Blood, Inside the Aircon, Toilet, Indah Water and Kitchen Hood.",
+  "description": "Nine CSS-drawn activities for kids: Play Aircond, Food Eating, Train Driving, Breathing & Blood, Inside the Aircon, Toilet, Indah Water, Kitchen Hood and Laundry Day.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -28,6 +28,7 @@
     { "name": "Inside the Aircon", "url": "aircare/index.html" },
     { "name": "Toilet", "url": "toilet/index.html" },
     { "name": "Indah Water", "url": "indah/index.html" },
-    { "name": "Kitchen Hood", "url": "hood/index.html" }
+    { "name": "Kitchen Hood", "url": "hood/index.html" },
+    { "name": "Laundry Day", "url": "laundry/index.html" }
   ]
 }

@@ -26,6 +26,8 @@
       tileIndahSub: 'Follow the wastewater from the house to the treatment plant — and see how the bacteria clean it',
       tileHoodTitle: 'Kitchen Hood',
       tileHoodSub: 'Turn the fan up and watch how it pulls the smoke, grease and smell out of the kitchen',
+      tileLaundryTitle: 'Laundry Day',
+      tileLaundrySub: 'Wash the clothes, then dry them — without shrinking anything',
 
       /* ── the sticker book ── */
       bookTitle: 'My sticker book',
@@ -43,9 +45,11 @@
       stToilet: 'See a flush right through',
       stIndah: 'Follow it to the end of the works',
       stHood: 'Pull every bit of the smoke out',
+      stWash: 'Wash a load really clean',
+      stDry: 'Dry it just right',
       foot: 'Made for curious kids',
       help: '?',
-      helpTitle: 'Eight activities',
+      helpTitle: 'Nine activities',
       helpBody: `
         <h3>❄ Play Aircond</h3>
         <ul>
@@ -98,6 +102,12 @@
           <li>Press <code>FILTER → DIRTY</code>: the airflow drops, the noise goes up and smoke starts leaking — exactly what a clogged filter does.</li>
           <li>Switch between <code>OUTSIDE</code> and <code>RECIRCULATE</code> to see where the air ends up.</li>
         </ul>
+        <h3>🧺 Laundry Day</h3>
+        <ul>
+          <li>Pick a load, then set the programme, water temperature, spin and detergent. Press <code>START</code>.</li>
+          <li>Warm water cleans better, but hot water shrinks wool and fades colours. A fast spin leaves less water for the dryer.</li>
+          <li>Switch to <code>DRY</code>: <code>SENSOR</code> stops when the clothes are ready, while <code>TIMED</code> keeps going. Low heat protects wool and gym kit.</li>
+        </ul>
         <h3>Buttons in the top bar</h3>
         <ul>
           <li><code>‹ Menu</code> — back to this screen (inside an activity).</li>
@@ -126,6 +136,8 @@
       tileIndahSub: '跟着污水从住家一路走到污水厂 — 看细菌怎么把它变干净',
       tileHoodTitle: '抽油烟机',
       tileHoodSub: '把风速调大，看它怎么把油烟、油和味道抽走',
+      tileLaundryTitle: '洗衣日',
+      tileLaundrySub: '先把衣服洗干净，再烘干 — 一件都不要缩水',
 
       /* ── 贴纸本 ── */
       bookTitle: '我的贴纸本',
@@ -143,9 +155,11 @@
       stToilet: '看完整一次冲水',
       stIndah: '一路跟到污水厂最后一步',
       stHood: '把油烟全部抽走',
+      stWash: '把一桶衣服洗得干干净净',
+      stDry: '把衣服烘得刚刚好',
       foot: '给充满好奇心的小朋友',
       help: '?',
-      helpTitle: '八个小游戏',
+      helpTitle: '九个小游戏',
       helpBody: `
         <h3>❄ 玩空调</h3>
         <ul>
@@ -198,6 +212,12 @@
           <li>按 <code>滤网 → 脏了</code>：风量掉下来、噪音变大、油烟开始外漏 — 这就是滤网堵住的样子。</li>
           <li>在 <code>排到室外</code> 和 <code>室内循环</code> 之间切换，看空气最后去了哪里。</li>
         </ul>
+        <h3>🧺 洗衣日</h3>
+        <ul>
+          <li>选一桶衣物，再选程序、水温、脱水和洗衣液，然后按 <code>开始</code>。</li>
+          <li>温水洗得更干净，但热水会让羊毛缩水、颜色变淡。脱水转得快，衣服带的水少，烘干就更省时间。</li>
+          <li>切到 <code>烘干</code>：<code>湿度感应</code>在衣服干时自动停，<code>定时</code>时间到了才停。羊毛和运动服要用低温。</li>
+        </ul>
         <h3>顶栏按钮</h3>
         <ul>
           <li><code>‹ 菜单</code> — 回到这个页面（在小游戏里）。</li>
@@ -221,7 +241,8 @@
     aircare: { icon: '🌀', tint: '#5fb6ef' },
     toilet:  { icon: '🚽', tint: '#5fd0ff' },
     indah:   { icon: '🚰', tint: '#3f9fd8' },
-    hood:    { icon: '🍳', tint: '#f0a03a' }
+    hood:    { icon: '🍳', tint: '#f0a03a' },
+    laundry: { icon: '🧺', tint: '#5fb6ef' }
   };
 
   function renderBook() {

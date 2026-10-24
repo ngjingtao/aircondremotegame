@@ -2,7 +2,7 @@
 
 [![Build Android APK](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml/badge.svg)](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml)
 
-One little app, **eight** activities for a curious kid. The home screen shows eight picture
+One little app, **nine** activities for a curious kid. The home screen shows nine picture
 tiles — tap one and you're in.
 
 ```
@@ -19,21 +19,26 @@ tiles — tap one and you're in.
 │  │[ pipes    ]│ │[ S-bend   ]│ │[ the works]│ │[ the wok  ]│          │
 │  │空调的秘密› │ │马桶      › │ │英达丽水  › │ │抽油烟机  › │          │
 │  └────────────┘ └────────────┘ └────────────┘ └────────────┘          │
+│  ┌────────────┐                                                       │
+│  │[ washer & ]│                                                       │
+│  │[ dryer    ]│                                                       │
+│  │洗衣日    › │                                                       │
+│  └────────────┘                                                       │
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
 Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
-All eight activities speak **English and 中文**, work offline, and are installable as an app.
+All nine activities speak **English and 中文**, work offline, and are installable as an app.
 
-The eight tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
+The nine tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
 painted from one shared palette and split into three depth layers that drift gently and pull
 apart on hover. They are the only place the character guidelines in
 [`docs/character-bible.md`](docs/character-bible.md) are applied so far.
 
 ### The sticker book
 
-Under the tiles is the one thing that ties the eight activities together: a collection that
-every activity writes to. Twelve stickers, earned by doing the thing the activity is about —
+Under the tiles is the one thing that ties the nine activities together: a collection that
+every activity writes to. Fourteen stickers, earned by doing the thing the activity is about —
 `shared/progress.js` holds the catalogue and the storage, and each activity awards its own from
 its render loop.
 
@@ -47,6 +52,7 @@ its render loop.
 | 🚽 Toilet | 1 | seeing a flush right through |
 | 🚰 Indah Water | 1 | following it to the last stage of the works |
 | 🍳 Kitchen Hood | 1 | pulling every bit of the smoke out |
+| 🧺 Laundry Day | 2 | a clean wash, and a dry that stops in time, each with its star rating |
 
 An earned sticker takes its activity's accent colour and shows the stars; the rest sit dimmed
 behind a dashed outline, so there is always something obviously missing. Awards only ever go
@@ -458,6 +464,62 @@ cleaner.** It makes a low-pressure area, and the air around it pushes the smoke 
 
 ---
 
+## 9 · 🧺 Laundry Day
+
+Two machines, one basket of clothes, and the same trade-offs a real laundry has. Pick a load,
+wash it, then carry the wet clothes over to the dryer — the spin you chose is what decides how
+much work the dryer has left.
+
+### The washing machine
+
+The load changes what "careful" means:
+
+| Load | How dirty | No hotter than | No faster than | Dryer heat |
+|---|---|---|---|---|
+| 🧺 Everyday | 55 % | 60 °C | 1400 rpm | high is fine |
+| 👕 Gym kit | 85 % | 40 °C | 1000 rpm | **low only** |
+| 🧶 Woollens | 35 % | 30 °C | 600 rpm | **low only** |
+
+Four programmes (wash phase: Quick 8 s · Cotton 14 s · Heavy 18 s · Wool 10 s), four water
+temperatures, three spin speeds and three detergent doses. Warm water and more detergent clean better, but
+hot water shrinks wool, a fast spin roughs up delicates, and too much detergent makes foam that
+traps dirt and leaves residue.
+
+Measured, and asserted in the tests:
+
+| Load | Settings | Clean | Care | Outcome |
+|---|---|---|---|---|
+| 🧺 Everyday | Cotton · 40 °C · 1000 · normal | **89 %** | 1.00 | **3 ★** — clean, safe, thrifty |
+| 🧺 Everyday | Quick · 20 °C · 600 · low | 64 % | 1.00 | **0 ★** — still dirty |
+| 🧺 Everyday | Heavy · 40 °C · 1000 · normal | 94 % | 1.00 | **2 ★** — clean, but over the water/power budget |
+| 👕 Gym kit | Heavy · 40 °C · 1000 · normal | **91 %** | 1.00 | **3 ★** — the heavy programme is the right one |
+| 👕 Gym kit | Cotton · 40 °C · 1000 · normal | 84 % | 1.00 | **0 ★** — not quite clean |
+| 🧶 Woollens | Wool · 30 °C · 600 · normal | **87 %** | 1.00 | **3 ★** — gentle and clean |
+| 🧶 Woollens | Cotton · 60 °C · 1400 · high | 100 % | **0.00** | **0 ★** — ruined: too hot, too fast |
+
+### The drying machine
+
+A dryer does not simply heat clothes: it tumbles them through warm air so the water can
+evaporate. **SENSOR** stops when the moisture reaches the dryness you asked for; **TIMED** keeps
+heating until the clock runs out, even after the clothes are bone dry.
+
+| Load | Dryer setting | Moisture at the end | Care | Outcome |
+|---|---|---|---|---|
+| 🧺 Everyday | SENSOR · cupboard · high | **6 %** | 1.00 | **3 ★** — dry, not over-dried |
+| 🧺 Everyday | TIMED · high (from 32 % after a fast spin) | **0 %** | 0.80 | **1 ★** — scorched and creased |
+| 🧶 Woollens | SENSOR · cupboard · **low** | **6 %** | 1.00 | **3 ★** — warm air, no damage |
+| 🧶 Woollens | SENSOR · cupboard · **high** | 6 % | **0.70** | **1 ★** — the heat damaged the wool |
+
+The two machines are connected: a **600 rpm** spin leaves the clothes at 75 % water, a **1400 rpm**
+spin leaves them at 32 %. The faster spin saves dryer time, but it may cost a wash star if the
+load is wool or gym kit. That trade-off — not a timer — is the game.
+
+The scene shows both machines at once: the drum turns, water rises and drains, foam builds when
+you over-dose the detergent, dirt specks disappear as the wash works, and the dryer's steam dies
+away as the moisture falls.
+
+---
+
 ## Play it in a browser (fastest)
 
 Everything is plain HTML/CSS/JS — no build step.
@@ -534,6 +596,7 @@ Where it speaks:
 | **Inside the Aircon** | Tap any of the four parts to hear it explained — the part is also ringed on the diagram. **READ IT TO ME** narrates the whole cycle in order. Switching to *How to wash it* reads the intro, and every step is read out with its servicing note. |
 | **Food Eating** | Each stop is announced with its science fact as the food arrives, and the fact card highlights word by word. |
 | **Breathing & Blood** | Each experiment is announced with what it does to the body. Tap the fact card to hear it again. |
+| **Laundry Day** | The instructions when either machine starts, and the result card when a wash or dry finishes. |
 | **All activities** | Tap the help text to have the instructions read out. |
 
 If the device has no speech voices, the button hides itself and nothing else changes.
@@ -574,7 +637,7 @@ You should get a full-screen app with the ✦ icon, a black status bar, and no S
 | `manifest.webmanifest` with `"display": "standalone"` | the modern equivalent (iOS 16.4+, and Chrome/Android) |
 | `apple-touch-icon` at 120/152/167/180 px | a real icon instead of a screenshot of the page |
 | `apple-mobile-web-app-status-bar-style` | a black status bar that matches the dark theme |
-| `sw.js` service worker | caches all 68 files, so it opens instantly and works with no wifi |
+| `sw.js` service worker | caches every page and asset, so it opens instantly and works with no wifi |
 | `viewport-fit=cover` + `env(safe-area-inset-*)` | keeps controls clear of the notch and home indicator |
 
 Android works the same way — Chrome will offer **Install app** automatically.
@@ -689,6 +752,10 @@ www/                          ← the whole app (no build step)
 │  ├─ index.html
 │  ├─ hood.css                          kitchen, blower, damper, smoke, airflow
 │  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ laundry/                             ── activity 9 ──
+│  ├─ index.html
+│  ├─ laundry.css                       both machines, drums, water, foam, steam
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
 ├─ _devicelab.html                      dev-only: phone & iPad previews
 docs/character-bible.md                 the character, the palettes and the house style
 
@@ -696,8 +763,8 @@ server.js                               zero-dependency static server ($PORT awa
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        149 assertions over the eight simulations
-test/render.test.js                     84 assertions: every page booted, the artwork, the book, and nothing inline
+test/sim.test.js                        182 assertions over the nine simulations
+test/render.test.js                     94 assertions: every page booted, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json
@@ -721,7 +788,7 @@ call a scene, so a `render()` that throws still passes every one of them while t
 completely dead. It happened: the train's scene referenced an undefined `clamp`, which threw on
 every frame — and because `main.js` calls `render()` *before* it schedules
 `requestAnimationFrame`, the throw killed the animation loop at boot. Pressing the throttle did
-nothing at all, yet all 56 simulation assertions passed. So this test boots each of the eight
+nothing at all, yet all 56 simulation assertions passed. So this test boots each of the nine
 pages for real — reading the exact `<script>` list out of its own HTML and loading it in order
 into a small fake DOM — then drives the `requestAnimationFrame` loop for ~3 seconds of frames and
 fails on any throw, on boot or on any later frame. The train is checked as behaviour too: apply
@@ -801,6 +868,15 @@ the throttle, run the loop, and the train must actually roll.
 
   The pipe "fills up" as you advance because it carries `pathLength="1"` and the renderer sets
   `stroke-dasharray` to `<flow> 1` — no `getTotalLength()` call, which keeps it testable in Node.
+* **The washer and dryer (laundry)** — `www/laundry/index.html` holds both cutaways, and
+  `www/laundry/js/scene.js` builds the clothes, dirt specks, bubbles and steam with
+  `createElementNS`, then sets their positions and opacity every frame. The water level is a
+  single `rect` clipped to the washer drum, so it can never spill outside the glass.
+  `www/laundry/js/state.js` is the whole game: `LOADS` says how dirty each basket is and how much
+  heat, spin and water it will take; `PROGRAMS`, `TEMPS`, `SPINS` and `DETERGENTS` set the wash;
+  `DRY_PROGRAMS`, `DRYNESS` and `HEATS` set the dry. Change a number there and the panel, the
+  measured result and the star rating all follow. The spin you choose writes `wetness`, which is
+  handed to the dryer as its starting `moisture` — that is the link between the two machines.
 
 ### Adding a language
 
