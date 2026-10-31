@@ -973,10 +973,16 @@ console.log('\n— Phone and iPad layouts —');
   /* a portrait phone stacks the scene above a full-width control sheet */
   eq('a phone stacks the scene above the controls',
      /main\.has-panel\s*\{\s*flex-direction:column/.test(ui), true);
-  eq('  → the control sheet is full width and half the height',
-     /main\.has-panel > #ctl-panel[\s\S]*?width:100% !important[\s\S]*?height:50% !important/.test(ui), true);
+  eq('  → the control sheet is full width and content-sized',
+     /main\.has-panel > #ctl-panel[\s\S]*?width:100% !important[\s\S]*?height:var\(--sheet-h, 50%\) !important/.test(ui), true);
   eq('  → and scrolls instead of shrinking the controls',
      /main\.has-panel > #ctl-panel[\s\S]*?overflow-y:auto !important/.test(ui), true);
+  eq('  → note cards hug their text',
+     /\.fact-card,\s*\.fact\{\s*flex:0 0 auto !important/.test(ui), true);
+  eq('  → meter cards hug their gauges',
+     /main\.has-panel \.meters[\s\S]*?flex:0 0 auto !important/.test(ui), true);
+  eq('  → and the card itself is fitted to its controls',
+     /\.ctl\.fit-card[\s\S]*?height:var\(--card-h\) !important/.test(ui), true);
   const trainHtml = fs.readFileSync(path.join(WWW, 'train', 'index.html'), 'utf8');
   eq('  → the train keeps its bottom cab bar',
      /id="(?:ctl|remote|deck|panel)-panel"/.test(trainHtml), false);
@@ -985,6 +991,10 @@ console.log('\n— Phone and iPad layouts —');
      /classList\.add\('has-panel'\)/.test(shell), true);
   eq('  → and scales it by the screen width on a phone',
      /function stackPanel/.test(shell), true);
+  eq('  → fitting the card to its controls',
+     /function fitCard/.test(shell) && /function fitRow/.test(shell), true);
+  eq('  → and refitting when a pane or its text changes',
+     /MutationObserver\(queueFit\)/.test(shell), true);
 
   const panelPages = ['aircond', 'aircare', 'breath', 'cycle', 'engine', 'food', 'hood',
     'indah', 'laundry', 'sandwich', 'toilet', 'tree', 'waterhome', 'weather'];

@@ -62,17 +62,22 @@ in either orientation (768 × 1024 and 1024 × 768).
   three means the menu no longer needs a long scroll.
 - **Activities on a phone** — a side-by-side split left the illustration about 170 px wide and
   the control text under 5 px, so portrait phones stack instead: the scene gets the full width
-  on top, and the control panel becomes a full-width sheet across the bottom 50 %. The sheet
-  scrolls, so the controls scale **up** with the screen (about 1.22×) instead of shrinking to
-  fit the 300 × 640 design. The ◧ button still folds it away.
+  on top, and the control panel becomes a full-width sheet at the bottom. The sheet **hugs the
+  active pane**: a short step list gets a short sheet, while a dense heater or breathing panel
+  grows to at most half the screen and scrolls. The controls scale **up** with the screen (about
+  1.22×) instead of shrinking to fit the 300 × 640 design. Note and meter cards no longer
+  stretch to fill the card, so there is no empty white block below the text or gauges; the
+  sheet is only as tall as the work it contains. The ◧ button still folds the sheet away.
 - **Activities on an iPad** — the two-column layout stays: the scene keeps about half the
-  screen, the panel scales to about 1.1–1.2×, and the top-bar buttons grow to 40 px tall.
+  screen, the panel scales to about 1.1–1.2×, and the top-bar buttons grow to 40 px tall. The
+  control card is fitted to its own controls and centred in the panel, so the old full-height
+  white fact box is gone.
 - **Landscape phones and the train** keep their own layouts; the train uses a bottom cab bar
   instead of a design panel, so it is left out of the stacking rule.
 
-The shared rules live in `www/shared/ui.css` (phone sheet and top bar) and
-`www/shared/shell.js` (`isStacked()` / `stackPanel()`); each activity's `js/main.js` only has to
-ask the shell for the stacked placement.
+The shared rules live in `www/shared/ui.css` (phone sheet, fitted card and top bar) and
+`www/shared/shell.js` (`isStacked()`, `stackPanel()` and the content fit); each activity's
+`js/main.js` only has to ask the shell for the stacked placement.
 
 ### The sticker book
 
@@ -1065,7 +1070,7 @@ render.yaml                             Render blueprint (build + start commands
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
 test/sim.test.js                        254 assertions over the fifteen simulations
-test/render.test.js                     188 assertions: every page booted, the artwork, the book, and nothing inline
+test/render.test.js                     193 assertions: every page booted, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json

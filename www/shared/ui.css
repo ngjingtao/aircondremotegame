@@ -97,7 +97,7 @@ main{flex:1 1 auto;display:flex;min-height:0;overflow:hidden;}
     flex-direction:column !important;
     flex:0 0 auto !important;
     width:100% !important;
-    height:50% !important;
+    height:var(--sheet-h, 50%) !important;
     min-width:0 !important;
     min-height:0 !important;
     padding:8px 8px calc(10px + env(safe-area-inset-bottom)) !important;
@@ -122,6 +122,32 @@ main{flex:1 1 auto;display:flex;min-height:0;overflow:hidden;}
     border-left:0 !important;
     border-bottom:1px solid var(--line);
   }
+
+  /* a note card hugs its text, and meter cards hug their gauges */
+  main.has-panel .fact-card,
+  main.has-panel .fact,
+  main.has-panel .meters,
+  main.has-panel .pl-meters,
+  main.has-panel .cycle-list{
+    flex:0 0 auto !important;
+    max-height:none !important;
+    min-height:0 !important;
+  }
+}
+
+/* note cards are always content-sized; the card itself is fitted below */
+.fact-card,
+.fact{
+  flex:0 0 auto !important;
+  max-height:none !important;
+}
+
+/* the card itself hugs its content; the panel keeps the scene's width */
+.ctl.fit-card,
+.panel.fit-card,
+.deck.fit-card,
+.remote.fit-card{
+  height:var(--card-h) !important;
 }
 
 /* ─────────────── COLLAPSIBLE CONTROL PANEL ─────────────── */
