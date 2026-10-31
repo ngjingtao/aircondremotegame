@@ -43,8 +43,8 @@ ARG.scene = (function () {
 
     /* instruments */
     cupAngle = (cupAngle + (r.wind / 50) * 420 * d) % 360;
-    if (els.anemometer) els.anemometer.setAttribute('transform', 'rotate(' + cupAngle.toFixed(1) + ' 80 140)');
-    if (els.vane) els.vane.setAttribute('transform', 'rotate(' + r.dir + ' 120 155)');
+    if (els.anemometer) els.anemometer.setAttribute('transform', 'rotate(' + cupAngle.toFixed(1) + ' 79 150)');
+    if (els.vane) els.vane.setAttribute('transform', 'rotate(' + r.dir + ' 109.5 160)');
 
     if (els.rainFill) {
       const h = clamp(r.rain / 25, 0, 1) * 34;

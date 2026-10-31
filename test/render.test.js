@@ -760,6 +760,13 @@ console.log('\n— Weather Station: read, forecast, reveal —');
     eq('there are three forecast rounds', sim.ROUNDS.length, 3);
     eq('it opens on round 1', sim.s.round, 0);
 
+    /* both wind instruments must turn about their own poles, not a point beside them */
+    p.ARG.scene.render(0.016);
+    eq('the anemometer turns on the mast top',
+       / 79 150\)$/.test(p.document.getElementById('anemometer').getAttribute('transform') || ''), true);
+    eq('the wind vane turns on its pole',
+       / 109\.5 160\)$/.test(p.document.getElementById('vane').getAttribute('transform') || ''), true);
+
     const forecast = (f) => {
       sim.press('guess', { dataset: { forecast: f } });
       sim.press('submit');

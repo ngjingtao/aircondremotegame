@@ -110,7 +110,7 @@
   stroke:rgba(8,14,26,.9);stroke-width:2.1;paint-order:stroke fill;
 }
 #hygroNeedle,#baroNeedle{transition:transform .5s;}
-#anemometer{transform-origin:80px 140px;}
+#anemometer{transform-origin:79px 150px;}
 
 @media (max-width:520px){
   .scene-lead{display:none;}
