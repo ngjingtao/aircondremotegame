@@ -2,7 +2,7 @@
   "name": "aircond-remote-game",
   "version": "1.0.0",
   "private": true,
-  "description": "Play & Learn — fourteen CSS-drawn activities for kids: Play Aircond, Food Eating, Train Driving, Breathing & Blood, Inside the Aircon, Toilet & Indah Water, Kitchen Hood, Laundry Day, From Seed to Tree, Breakfast Sandwich, Water at Home, Water Cycle and Weather Station.",
+  "description": "Play & Learn — fifteen CSS-drawn activities for kids: Play Aircond, Food Eating, Train Driving, Breathing & Blood, Inside the Aircon, Toilet & Indah Water, Kitchen Hood, Laundry Day, From Seed to Tree, Breakfast Sandwich, Water at Home, Water Cycle, Weather Station and How a Car Engine Works.",
   "scripts": {
     "start": "node server.js",
     "serve": "node server.js",

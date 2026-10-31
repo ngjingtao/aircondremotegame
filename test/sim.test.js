@@ -826,13 +826,48 @@ console.log('\n— Weather Station —');
   eq('  → with the try-again card', sim.s.reason, 'weatherTry');
 }
 
+console.log('\n— How a Car Engine Works —');
+{
+  const ARG = load('engine', ['engine/js/state.js']);
+  const sim = ARG.sim;
+  const cur = () => sim.s;
+
+  eq('there are four strokes', ARG.sim.STROKES.length, 4);
+  eq('the engine starts stopped', cur().running, false);
+  eq('  → on intake', sim.current(), 0);
+  eq('idle runs at 800 rpm', sim.throttle().rpm, 800);
+
+  sim.press('start');
+  eq('starting turns it over', cur().running, true);
+  let t = 0;
+  while (!cur().done && t < 8) { sim.tick(0.05); t += 0.05; }
+  eq('one idle cycle shows all four strokes', cur().seen.join(''), 'truetruetruetrue');
+  eq('  → and completes the sticker', cur().done, true);
+  eq('  → with one star', cur().stars, 1);
+
+  sim.press('mode', { dataset: { mode: 'step' } });
+  eq('step mode pauses the engine', cur().mode, 'step');
+  eq('  → and stops it', cur().running, false);
+
+  sim.press('again');
+  sim.press('mode', { dataset: { mode: 'step' } });
+  for (let i = 0; i < 4; i++) sim.press('next');
+  eq('stepping through all four completes it too', cur().done, true);
+
+  sim.press('again');
+  sim.press('throttle', { dataset: { throttle: 'rev' } });
+  eq('rev selects 5000 rpm', sim.throttle().rpm, 5000);
+  sim.press('start');
+  check('the crank turns at the rev speed', (() => { const a = cur().angle; sim.tick(0.1); return cur().angle - a; })(), 50, 80, '°');
+}
+
 console.log('\n— The sticker book —');
 {
   const ARG = load('shared', ['shared/progress.js']);
   const p = ARG.progress;
 
   p.reset();
-  eq('the book has nineteen stickers', p.count, 19);
+  eq('the book has twenty stickers', p.count, 20);
   eq('and starts empty', p.earned(), 0);
   eq('  → with no stars', p.total(), 0);
 
@@ -851,16 +886,16 @@ console.log('\n— The sticker book —');
   eq('the total adds the stars up', p.total(), 4);
 
   const book = p.book();
-  eq('every catalogue sticker is in the book', book.length, 19);
+  eq('every catalogue sticker is in the book', book.length, 20);
   eq('  → each knows its activity', book[0].activity, 'aircond');
   eq('  → and has a label to explain it', typeof book[0].label, 'string');
   const acts = {};
   book.forEach(c => { acts[c.activity] = (acts[c.activity] || 0) + 1; });
-  eq('every activity in the app contributes', Object.keys(acts).length, 14);
+  eq('every activity in the app contributes', Object.keys(acts).length, 15);
   eq('  → the two with missions contribute three each, the laundry two, the rest one',
      acts.aircond === 3 && acts.train === 3 && acts.laundry === 2 &&
      acts.tree === 1 && acts.sandwich === 1 && acts.waterhome === 1 &&
-     acts.cycle === 1 && acts.weather === 1, true);
+     acts.cycle === 1 && acts.weather === 1 && acts.engine === 1, true);
 
   /* a corrupt store must not take the home screen down with it */
   const ARG2 = load('shared', ['shared/progress.js']);

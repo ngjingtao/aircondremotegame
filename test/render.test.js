@@ -348,7 +348,8 @@ const PAGES = [
   { dir: 'sandwich', name: 'Breakfast Sandwich' },
   { dir: 'waterhome', name: 'Water at Home' },
   { dir: 'cycle', name: 'Water Cycle' },
-  { dir: 'weather', name: 'Weather Station' }
+  { dir: 'weather', name: 'Weather Station' },
+  { dir: 'engine', name: 'How a Car Engine Works' }
 ];
 
 console.log('\n— Every page boots —');
@@ -784,6 +785,38 @@ console.log('\n— Weather Station: read, forecast, reveal —');
   }
 }
 
+/* ─────────── the four-stroke engine ─────────── */
+console.log('\n— How a Car Engine Works: four strokes —');
+{
+  const p = boot('engine');
+  if (p.bootError) bad('engine — boots', p.bootError);
+  else {
+    const sim = p.ARG.sim;
+    eq('the engine has four strokes', sim.STROKES.length, 4);
+    eq('it opens stopped', sim.s.running, false);
+    eq('  → on the intake stroke', sim.current(), 0);
+
+    sim.press('start');
+    eq('START starts it', sim.s.running, true);
+    p.pump(800);                    // 12.8 s at idle, three cycles
+    eq('the four strokes have all been seen', sim.s.seen.join(''), 'truetruetruetrue');
+    eq('  → and the sticker is earned', sim.s.done, true);
+    eq('  → with one star', sim.s.stars, 1);
+
+    sim.press('mode', { dataset: { mode: 'step' } });
+    eq('STEP freezes the engine', sim.s.mode, 'step');
+    eq('  → and stops it', sim.s.running, false);
+
+    sim.press('again');
+    sim.press('mode', { dataset: { mode: 'step' } });
+    for (let i = 0; i < 4; i++) sim.press('next');
+    eq('stepping through all four also completes it', sim.s.done, true);
+
+    if (p.errors.length) bad('engine — no errors while running', p.errors[0]);
+    else ok('engine — no errors while running');
+  }
+}
+
 /* ─────────── the train's sky tiles must not clip their own clouds ─────────── */
 console.log('\n— Train: sky layers —');
 {
@@ -830,7 +863,7 @@ console.log('\n— Nothing inline —');
   const pages = ['index.html', 'aircond/index.html', 'food/index.html', 'train/index.html',
     'breath/index.html', 'aircare/index.html', 'toilet/index.html', 'indah/index.html', 'hood/index.html',
     'laundry/index.html', 'tree/index.html', 'sandwich/index.html', 'waterhome/index.html',
-    'cycle/index.html', 'weather/index.html'];
+    'cycle/index.html', 'weather/index.html', 'engine/index.html'];
 
   const inlineScript = [], inlineStyle = [];
   for (const rel of pages) {
@@ -873,16 +906,16 @@ console.log('\n— Home tiles —');
   const html = fs.readFileSync(path.join(WWW, 'index.html'), 'utf8');
 
   const tiles = html.match(/class="tile tile-[a-z]+"/g) || [];
-  eq('the home screen has fourteen tiles', tiles.length, 14);
+  eq('the home screen has fifteen tiles', tiles.length, 15);
 
   const svgs = html.match(/class="tile-svg"[^>]*viewBox="([^"]+)"/g) || [];
-  eq('every tile is an illustration, not a stack of spans', svgs.length, 14);
+  eq('every tile is an illustration, not a stack of spans', svgs.length, 15);
   eq('  → all on one 96×96 canvas', svgs.every(s => /viewBox="0 0 96 96"/.test(s)), true);
 
   /* three depth layers — the parallax and the idle drift both count on them */
   const layer = n => (html.match(new RegExp('class="tl ' + n + '"', 'g')) || []).length;
   eq('every scene has a back, mid and front layer',
-     layer('back') === 14 && layer('mid') === 14 && layer('front') === 14, true);
+     layer('back') === 15 && layer('mid') === 15 && layer('front') === 15, true);
 
   /* the tile illustrations use one shared palette. Every paint a shape asks for
      has to exist, or the shape silently renders black — and a paint nobody uses
@@ -915,7 +948,7 @@ console.log('\n— Sticker book on the home screen —');
 
   const p = boot('.');
   if (p.bootError) bad('home — boots', p.bootError);
-  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 19');
+  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 20');
 }
 
 /* ─────────── report ─────────── */

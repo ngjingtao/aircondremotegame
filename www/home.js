@@ -38,6 +38,8 @@
       tileCycleSub: 'Follow one drop from the sea to the clouds, the rain, the river and back',
       tileWeatherTitle: 'Weather Station',
       tileWeatherSub: 'Read the rain gauge, wind, pressure and river level, then forecast the weather',
+      tileEngineTitle: 'How a Car Engine Works',
+      tileEngineSub: 'Watch the piston, valves and spark plug through intake, compression, power and exhaust',
 
       /* ── the sticker book ── */
       bookTitle: 'My sticker book',
@@ -62,9 +64,10 @@
       stWater: 'Follow the water and store it hot',
       stCycle: 'Follow a drop all the way round the water cycle',
       stWeather: 'Forecast the weather from the instruments',
+      stEngine: 'See all four strokes of a car engine',
       foot: 'Made for curious kids',
       help: '?',
-      helpTitle: 'Fourteen activities',
+      helpTitle: 'Fifteen activities',
       helpBody: `
         <h3>❄ Play Aircond</h3>
         <ul>
@@ -152,6 +155,12 @@
           <li>Choose <code>FAIR</code>, <code>RAIN</code> or <code>STORM</code>, then reveal the weather and see why.</li>
           <li>Falling pressure + rising humidity + strengthening wind usually means rain. High, rising pressure usually means fair.</li>
         </ul>
+        <h3>⚙️ How a Car Engine Works</h3>
+        <ul>
+          <li>Watch one cylinder through the four strokes: intake, compression, power and exhaust.</li>
+          <li>Press <code>START</code> and change <code>IDLE</code>, <code>CRUISE</code> or <code>REV</code>. This is slow motion: a real engine does this many times a second.</li>
+          <li><code>STEP</code> freezes one stroke at a time. Only the power stroke makes power; the other three prepare and clean up.</li>
+        </ul>
         <h3>Buttons in the top bar</h3>
         <ul>
           <li><code>‹ Menu</code> — back to this screen (inside an activity).</li>
@@ -192,6 +201,8 @@
       tileCycleSub: '跟着一滴水从大海升上云层，变成雨、流进河，再回到大海',
       tileWeatherTitle: '气象站',
       tileWeatherSub: '读雨量、风、气压和河水水位，然后预报天气',
+      tileEngineTitle: '汽车发动机怎样工作',
+      tileEngineSub: '看活塞、气门和火花塞走完进气、压缩、做功和排气',
 
       /* ── 贴纸本 ── */
       bookTitle: '我的贴纸本',
@@ -216,9 +227,10 @@
       stWater: '跟着水走完全程，并把水加热储存',
       stCycle: '跟着一滴水走完整个水循环',
       stWeather: '用仪器读数预报天气',
+      stEngine: '看完汽车发动机的四个冲程',
       foot: '给充满好奇心的小朋友',
       help: '?',
-      helpTitle: '十四个小游戏',
+      helpTitle: '十五个小游戏',
       helpBody: `
         <h3>❄ 玩空调</h3>
         <ul>
@@ -306,6 +318,12 @@
           <li>选 <code>晴天</code>、<code>下雨</code> 或 <code>暴风雨</code>，再揭晓天气，看看为什么。</li>
           <li>气压下降 + 湿度上升 + 风变大，通常要下雨；气压高而且在上升，通常是好天气。</li>
         </ul>
+        <h3>⚙️ 汽车发动机怎样工作</h3>
+        <ul>
+          <li>看一个气缸走完四个冲程：进气、压缩、做功和排气。</li>
+          <li>按 <code>启动</code>，再切换 <code>怠速</code>、<code>巡航</code> 或 <code>高转</code>。这是慢动作：真实发动机每秒会做好多次。</li>
+          <li><code>单步</code> 可以一次停在一个冲程上。只有做功冲程产生动力，其他三个在准备和清理。</li>
+        </ul>
         <h3>顶栏按钮</h3>
         <ul>
           <li><code>‹ 菜单</code> — 回到这个页面（在小游戏里）。</li>
@@ -335,7 +353,8 @@
     sandwich: { icon: '🥪', tint: '#f0a03a' },
     waterhome: { icon: '💧', tint: '#5fb6ef' },
     cycle:   { icon: '🌍', tint: '#3f9fd8' },
-    weather: { icon: '🌦️', tint: '#8ecf72' }
+    weather: { icon: '🌦️', tint: '#8ecf72' },
+    engine:  { icon: '⚙️', tint: '#f0a03a' }
   };
 
   function renderBook() {

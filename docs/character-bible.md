@@ -4,7 +4,7 @@ Everything here is written to match what is **already** in the code — the hex
 values are the real ones, and each rule says where it lives. Where something is
 only a plan, it says so.
 
-The point of this document is that the fourteen activities stop looking like fourteen
+The point of this document is that the fifteen activities stop looking like fifteen
 separate projects. A child should recognise the boy, the room, the light and the
 outlines as *the same world* before they read a single word.
 
@@ -117,6 +117,7 @@ inside the activity. These are the live values:
 | Water at Home | `#5fb6ef` | `#12324a → #0a1f2e` |
 | Water Cycle | `#3f9fd8` / `#8ecf72` | `#123a4a → #0a1f2c` |
 | Weather Station | `#8ecf72` / `#5fb6ef` | `#18302c → #0d1f1c` |
+| How a Car Engine Works | `#f0a03a` / `#8fa0b4` | `#1a2533 → #0c131c` |
 
 **Cold and warm are semantic, not decorative.**
 
@@ -198,14 +199,14 @@ look like pages from the same book:
   it goes wrong, a retry, and missions that unlock as you pass them. The train's
   is in `train/js/state.js`: ★ for delivering everyone before the clock, ★★ for
   never running past a platform, ★★★ for never taking a crossing over the limit.
-* **the fourteen home tiles are illustrations**, drawn as SVG scenes in
+* **the fifteen home tiles are illustrations**, drawn as SVG scenes in
   `www/index.html` and painted from one shared palette declared at the top of
   that file. Every tile has three depth layers (`tl back` / `tl mid` /
   `tl front`) which drift gently and separate on hover, and the whole set can
   be stilled by `prefers-reduced-motion`. `npm test` asserts the count, the
   canvas, the layers, and that no shape references a paint that does not exist.
-* **the sticker book** (`shared/progress.js`) — nineteen stickers, one, two or
-  three per activity, so the fourteen activities that are otherwise separate all feed
+* **the sticker book** (`shared/progress.js`) — twenty stickers, one, two or
+  three per activity, so the fifteen activities that are otherwise separate all feed
   one collection on the home screen. Each activity awards its own from its render
   loop; awards only ever go up, so re-earning cannot lose a sticker.
 * **Kai appears in the tiles too** — the same skin, hair, shirt and remote as
@@ -231,7 +232,7 @@ look like pages from the same book:
 ## 5 · The home tiles
 
 Done. Each tile is a *moment*, not an object — which is what makes a child want
-to tap it. All fourteen are SVG scenes in `www/index.html`, on one 96×96 canvas,
+to tap it. All fifteen are SVG scenes in `www/index.html`, on one 96×96 canvas,
 painted from the shared `#t…` palette declared just above them.
 
 | Tile | The moment |
@@ -250,6 +251,7 @@ painted from the shared `#t…` palette declared just above them.
 | Water at Home | a hot-water cylinder with a red hot top, a blue cold bottom and a tap |
 | Water Cycle | sea, cloud, rain and a river, with one blue drop in the middle |
 | Weather Station | an anemometer, a rain gauge and a barometer under a changing sky |
+| How a Car Engine Works | a cutaway cylinder with a piston, connecting rod and spinning crank |
 
 Each tile uses its own accent from the table in §2, so it is recognisable at a
 glance, and each has **three depth layers** that drift slowly and pull apart on

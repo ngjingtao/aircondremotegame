@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-e504a0e';
+const CACHE = 'play-learn-1461bfb';
 
 const ASSETS = [
   './',
@@ -145,7 +145,15 @@ const ASSETS = [
   'weather/js/state.js',
   'weather/js/scene.js',
   'weather/js/panel.js',
-  'weather/js/main.js'
+  'weather/js/main.js',
+
+  'engine/index.html',
+  'engine/engine.css',
+  'engine/js/i18n.js',
+  'engine/js/state.js',
+  'engine/js/scene.js',
+  'engine/js/panel.js',
+  'engine/js/main.js'
 ];
 
 self.addEventListener('install', event => {

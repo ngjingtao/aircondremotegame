@@ -2,7 +2,7 @@
 
 [![Build Android APK](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml/badge.svg)](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml)
 
-One little app, **fourteen** activities for a curious kid. The home screen shows fourteen picture
+One little app, **fifteen** activities for a curious kid. The home screen shows fifteen picture
 tiles — tap one and you're in.
 
 ```
@@ -28,21 +28,25 @@ tiles — tap one and you're in.
 │  │[ sandwich ]│ │[ tap/tank ]│ │[ the drop ]│ │[ weather  ]│          │
 │  │早餐三明治› │ │家里的水  › │ │水循环    › │ │气象站    › │          │
 │  └────────────┘ └────────────┘ └────────────┘ └────────────┘          │
+│  ┌────────────┐                                                       │
+│  │[ engine   ]│                                                       │
+│  │汽车发动机› │                                                       │
+│  └────────────┘                                                       │
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
 Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
-All fourteen activities speak **English and 中文**, work offline, and are installable as an app.
+All fifteen activities speak **English and 中文**, work offline, and are installable as an app.
 
-The fourteen tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
+The fifteen tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
 painted from one shared palette and split into three depth layers that drift gently and pull
 apart on hover. They are the only place the character guidelines in
 [`docs/character-bible.md`](docs/character-bible.md) are applied so far.
 
 ### The sticker book
 
-Under the tiles is the one thing that ties the fourteen activities together: a collection that
-every activity writes to. Nineteen stickers, earned by doing the thing the activity is about —
+Under the tiles is the one thing that ties the fifteen activities together: a collection that
+every activity writes to. Twenty stickers, earned by doing the thing the activity is about —
 `shared/progress.js` holds the catalogue and the storage, and each activity awards its own from
 its render loop.
 
@@ -62,6 +66,7 @@ its render loop.
 | 💧 Water at Home | 1 | following the supply journey and drawing hot water, with its star rating |
 | 🌍 Water Cycle | 1 | following one drop through the whole cycle |
 | 🌦️ Weather Station | 1 | forecasting all three weather rounds, with its star rating |
+| ⚙️ How a Car Engine Works | 1 | watching all four strokes of the engine |
 
 An earned sticker takes its activity's accent colour and shows the stars; the rest sit dimmed
 behind a dashed outline, so there is always something obviously missing. Awards only ever go
@@ -711,6 +716,42 @@ checks that guessing *fair* every time scores exactly one.
 
 ---
 
+## 15 · ⚙️ How a Car Engine Works
+
+A cutaway of one cylinder, animated through the four-stroke cycle.
+
+| # | Stroke | Piston | Valves | What happens |
+|---|---|---|---|---|
+| 1 | **Intake** | down | intake open | air and fuel are drawn into the cylinder |
+| 2 | **Compression** | up | both closed | the mixture is squeezed to about one tenth of its volume and heats up |
+| 3 | **Power** | down | both closed | the spark plug fires; burning gas pushes the piston down |
+| 4 | **Exhaust** | up | exhaust open | the burnt gas is pushed out, and the cycle repeats |
+
+The scene shows the piston, connecting rod, crankshaft, flywheel, intake and exhaust valves,
+camshafts, spark plug and combustion chamber. The piston follows the crank angle, the rod turns
+the up-and-down motion into rotation, the intake and exhaust valves lift at the right part of the
+cycle, and the fuel/air and exhaust particles travel through their ports.
+
+**It is deliberately slow.** At idle, a real engine completes this cycle about **13 times every
+second**; the animation uses about **4 seconds per cycle** so you can see the strokes. The HUD
+still shows the real rpm:
+
+| Throttle | RPM | Animation |
+|---|---|---|
+| **IDLE** | 800 | 4.0 s per cycle |
+| **CRUISE** | 2500 | 2.2 s per cycle |
+| **REV** | 5000 | 1.1 s per cycle |
+
+**RUN** animates the engine continuously; **STEP** freezes one stroke at a time with BACK and
+NEXT, and tapping a stroke jumps to it. Only the power stroke makes power — the other three are
+preparation and clean-up. Four strokes take **two turns of the crankshaft**, and the camshaft
+turns at half the crank speed to open the valves at the right moment.
+
+The test starts the engine at idle and checks that all four strokes are seen and the sticker is
+earned, then walks through the same four strokes with STEP.
+
+---
+
 ## Play it in a browser (fastest)
 
 Everything is plain HTML/CSS/JS — no build step.
@@ -793,6 +834,7 @@ Where it speaks:
 | **Water at Home** | Every supply step is read out, and the heater safety notes are spoken when you change the setpoint or draw water. |
 | **Water Cycle** | Every stage is announced with its fact, in step mode or while WATCH plays. |
 | **Weather Station** | The forecast feedback and the reason for the weather are read out. |
+| **How a Car Engine Works** | Each stroke is read out in STEP mode, and the result card when all four have been seen. |
 | **All activities** | Tap the help text to have the instructions read out. |
 
 If the device has no speech voices, the button hides itself and nothing else changes.
@@ -972,6 +1014,10 @@ www/                          ← the whole app (no build step)
 │  ├─ index.html
 │  ├─ weather.css                       station, instruments, dials, sky states
 │  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ engine/                              ── activity 15 ──
+│  ├─ index.html
+│  ├─ engine.css                        cutaway cylinder, piston, rod, valves, crank
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
 ├─ _devicelab.html                      dev-only: phone & iPad previews
 docs/character-bible.md                 the character, the palettes and the house style
 
@@ -979,8 +1025,8 @@ server.js                               zero-dependency static server ($PORT awa
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        239 assertions over the fourteen simulations
-test/render.test.js                     156 assertions: every page booted, the artwork, the book, and nothing inline
+test/sim.test.js                        252 assertions over the fifteen simulations
+test/render.test.js                     170 assertions: every page booted, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json
@@ -1004,7 +1050,7 @@ call a scene, so a `render()` that throws still passes every one of them while t
 completely dead. It happened: the train's scene referenced an undefined `clamp`, which threw on
 every frame — and because `main.js` calls `render()` *before* it schedules
 `requestAnimationFrame`, the throw killed the animation loop at boot. Pressing the throttle did
-nothing at all, yet all 56 simulation assertions passed. So this test boots each of the fourteen
+nothing at all, yet all 56 simulation assertions passed. So this test boots each of the fifteen
 pages for real — reading the exact `<script>` list out of its own HTML and loading it in order
 into a small fake DOM — then drives the `requestAnimationFrame` loop for ~3 seconds of frames and
 fails on any throw, on boot or on any later frame. The train is checked as behaviour too: apply
@@ -1119,6 +1165,12 @@ the throttle, run the loop, and the train must actually roll.
   anemometer, vane, rain gauge, thermometer, hygrometer, barometer, sunshine recorder and river
   gauge from those readings. The sky is neutral during `read` and changes only after `submit`,
   using the `fairSun` / `stormClouds` / `rainGroup` / `windLines` groups.
+* **The engine (engine)** — `www/engine/js/state.js` holds the four `STROKES` and the three
+  `THROTTLES` (800/2500/5000 rpm and their slow-motion cycle times). The crank angle runs
+  0–720°; `engine/js/scene.js` turns it into the piston height, the connecting-rod endpoints,
+  the crank-pin position, the valve lifts (intake 0–180°, exhaust 540–720°), the spark and the
+  combustion glow. The air and exhaust dots are created with `createElementNS`. STEP mode sets
+  the angle to the middle of a stroke, so the card and the drawing can be read together.
 
 ### Adding a language
 

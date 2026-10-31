@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="How a Car Engine Works" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>How a Car Engine Works · Play &amp; Learn</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="engine.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">⚙️</span>
+      <span class="tb-title" data-i18n="title">How a Car Engine Works</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudStroke">Stroke</span><b id="hud-stroke">Intake</b></div>
+      <div class="hud-chip hud-score"><span class="hud-label" data-i18n="hudRpm">RPM</span><b id="hud-rpm">0</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl" id="ctl">
+
+          <div class="engine-strokes" id="engine-strokes"></div>
+          <div class="fact-card" id="engine-fact"></div>
+
+          <div class="engine-tabs">
+            <button class="engine-tab on" data-action="mode" data-mode="run"><b data-i18n="run">RUN</b></button>
+            <button class="engine-tab" data-action="mode" data-mode="step"><b data-i18n="step">STEP</b></button>
+          </div>
+
+          <div class="run-box" id="run-box">
+            <div class="ctl-label" data-i18n="hudRpm">RPM</div>
+            <div class="seg three" id="throttle-row"></div>
+            <button class="start-btn" data-action="start" id="engine-start" data-i18n="start">START</button>
+          </div>
+
+          <div class="step-box" id="step-box" hidden>
+            <button class="nav-btn" data-action="prev" id="engine-back" data-i18n="back">BACK</button>
+            <button class="nav-btn go" data-action="next" id="engine-next" data-i18n="next">NEXT</button>
+          </div>
+
+          <div class="result" id="engine-result" hidden>
+            <div class="res-stars">★☆☆</div>
+            <p id="engine-res-text"></p>
+            <button class="res-btn" data-action="again" data-i18n="again">WATCH AGAIN</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="scene" data-stroke="0" data-mode="run">
+
+      <div class="scene-top">
+        <span class="scene-lead" id="scene-lead" data-i18n="lead">Four-stroke engine</span>
+        <span class="scene-status" id="scene-status" data-i18n="statusStopped">Stopped</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="blockGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#59657a"/>
+              <stop offset="55%" stop-color="#39414d"/>
+              <stop offset="100%" stop-color="#232a33"/>
+            </linearGradient>
+            <linearGradient id="metalGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f8fafc"/>
+              <stop offset="55%" stop-color="#c8d1dd"/>
+              <stop offset="100%" stop-color="#8fa0b4"/>
+            </linearGradient>
+            <linearGradient id="pistonGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#eef3f9"/>
+              <stop offset="100%" stop-color="#8fa0b4"/>
+            </linearGradient>
+            <linearGradient id="intakeGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#bfe8ff"/>
+              <stop offset="100%" stop-color="#5fb6ef"/>
+            </linearGradient>
+            <linearGradient id="exhaustGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#c8d1dd"/>
+              <stop offset="100%" stop-color="#7d8a99"/>
+            </linearGradient>
+            <radialGradient id="fireGrad">
+              <stop offset="0%" stop-color="rgba(255,240,180,.95)"/>
+              <stop offset="45%" stop-color="rgba(255,160,60,.75)"/>
+              <stop offset="100%" stop-color="rgba(255,100,40,0)"/>
+            </radialGradient>
+            <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#05080d" flood-opacity="0.5"/>
+            </filter>
+          </defs>
+
+          <rect x="0" y="0" width="340" height="520" fill="#151d28"/>
+          <rect x="0" y="0" width="340" height="520" fill="url(#blockGrad)" opacity=".15"/>
+          <rect x="0" y="474" width="340" height="46" fill="#0d141d"/>
+
+          <!-- engine block -->
+          <rect x="58" y="88" width="224" height="386" rx="14" fill="url(#blockGrad)" stroke="#141b25" stroke-width="2" filter="url(#soft)"/>
+          <rect x="72" y="100" width="196" height="300" rx="6" fill="#202a36" stroke="#6c7a8c" stroke-width="1.2"/>
+
+          <!-- intake and exhaust ports -->
+          <path d="M18 150 H112" fill="none" stroke="url(#intakeGrad)" stroke-width="20" stroke-linecap="round"/>
+          <path d="M208 150 H322" fill="none" stroke="url(#exhaustGrad)" stroke-width="20" stroke-linecap="round"/>
+          <rect x="14" y="140" width="10" height="20" rx="3" fill="#5fb6ef"/>
+          <rect x="316" y="140" width="10" height="20" rx="3" fill="#7d8a99"/>
+
+          <!-- cylinder walls -->
+          <rect x="104" y="122" width="9" height="276" fill="#8fa0b4"/>
+          <rect x="207" y="122" width="9" height="276" fill="#8fa0b4"/>
+          <rect x="100" y="112" width="120" height="14" rx="4" fill="#aab6c6" stroke="#7d8a99" stroke-width="1"/>
+
+          <!-- valves and spark plug -->
+          <g id="intakeValve">
+            <rect x="132" y="84" width="4" height="42" fill="#c8d1dd"/>
+            <ellipse cx="134" cy="127" rx="10" ry="3.4" fill="#dfe8f2" stroke="#8fa0b4" stroke-width=".8"/>
+            <circle cx="134" cy="80" r="9" fill="#8fa0b4" stroke="#59657a" stroke-width="1.2"/>
+          </g>
+          <g id="exhaustValve">
+            <rect x="184" y="84" width="4" height="42" fill="#c8d1dd"/>
+            <ellipse cx="186" cy="127" rx="10" ry="3.4" fill="#dfe8f2" stroke="#8fa0b4" stroke-width=".8"/>
+            <circle cx="186" cy="80" r="9" fill="#8fa0b4" stroke="#59657a" stroke-width="1.2"/>
+          </g>
+          <g id="sparkPlug">
+            <rect x="156" y="62" width="8" height="54" rx="2" fill="url(#metalGrad)" stroke="#7d8a99" stroke-width="1"/>
+            <rect x="153" y="58" width="14" height="8" rx="3" fill="#59657a"/>
+            <path d="M160 116 V126" stroke="#c8d1dd" stroke-width="2"/>
+          </g>
+          <g id="spark" opacity="0">
+            <circle cx="160" cy="130" r="9" fill="#fff0a8"/>
+            <path d="M160 118 V126 M160 134 V142 M148 130 H156 M164 130 H172 M151 121 L157 127 M169 121 L163 127" stroke="#ffd166" stroke-width="2" stroke-linecap="round"/>
+          </g>
+
+          <!-- combustion glow -->
+          <ellipse id="combustion" cx="160" cy="158" rx="42" ry="26" fill="url(#fireGrad)" opacity="0"/>
+
+          <!-- crankshaft and flywheel -->
+          <g id="crank">
+            <circle cx="160" cy="430" r="48" fill="#39414d" stroke="#8fa0b4" stroke-width="2"/>
+            <circle cx="160" cy="430" r="10" fill="#8fa0b4"/>
+            <g stroke="#8fa0b4" stroke-width="4" stroke-linecap="round">
+              <path d="M160 392 V468 M122 430 H198 M133 403 L187 457 M187 403 L133 457"/>
+            </g>
+          </g>
+          <circle id="crankPin" cx="160" cy="400" r="6" fill="#e0a51e" stroke="#8a5a10" stroke-width="1"/>
+
+          <!-- connecting rod, behind the piston -->
+          <line id="rod" x1="160" y1="202" x2="160" y2="400" stroke="#6c7a8c" stroke-width="10" stroke-linecap="round"/>
+
+          <!-- piston -->
+          <g id="piston">
+            <rect x="117" y="185" width="86" height="36" rx="5" fill="url(#pistonGrad)" stroke="#6c7a8c" stroke-width="1.2"/>
+            <path d="M119 192 H201 M119 198 H201 M119 204 H201" stroke="#7d8a99" stroke-width="1.4" opacity=".75"/>
+            <circle cx="160" cy="202" r="5" fill="#59657a" stroke="#39414d" stroke-width="1"/>
+          </g>
+
+          <!-- gas particles -->
+          <g id="intakeGas"></g>
+          <g id="exhaustGas"></g>
+
+          <!-- labels -->
+          <g id="labels">
+            <g class="lab"><text x="160" y="50" text-anchor="middle" data-i18n="lSpark">spark plug</text></g>
+            <g class="lab"><text x="120" y="104" text-anchor="end" data-i18n="lIntakeValve">intake valve</text></g>
+            <g class="lab"><text x="200" y="104" text-anchor="start" data-i18n="lExhaustValve">exhaust valve</text></g>
+            <g class="lab"><text x="290" y="244" text-anchor="start" data-i18n="lPiston">piston</text></g>
+            <g class="lab"><text x="290" y="344" text-anchor="start" data-i18n="lRod">connecting rod</text></g>
+            <g class="lab"><text x="160" y="500" text-anchor="middle" data-i18n="lCrank">crankshaft</text></g>
+            <g class="lab"><text x="78" y="180" text-anchor="end" data-i18n="lCylinder">cylinder</text></g>
+            <g class="lab"><text x="24" y="134" text-anchor="start" data-i18n="lIntake">air + fuel</text></g>
+            <g class="lab"><text x="316" y="134" text-anchor="end" data-i18n="lExhaust">exhaust</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+      <div class="toast" id="toast"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">How a four-stroke engine works</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>
