@@ -43,6 +43,9 @@ painted from one shared palette and split into three depth layers that drift gen
 apart on hover. They are the only place the character guidelines in
 [`docs/character-bible.md`](docs/character-bible.md) are applied so far.
 
+The tiles are grouped under five headings so the larger menu stays navigable: **Home machines**
+(4), **Water** (4), **Food & body** (3), **Nature & weather** (2) and **Getting around** (2).
+
 ### The sticker book
 
 Under the tiles is the one thing that ties the fifteen activities together: a collection that
@@ -1026,7 +1029,7 @@ render.yaml                             Render blueprint (build + start commands
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
 test/sim.test.js                        252 assertions over the fifteen simulations
-test/render.test.js                     172 assertions: every page booted, the artwork, the book, and nothing inline
+test/render.test.js                     175 assertions: every page booted, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json

@@ -71,564 +71,564 @@
         </defs>
       </svg>
 
-      <div class="tiles">
+      <div class="groups">
 
-        <!-- ① Play Aircond — freezing outside, far too warm in here -->
-        <a class="tile tile-air" href="aircond/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <g class="tl back">
-                <rect x="50" y="6" width="42" height="50" rx="4" fill="#0e2a44" stroke="#5b7fa6" stroke-width="1.4"/>
-                <path d="M52 40 q11 -9 20 0 t19 0 v14 H52 Z" fill="#e6f3ff"/>
-                <circle cx="61" cy="17" r="1.7" fill="#dbeafe"/>
-                <circle cx="72" cy="27" r="1.3" fill="#dbeafe"/>
-                <circle cx="84" cy="15" r="1.5" fill="#dbeafe"/>
-                <path d="M71 7 V55 M51 31 H91" stroke="#5b7fa6" stroke-width="1.4"/>
-              </g>
-              <g class="tl mid">
-                <rect x="3" y="8" width="39" height="15" rx="4" fill="url(#tMetal)" stroke="#b9c6d6" stroke-width="1.2"/>
-                <rect x="8" y="18" width="29" height="3" rx="1.5" fill="#9fb0c4"/>
-                <path d="M11 27 q4 8 2 16" fill="none" stroke="#8fd0ff" stroke-width="2.2" stroke-linecap="round" opacity=".85"/>
-                <path d="M21 28 q5 9 2 18" fill="none" stroke="#8fd0ff" stroke-width="2.2" stroke-linecap="round" opacity=".6"/>
-                <path d="M32 27 q4 8 2 16" fill="none" stroke="#8fd0ff" stroke-width="2.2" stroke-linecap="round" opacity=".85"/>
-              </g>
-              <g class="tl front">
-                <ellipse cx="38" cy="91" rx="18" ry="3.4" fill="#000" opacity=".24"/>
-                <rect x="28" y="74" width="9" height="17" rx="4.5" fill="#3b4a63"/>
-                <rect x="40" y="74" width="9" height="17" rx="4.5" fill="#3b4a63"/>
-                <rect x="19" y="55" width="8" height="20" rx="4" fill="url(#tSkin)"/>
-                <rect x="26" y="52" width="25" height="26" rx="11" fill="url(#tShirt)"/>
-                <rect x="45" y="42" width="8" height="19" rx="4" fill="url(#tSkin)" transform="rotate(40 49 60)"/>
-                <rect x="55" y="28" width="9.5" height="17" rx="2.5" fill="#f7f8fa" stroke="#c8cfdb" stroke-width="1" transform="rotate(24 60 37)"/>
-                <rect x="57.5" y="31.5" width="4.5" height="5" rx="1" fill="#8fd0ff" transform="rotate(24 60 37)"/>
-                <circle cx="39" cy="41" r="13" fill="url(#tSkin)"/>
-                <path d="M26 39 Q27 25 39 25 Q51 25 52 39 Q47 33 39 32 Q31 33 26 39 Z" fill="#2f2a35"/>
-                <path d="M43 26 Q46 21 50 25 Q47 27 45 30 Z" fill="#2f2a35"/>
-                <path d="M32 42 q3 -2.6 6 0" fill="none" stroke="#3b2f2a" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M42 42 q3 -2.6 6 0" fill="none" stroke="#3b2f2a" stroke-width="1.8" stroke-linecap="round"/>
-                <ellipse cx="39" cy="49.5" rx="4" ry="3.4" fill="#8a4a3c"/>
-                <path d="M51.5 35 q4.5 4.5 0 8 q-4.5 -3.5 0 -8 Z" fill="#8fd0ff"/>
-              </g>
-            </svg>
-          </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileAirTitle">Play Aircond</h2>
-            <p data-i18n="tileAirSub">Drive the remote, make the boy happy, cold or hot</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
-
-        <!-- ② Food Eating — a bitten apple over the tract it is about to take -->
-        <a class="tile tile-food" href="food/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <defs>
-                <mask id="tBiteMask">
-                  <rect width="96" height="96" fill="#fff"/>
-                  <circle cx="52" cy="34" r="12" fill="#000"/>
-                  <circle cx="44" cy="24" r="7" fill="#000"/>
-                </mask>
-              </defs>
-              <g class="tl back">
-                <!-- the tract the apple is about to travel down -->
-                <path d="M70 4 v22" stroke="#c9773f" stroke-width="9" stroke-linecap="round"/>
-                <path d="M72 56 q-3 16 -1 32" stroke="#c9773f" stroke-width="9" stroke-linecap="round"/>
-              </g>
-              <g class="tl mid">
-                <ellipse cx="72" cy="44" rx="14" ry="12" fill="#c9773f"/>
-                <ellipse cx="72" cy="42" rx="9" ry="7" fill="#e8935a"/>
-              </g>
-              <g class="tl front">
-                <ellipse cx="36" cy="88" rx="20" ry="3.6" fill="#000" opacity=".26"/>
-                <g mask="url(#tBiteMask)">
-                  <path d="M36 30 C27 19 6 24 6 46 C6 68 22 84 36 84 C50 84 66 68 66 46 C66 24 45 19 36 30 Z"
-                        fill="#e2453c" stroke="#a82f28" stroke-width="1.6"/>
-                  <ellipse cx="21" cy="42" rx="6" ry="11" fill="#fff" opacity=".22" transform="rotate(-18 21 42)"/>
+        <section class="group" data-group="home">
+          <h2 class="group-title"><span class="gt-ico">🏠</span><span data-i18n="groupHome">Home machines</span></h2>
+          <div class="tiles">
+          <a class="tile tile-air" href="aircond/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <g class="tl back">
+                  <rect x="50" y="6" width="42" height="50" rx="4" fill="#0e2a44" stroke="#5b7fa6" stroke-width="1.4"/>
+                  <path d="M52 40 q11 -9 20 0 t19 0 v14 H52 Z" fill="#e6f3ff"/>
+                  <circle cx="61" cy="17" r="1.7" fill="#dbeafe"/>
+                  <circle cx="72" cy="27" r="1.3" fill="#dbeafe"/>
+                  <circle cx="84" cy="15" r="1.5" fill="#dbeafe"/>
+                  <path d="M71 7 V55 M51 31 H91" stroke="#5b7fa6" stroke-width="1.4"/>
                 </g>
-                <rect x="33.5" y="16" width="4" height="12" rx="2" fill="#6b4a2a"/>
-                <path d="M38 22 q12 -8 16 2 q-12 6 -16 -2 Z" fill="url(#tLeaf)"/>
-              </g>
-            </svg>
-          </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileFoodTitle">Food Eating</h2>
-            <p data-i18n="tileFoodSub">Follow food from the mouth all the way out</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
-
-        <!-- ③ Train Driving — out of the tunnel, into a flashing crossing -->
-        <a class="tile tile-train" href="train/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <g class="tl back">
-                <path d="M-6 88 V50 a38 38 0 0 1 76 0 V88 Z" fill="#26313f" stroke="#3f4c5f" stroke-width="1.6"/>
-                <path d="M10 88 V56 a22 22 0 0 1 44 0 V88 Z" fill="#0a1017"/>
-              </g>
-              <g class="tl mid">
-                <rect x="68" y="8" width="3.4" height="30" fill="#67707e"/>
-                <rect x="60" y="4" width="19" height="12" rx="2.5" fill="#191d24"/>
-                <circle cx="65" cy="10" r="3.4" fill="#e8220f"/>
-                <circle cx="65" cy="10" r="6" fill="#ff3b2a" opacity=".35"/>
-                <circle cx="74" cy="10" r="3.4" fill="#4a1a18"/>
-              </g>
-              <g class="tl front">
-                <path d="M78 62 L96 52 V76 Z" fill="#ffd166" opacity=".32"/>
-                <rect x="30" y="42" width="58" height="10" rx="4" fill="#c3ccd9"/>
-                <rect x="32" y="50" width="54" height="30" rx="3.5" fill="#33598f" stroke="#22406e" stroke-width="1.3"/>
-                <rect x="32" y="50" width="54" height="6" rx="3" fill="#416ba6"/>
-                <rect x="38" y="58" width="15" height="11" rx="2" fill="#cfe6f5" stroke="#22406e" stroke-width="1"/>
-                <rect x="58" y="58" width="15" height="11" rx="2" fill="#cfe6f5" stroke="#22406e" stroke-width="1"/>
-                <rect x="32" y="72" width="54" height="6" fill="#e63946"/>
-                <rect x="32" y="78" width="54" height="3" fill="#f4d35e"/>
-                <circle cx="44" cy="86" r="6.5" fill="#39414d" stroke="#232a33" stroke-width="1.3"/>
-                <circle cx="74" cy="86" r="6.5" fill="#39414d" stroke="#232a33" stroke-width="1.3"/>
-                <circle cx="80" cy="64" r="2.6" fill="#fff5cc"/>
-              </g>
-              <rect x="0" y="90" width="96" height="3.4" rx="1.4" fill="#9aa5b2"/>
-            </svg>
-          </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileTrainTitle">Train Driving</h2>
-            <p data-i18n="tileTrainSub">Drive the train, stop at the station, ding ding at the crossing</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
-
-        <!-- ④ Breathing & Blood — Kai on the hill, out of breath, O₂ drifting past -->
-        <a class="tile tile-breath" href="breath/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <g class="tl back">
-                <path d="M0 74 q22 -30 44 -8 q16 16 52 -6 v36 H0 Z" fill="#1d4b45" opacity=".85"/>
-                <path d="M0 84 q30 -22 58 -2 q16 12 38 -2 v16 H0 Z" fill="#22584f"/>
-              </g>
-              <g class="tl mid">
-                <circle cx="20" cy="30" r="6" fill="none" stroke="#7fd0ff" stroke-width="2" opacity=".8"/>
-                <circle cx="30" cy="18" r="4" fill="none" stroke="#7fd0ff" stroke-width="1.6" opacity=".6"/>
-                <circle cx="13" cy="47" r="3.4" fill="none" stroke="#7fd0ff" stroke-width="1.4" opacity=".5"/>
-                <text x="24" y="34" font-size="9" font-weight="800" fill="#bfe8ff">O₂</text>
-              </g>
-              <g class="tl front">
-                <ellipse cx="62" cy="87" rx="17" ry="3.4" fill="#000" opacity=".24"/>
-                <rect x="52" y="72" width="9" height="15" rx="4.5" fill="#3b4a63"/>
-                <rect x="64" y="74" width="9" height="13" rx="4.5" fill="#3b4a63" transform="rotate(-16 68 80)"/>
-                <rect x="46" y="54" width="24" height="24" rx="10" fill="url(#tShirt)" transform="rotate(-8 58 66)"/>
-                <rect x="40" y="52" width="8" height="18" rx="4" fill="url(#tSkin)" transform="rotate(-38 44 70)"/>
-                <rect x="70" y="50" width="8" height="18" rx="4" fill="url(#tSkin)" transform="rotate(30 74 68)"/>
-                <circle cx="56" cy="43" r="13" fill="url(#tSkin)"/>
-                <path d="M43 41 Q44 27 56 27 Q68 27 69 41 Q64 35 56 34 Q48 35 43 41 Z" fill="#2f2a35"/>
-                <path d="M60 28 Q63 23 67 27 Q64 29 62 32 Z" fill="#2f2a35"/>
-                <path d="M49 44 q3 -2.6 6 0" fill="none" stroke="#3b2f2a" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M59 44 q3 -2.6 6 0" fill="none" stroke="#3b2f2a" stroke-width="1.8" stroke-linecap="round"/>
-                <ellipse cx="55" cy="51" rx="3.4" ry="2.8" fill="#8a4a3c"/>
-                <path d="M68 36 q5 4 0 8 q-5 -4 0 -8 Z" fill="#8fd0ff"/>
-              </g>
-            </svg>
-          </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileBreathTitle">Breathing &amp; Blood</h2>
-            <p data-i18n="tileBreathSub">Run experiments: breathe, hold your breath, run and climb a mountain</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
-
-        <!-- ⑤ Inside the Aircon — the panel off, one pipe glowing hot -->
-        <a class="tile tile-care" href="aircare/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <g class="tl back">
-                <rect x="8" y="14" width="80" height="68" rx="7" fill="#cfd8e4" stroke="#9aa5b5" stroke-width="1.4"/>
-                <rect x="14" y="20" width="68" height="56" rx="4" fill="#1b2735"/>
-              </g>
-              <g class="tl mid">
-                <path d="M22 66 H42 V40 H66 V26" fill="none" stroke="#f2564d" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M66 70 H52 V54" fill="none" stroke="#4aa8de" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="22" cy="66" r="9" fill="#2a3a4d" stroke="#f2564d" stroke-width="2.4"/>
-                <circle cx="66" cy="26" r="8" fill="#2a3a4d" stroke="#f2564d" stroke-width="2.4"/>
-                <circle cx="66" cy="70" r="7" fill="#2a3a4d" stroke="#4aa8de" stroke-width="2.4"/>
-              </g>
-              <g class="tl front">
-                <rect x="4" y="12" width="26" height="72" rx="5" fill="url(#tMetal)" stroke="#9aa5b5" stroke-width="1.4"/>
-                <rect x="10" y="24" width="14" height="3" rx="1.5" fill="#9fb0c4"/>
-                <rect x="10" y="32" width="14" height="3" rx="1.5" fill="#9fb0c4"/>
-                <rect x="10" y="40" width="14" height="3" rx="1.5" fill="#9fb0c4"/>
-                <circle cx="17" cy="64" r="5" fill="#e34d4d"/>
-                <ellipse cx="74" cy="18" rx="10" ry="6" fill="#ff8b7a" opacity=".35"/>
-                <text x="56" y="88" font-size="9" font-weight="800" fill="#ffb37a">HEAT</text>
-              </g>
-            </svg>
-          </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileCareTitle">Inside the Aircon</h2>
-            <p data-i18n="tileCareSub">See how it works — then learn how to wash it, step by step</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
-
-        <!-- ⑥ Toilet — the real cutaway, scaled down, water climbing to the weir -->
-        <a class="tile tile-toilet" href="toilet/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <defs>
-                <clipPath id="tToiletClip">
-                  <path d="M106,208 C106,298 128,366 170,376 C212,366 234,298 234,208 Z"/>
-                </clipPath>
-              </defs>
-              <g class="tl back">
-                <rect x="0" y="0" width="96" height="86" fill="#0f2d3a"/>
-                <rect x="0" y="0" width="96" height="26" fill="#17485c" opacity=".7"/>
-                <rect x="0" y="86" width="96" height="10" fill="#2a3646"/>
-                <rect x="0" y="86" width="96" height="2" fill="#3c4c60"/>
-              </g>
-              <g class="tl mid">
-                <!-- the same silhouette as the real diagram, scaled to fit -->
-                <g transform="translate(-3,-52.8) scale(0.30)">
-                  <path d="M92,196 H248 V216 C248,300 242,352 214,392 C196,418 188,450 190,486 C191,500 194,506 200,506 H140 C146,506 149,500 150,486 C152,450 144,418 126,392 C98,352 92,300 92,216 Z"
-                        fill="url(#tMetal)" stroke="#9fb0c4" stroke-width="5"/>
-                  <path d="M106,208 C106,298 128,366 170,376 C212,366 234,298 234,208 Z"
-                        fill="#e4ecf6" stroke="#c3d3e0" stroke-width="4"/>
-                  <rect x="146" y="180" width="50" height="13" rx="4" fill="#16202e"/>
+                <g class="tl mid">
+                  <rect x="3" y="8" width="39" height="15" rx="4" fill="url(#tMetal)" stroke="#b9c6d6" stroke-width="1.2"/>
+                  <rect x="8" y="18" width="29" height="3" rx="1.5" fill="#9fb0c4"/>
+                  <path d="M11 27 q4 8 2 16" fill="none" stroke="#8fd0ff" stroke-width="2.2" stroke-linecap="round" opacity=".85"/>
+                  <path d="M21 28 q5 9 2 18" fill="none" stroke="#8fd0ff" stroke-width="2.2" stroke-linecap="round" opacity=".6"/>
+                  <path d="M32 27 q4 8 2 16" fill="none" stroke="#8fd0ff" stroke-width="2.2" stroke-linecap="round" opacity=".85"/>
                 </g>
-              </g>
-              <g class="tl front">
-                <g transform="translate(-3,-52.8) scale(0.30)">
-                  <path d="M170,368 C170,404 178,420 190,424 C202,428 208,418 208,404 L208,344 A12,12 0 0 1 232,344 L232,522"
-                        fill="none" stroke="#121a26" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M170,368 C170,404 178,420 190,424 C202,428 208,418 208,404 L208,344 A12,12 0 0 1 232,344 L232,522"
-                        fill="none" stroke="#dbe5f0" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
-                  <g clip-path="url(#tToiletClip)">
-                    <rect x="96" y="332" width="148" height="50" fill="url(#tWater)" opacity=".92"/>
+                <g class="tl front">
+                  <ellipse cx="38" cy="91" rx="18" ry="3.4" fill="#000" opacity=".24"/>
+                  <rect x="28" y="74" width="9" height="17" rx="4.5" fill="#3b4a63"/>
+                  <rect x="40" y="74" width="9" height="17" rx="4.5" fill="#3b4a63"/>
+                  <rect x="19" y="55" width="8" height="20" rx="4" fill="url(#tSkin)"/>
+                  <rect x="26" y="52" width="25" height="26" rx="11" fill="url(#tShirt)"/>
+                  <rect x="45" y="42" width="8" height="19" rx="4" fill="url(#tSkin)" transform="rotate(40 49 60)"/>
+                  <rect x="55" y="28" width="9.5" height="17" rx="2.5" fill="#f7f8fa" stroke="#c8cfdb" stroke-width="1" transform="rotate(24 60 37)"/>
+                  <rect x="57.5" y="31.5" width="4.5" height="5" rx="1" fill="#8fd0ff" transform="rotate(24 60 37)"/>
+                  <circle cx="39" cy="41" r="13" fill="url(#tSkin)"/>
+                  <path d="M26 39 Q27 25 39 25 Q51 25 52 39 Q47 33 39 32 Q31 33 26 39 Z" fill="#2f2a35"/>
+                  <path d="M43 26 Q46 21 50 25 Q47 27 45 30 Z" fill="#2f2a35"/>
+                  <path d="M32 42 q3 -2.6 6 0" fill="none" stroke="#3b2f2a" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M42 42 q3 -2.6 6 0" fill="none" stroke="#3b2f2a" stroke-width="1.8" stroke-linecap="round"/>
+                  <ellipse cx="39" cy="49.5" rx="4" ry="3.4" fill="#8a4a3c"/>
+                  <path d="M51.5 35 q4.5 4.5 0 8 q-4.5 -3.5 0 -8 Z" fill="#8fd0ff"/>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileAirTitle">Play Aircond</h2>
+              <p data-i18n="tileAirSub">Drive the remote, make the boy happy, cold or hot</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
+          <a class="tile tile-care" href="aircare/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <g class="tl back">
+                  <rect x="8" y="14" width="80" height="68" rx="7" fill="#cfd8e4" stroke="#9aa5b5" stroke-width="1.4"/>
+                  <rect x="14" y="20" width="68" height="56" rx="4" fill="#1b2735"/>
+                </g>
+                <g class="tl mid">
+                  <path d="M22 66 H42 V40 H66 V26" fill="none" stroke="#f2564d" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M66 70 H52 V54" fill="none" stroke="#4aa8de" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="22" cy="66" r="9" fill="#2a3a4d" stroke="#f2564d" stroke-width="2.4"/>
+                  <circle cx="66" cy="26" r="8" fill="#2a3a4d" stroke="#f2564d" stroke-width="2.4"/>
+                  <circle cx="66" cy="70" r="7" fill="#2a3a4d" stroke="#4aa8de" stroke-width="2.4"/>
+                </g>
+                <g class="tl front">
+                  <rect x="4" y="12" width="26" height="72" rx="5" fill="url(#tMetal)" stroke="#9aa5b5" stroke-width="1.4"/>
+                  <rect x="10" y="24" width="14" height="3" rx="1.5" fill="#9fb0c4"/>
+                  <rect x="10" y="32" width="14" height="3" rx="1.5" fill="#9fb0c4"/>
+                  <rect x="10" y="40" width="14" height="3" rx="1.5" fill="#9fb0c4"/>
+                  <circle cx="17" cy="64" r="5" fill="#e34d4d"/>
+                  <ellipse cx="74" cy="18" rx="10" ry="6" fill="#ff8b7a" opacity=".35"/>
+                  <text x="56" y="88" font-size="9" font-weight="800" fill="#ffb37a">HEAT</text>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileCareTitle">Inside the Aircon</h2>
+              <p data-i18n="tileCareSub">See how it works — then learn how to wash it, step by step</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
+          <a class="tile tile-laundry" href="laundry/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <g class="tl back">
+                  <rect x="2" y="10" width="44" height="78" rx="7" fill="#d7e2ee" stroke="#9fb0c4" stroke-width="1.2"/>
+                  <rect x="50" y="10" width="44" height="78" rx="7" fill="#e4d4c6" stroke="#bda894" stroke-width="1.2"/>
+                  <rect x="7" y="16" width="34" height="11" rx="3" fill="#203348"/>
+                  <rect x="55" y="16" width="34" height="11" rx="3" fill="#3d2f2a"/>
+                </g>
+                <g class="tl mid">
+                  <circle cx="24" cy="54" r="16" fill="#27455f" stroke="#8fa8bf" stroke-width="2"/>
+                  <circle cx="24" cy="54" r="12" fill="url(#tWater)"/>
+                  <circle cx="72" cy="54" r="16" fill="#4a3040" stroke="#b08a8a" stroke-width="2"/>
+                  <circle cx="72" cy="54" r="12" fill="#5a3a2c"/>
+                  <path d="M68 54 q3 -6 6 0 q2 4 4 -2" fill="none" stroke="#ffd7a0" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="31" cy="32" r="2.4" fill="#8ef0b4"/>
+                  <circle cx="79" cy="32" r="2.4" fill="#ff9a6a"/>
+                  <rect x="9" y="31" width="14" height="4" rx="2" fill="#9fb0c4"/>
+                  <rect x="57" y="31" width="14" height="4" rx="2" fill="#bda894"/>
+                </g>
+                <g class="tl front">
+                  <path d="M16 50 h12 l3 5 l-3 2 v10 h-12 v-10 l-3 -2 z" fill="url(#tShirt)" opacity=".9"/>
+                  <path d="M66 51 h10 l2 4 l-2 2 v8 h-10 v-8 l-2 -2 z" fill="#ffb37a" opacity=".8"/>
+                  <path d="M40 90 q8 -9 14 0 q6 -8 12 0" fill="none" stroke="#ffd166" stroke-width="2.4" stroke-linecap="round" opacity=".7"/>
+                  <path d="M8 88 q6 -8 12 0" fill="none" stroke="#8ef0b4" stroke-width="2.2" stroke-linecap="round" opacity=".6"/>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileLaundryTitle">Laundry Day</h2>
+              <p data-i18n="tileLaundrySub">Wash the clothes, then dry them — without shrinking anything</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
+          <a class="tile tile-hood" href="hood/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <g class="tl back">
+                  <rect x="34" y="0" width="28" height="18" fill="#8b97a6"/>
+                  <rect x="38" y="0" width="20" height="18" fill="#6c7684"/>
+                </g>
+                <g class="tl mid">
+                  <path d="M18 20 H78 L92 42 H4 Z" fill="url(#tMetal)" stroke="#9aa5b5" stroke-width="1.5"/>
+                  <rect x="24" y="30" width="48" height="7" rx="3" fill="#8a6a3a" opacity=".85"/>
+                  <g class="tl-spin">
+                    <circle cx="48" cy="40" r="13" fill="none" stroke="#7d8794" stroke-width="2.6"/>
+                    <path d="M48 27 V53 M35 40 H61 M39 31 L57 49 M57 31 L39 49" stroke="#7d8794" stroke-width="2.2" stroke-linecap="round"/>
                   </g>
-                  <path d="M170,368 C170,404 178,420 190,424 C202,428 208,418 208,404 L208,344 A12,12 0 0 1 220,332"
-                        fill="none" stroke="url(#tWater)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
                 </g>
-                <!-- the button on the lid -->
-                <rect x="40" y="2" width="16" height="7" rx="3.5" fill="#c8d1dd" stroke="#a9b6c6" stroke-width="1"/>
-              </g>
-            </svg>
-          </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileToiletTitle">Toilet</h2>
-            <p data-i18n="tileToiletSub">See what a flush really does — the button, the flapper, the siphon and the water seal</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
-
-        <!-- ⑦ Indah Water — out of the house, under the garden, into the works -->
-        <a class="tile tile-indah" href="indah/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <g class="tl back">
-                <rect x="0" y="40" width="96" height="6" fill="#5f8a47"/>
-                <rect x="0" y="46" width="96" height="50" fill="#5a4530"/>
-              </g>
-              <g class="tl mid">
-                <path d="M14 58 L34 72 L52 76 L70 88" fill="none" stroke="#2b2015" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M14 58 L34 72 L52 76 L70 88" fill="none" stroke="#9aa5b2" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M14 58 L34 72 L52 76" fill="none" stroke="url(#tDirty)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-                <rect x="30" y="66" width="12" height="12" rx="2" fill="#2a3540" stroke="#8fa0b4" stroke-width="1.6"/>
-                <rect x="50" y="30" width="7" height="20" rx="2" fill="#cbbf9f"/>
-                <rect x="55" y="44" width="12" height="20" rx="2" fill="#2a3540" stroke="#8fa0b4" stroke-width="1.6"/>
-              </g>
-              <g class="tl front">
-                <path d="M6 34 L16 22 L26 34 Z" fill="#b8543f"/>
-                <rect x="8" y="34" width="16" height="14" rx="1.5" fill="url(#tMetal)" stroke="#b9c6d6" stroke-width="1.1"/>
-                <rect x="11" y="37" width="5" height="5" rx="1" fill="#8fd0ff"/>
-                <rect x="18" y="37" width="5" height="5" rx="1" fill="#8fd0ff"/>
-                <rect x="74" y="62" width="20" height="28" rx="4" fill="#0e1a2b" stroke="#3f6ea8" stroke-width="1.8"/>
-                <rect x="78" y="66" width="12" height="6" rx="2" fill="url(#tDirty)"/>
-                <rect x="78" y="74" width="12" height="6" rx="2" fill="#9fb3a6"/>
-                <rect x="78" y="82" width="12" height="5" rx="2" fill="url(#tWater)"/>
-              </g>
-            </svg>
-          </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileIndahTitle">Indah Water</h2>
-            <p data-i18n="tileIndahSub">Follow the wastewater from the house to the treatment plant — and see how the bacteria clean it</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
-
-        <!-- ⑧ Kitchen Hood — the wok smoking, the fan turning, smoke bending up -->
-        <a class="tile tile-hood" href="hood/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <g class="tl back">
-                <rect x="34" y="0" width="28" height="18" fill="#8b97a6"/>
-                <rect x="38" y="0" width="20" height="18" fill="#6c7684"/>
-              </g>
-              <g class="tl mid">
-                <path d="M18 20 H78 L92 42 H4 Z" fill="url(#tMetal)" stroke="#9aa5b5" stroke-width="1.5"/>
-                <rect x="24" y="30" width="48" height="7" rx="3" fill="#8a6a3a" opacity=".85"/>
-                <g class="tl-spin">
-                  <circle cx="48" cy="40" r="13" fill="none" stroke="#7d8794" stroke-width="2.6"/>
-                  <path d="M48 27 V53 M35 40 H61 M39 31 L57 49 M57 31 L39 49" stroke="#7d8794" stroke-width="2.2" stroke-linecap="round"/>
+                <g class="tl front">
+                  <path d="M16 64 a32 20 0 0 0 64 0 Z" fill="#39414d" stroke="#232a33" stroke-width="1.5"/>
+                  <ellipse cx="48" cy="64" rx="32" ry="6" fill="#4b5563"/>
+                  <path d="M30 56 q4 -10 -2 -18 q-4 -6 2 -12" fill="none" stroke="#d7dde6" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+                  <path d="M48 54 q5 -12 -2 -20 q-4 -7 3 -14" fill="none" stroke="#e6ebf2" stroke-width="6" stroke-linecap="round" opacity=".5"/>
+                  <path d="M66 58 q4 -9 -2 -16 q-4 -6 2 -11" fill="none" stroke="#d7dde6" stroke-width="5" stroke-linecap="round" opacity=".5"/>
+                  <rect x="6" y="84" width="84" height="9" rx="2" fill="#3a3226"/>
                 </g>
-              </g>
-              <g class="tl front">
-                <path d="M16 64 a32 20 0 0 0 64 0 Z" fill="#39414d" stroke="#232a33" stroke-width="1.5"/>
-                <ellipse cx="48" cy="64" rx="32" ry="6" fill="#4b5563"/>
-                <path d="M30 56 q4 -10 -2 -18 q-4 -6 2 -12" fill="none" stroke="#d7dde6" stroke-width="5" stroke-linecap="round" opacity=".55"/>
-                <path d="M48 54 q5 -12 -2 -20 q-4 -7 3 -14" fill="none" stroke="#e6ebf2" stroke-width="6" stroke-linecap="round" opacity=".5"/>
-                <path d="M66 58 q4 -9 -2 -16 q-4 -6 2 -11" fill="none" stroke="#d7dde6" stroke-width="5" stroke-linecap="round" opacity=".5"/>
-                <rect x="6" y="84" width="84" height="9" rx="2" fill="#3a3226"/>
-              </g>
-            </svg>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileHoodTitle">Kitchen Hood</h2>
+              <p data-i18n="tileHoodSub">Turn the fan up and watch how it pulls the smoke, grease and smell out of the kitchen</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
           </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileHoodTitle">Kitchen Hood</h2>
-            <p data-i18n="tileHoodSub">Turn the fan up and watch how it pulls the smoke, grease and smell out of the kitchen</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
+        </section>
 
-        <!-- ⑨ Laundry Day — the washer and the dryer, side by side -->
-        <a class="tile tile-laundry" href="laundry/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <g class="tl back">
-                <rect x="2" y="10" width="44" height="78" rx="7" fill="#d7e2ee" stroke="#9fb0c4" stroke-width="1.2"/>
-                <rect x="50" y="10" width="44" height="78" rx="7" fill="#e4d4c6" stroke="#bda894" stroke-width="1.2"/>
-                <rect x="7" y="16" width="34" height="11" rx="3" fill="#203348"/>
-                <rect x="55" y="16" width="34" height="11" rx="3" fill="#3d2f2a"/>
-              </g>
-              <g class="tl mid">
-                <circle cx="24" cy="54" r="16" fill="#27455f" stroke="#8fa8bf" stroke-width="2"/>
-                <circle cx="24" cy="54" r="12" fill="url(#tWater)"/>
-                <circle cx="72" cy="54" r="16" fill="#4a3040" stroke="#b08a8a" stroke-width="2"/>
-                <circle cx="72" cy="54" r="12" fill="#5a3a2c"/>
-                <path d="M68 54 q3 -6 6 0 q2 4 4 -2" fill="none" stroke="#ffd7a0" stroke-width="1.5" stroke-linecap="round"/>
-                <circle cx="31" cy="32" r="2.4" fill="#8ef0b4"/>
-                <circle cx="79" cy="32" r="2.4" fill="#ff9a6a"/>
-                <rect x="9" y="31" width="14" height="4" rx="2" fill="#9fb0c4"/>
-                <rect x="57" y="31" width="14" height="4" rx="2" fill="#bda894"/>
-              </g>
-              <g class="tl front">
-                <path d="M16 50 h12 l3 5 l-3 2 v10 h-12 v-10 l-3 -2 z" fill="url(#tShirt)" opacity=".9"/>
-                <path d="M66 51 h10 l2 4 l-2 2 v8 h-10 v-8 l-2 -2 z" fill="#ffb37a" opacity=".8"/>
-                <path d="M40 90 q8 -9 14 0 q6 -8 12 0" fill="none" stroke="#ffd166" stroke-width="2.4" stroke-linecap="round" opacity=".7"/>
-                <path d="M8 88 q6 -8 12 0" fill="none" stroke="#8ef0b4" stroke-width="2.2" stroke-linecap="round" opacity=".6"/>
-              </g>
-            </svg>
-          </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileLaundryTitle">Laundry Day</h2>
-            <p data-i18n="tileLaundrySub">Wash the clothes, then dry them — without shrinking anything</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
-
-        <!-- ⑩ From Seed to Tree — a seed under the soil becoming a sapling -->
-        <a class="tile tile-tree" href="tree/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <g class="tl back">
-                <rect x="0" y="0" width="96" height="62" fill="#15352c"/>
-                <circle cx="76" cy="19" r="16" fill="#ffd166" opacity=".16"/>
-                <circle cx="76" cy="19" r="10" fill="#ffd166"/>
-                <path d="M0 62 H96 V96 H0 Z" fill="#5a3f26"/>
-                <path d="M0 62 q18 -8 34 0 q18 8 34 0 q16 -6 28 0 v5 H0 Z" fill="#6b4a2a"/>
-              </g>
-              <g class="tl mid">
-                <ellipse cx="48" cy="74" rx="9" ry="6" fill="#a8824d" stroke="#6b4a2a" stroke-width="1.2" transform="rotate(-14 48 74)"/>
-                <path d="M48 80 v10 M48 84 l-5 6 M48 86 l5 5" fill="none" stroke="#d9b77c" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M20 16 q4 8 1 14 M29 10 q3 10 0 16" fill="none" stroke="url(#tWater)" stroke-width="2.2" stroke-linecap="round" opacity=".75"/>
-                <circle cx="20" cy="20" r="2" fill="#8fd0ff"/>
-                <circle cx="27" cy="16" r="1.6" fill="#8fd0ff"/>
-              </g>
-              <g class="tl front">
-                <path d="M48 70 V42" fill="none" stroke="#6fae50" stroke-width="4" stroke-linecap="round"/>
-                <path d="M48 50 q-17 -13 -24 1 q15 11 24 -1" fill="url(#tLeaf)" stroke="#3f7a32" stroke-width="1"/>
-                <path d="M48 43 q17 -13 24 1 q-15 11 -24 -1" fill="url(#tLeaf)" stroke="#3f7a32" stroke-width="1"/>
-                <path d="M48 58 q-12 8 -18 2" fill="none" stroke="#8ecf72" stroke-width="1.6" stroke-linecap="round" opacity=".7"/>
-              </g>
-            </svg>
-          </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileTreeTitle">From Seed to Tree</h2>
-            <p data-i18n="tileTreeSub">Grow a seed into a tree — and learn what happens at every phase</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
-
-        <!-- ⑪ Breakfast Sandwich — a cut sandwich with an egg and tomato -->
-        <a class="tile tile-sandwich" href="sandwich/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <g class="tl back">
-                <rect x="0" y="0" width="96" height="96" fill="#2a1c12"/>
-                <ellipse cx="48" cy="80" rx="36" ry="8" fill="#dbe5f0"/>
-                <rect x="0" y="86" width="96" height="10" fill="#5a3f26"/>
-              </g>
-              <g class="tl mid">
-                <rect x="16" y="64" width="64" height="13" rx="6" fill="#e8b86a" stroke="#c99a5b" stroke-width="1"/>
-                <path d="M16 40 q0 -12 12 -12 h40 q12 0 12 12 v10 H16 Z" fill="#e8b86a" stroke="#c99a5b" stroke-width="1"/>
-                <g fill="#fff7e0" opacity=".9">
-                  <ellipse cx="34" cy="35" rx="2.4" ry="1.2"/><ellipse cx="52" cy="32" rx="2.4" ry="1.2"/><ellipse cx="70" cy="35" rx="2.4" ry="1.2"/>
+        <section class="group" data-group="water">
+          <h2 class="group-title"><span class="gt-ico">💧</span><span data-i18n="groupWater">Water</span></h2>
+          <div class="tiles">
+          <a class="tile tile-water" href="waterhome/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <g class="tl back">
+                  <rect x="0" y="0" width="96" height="96" fill="#152b3a"/>
+                  <rect x="0" y="82" width="96" height="14" fill="#0e1c26"/>
+                  <path d="M8 72 H88" stroke="#3f6b86" stroke-width="3"/>
                 </g>
-              </g>
-              <g class="tl front">
-                <rect x="20" y="58" width="56" height="6" rx="3" fill="#ffd166"/>
-                <ellipse cx="48" cy="54" rx="22" ry="7" fill="#fffdf5" stroke="#e4d8bc" stroke-width=".8"/>
-                <circle cx="48" cy="53" r="5" fill="#ffd34d"/>
-                <circle cx="30" cy="58" r="5" fill="#e2453c" stroke="#a82f28" stroke-width=".7"/>
-                <circle cx="66" cy="58" r="5" fill="#e2453c" stroke="#a82f28" stroke-width=".7"/>
-                <path d="M22 62 q8 -7 14 0 q8 -6 14 0 q8 -7 14 0 q8 -6 14 0" fill="none" stroke="#8ecf72" stroke-width="3.4" stroke-linecap="round"/>
-                <path d="M28 24 q-4 -8 2 -14 M48 20 q-4 -9 3 -16 M68 24 q-3 -8 2 -13" fill="none" stroke="#e8eef6" stroke-width="2.6" stroke-linecap="round" opacity=".55"/>
-              </g>
-            </svg>
+                <g class="tl mid">
+                  <rect x="18" y="16" width="42" height="58" rx="12" fill="url(#tMetal)" stroke="#9fb0c4" stroke-width="1.3"/>
+                  <rect x="23" y="21" width="32" height="20" rx="7" fill="#e2453c" opacity=".85"/>
+                  <rect x="23" y="41" width="32" height="28" rx="7" fill="url(#tWater)" opacity=".85"/>
+                  <path d="M50 30 H70 V44 M70 56 V72 M70 34 H78" fill="none" stroke="#9fb0c4" stroke-width="3" stroke-linecap="round"/>
+                  <rect x="76" y="30" width="8" height="5" rx="2" fill="#c8d1dd"/>
+                </g>
+                <g class="tl front">
+                  <circle cx="39" cy="27" r="2.6" fill="#ffe0b0"/>
+                  <path d="M32 46 q7 -5 14 0 t14 0" fill="none" stroke="#bfe8ff" stroke-width="2" opacity=".7"/>
+                  <path d="M30 60 q-3 -8 2 -14 M39 62 q-3 -8 2 -14 M48 60 q-3 -8 2 -14" fill="none" stroke="#e8eef6" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
+                  <path d="M80 38 q0 6 -4 8" fill="none" stroke="#8fd0ff" stroke-width="2.2" stroke-linecap="round"/>
+                  <circle cx="76" cy="48" r="2.4" fill="#8fd0ff"/>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileWaterTitle">Water at Home</h2>
+              <p data-i18n="tileWaterSub">Follow water from the river to the tap, then heat it and draw a hot shower</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
+          <a class="tile tile-toilet" href="toilet/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <defs>
+                  <clipPath id="tToiletClip">
+                    <path d="M106,208 C106,298 128,366 170,376 C212,366 234,298 234,208 Z"/>
+                  </clipPath>
+                </defs>
+                <g class="tl back">
+                  <rect x="0" y="0" width="96" height="86" fill="#0f2d3a"/>
+                  <rect x="0" y="0" width="96" height="26" fill="#17485c" opacity=".7"/>
+                  <rect x="0" y="86" width="96" height="10" fill="#2a3646"/>
+                  <rect x="0" y="86" width="96" height="2" fill="#3c4c60"/>
+                </g>
+                <g class="tl mid">
+                  <!-- the same silhouette as the real diagram, scaled to fit -->
+                  <g transform="translate(-3,-52.8) scale(0.30)">
+                    <path d="M92,196 H248 V216 C248,300 242,352 214,392 C196,418 188,450 190,486 C191,500 194,506 200,506 H140 C146,506 149,500 150,486 C152,450 144,418 126,392 C98,352 92,300 92,216 Z"
+                          fill="url(#tMetal)" stroke="#9fb0c4" stroke-width="5"/>
+                    <path d="M106,208 C106,298 128,366 170,376 C212,366 234,298 234,208 Z"
+                          fill="#e4ecf6" stroke="#c3d3e0" stroke-width="4"/>
+                    <rect x="146" y="180" width="50" height="13" rx="4" fill="#16202e"/>
+                  </g>
+                </g>
+                <g class="tl front">
+                  <g transform="translate(-3,-52.8) scale(0.30)">
+                    <path d="M170,368 C170,404 178,420 190,424 C202,428 208,418 208,404 L208,344 A12,12 0 0 1 232,344 L232,522"
+                          fill="none" stroke="#121a26" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M170,368 C170,404 178,420 190,424 C202,428 208,418 208,404 L208,344 A12,12 0 0 1 232,344 L232,522"
+                          fill="none" stroke="#dbe5f0" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+                    <g clip-path="url(#tToiletClip)">
+                      <rect x="96" y="332" width="148" height="50" fill="url(#tWater)" opacity=".92"/>
+                    </g>
+                    <path d="M170,368 C170,404 178,420 190,424 C202,428 208,418 208,404 L208,344 A12,12 0 0 1 220,332"
+                          fill="none" stroke="url(#tWater)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+                  </g>
+                  <!-- the button on the lid -->
+                  <rect x="40" y="2" width="16" height="7" rx="3.5" fill="#c8d1dd" stroke="#a9b6c6" stroke-width="1"/>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileToiletTitle">Toilet</h2>
+              <p data-i18n="tileToiletSub">See what a flush really does — the button, the flapper, the siphon and the water seal</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
+          <a class="tile tile-indah" href="indah/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <g class="tl back">
+                  <rect x="0" y="40" width="96" height="6" fill="#5f8a47"/>
+                  <rect x="0" y="46" width="96" height="50" fill="#5a4530"/>
+                </g>
+                <g class="tl mid">
+                  <path d="M14 58 L34 72 L52 76 L70 88" fill="none" stroke="#2b2015" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14 58 L34 72 L52 76 L70 88" fill="none" stroke="#9aa5b2" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14 58 L34 72 L52 76" fill="none" stroke="url(#tDirty)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <rect x="30" y="66" width="12" height="12" rx="2" fill="#2a3540" stroke="#8fa0b4" stroke-width="1.6"/>
+                  <rect x="50" y="30" width="7" height="20" rx="2" fill="#cbbf9f"/>
+                  <rect x="55" y="44" width="12" height="20" rx="2" fill="#2a3540" stroke="#8fa0b4" stroke-width="1.6"/>
+                </g>
+                <g class="tl front">
+                  <path d="M6 34 L16 22 L26 34 Z" fill="#b8543f"/>
+                  <rect x="8" y="34" width="16" height="14" rx="1.5" fill="url(#tMetal)" stroke="#b9c6d6" stroke-width="1.1"/>
+                  <rect x="11" y="37" width="5" height="5" rx="1" fill="#8fd0ff"/>
+                  <rect x="18" y="37" width="5" height="5" rx="1" fill="#8fd0ff"/>
+                  <rect x="74" y="62" width="20" height="28" rx="4" fill="#0e1a2b" stroke="#3f6ea8" stroke-width="1.8"/>
+                  <rect x="78" y="66" width="12" height="6" rx="2" fill="url(#tDirty)"/>
+                  <rect x="78" y="74" width="12" height="6" rx="2" fill="#9fb3a6"/>
+                  <rect x="78" y="82" width="12" height="5" rx="2" fill="url(#tWater)"/>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileIndahTitle">Indah Water</h2>
+              <p data-i18n="tileIndahSub">Follow the wastewater from the house to the treatment plant — and see how the bacteria clean it</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
+          <a class="tile tile-cycle" href="cycle/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <g class="tl back">
+                  <rect x="0" y="0" width="96" height="56" fill="#17324d"/>
+                  <path d="M0 56 H96 V96 H0 Z" fill="url(#tLeaf)" opacity=".8"/>
+                  <path d="M52 56 L68 20 L88 56 Z" fill="#7d8a99"/>
+                  <path d="M0 62 H34 V96 H0 Z" fill="url(#tWater)"/>
+                </g>
+                <g class="tl mid">
+                  <g fill="#e8eef6" opacity=".9">
+                    <ellipse cx="44" cy="26" rx="18" ry="8"/>
+                    <ellipse cx="32" cy="21" rx="10" ry="6"/>
+                    <ellipse cx="55" cy="20" rx="11" ry="6"/>
+                  </g>
+                  <g stroke="#8fd0ff" stroke-width="2" stroke-linecap="round">
+                    <path d="M32 34 L29 46 M42 34 L39 48 M52 34 L49 46"/>
+                  </g>
+                  <path d="M58 50 q-8 16 -18 24 q-8 8 -16 10" fill="none" stroke="#2f7fa8" stroke-width="7" stroke-linecap="round"/>
+                  <path d="M58 50 q-8 16 -18 24 q-8 8 -16 10" fill="none" stroke="#8fd0ff" stroke-width="3.4" stroke-linecap="round"/>
+                </g>
+                <g class="tl front">
+                  <circle cx="80" cy="14" r="7" fill="#ffd166"/>
+                  <circle cx="80" cy="14" r="12" fill="#ffd166" opacity=".18"/>
+                  <circle cx="42" cy="55" r="4" fill="#bfe8ff" stroke="#fff" stroke-width="1"/>
+                  <path d="M64 86 q-6 -10 2 -16 q8 6 2 16" fill="#6fae50"/>
+                  <path d="M20 76 q8 -6 16 0" fill="none" stroke="#d8f4ff" stroke-width="1.8" opacity=".6"/>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileCycleTitle">Water Cycle</h2>
+              <p data-i18n="tileCycleSub">Follow one drop from the sea to the clouds, the rain, the river and back</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
           </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileSandwichTitle">Breakfast Sandwich</h2>
-            <p data-i18n="tileSandwichSub">Build a balanced sandwich, then cook the egg just right</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
+        </section>
 
-        <!-- ⑫ Water at Home — a cylinder with hot water on top and a tap -->
-        <a class="tile tile-water" href="waterhome/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <g class="tl back">
-                <rect x="0" y="0" width="96" height="96" fill="#152b3a"/>
-                <rect x="0" y="82" width="96" height="14" fill="#0e1c26"/>
-                <path d="M8 72 H88" stroke="#3f6b86" stroke-width="3"/>
-              </g>
-              <g class="tl mid">
-                <rect x="18" y="16" width="42" height="58" rx="12" fill="url(#tMetal)" stroke="#9fb0c4" stroke-width="1.3"/>
-                <rect x="23" y="21" width="32" height="20" rx="7" fill="#e2453c" opacity=".85"/>
-                <rect x="23" y="41" width="32" height="28" rx="7" fill="url(#tWater)" opacity=".85"/>
-                <path d="M50 30 H70 V44 M70 56 V72 M70 34 H78" fill="none" stroke="#9fb0c4" stroke-width="3" stroke-linecap="round"/>
-                <rect x="76" y="30" width="8" height="5" rx="2" fill="#c8d1dd"/>
-              </g>
-              <g class="tl front">
-                <circle cx="39" cy="27" r="2.6" fill="#ffe0b0"/>
-                <path d="M32 46 q7 -5 14 0 t14 0" fill="none" stroke="#bfe8ff" stroke-width="2" opacity=".7"/>
-                <path d="M30 60 q-3 -8 2 -14 M39 62 q-3 -8 2 -14 M48 60 q-3 -8 2 -14" fill="none" stroke="#e8eef6" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
-                <path d="M80 38 q0 6 -4 8" fill="none" stroke="#8fd0ff" stroke-width="2.2" stroke-linecap="round"/>
-                <circle cx="76" cy="48" r="2.4" fill="#8fd0ff"/>
-              </g>
-            </svg>
+        <section class="group" data-group="food">
+          <h2 class="group-title"><span class="gt-ico">🍎</span><span data-i18n="groupFood">Food & body</span></h2>
+          <div class="tiles">
+          <a class="tile tile-food" href="food/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <defs>
+                  <mask id="tBiteMask">
+                    <rect width="96" height="96" fill="#fff"/>
+                    <circle cx="52" cy="34" r="12" fill="#000"/>
+                    <circle cx="44" cy="24" r="7" fill="#000"/>
+                  </mask>
+                </defs>
+                <g class="tl back">
+                  <!-- the tract the apple is about to travel down -->
+                  <path d="M70 4 v22" stroke="#c9773f" stroke-width="9" stroke-linecap="round"/>
+                  <path d="M72 56 q-3 16 -1 32" stroke="#c9773f" stroke-width="9" stroke-linecap="round"/>
+                </g>
+                <g class="tl mid">
+                  <ellipse cx="72" cy="44" rx="14" ry="12" fill="#c9773f"/>
+                  <ellipse cx="72" cy="42" rx="9" ry="7" fill="#e8935a"/>
+                </g>
+                <g class="tl front">
+                  <ellipse cx="36" cy="88" rx="20" ry="3.6" fill="#000" opacity=".26"/>
+                  <g mask="url(#tBiteMask)">
+                    <path d="M36 30 C27 19 6 24 6 46 C6 68 22 84 36 84 C50 84 66 68 66 46 C66 24 45 19 36 30 Z"
+                          fill="#e2453c" stroke="#a82f28" stroke-width="1.6"/>
+                    <ellipse cx="21" cy="42" rx="6" ry="11" fill="#fff" opacity=".22" transform="rotate(-18 21 42)"/>
+                  </g>
+                  <rect x="33.5" y="16" width="4" height="12" rx="2" fill="#6b4a2a"/>
+                  <path d="M38 22 q12 -8 16 2 q-12 6 -16 -2 Z" fill="url(#tLeaf)"/>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileFoodTitle">Food Eating</h2>
+              <p data-i18n="tileFoodSub">Follow food from the mouth all the way out</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
+          <a class="tile tile-sandwich" href="sandwich/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <g class="tl back">
+                  <rect x="0" y="0" width="96" height="96" fill="#2a1c12"/>
+                  <ellipse cx="48" cy="80" rx="36" ry="8" fill="#dbe5f0"/>
+                  <rect x="0" y="86" width="96" height="10" fill="#5a3f26"/>
+                </g>
+                <g class="tl mid">
+                  <rect x="16" y="64" width="64" height="13" rx="6" fill="#e8b86a" stroke="#c99a5b" stroke-width="1"/>
+                  <path d="M16 40 q0 -12 12 -12 h40 q12 0 12 12 v10 H16 Z" fill="#e8b86a" stroke="#c99a5b" stroke-width="1"/>
+                  <g fill="#fff7e0" opacity=".9">
+                    <ellipse cx="34" cy="35" rx="2.4" ry="1.2"/><ellipse cx="52" cy="32" rx="2.4" ry="1.2"/><ellipse cx="70" cy="35" rx="2.4" ry="1.2"/>
+                  </g>
+                </g>
+                <g class="tl front">
+                  <rect x="20" y="58" width="56" height="6" rx="3" fill="#ffd166"/>
+                  <ellipse cx="48" cy="54" rx="22" ry="7" fill="#fffdf5" stroke="#e4d8bc" stroke-width=".8"/>
+                  <circle cx="48" cy="53" r="5" fill="#ffd34d"/>
+                  <circle cx="30" cy="58" r="5" fill="#e2453c" stroke="#a82f28" stroke-width=".7"/>
+                  <circle cx="66" cy="58" r="5" fill="#e2453c" stroke="#a82f28" stroke-width=".7"/>
+                  <path d="M22 62 q8 -7 14 0 q8 -6 14 0 q8 -7 14 0 q8 -6 14 0" fill="none" stroke="#8ecf72" stroke-width="3.4" stroke-linecap="round"/>
+                  <path d="M28 24 q-4 -8 2 -14 M48 20 q-4 -9 3 -16 M68 24 q-3 -8 2 -13" fill="none" stroke="#e8eef6" stroke-width="2.6" stroke-linecap="round" opacity=".55"/>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileSandwichTitle">Breakfast Sandwich</h2>
+              <p data-i18n="tileSandwichSub">Build a balanced sandwich, then cook the egg just right</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
+          <a class="tile tile-breath" href="breath/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <g class="tl back">
+                  <path d="M0 74 q22 -30 44 -8 q16 16 52 -6 v36 H0 Z" fill="#1d4b45" opacity=".85"/>
+                  <path d="M0 84 q30 -22 58 -2 q16 12 38 -2 v16 H0 Z" fill="#22584f"/>
+                </g>
+                <g class="tl mid">
+                  <circle cx="20" cy="30" r="6" fill="none" stroke="#7fd0ff" stroke-width="2" opacity=".8"/>
+                  <circle cx="30" cy="18" r="4" fill="none" stroke="#7fd0ff" stroke-width="1.6" opacity=".6"/>
+                  <circle cx="13" cy="47" r="3.4" fill="none" stroke="#7fd0ff" stroke-width="1.4" opacity=".5"/>
+                  <text x="24" y="34" font-size="9" font-weight="800" fill="#bfe8ff">O₂</text>
+                </g>
+                <g class="tl front">
+                  <ellipse cx="62" cy="87" rx="17" ry="3.4" fill="#000" opacity=".24"/>
+                  <rect x="52" y="72" width="9" height="15" rx="4.5" fill="#3b4a63"/>
+                  <rect x="64" y="74" width="9" height="13" rx="4.5" fill="#3b4a63" transform="rotate(-16 68 80)"/>
+                  <rect x="46" y="54" width="24" height="24" rx="10" fill="url(#tShirt)" transform="rotate(-8 58 66)"/>
+                  <rect x="40" y="52" width="8" height="18" rx="4" fill="url(#tSkin)" transform="rotate(-38 44 70)"/>
+                  <rect x="70" y="50" width="8" height="18" rx="4" fill="url(#tSkin)" transform="rotate(30 74 68)"/>
+                  <circle cx="56" cy="43" r="13" fill="url(#tSkin)"/>
+                  <path d="M43 41 Q44 27 56 27 Q68 27 69 41 Q64 35 56 34 Q48 35 43 41 Z" fill="#2f2a35"/>
+                  <path d="M60 28 Q63 23 67 27 Q64 29 62 32 Z" fill="#2f2a35"/>
+                  <path d="M49 44 q3 -2.6 6 0" fill="none" stroke="#3b2f2a" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M59 44 q3 -2.6 6 0" fill="none" stroke="#3b2f2a" stroke-width="1.8" stroke-linecap="round"/>
+                  <ellipse cx="55" cy="51" rx="3.4" ry="2.8" fill="#8a4a3c"/>
+                  <path d="M68 36 q5 4 0 8 q-5 -4 0 -8 Z" fill="#8fd0ff"/>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileBreathTitle">Breathing &amp; Blood</h2>
+              <p data-i18n="tileBreathSub">Run experiments: breathe, hold your breath, run and climb a mountain</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
           </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileWaterTitle">Water at Home</h2>
-            <p data-i18n="tileWaterSub">Follow water from the river to the tap, then heat it and draw a hot shower</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
+        </section>
 
-        <!-- ⑬ Water Cycle — sea, cloud, rain and a river -->
-        <a class="tile tile-cycle" href="cycle/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <g class="tl back">
-                <rect x="0" y="0" width="96" height="56" fill="#17324d"/>
-                <path d="M0 56 H96 V96 H0 Z" fill="url(#tLeaf)" opacity=".8"/>
-                <path d="M52 56 L68 20 L88 56 Z" fill="#7d8a99"/>
-                <path d="M0 62 H34 V96 H0 Z" fill="url(#tWater)"/>
-              </g>
-              <g class="tl mid">
-                <g fill="#e8eef6" opacity=".9">
-                  <ellipse cx="44" cy="26" rx="18" ry="8"/>
-                  <ellipse cx="32" cy="21" rx="10" ry="6"/>
-                  <ellipse cx="55" cy="20" rx="11" ry="6"/>
+        <section class="group" data-group="nature">
+          <h2 class="group-title"><span class="gt-ico">🌱</span><span data-i18n="groupNature">Nature & weather</span></h2>
+          <div class="tiles">
+          <a class="tile tile-tree" href="tree/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <g class="tl back">
+                  <rect x="0" y="0" width="96" height="62" fill="#15352c"/>
+                  <circle cx="76" cy="19" r="16" fill="#ffd166" opacity=".16"/>
+                  <circle cx="76" cy="19" r="10" fill="#ffd166"/>
+                  <path d="M0 62 H96 V96 H0 Z" fill="#5a3f26"/>
+                  <path d="M0 62 q18 -8 34 0 q18 8 34 0 q16 -6 28 0 v5 H0 Z" fill="#6b4a2a"/>
                 </g>
-                <g stroke="#8fd0ff" stroke-width="2" stroke-linecap="round">
-                  <path d="M32 34 L29 46 M42 34 L39 48 M52 34 L49 46"/>
+                <g class="tl mid">
+                  <ellipse cx="48" cy="74" rx="9" ry="6" fill="#a8824d" stroke="#6b4a2a" stroke-width="1.2" transform="rotate(-14 48 74)"/>
+                  <path d="M48 80 v10 M48 84 l-5 6 M48 86 l5 5" fill="none" stroke="#d9b77c" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M20 16 q4 8 1 14 M29 10 q3 10 0 16" fill="none" stroke="url(#tWater)" stroke-width="2.2" stroke-linecap="round" opacity=".75"/>
+                  <circle cx="20" cy="20" r="2" fill="#8fd0ff"/>
+                  <circle cx="27" cy="16" r="1.6" fill="#8fd0ff"/>
                 </g>
-                <path d="M58 50 q-8 16 -18 24 q-8 8 -16 10" fill="none" stroke="#2f7fa8" stroke-width="7" stroke-linecap="round"/>
-                <path d="M58 50 q-8 16 -18 24 q-8 8 -16 10" fill="none" stroke="#8fd0ff" stroke-width="3.4" stroke-linecap="round"/>
-              </g>
-              <g class="tl front">
-                <circle cx="80" cy="14" r="7" fill="#ffd166"/>
-                <circle cx="80" cy="14" r="12" fill="#ffd166" opacity=".18"/>
-                <circle cx="42" cy="55" r="4" fill="#bfe8ff" stroke="#fff" stroke-width="1"/>
-                <path d="M64 86 q-6 -10 2 -16 q8 6 2 16" fill="#6fae50"/>
-                <path d="M20 76 q8 -6 16 0" fill="none" stroke="#d8f4ff" stroke-width="1.8" opacity=".6"/>
-              </g>
-            </svg>
+                <g class="tl front">
+                  <path d="M48 70 V42" fill="none" stroke="#6fae50" stroke-width="4" stroke-linecap="round"/>
+                  <path d="M48 50 q-17 -13 -24 1 q15 11 24 -1" fill="url(#tLeaf)" stroke="#3f7a32" stroke-width="1"/>
+                  <path d="M48 43 q17 -13 24 1 q-15 11 -24 -1" fill="url(#tLeaf)" stroke="#3f7a32" stroke-width="1"/>
+                  <path d="M48 58 q-12 8 -18 2" fill="none" stroke="#8ecf72" stroke-width="1.6" stroke-linecap="round" opacity=".7"/>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileTreeTitle">From Seed to Tree</h2>
+              <p data-i18n="tileTreeSub">Grow a seed into a tree — and learn what happens at every phase</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
+          <a class="tile tile-weather" href="weather/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <g class="tl back">
+                  <rect x="0" y="0" width="96" height="64" fill="#17324d"/>
+                  <path d="M0 64 H96 V96 H0 Z" fill="#3f5f35"/>
+                  <path d="M0 78 q24 -6 48 0 q24 6 48 0 v18 H0 Z" fill="url(#tWater)" opacity=".8"/>
+                </g>
+                <g class="tl mid">
+                  <rect x="20" y="34" width="3" height="38" fill="#9fb0c4"/>
+                  <g class="tl-spin">
+                    <path d="M21.5 34 V24 M21.5 34 L31 39 M21.5 34 L12 39" stroke="#c8d1dd" stroke-width="2.2" stroke-linecap="round"/>
+                    <circle cx="21.5" cy="24" r="3" fill="#e8eef8"/><circle cx="31" cy="39" r="3" fill="#e8eef8"/><circle cx="12" cy="39" r="3" fill="#e8eef8"/>
+                  </g>
+                  <rect x="40" y="50" width="34" height="26" rx="4" fill="#26313f" stroke="#8fa0b4" stroke-width="1.2"/>
+                  <circle cx="50" cy="62" r="6" fill="#dfe8f2" stroke="#8fa0b4" stroke-width="1"/>
+                  <circle cx="65" cy="62" r="6" fill="#dfe8f2" stroke="#8fa0b4" stroke-width="1"/>
+                  <rect x="82" y="46" width="8" height="26" rx="2" fill="#24313f" stroke="#8fa0b4" stroke-width="1"/>
+                </g>
+                <g class="tl front">
+                  <circle cx="80" cy="18" r="7" fill="#ffd166"/>
+                  <g fill="#e8eef6" opacity=".85">
+                    <ellipse cx="34" cy="16" rx="14" ry="6"/><ellipse cx="24" cy="12" rx="8" ry="4"/><ellipse cx="43" cy="11" rx="9" ry="5"/>
+                  </g>
+                  <g stroke="#8fd0ff" stroke-width="1.8" stroke-linecap="round">
+                    <path d="M24 24 L22 32 M34 24 L32 34 M44 24 L42 32"/>
+                  </g>
+                  <path d="M50 62 L55 57 M65 62 L60 67" stroke="#2f4a27" stroke-width="1.6" stroke-linecap="round"/>
+                  <rect x="84" y="52" width="4" height="20" fill="#e2453c" opacity=".8"/>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileWeatherTitle">Weather Station</h2>
+              <p data-i18n="tileWeatherSub">Read the rain gauge, wind, pressure and river level, then forecast the weather</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
           </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileCycleTitle">Water Cycle</h2>
-            <p data-i18n="tileCycleSub">Follow one drop from the sea to the clouds, the rain, the river and back</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
+        </section>
 
-        <!-- ⑭ Weather Station — instruments under a changing sky -->
-        <a class="tile tile-weather" href="weather/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <g class="tl back">
-                <rect x="0" y="0" width="96" height="64" fill="#17324d"/>
-                <path d="M0 64 H96 V96 H0 Z" fill="#3f5f35"/>
-                <path d="M0 78 q24 -6 48 0 q24 6 48 0 v18 H0 Z" fill="url(#tWater)" opacity=".8"/>
-              </g>
-              <g class="tl mid">
-                <rect x="20" y="34" width="3" height="38" fill="#9fb0c4"/>
-                <g class="tl-spin">
-                  <path d="M21.5 34 V24 M21.5 34 L31 39 M21.5 34 L12 39" stroke="#c8d1dd" stroke-width="2.2" stroke-linecap="round"/>
-                  <circle cx="21.5" cy="24" r="3" fill="#e8eef8"/><circle cx="31" cy="39" r="3" fill="#e8eef8"/><circle cx="12" cy="39" r="3" fill="#e8eef8"/>
+        <section class="group" data-group="travel">
+          <h2 class="group-title"><span class="gt-ico">🚆</span><span data-i18n="groupTravel">Getting around</span></h2>
+          <div class="tiles">
+          <a class="tile tile-train" href="train/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <g class="tl back">
+                  <path d="M-6 88 V50 a38 38 0 0 1 76 0 V88 Z" fill="#26313f" stroke="#3f4c5f" stroke-width="1.6"/>
+                  <path d="M10 88 V56 a22 22 0 0 1 44 0 V88 Z" fill="#0a1017"/>
                 </g>
-                <rect x="40" y="50" width="34" height="26" rx="4" fill="#26313f" stroke="#8fa0b4" stroke-width="1.2"/>
-                <circle cx="50" cy="62" r="6" fill="#dfe8f2" stroke="#8fa0b4" stroke-width="1"/>
-                <circle cx="65" cy="62" r="6" fill="#dfe8f2" stroke="#8fa0b4" stroke-width="1"/>
-                <rect x="82" y="46" width="8" height="26" rx="2" fill="#24313f" stroke="#8fa0b4" stroke-width="1"/>
-              </g>
-              <g class="tl front">
-                <circle cx="80" cy="18" r="7" fill="#ffd166"/>
-                <g fill="#e8eef6" opacity=".85">
-                  <ellipse cx="34" cy="16" rx="14" ry="6"/><ellipse cx="24" cy="12" rx="8" ry="4"/><ellipse cx="43" cy="11" rx="9" ry="5"/>
+                <g class="tl mid">
+                  <rect x="68" y="8" width="3.4" height="30" fill="#67707e"/>
+                  <rect x="60" y="4" width="19" height="12" rx="2.5" fill="#191d24"/>
+                  <circle cx="65" cy="10" r="3.4" fill="#e8220f"/>
+                  <circle cx="65" cy="10" r="6" fill="#ff3b2a" opacity=".35"/>
+                  <circle cx="74" cy="10" r="3.4" fill="#4a1a18"/>
                 </g>
-                <g stroke="#8fd0ff" stroke-width="1.8" stroke-linecap="round">
-                  <path d="M24 24 L22 32 M34 24 L32 34 M44 24 L42 32"/>
+                <g class="tl front">
+                  <path d="M78 62 L96 52 V76 Z" fill="#ffd166" opacity=".32"/>
+                  <rect x="30" y="42" width="58" height="10" rx="4" fill="#c3ccd9"/>
+                  <rect x="32" y="50" width="54" height="30" rx="3.5" fill="#33598f" stroke="#22406e" stroke-width="1.3"/>
+                  <rect x="32" y="50" width="54" height="6" rx="3" fill="#416ba6"/>
+                  <rect x="38" y="58" width="15" height="11" rx="2" fill="#cfe6f5" stroke="#22406e" stroke-width="1"/>
+                  <rect x="58" y="58" width="15" height="11" rx="2" fill="#cfe6f5" stroke="#22406e" stroke-width="1"/>
+                  <rect x="32" y="72" width="54" height="6" fill="#e63946"/>
+                  <rect x="32" y="78" width="54" height="3" fill="#f4d35e"/>
+                  <circle cx="44" cy="86" r="6.5" fill="#39414d" stroke="#232a33" stroke-width="1.3"/>
+                  <circle cx="74" cy="86" r="6.5" fill="#39414d" stroke="#232a33" stroke-width="1.3"/>
+                  <circle cx="80" cy="64" r="2.6" fill="#fff5cc"/>
                 </g>
-                <path d="M50 62 L55 57 M65 62 L60 67" stroke="#2f4a27" stroke-width="1.6" stroke-linecap="round"/>
-                <rect x="84" y="52" width="4" height="20" fill="#e2453c" opacity=".8"/>
-              </g>
-            </svg>
+                <rect x="0" y="90" width="96" height="3.4" rx="1.4" fill="#9aa5b2"/>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileTrainTitle">Train Driving</h2>
+              <p data-i18n="tileTrainSub">Drive the train, stop at the station, ding ding at the crossing</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
+          <a class="tile tile-engine" href="engine/index.html">
+            <div class="tile-art">
+              <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+                <g class="tl back">
+                  <rect x="0" y="0" width="96" height="96" fill="#151d28"/>
+                  <rect x="14" y="8" width="68" height="72" rx="7" fill="#39414d" stroke="#59657a" stroke-width="1.3"/>
+                  <rect x="30" y="18" width="36" height="42" fill="#202a36" stroke="#8fa0b4" stroke-width="1"/>
+                  <path d="M0 34 H30 M66 34 H96" stroke="#5fb6ef" stroke-width="7" opacity=".7"/>
+                </g>
+                <g class="tl mid">
+                  <rect x="34" y="34" width="28" height="13" rx="3" fill="url(#tMetal)" stroke="#8fa0b4" stroke-width="1"/>
+                  <path d="M48 47 L48 70" stroke="#c8d1dd" stroke-width="4" stroke-linecap="round"/>
+                  <circle cx="48" cy="78" r="12" fill="#59657a" stroke="#8fa0b4" stroke-width="1.4"/>
+                  <circle cx="48" cy="78" r="3" fill="#8fa0b4"/>
+                  <circle cx="56" cy="70" r="3" fill="#e0a51e" stroke="#8a5a10" stroke-width=".8"/>
+                </g>
+                <g class="tl front">
+                  <ellipse cx="48" cy="27" rx="16" ry="9" fill="#ffb066" opacity=".75"/>
+                  <path d="M48 20 V27 M48 30 V34 M40 27 H44 M52 27 H56" stroke="#ffd166" stroke-width="2" stroke-linecap="round"/>
+                  <rect x="36" y="18" width="3" height="13" fill="#dfe8f2"/>
+                  <rect x="57" y="18" width="3" height="13" fill="#dfe8f2"/>
+                  <circle cx="37" cy="18" r="3" fill="#8fa0b4"/><circle cx="58" cy="18" r="3" fill="#8fa0b4"/>
+                  <path d="M22 34 q8 -5 14 0 M60 34 q8 -5 14 0" stroke="#8fd0ff" stroke-width="1.6" fill="none" opacity=".7"/>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-text">
+              <h2 data-i18n="tileEngineTitle">How a Car Engine Works</h2>
+              <p data-i18n="tileEngineSub">Watch the piston, valves and spark plug through intake, compression, power and exhaust</p>
+            </div>
+            <span class="tile-go">›</span>
+          </a>
           </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileWeatherTitle">Weather Station</h2>
-            <p data-i18n="tileWeatherSub">Read the rain gauge, wind, pressure and river level, then forecast the weather</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
-
-        <!-- ⑮ How a Car Engine Works — the piston, rod and crank -->
-        <a class="tile tile-engine" href="engine/index.html">
-          <div class="tile-art">
-            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <g class="tl back">
-                <rect x="0" y="0" width="96" height="96" fill="#151d28"/>
-                <rect x="14" y="8" width="68" height="72" rx="7" fill="#39414d" stroke="#59657a" stroke-width="1.3"/>
-                <rect x="30" y="18" width="36" height="42" fill="#202a36" stroke="#8fa0b4" stroke-width="1"/>
-                <path d="M0 34 H30 M66 34 H96" stroke="#5fb6ef" stroke-width="7" opacity=".7"/>
-              </g>
-              <g class="tl mid">
-                <rect x="34" y="34" width="28" height="13" rx="3" fill="url(#tMetal)" stroke="#8fa0b4" stroke-width="1"/>
-                <path d="M48 47 L48 70" stroke="#c8d1dd" stroke-width="4" stroke-linecap="round"/>
-                <circle cx="48" cy="78" r="12" fill="#59657a" stroke="#8fa0b4" stroke-width="1.4"/>
-                <circle cx="48" cy="78" r="3" fill="#8fa0b4"/>
-                <circle cx="56" cy="70" r="3" fill="#e0a51e" stroke="#8a5a10" stroke-width=".8"/>
-              </g>
-              <g class="tl front">
-                <ellipse cx="48" cy="27" rx="16" ry="9" fill="#ffb066" opacity=".75"/>
-                <path d="M48 20 V27 M48 30 V34 M40 27 H44 M52 27 H56" stroke="#ffd166" stroke-width="2" stroke-linecap="round"/>
-                <rect x="36" y="18" width="3" height="13" fill="#dfe8f2"/>
-                <rect x="57" y="18" width="3" height="13" fill="#dfe8f2"/>
-                <circle cx="37" cy="18" r="3" fill="#8fa0b4"/><circle cx="58" cy="18" r="3" fill="#8fa0b4"/>
-                <path d="M22 34 q8 -5 14 0 M60 34 q8 -5 14 0" stroke="#8fd0ff" stroke-width="1.6" fill="none" opacity=".7"/>
-              </g>
-            </svg>
-          </div>
-          <div class="tile-text">
-            <h2 data-i18n="tileEngineTitle">How a Car Engine Works</h2>
-            <p data-i18n="tileEngineSub">Watch the piston, valves and spark plug through intake, compression, power and exhaust</p>
-          </div>
-          <span class="tile-go">›</span>
-        </a>
+        </section>
 
       </div>
 

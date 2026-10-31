@@ -915,6 +915,13 @@ console.log('\n— Home tiles —');
   const tiles = html.match(/class="tile tile-[a-z]+"/g) || [];
   eq('the home screen has fifteen tiles', tiles.length, 15);
 
+  /* level-1 groups make the larger collection navigable */
+  const groupBlocks = html.match(/<section class="group"[\s\S]*?<\/section>/g) || [];
+  eq('the home screen has five groups', groupBlocks.length, 5);
+  const groupCounts = groupBlocks.map(b => (b.match(/class="tile tile-/g) || []).length);
+  eq('  → grouped 4 / 4 / 3 / 2 / 2', groupCounts.join(','), '4,4,3,2,2');
+  eq('  → every group has a heading', (html.match(/class="group-title"/g) || []).length, 5);
+
   const svgs = html.match(/class="tile-svg"[^>]*viewBox="([^"]+)"/g) || [];
   eq('every tile is an illustration, not a stack of spans', svgs.length, 15);
   eq('  → all on one 96×96 canvas', svgs.every(s => /viewBox="0 0 96 96"/.test(s)), true);

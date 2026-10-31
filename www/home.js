@@ -40,6 +40,11 @@
       tileWeatherSub: 'Read the rain gauge, wind, pressure and river level, then forecast the weather',
       tileEngineTitle: 'How a Car Engine Works',
       tileEngineSub: 'Watch the piston, valves and spark plug through intake, compression, power and exhaust',
+      groupHome: 'Home machines',
+      groupWater: 'Water',
+      groupFood: 'Food & body',
+      groupNature: 'Nature & weather',
+      groupTravel: 'Getting around',
 
       /* ── the sticker book ── */
       bookTitle: 'My sticker book',
@@ -203,6 +208,11 @@
       tileWeatherSub: '读雨量、风、气压和河水水位，然后预报天气',
       tileEngineTitle: '汽车发动机怎样工作',
       tileEngineSub: '看活塞、气门和火花塞走完进气、压缩、做功和排气',
+      groupHome: '家里的机器',
+      groupWater: '水',
+      groupFood: '食物与身体',
+      groupNature: '自然与天气',
+      groupTravel: '出行',
 
       /* ── 贴纸本 ── */
       bookTitle: '我的贴纸本',
