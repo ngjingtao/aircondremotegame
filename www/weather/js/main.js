@@ -35,6 +35,17 @@
   }
 
   function handleAction(action, el) {
+    if (action === 'instrument') {
+      ARG.audio.blip();
+      ARG.panel.showInstrument(el.dataset.instrument);
+      return;
+    }
+    if (action === 'instruments') {
+      ARG.audio.blip();
+      ARG.panel.showInstrumentIndex();
+      return;
+    }
+
     const res = ARG.sim.press(action, el);
     if (!res) return;
 

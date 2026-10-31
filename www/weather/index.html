@@ -54,6 +54,10 @@
 
           <div class="readings" id="readings"></div>
 
+          <button class="inst-open" data-action="instruments" id="inst-open">
+            <span class="io-ico">🔎</span><span data-i18n="instOpen">HOW EVERY INSTRUMENT WORKS</span>
+          </button>
+
           <div class="ctl-block">
             <div class="ctl-label" data-i18n="forecastLabel">FORECAST</div>
             <div class="seg three" id="forecast-row"></div>
@@ -150,7 +154,7 @@
             <rect x="107" y="160" width="5" height="240" fill="#7d8a99"/>
             <circle cx="79" cy="150" r="5" fill="#c8d1dd"/>
             <circle cx="109.5" cy="160" r="4" fill="#c8d1dd"/>
-            <g id="anemometer">
+            <g id="anemometer" data-instrument="anemometer">
               <g stroke="#c8d1dd" stroke-width="3" stroke-linecap="round">
                 <path d="M79 150 V128 M79 150 L98 161 M79 150 L60 161"/>
               </g>
@@ -159,7 +163,7 @@
               <circle cx="98" cy="161" r="6" fill="#e8eef8" stroke="#8fa0b4" stroke-width="1"/>
               <circle cx="60" cy="161" r="6" fill="#e8eef8" stroke="#8fa0b4" stroke-width="1"/>
             </g>
-            <g id="vane">
+            <g id="vane" data-instrument="vane">
               <path d="M92 160 L104 154 L104 166 Z" fill="#e2453c" stroke="#a82f28" stroke-width="1"/>
               <path d="M100 160 H128" stroke="#c8d1dd" stroke-width="3" stroke-linecap="round"/>
               <path d="M120 160 L128 154 L128 166 Z" fill="#c8d1dd" opacity=".8"/>
@@ -167,7 +171,7 @@
           </g>
 
           <!-- rain gauge -->
-          <g id="rainGauge">
+          <g id="rainGauge" data-instrument="rainGauge">
             <rect x="34" y="360" width="18" height="42" rx="3" fill="#24313f" stroke="#8fa0b4" stroke-width="1.2"/>
             <rect id="rainGaugeFill" x="36" y="400" width="14" height="0" fill="url(#waterGrad)"/>
             <path d="M34 366 H52 M34 372 H52 M34 378 H52" stroke="#8fa0b4" stroke-width=".8" opacity=".6"/>
@@ -191,10 +195,14 @@
             <path d="M225 312 L210 302 M225 312 L240 302" stroke="#8fa0b4" stroke-width="1" opacity=".5"/>
             <g id="baroNeedle"><path d="M225 312 V296" stroke="#2f4a27" stroke-width="2.4" stroke-linecap="round"/></g>
             <circle cx="225" cy="312" r="3" fill="#2f4a27"/>
+            <!-- tap targets for the three box instruments -->
+            <rect class="inst-hit" x="150" y="282" width="18" height="76" rx="4" data-instrument="thermometer"/>
+            <circle class="inst-hit" cx="185" cy="312" r="21" data-instrument="hygrometer"/>
+            <circle class="inst-hit" cx="225" cy="312" r="21" data-instrument="barometer"/>
           </g>
 
           <!-- sunshine recorder -->
-          <g id="sunshine">
+          <g id="sunshine" data-instrument="sunshine">
             <rect x="278" y="286" width="6" height="108" fill="#7d8a99"/>
             <circle cx="281" cy="276" r="14" fill="#dfe8f2" stroke="#8fa0b4" stroke-width="1.4"/>
             <circle id="sunshineGlow" cx="281" cy="276" r="20" fill="#ffd166" opacity=".8"/>
@@ -202,7 +210,7 @@
           </g>
 
           <!-- river and gauge -->
-          <g id="river">
+          <g id="river" data-instrument="riverGauge">
             <path d="M244 430 q26 -8 48 0 q22 8 48 0 v90 H244 Z" fill="url(#waterGrad)" opacity=".85"/>
             <rect x="300" y="430" width="6" height="70" fill="#e8eef8"/>
             <path d="M300 438 H306 M300 446 H306 M300 454 H306 M300 462 H306 M300 470 H306 M300 478 H306 M300 486 H306" stroke="#516276" stroke-width="1.4"/>
@@ -211,14 +219,14 @@
 
           <!-- labels -->
           <g id="labels">
-            <g class="lab"><text x="80" y="112" text-anchor="middle" data-i18n="lAnemometer">anemometer</text></g>
-            <g class="lab"><text x="136" y="146" text-anchor="start" data-i18n="lVane">wind vane</text></g>
-            <g class="lab"><text x="43" y="418" text-anchor="middle" data-i18n="lRainGauge">rain gauge</text></g>
-            <g class="lab"><text x="159" y="372" text-anchor="middle" data-i18n="lThermometer">thermometer</text></g>
-            <g class="lab"><text x="185" y="342" text-anchor="middle" data-i18n="lHygrometer">hygrometer</text></g>
-            <g class="lab"><text x="225" y="342" text-anchor="middle" data-i18n="lBarometer">barometer</text></g>
-            <g class="lab"><text x="288" y="258" text-anchor="middle" data-i18n="lSunshine">sunshine recorder</text></g>
-            <g class="lab"><text x="324" y="424" text-anchor="end" data-i18n="lRiverGauge">river gauge</text></g>
+            <g class="lab" data-instrument="anemometer"><text x="80" y="112" text-anchor="middle" data-i18n="lAnemometer">anemometer</text></g>
+            <g class="lab" data-instrument="vane"><text x="136" y="146" text-anchor="start" data-i18n="lVane">wind vane</text></g>
+            <g class="lab" data-instrument="rainGauge"><text x="43" y="418" text-anchor="middle" data-i18n="lRainGauge">rain gauge</text></g>
+            <g class="lab" data-instrument="thermometer"><text x="159" y="372" text-anchor="middle" data-i18n="lThermometer">thermometer</text></g>
+            <g class="lab" data-instrument="hygrometer"><text x="185" y="342" text-anchor="middle" data-i18n="lHygrometer">hygrometer</text></g>
+            <g class="lab" data-instrument="barometer"><text x="225" y="342" text-anchor="middle" data-i18n="lBarometer">barometer</text></g>
+            <g class="lab" data-instrument="sunshine"><text x="288" y="258" text-anchor="middle" data-i18n="lSunshine">sunshine recorder</text></g>
+            <g class="lab" data-instrument="riverGauge"><text x="324" y="424" text-anchor="end" data-i18n="lRiverGauge">river gauge</text></g>
             <g class="lab"><text x="198" y="386" text-anchor="middle" data-i18n="lStation">station</text></g>
           </g>
         </svg>
@@ -236,6 +244,20 @@
     <h2 id="help-title">How to predict the weather</h2>
     <div id="help-body" class="help-body"></div>
     <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<div id="instrument-overlay" class="overlay" hidden>
+  <div class="overlay-card inst-card">
+    <div class="inst-head">
+      <div class="inst-tools">
+        <button type="button" class="inst-back" id="inst-back" data-i18n="instBack" hidden>‹ All instruments</button>
+        <button type="button" class="inst-read" id="inst-read" data-i18n="instRead">🔊 Read aloud</button>
+      </div>
+      <h2><span id="inst-icon">🔎</span> <span id="inst-title">The instruments</span></h2>
+    </div>
+    <div id="inst-body" class="help-body"></div>
+    <button class="overlay-close" id="inst-close" data-i18n="instClose">OK</button>
   </div>
 </div>
 

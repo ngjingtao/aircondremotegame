@@ -761,6 +761,37 @@ console.log('\n— Weather Station: read, forecast, reveal —');
     eq('there are three forecast rounds', sim.ROUNDS.length, 3);
     eq('it opens on round 1', sim.s.round, 0);
 
+    /* every reading and every instrument in the picture opens its explainer */
+    const weatherHtml = fs.readFileSync(path.join(WWW, 'weather', 'index.html'), 'utf8');
+    const weatherPanelJs = fs.readFileSync(path.join(WWW, 'weather', 'js', 'panel.js'), 'utf8');
+    eq('six readings are instrument buttons',
+       (weatherPanelJs.match(/instrument: '/g) || []).length, 6);
+    eq('  → each names its instrument',
+       /data-action="instrument" data-instrument=/.test(weatherPanelJs), true);
+    eq('  → the panel has an instrument index button',
+       /id="inst-open"/.test(weatherHtml) && /data-action="instruments"/.test(weatherHtml), true);
+    const instrumentIds = ['anemometer', 'vane', 'rainGauge', 'thermometer',
+      'hygrometer', 'barometer', 'sunshine', 'riverGauge'];
+    eq('  → all eight instruments are tappable in the picture',
+       instrumentIds.every(id => weatherHtml.includes('data-instrument="' + id + '"')), true);
+
+    p.ARG.panel.showInstrumentIndex();
+    eq('the instrument index opens',
+       p.document.getElementById('instrument-overlay').hidden, false);
+    eq('  → with eight instruments',
+       (p.document.getElementById('inst-body').innerHTML.match(/class="inst-row"/g) || []).length, 8);
+    p.ARG.panel.showInstrument('barometer');
+    eq('  → the barometer explains itself',
+       p.document.getElementById('inst-title').textContent, '气压计');
+    eq('  → with what, how and how to read',
+       /空盒气压计/.test(p.document.getElementById('inst-body').innerHTML), true);
+    p.ARG.panel.showInstrument('hygrometer');
+    eq('  → the same card in Chinese',
+       p.document.getElementById('inst-title').textContent, '湿度计');
+    p.ARG.panel.hideInstrument();
+    eq('  → and it closes',
+       p.document.getElementById('instrument-overlay').hidden, true);
+
     /* both wind instruments must turn about their own poles, not a point beside them */
     p.ARG.scene.render(0.016);
     eq('the anemometer turns on the mast top',

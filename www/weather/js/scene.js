@@ -16,6 +16,7 @@ ARG.scene = (function () {
 
   function build() {
     els.scene = document.getElementById('scene');
+    els.art = document.getElementById('art');
     els.anemometer = document.getElementById('anemometer');
     els.vane = document.getElementById('vane');
     els.rainFill = document.getElementById('rainGaugeFill');
@@ -33,6 +34,22 @@ ARG.scene = (function () {
     els.status = document.getElementById('scene-status');
     els.paneNote = document.getElementById('pane-note');
     els.toast = document.getElementById('toast');
+
+    if (els.art) {
+      els.art.addEventListener('pointerdown', ev => {
+        let n = ev.target;
+        while (n && n !== els.art) {
+          const key = n.getAttribute && n.getAttribute('data-instrument');
+          if (key) {
+            ev.preventDefault();
+            ARG.panel.showInstrument(key);
+            if (ARG.audio) ARG.audio.blip();
+            return;
+          }
+          n = n.parentNode;
+        }
+      });
+    }
   }
 
   function render(dt) {

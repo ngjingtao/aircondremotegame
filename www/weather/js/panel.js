@@ -7,12 +7,27 @@ ARG.panel = (function () {
 
   const T = () => ARG.i18n.t;
   const M = () => ARG.sim.s;
+  const $ = id => document.getElementById(id);
+  const setText = (el, v) => { if (el && el.textContent !== v) el.textContent = v; };
+  const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+  /* one entry per instrument in the picture and in the readings */
+  const INSTRUMENTS = [
+    { id: 'barometer', ico: '⏲️' },
+    { id: 'hygrometer', ico: '💧' },
+    { id: 'thermometer', ico: '🌡️' },
+    { id: 'anemometer', ico: '🌀' },
+    { id: 'vane', ico: '🧭' },
+    { id: 'rainGauge', ico: '🌧️' },
+    { id: 'riverGauge', ico: '🌊' },
+    { id: 'sunshine', ico: '☀️' }
+  ];
+
   let els = {};
   let onAction = null;
+  let currentInst = null;
+  let instView = '';
   const seen = {};
-
-  function $(id) { return document.getElementById(id); }
-  function setText(el, v) { if (el && el.textContent !== v) el.textContent = v; }
 
   function dirName(deg) {
     const names = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
@@ -31,23 +46,32 @@ ARG.panel = (function () {
     els.resText = $('weather-res-text');
     els.hudRound = $('hud-round');
     els.hudScore = $('hud-score');
+    els.instOverlay = $('instrument-overlay');
+    els.instCard = els.instOverlay ? els.instOverlay.querySelector('.overlay-card') : null;
+    els.instIcon = $('inst-icon');
+    els.instTitle = $('inst-title');
+    els.instBody = $('inst-body');
+    els.instBack = $('inst-back');
+    els.instClose = $('inst-close');
+    els.instRead = $('inst-read');
 
     const sim = ARG.sim;
     const items = [
-      { key: 'pressure', unit: 'hPa' },
-      { key: 'humidity', unit: '%' },
-      { key: 'wind', unit: 'km/h' },
-      { key: 'rain', unit: 'mm' },
-      { key: 'river', unit: 'm' },
-      { key: 'sun', unit: 'h' }
+      { key: 'pressure', unit: 'hPa', instrument: 'barometer' },
+      { key: 'humidity', unit: '%', instrument: 'hygrometer' },
+      { key: 'wind', unit: 'km/h', instrument: 'anemometer' },
+      { key: 'rain', unit: 'mm', instrument: 'rainGauge' },
+      { key: 'river', unit: 'm', instrument: 'riverGauge' },
+      { key: 'sun', unit: 'h', instrument: 'sunshine' }
     ];
     if (els.readings) {
       els.readings.innerHTML = items.map(it =>
-        '<div class="reading" data-reading="' + it.key + '">' +
+        '<button type="button" class="reading" data-reading="' + it.key + '" data-action="instrument" data-instrument="' + it.instrument + '">' +
           '<span class="rd-label" data-i18n="' + it.key + '"></span>' +
           '<b class="rd-val">—</b>' +
           '<i class="rd-unit">' + it.unit + '</i>' +
-        '</div>').join('');
+          '<i class="rd-info" aria-hidden="true">?</i>' +
+        '</button>').join('');
     }
     if (els.forecasts) {
       els.forecasts.innerHTML = sim.FORECASTS.map(f =>
@@ -68,6 +92,79 @@ ARG.panel = (function () {
         onAction(b.dataset.action, b);
       });
     }
+
+    if (els.instClose) els.instClose.addEventListener('click', hideInstrument);
+    if (els.instBack) els.instBack.addEventListener('click', showInstrumentIndex);
+    if (els.instRead) {
+      if (!ARG.voice || !ARG.voice.supported) els.instRead.hidden = true;
+      els.instRead.addEventListener('click', () => {
+        if (!ARG.voice) return;
+        if (ARG.voice.speaking) { ARG.voice.stop(); return; }
+        const title = els.instTitle ? els.instTitle.textContent + '. ' : '';
+        const body = els.instBody ? els.instBody.textContent : '';
+        ARG.voice.speakLinked(els.instBody, title + body);
+      });
+    }
+    if (els.instOverlay) {
+      els.instOverlay.addEventListener('click', ev => {
+        if (ev.target === els.instOverlay) hideInstrument();
+      });
+      document.addEventListener('keydown', ev => {
+        if (ev.key === 'Escape' && !els.instOverlay.hidden) hideInstrument();
+      });
+    }
+    if (els.instBody) {
+      els.instBody.addEventListener('pointerdown', ev => {
+        const row = ev.target && ev.target.closest ? ev.target.closest('[data-instrument]') : null;
+        if (!row) return;
+        ev.preventDefault();
+        showInstrument(row.getAttribute('data-instrument'));
+      });
+    }
+  }
+
+  function showInstrument(key) {
+    const inst = INSTRUMENTS.find(x => x.id === key);
+    if (!inst || !els.instOverlay) return;
+    const t = T();
+    currentInst = key;
+    instView = 'detail';
+    setText(els.instIcon, inst.ico);
+    setText(els.instTitle, t('inst' + cap(key) + 'Name'));
+    if (els.instBody) els.instBody.innerHTML = t('inst' + cap(key) + 'Body');
+    if (els.instBack) els.instBack.hidden = false;
+    els.instOverlay.hidden = false;
+    if (els.instCard) els.instCard.scrollTop = 0;
+    if (ARG.voice && ARG.voice.stop) ARG.voice.stop();
+  }
+
+  function showInstrumentIndex() {
+    if (!els.instOverlay) return;
+    const t = T();
+    currentInst = null;
+    instView = 'index';
+    setText(els.instIcon, '🔎');
+    setText(els.instTitle, t('instIndexTitle'));
+    if (els.instBack) els.instBack.hidden = true;
+    if (els.instBody) {
+      els.instBody.innerHTML = '<p class="inst-hint">' + t('instIndexHint') + '</p>' +
+        INSTRUMENTS.map(i =>
+          '<button type="button" class="inst-row" data-instrument="' + i.id + '">' +
+            '<span class="ir-ico">' + i.ico + '</span>' +
+            '<span class="ir-name">' + t('inst' + cap(i.id) + 'Name') + '</span>' +
+            '<span class="ir-go">›</span>' +
+          '</button>').join('');
+    }
+    els.instOverlay.hidden = false;
+    if (els.instCard) els.instCard.scrollTop = 0;
+    if (ARG.voice && ARG.voice.stop) ARG.voice.stop();
+  }
+
+  function hideInstrument() {
+    if (els.instOverlay) els.instOverlay.hidden = true;
+    currentInst = null;
+    instView = '';
+    if (ARG.voice && ARG.voice.stop) ARG.voice.stop();
   }
 
   function stars(n) {
@@ -83,7 +180,7 @@ ARG.panel = (function () {
     const r = sim.current();
 
     const values = {
-      pressure: r.pressure + ' / ' + t(r.trend),
+      pressure: r.pressure + (r.trend === 'rising' ? ' ↗' : ' ↘'),
       humidity: r.humidity,
       wind: r.wind + ' · ' + dirName(r.dir),
       rain: r.rain,
@@ -142,7 +239,13 @@ ARG.panel = (function () {
     }
   }
 
-  function refresh() { for (const k in seen) delete seen[k]; }
+  function refresh() {
+    for (const k in seen) delete seen[k];
+    if (els.instOverlay && !els.instOverlay.hidden) {
+      if (instView === 'detail' && currentInst) showInstrument(currentInst);
+      else if (instView === 'index') showInstrumentIndex();
+    }
+  }
 
-  return { build, render, refresh };
+  return { build, render, refresh, showInstrument, showInstrumentIndex, hideInstrument };
 })();

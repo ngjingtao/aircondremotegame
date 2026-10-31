@@ -745,6 +745,13 @@ answer has to come from the measurements.
 | **Sunshine recorder** | hours of sun | bright, high-pressure days have more sun |
 | **River gauge** | river level | rises after rain, often lagging behind it |
 
+**Every instrument explains itself.** Tap a reading in the panel — or the instrument itself in the
+picture — to open a card with three sections: *what it measures*, *how it works*, and *how to read
+it*. The panel's **HOW EVERY INSTRUMENT WORKS** link opens the full list of eight, and each card
+has a **Read aloud** button. The thermometer and wind vane are reached by tapping them in the
+scene or through that list. The pressure reading carries a **↗ / ↘ trend arrow** — the barometer
+card explains why the trend matters more than the number itself.
+
 The three rounds and their readings:
 
 | Round | Pressure | Humidity | Wind | Rain | River | Sun | Forecast |
@@ -1070,7 +1077,7 @@ render.yaml                             Render blueprint (build + start commands
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
 test/sim.test.js                        254 assertions over the fifteen simulations
-test/render.test.js                     193 assertions: every page booted, the artwork, the book, and nothing inline
+test/render.test.js                     203 assertions: every page booted, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json
