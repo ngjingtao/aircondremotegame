@@ -110,7 +110,10 @@
   stroke:rgba(8,14,26,.9);stroke-width:2.1;paint-order:stroke fill;
 }
 #hygroNeedle,#baroNeedle{transition:transform .5s;}
-#anemometer{transform-origin:79px 150px;}
+/* The anemometer is rotated with an SVG `rotate(angle 79 150)` attribute,
+   which already carries its centre. Do NOT add a CSS transform-origin here:
+   the browser would apply the origin a second time and the whole cup wheel
+   would orbit a point at roughly twice the distance from the mast. */
 
 @media (max-width:520px){
   .scene-lead{display:none;}

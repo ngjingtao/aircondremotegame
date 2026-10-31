@@ -1037,7 +1037,7 @@ render.yaml                             Render blueprint (build + start commands
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
 test/sim.test.js                        254 assertions over the fifteen simulations
-test/render.test.js                     176 assertions: every page booted, the artwork, the book, and nothing inline
+test/render.test.js                     177 assertions: every page booted, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json

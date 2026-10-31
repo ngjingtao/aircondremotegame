@@ -768,6 +768,12 @@ console.log('\n— Weather Station: read, forecast, reveal —');
     eq('the wind vane turns on its pole',
        / 109\.5 160\)$/.test(p.document.getElementById('vane').getAttribute('transform') || ''), true);
 
+    /* the rotate() attribute already carries its centre; a CSS transform-origin
+       would apply the centre a second time and send the cups into a wide orbit */
+    const weatherCss = fs.readFileSync(path.join(WWW, 'weather', 'weather.css'), 'utf8');
+    eq('  → with no CSS transform-origin on the anemometer',
+       /#anemometer\s*\{[^}]*transform-origin/.test(weatherCss), false);
+
     const forecast = (f) => {
       sim.press('guess', { dataset: { forecast: f } });
       sim.press('submit');
