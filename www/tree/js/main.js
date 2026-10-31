@@ -18,6 +18,12 @@
       return;
     }
 
+    /* a portrait phone stacks the scene above a scrollable control sheet */
+    if (ARG.shell && ARG.shell.isStacked && ARG.shell.isStacked()) {
+      ARG.shell.stackPanel({ panel: panel, scaler: scaler, w: CW, h: CH, varName: '--ctl-scale' });
+      return;
+    }
+
     const totalW = mainEl.clientWidth;
     const availH = panel.clientHeight - 16;
     const tablet = totalW >= 700 && mainEl.clientHeight >= 560;

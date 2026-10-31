@@ -11,27 +11,31 @@ tiles — tap one and you're in.
 │                                                                       │
 │                    今天玩什么？ / What shall we play?                  │
 │                                                                       │
-│  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐          │
-│  │[ warm boy ]│ │[ apple    ]│ │[ tunnel   ]│ │[ the hill ]│          │
-│  │玩空调    › │ │吃东西    › │ │开火车    › │ │呼吸与血液› │          │
-│  └────────────┘ └────────────┘ └────────────┘ └────────────┘          │
-│  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐          │
-│  │[ pipes    ]│ │[ S-bend   ]│ │[ the works]│ │[ the wok  ]│          │
-│  │空调的秘密› │ │马桶      › │ │英达丽水  › │ │抽油烟机  › │          │
-│  └────────────┘ └────────────┘ └────────────┘ └────────────┘          │
-│  ┌────────────┐ ┌────────────┐                                       │
-│  │[ washer & ]│ │[ seed →   ]│                                       │
-│  │[ dryer    ]│ │[ tree     ]│                                       │
-│  │洗衣日    › │ │从种子到大树›│                                       │
-│  └────────────┘ └────────────┘                                       │
-│  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐          │
-│  │[ sandwich ]│ │[ tap/tank ]│ │[ the drop ]│ │[ weather  ]│          │
-│  │早餐三明治› │ │家里的水  › │ │水循环    › │ │气象站    › │          │
-│  └────────────┘ └────────────┘ └────────────┘ └────────────┘          │
-│  ┌────────────┐                                                       │
-│  │[ engine   ]│                                                       │
-│  │汽车发动机› │                                                       │
-│  └────────────┘                                                       │
+│  🏠 HOME MACHINES                                                     │
+│  ┌────────────┐ ┌────────────┐ ┌────────────┐                         │
+│  │[ warm boy ]│ │[ pipes    ]│ │[ washer & ]│                         │
+│  │玩空调      │ │空调的秘密  │ │洗衣日      │                         │
+│  └────────────┘ └────────────┘ └────────────┘                         │
+│  🍳 KITCHEN                                                           │
+│  ┌────────────┐ ┌────────────┐ ┌────────────┐                         │
+│  │[ apple    ]│ │[ sandwich ]│ │[ the wok  ]│                         │
+│  │吃东西      │ │早餐三明治  │ │抽油烟机    │                         │
+│  └────────────┘ └────────────┘ └────────────┘                         │
+│  💧 WATER SYSTEMS                                                     │
+│  ┌────────────┐ ┌────────────┐ ┌────────────┐                         │
+│  │[ tap/tank ]│ │[ S-bend   ]│ │[ the works]│                         │
+│  │家里的水    │ │马桶        │ │英达丽水    │                         │
+│  └────────────┘ └────────────┘ └────────────┘                         │
+│  🌱 NATURE & WEATHER                                                  │
+│  ┌────────────┐ ┌────────────┐ ┌────────────┐                         │
+│  │[ seed →   ]│ │[ the drop ]│ │[ weather  ]│                         │
+│  │从种子到大树│ │水循环      │ │气象站      │                         │
+│  └────────────┘ └────────────┘ └────────────┘                         │
+│  🚆 BODY & TRANSPORT                                                  │
+│  ┌────────────┐ ┌────────────┐ ┌────────────┐                         │
+│  │[ the hill ]│ │[ tunnel   ]│ │[ engine   ]│                         │
+│  │呼吸与血液  │ │开火车      │ │汽车发动机  │                         │
+│  └────────────┘ └────────────┘ └────────────┘                         │
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -44,7 +48,31 @@ apart on hover. They are the only place the character guidelines in
 [`docs/character-bible.md`](docs/character-bible.md) are applied so far.
 
 The tiles are grouped under five headings so the larger menu stays navigable: **Home machines**
-(4), **Water** (4), **Food & body** (3), **Nature & weather** (2) and **Getting around** (2).
+(3), **Kitchen** (3), **Water systems** (3), **Nature & weather** (3) and **Body & transport**
+(3). Three per row means every group is one clean row on a tablet and two short rows on a
+phone, and the whole menu fits in five rows instead of a long scrolling list.
+
+### Phone and tablet layout
+
+The layout is tuned for a phone held in portrait (Xiaomi 14, 393 × 852 CSS px) and for an iPad
+in either orientation (768 × 1024 and 1024 × 768).
+
+- **Home** — always three columns. On a phone the cards are compact (66 px picture, name only);
+  on an iPad the picture is 128 px and the one-line description comes back. Five groups of
+  three means the menu no longer needs a long scroll.
+- **Activities on a phone** — a side-by-side split left the illustration about 170 px wide and
+  the control text under 5 px, so portrait phones stack instead: the scene gets the full width
+  on top, and the control panel becomes a full-width sheet across the bottom 50 %. The sheet
+  scrolls, so the controls scale **up** with the screen (about 1.22×) instead of shrinking to
+  fit the 300 × 640 design. The ◧ button still folds it away.
+- **Activities on an iPad** — the two-column layout stays: the scene keeps about half the
+  screen, the panel scales to about 1.1–1.2×, and the top-bar buttons grow to 40 px tall.
+- **Landscape phones and the train** keep their own layouts; the train uses a bottom cab bar
+  instead of a design panel, so it is left out of the stacking rule.
+
+The shared rules live in `www/shared/ui.css` (phone sheet and top bar) and
+`www/shared/shell.js` (`isStacked()` / `stackPanel()`); each activity's `js/main.js` only has to
+ask the shell for the stacked placement.
 
 ### The sticker book
 
@@ -1037,7 +1065,7 @@ render.yaml                             Render blueprint (build + start commands
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
 test/sim.test.js                        254 assertions over the fifteen simulations
-test/render.test.js                     177 assertions: every page booted, the artwork, the book, and nothing inline
+test/render.test.js                     188 assertions: every page booted, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json

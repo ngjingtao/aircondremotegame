@@ -926,7 +926,10 @@ console.log('\n— Home tiles —');
   const groupBlocks = html.match(/<section class="group"[\s\S]*?<\/section>/g) || [];
   eq('the home screen has five groups', groupBlocks.length, 5);
   const groupCounts = groupBlocks.map(b => (b.match(/class="tile tile-/g) || []).length);
-  eq('  → grouped 4 / 4 / 3 / 2 / 2', groupCounts.join(','), '4,4,3,2,2');
+  eq('  → grouped 3 / 3 / 3 / 3 / 3', groupCounts.join(','), '3,3,3,3,3');
+  const groupKeys = groupBlocks.map(b => (b.match(/data-group="([^"]+)"/) || [])[1]);
+  eq('  → home, kitchen, water, nature, body',
+     groupKeys.join(','), 'home,kitchen,water,nature,body');
   eq('  → every group has a heading', (html.match(/class="group-title"/g) || []).length, 5);
 
   const svgs = html.match(/class="tile-svg"[^>]*viewBox="([^"]+)"/g) || [];
@@ -958,6 +961,46 @@ console.log('\n— Home tiles —');
   /* the character bible's own values, so a tile cannot drift off-palette */
   [['skin', '#ffd7b0'], ['hair', '#2f2a35'], ['shirt', '#67e8f9']].forEach(([what, c]) =>
     eq('the palette keeps Kai\u2019s ' + what + ' at ' + c, html.indexOf('"' + c + '"') >= 0, true));
+}
+
+/* ─────────── phone and iPad layouts ─────────── */
+console.log('\n— Phone and iPad layouts —');
+{
+  const ui = fs.readFileSync(path.join(WWW, 'shared', 'ui.css'), 'utf8');
+  const shell = fs.readFileSync(path.join(WWW, 'shared', 'shell.js'), 'utf8');
+  const homeCss = fs.readFileSync(path.join(WWW, 'home.css'), 'utf8');
+
+  /* a portrait phone stacks the scene above a full-width control sheet */
+  eq('a phone stacks the scene above the controls',
+     /main\.has-panel\s*\{\s*flex-direction:column/.test(ui), true);
+  eq('  → the control sheet is full width and half the height',
+     /main\.has-panel > #ctl-panel[\s\S]*?width:100% !important[\s\S]*?height:50% !important/.test(ui), true);
+  eq('  → and scrolls instead of shrinking the controls',
+     /main\.has-panel > #ctl-panel[\s\S]*?overflow-y:auto !important/.test(ui), true);
+  const trainHtml = fs.readFileSync(path.join(WWW, 'train', 'index.html'), 'utf8');
+  eq('  → the train keeps its bottom cab bar',
+     /id="(?:ctl|remote|deck|panel)-panel"/.test(trainHtml), false);
+
+  eq('the shell marks pages that have a control panel',
+     /classList\.add\('has-panel'\)/.test(shell), true);
+  eq('  → and scales it by the screen width on a phone',
+     /function stackPanel/.test(shell), true);
+
+  const panelPages = ['aircond', 'aircare', 'breath', 'cycle', 'engine', 'food', 'hood',
+    'indah', 'laundry', 'sandwich', 'toilet', 'tree', 'waterhome', 'weather'];
+  const missing = panelPages.filter(p => {
+    const js = fs.readFileSync(path.join(WWW, p, 'js', 'main.js'), 'utf8');
+    return !/ARG\.shell\.isStacked\(\)/.test(js) || !/ARG\.shell\.stackPanel\(/.test(js);
+  });
+  eq('every panel activity uses the stacked phone layout', missing.join(' ') || 'none', 'none');
+
+  /* the menu is three balanced columns, and the old odd-tile exception is gone */
+  eq('the home tiles are a three-column grid',
+     /grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/.test(homeCss), true);
+  eq('  → with no odd-tile exception left',
+     /:last-child:nth-child\(odd\)/.test(homeCss), false);
+  eq('  → and the sticker book fits four across on a phone',
+     /minmax\(70px,1fr\)/.test(homeCss), true);
 }
 
 /* ─────────── the sticker book draws on the home screen ─────────── */

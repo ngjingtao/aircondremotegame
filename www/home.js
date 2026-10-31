@@ -41,10 +41,10 @@
       tileEngineTitle: 'How a Car Engine Works',
       tileEngineSub: 'Watch the piston, valves and spark plug through intake, compression, power and exhaust',
       groupHome: 'Home machines',
-      groupWater: 'Water',
-      groupFood: 'Food & body',
+      groupKitchen: 'Kitchen',
+      groupWater: 'Water systems',
       groupNature: 'Nature & weather',
-      groupTravel: 'Getting around',
+      groupTravel: 'Body & transport',
 
       /* ── the sticker book ── */
       bookTitle: 'My sticker book',
@@ -209,10 +209,10 @@
       tileEngineTitle: '汽车发动机怎样工作',
       tileEngineSub: '看活塞、气门和火花塞走完进气、压缩、做功和排气',
       groupHome: '家里的机器',
-      groupWater: '水',
-      groupFood: '食物与身体',
+      groupKitchen: '厨房',
+      groupWater: '水系统',
       groupNature: '自然与天气',
-      groupTravel: '出行',
+      groupTravel: '身体与出行',
 
       /* ── 贴纸本 ── */
       bookTitle: '我的贴纸本',
