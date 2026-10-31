@@ -700,13 +700,139 @@ console.log('\n— From Seed to Tree —');
   eq('  → and it names the thirst', dry.reason, 'treeThirsty');
 }
 
+console.log('\n— Breakfast Sandwich —');
+{
+  const ARG = load('sandwich', ['sandwich/js/state.js']);
+  const sim = ARG.sim;
+  const cur = () => sim.s;
+
+  function make(choices, cookSeconds) {
+    sim.fresh();
+    Object.keys(choices || {}).forEach(key => {
+      sim.press('set', { dataset: { key: key, value: choices[key] } });
+    });
+    sim.press('action');
+    sim.press('action');
+    for (let t = 0; t < cookSeconds; t += 0.05) sim.tick(0.05);
+    if (cur().phase === 'cook') sim.press('action');
+    if (cur().phase === 'ready') sim.press('action');
+    return cur();
+  }
+
+  const plain = make({}, 5);
+  eq('a sandwich is built', plain.phase, 'done');
+  eq('  → the egg is cooked in the green band', plain.cookQuality >= 0.9, true);
+  eq('  → but white bread and butter are not balanced', plain.stars, 2);
+
+  const balanced = make({ bread: 'wholemeal', spread: 'avocado', filling: 'eggcheese', veg: 'spinach' }, 5);
+  eq('wholemeal, avocado, egg and spinach earn three stars', balanced.stars, 3);
+  eq('  → with the perfect card', balanced.reason, 'sandwichPerfect');
+
+  const runny = make({}, 2.5);
+  eq('stopping early leaves the egg runny', runny.reason, 'sandwichRunny');
+  eq('  → and costs a star', runny.stars, 1);
+
+  const burnt = make({}, 9);
+  eq('leaving it on the pan burns it', burnt.reason, 'sandwichBurnt');
+
+  const soggy = make({ spread: 'none', veg: 'tomato' }, 5);
+  eq('tomato with no spread makes the bread soggy', soggy.reason, 'sandwichSoggy');
+}
+
+console.log('\n— Water at Home —');
+{
+  const ARG = load('waterhome', ['waterhome/js/state.js']);
+  const sim = ARG.sim;
+  const cur = () => sim.s;
+
+  eq('the supply journey has eight steps', ARG.sim.SUPPLY.length, 8);
+  for (let i = 0; i < 7; i++) sim.press('stepUp');
+  eq('the tour reaches the tap', cur().step, 7);
+  eq('  → and is marked done', cur().supplyDone, true);
+
+  sim.press('tab', { dataset: { tab: 'heater' } });
+  eq('cold water cannot be drawn', sim.press('draw').sound, 'deny');
+  let t = 0;
+  while (cur().temp < 60 && t < 60) { sim.tick(0.05); t += 0.05; }
+  check('the tank heats to 60 °C', cur().temp, 59, 61, ' °C');
+  eq('  → the thermostat switches off', cur().heating, false);
+  sim.press('draw');
+  eq('  → and a hot draw completes it', cur().used, true);
+  eq('  → with three stars', sim.rating().stars, 3);
+
+  /* storing at 40 °C is comfortable but lets Legionella survive */
+  sim.fresh();
+  for (let i = 0; i < 7; i++) sim.press('stepUp');
+  sim.press('tab', { dataset: { tab: 'heater' } });
+  sim.press('set', { dataset: { key: 'setTemp', value: '40' } });
+  t = 0;
+  while (cur().temp < 40 && t < 40) { sim.tick(0.05); t += 0.05; }
+  sim.press('draw');
+  eq('storing at 40 °C only earns two stars', sim.rating().stars, 2);
+  eq('  → and says why', sim.rating().reason, 'waterGood');
+}
+
+console.log('\n— Water Cycle —');
+{
+  const ARG = load('cycle', ['cycle/js/state.js']);
+  const sim = ARG.sim;
+  const cur = () => sim.s;
+
+  eq('the cycle has eight stages', ARG.sim.STEPS.length, 8);
+  for (let i = 0; i < 7; i++) sim.press('next');
+  eq('the drop reaches the last stage', cur().step, 7);
+  eq('  → and the cycle is seen', cur().seenAll, true);
+
+  sim.press('restart');
+  eq('restart returns to the sea', cur().step, 0);
+  eq('  → and clears completion', cur().seenAll, false);
+
+  sim.press('watch');
+  eq('watch mode turns on', cur().auto, true);
+  for (let t = 0; t < 4.2; t += 0.05) sim.tick(0.05);
+  eq('  → the clock advances the drop', cur().step, 1);
+  sim.press('watch');
+  eq('watch mode turns off', cur().auto, false);
+}
+
+console.log('\n— Weather Station —');
+{
+  const ARG = load('weather', ['weather/js/state.js']);
+  const sim = ARG.sim;
+  const forecast = (f) => {
+    sim.press('guess', { dataset: { forecast: f } });
+    sim.press('submit');
+    sim.press('next');
+  };
+
+  eq('there are three rounds', ARG.sim.ROUNDS.length, 3);
+  eq('the first round is fair', ARG.sim.ROUNDS[0].forecast, 'fair');
+  eq('the second is rain', ARG.sim.ROUNDS[1].forecast, 'rain');
+  eq('the third is a storm', ARG.sim.ROUNDS[2].forecast, 'storm');
+
+  forecast('fair');
+  forecast('rain');
+  forecast('storm');
+  eq('three correct forecasts finish the game', sim.s.phase, 'done');
+  eq('  → with three stars', sim.rate().stars, 3);
+  eq('  → and the perfect card', sim.s.reason, 'weatherPerfect');
+
+  sim.press('again');
+  forecast('fair');
+  forecast('fair');
+  forecast('fair');
+  eq('guessing fair every time gets one right', sim.s.correct, 1);
+  eq('  → and one star', sim.rate().stars, 1);
+  eq('  → with the try-again card', sim.s.reason, 'weatherTry');
+}
+
 console.log('\n— The sticker book —');
 {
   const ARG = load('shared', ['shared/progress.js']);
   const p = ARG.progress;
 
   p.reset();
-  eq('the book has fifteen stickers', p.count, 15);
+  eq('the book has nineteen stickers', p.count, 19);
   eq('and starts empty', p.earned(), 0);
   eq('  → with no stars', p.total(), 0);
 
@@ -725,14 +851,16 @@ console.log('\n— The sticker book —');
   eq('the total adds the stars up', p.total(), 4);
 
   const book = p.book();
-  eq('every catalogue sticker is in the book', book.length, 15);
+  eq('every catalogue sticker is in the book', book.length, 19);
   eq('  → each knows its activity', book[0].activity, 'aircond');
   eq('  → and has a label to explain it', typeof book[0].label, 'string');
   const acts = {};
   book.forEach(c => { acts[c.activity] = (acts[c.activity] || 0) + 1; });
-  eq('every activity in the app contributes', Object.keys(acts).length, 10);
-  eq('  → the two with missions contribute three each, the laundry two and the tree one',
-     acts.aircond === 3 && acts.train === 3 && acts.laundry === 2 && acts.tree === 1, true);
+  eq('every activity in the app contributes', Object.keys(acts).length, 14);
+  eq('  → the two with missions contribute three each, the laundry two, the rest one',
+     acts.aircond === 3 && acts.train === 3 && acts.laundry === 2 &&
+     acts.tree === 1 && acts.sandwich === 1 && acts.waterhome === 1 &&
+     acts.cycle === 1 && acts.weather === 1, true);
 
   /* a corrupt store must not take the home screen down with it */
   const ARG2 = load('shared', ['shared/progress.js']);

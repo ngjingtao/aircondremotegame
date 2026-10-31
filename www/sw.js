@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-a7b161b';
+const CACHE = 'play-learn-e504a0e';
 
 const ASSETS = [
   './',
@@ -113,7 +113,39 @@ const ASSETS = [
   'tree/js/state.js',
   'tree/js/scene.js',
   'tree/js/panel.js',
-  'tree/js/main.js'
+  'tree/js/main.js',
+
+  'sandwich/index.html',
+  'sandwich/sandwich.css',
+  'sandwich/js/i18n.js',
+  'sandwich/js/state.js',
+  'sandwich/js/scene.js',
+  'sandwich/js/panel.js',
+  'sandwich/js/main.js',
+
+  'waterhome/index.html',
+  'waterhome/waterhome.css',
+  'waterhome/js/i18n.js',
+  'waterhome/js/state.js',
+  'waterhome/js/scene.js',
+  'waterhome/js/panel.js',
+  'waterhome/js/main.js',
+
+  'cycle/index.html',
+  'cycle/cycle.css',
+  'cycle/js/i18n.js',
+  'cycle/js/state.js',
+  'cycle/js/scene.js',
+  'cycle/js/panel.js',
+  'cycle/js/main.js',
+
+  'weather/index.html',
+  'weather/weather.css',
+  'weather/js/i18n.js',
+  'weather/js/state.js',
+  'weather/js/scene.js',
+  'weather/js/panel.js',
+  'weather/js/main.js'
 ];
 
 self.addEventListener('install', event => {

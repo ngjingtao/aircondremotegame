@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="Water Cycle" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>Water Cycle · Play &amp; Learn</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="cycle.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">🌍</span>
+      <span class="tb-title" data-i18n="title">Water Cycle</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudStep">Stage</span><b id="hud-step">1 / 8</b></div>
+      <div class="hud-chip hud-score"><span class="hud-label" data-i18n="hudMode">Mode</span><b id="hud-mode">STEP</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl" id="ctl">
+
+          <div class="cycle-steps" id="cycle-steps"></div>
+          <div class="fact-card" id="cycle-fact"></div>
+
+          <div class="nav-row">
+            <button class="nav-btn" data-action="prev" id="cycle-back" data-i18n="back">BACK</button>
+            <button class="nav-btn go" data-action="next" id="cycle-next" data-i18n="next">NEXT</button>
+          </div>
+
+          <div class="watch-row">
+            <button class="watch-btn" data-action="watch" id="cycle-watch" data-i18n="watch">WATCH</button>
+            <button class="watch-btn plain" data-action="restart" id="cycle-restart" data-i18n="restart" hidden>START AGAIN</button>
+          </div>
+
+          <div class="result" id="cycle-result" hidden>
+            <div class="res-stars">★☆☆</div>
+            <p id="cycle-res-text"></p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="scene" data-step="0">
+
+      <div class="scene-top">
+        <span class="scene-lead" id="scene-lead" data-i18n="lead">Water cycle</span>
+        <span class="scene-status" id="scene-status" data-i18n="statusStep">Following the drop</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#17324d"/>
+              <stop offset="62%" stop-color="#2a5870"/>
+              <stop offset="100%" stop-color="#6d9a7a"/>
+            </linearGradient>
+            <linearGradient id="seaGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#7fd0ff"/>
+              <stop offset="100%" stop-color="#2f7fa8"/>
+            </linearGradient>
+            <linearGradient id="landGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4f7a3e"/>
+              <stop offset="100%" stop-color="#2f4a27"/>
+            </linearGradient>
+            <linearGradient id="rockGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#7d8a99"/>
+              <stop offset="100%" stop-color="#4d5a68"/>
+            </linearGradient>
+            <radialGradient id="sunGlowGrad">
+              <stop offset="0%" stop-color="rgba(255,220,120,.9)"/>
+              <stop offset="100%" stop-color="rgba(255,200,90,0)"/>
+            </radialGradient>
+            <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0b1220" flood-opacity="0.35"/>
+            </filter>
+          </defs>
+
+          <rect x="0" y="0" width="340" height="520" fill="url(#skyGrad)"/>
+
+          <!-- sun -->
+          <g id="sun">
+            <circle cx="292" cy="64" r="56" fill="url(#sunGlowGrad)"/>
+            <g stroke="#ffd166" stroke-width="3" stroke-linecap="round">
+              <path d="M292 10 V24 M292 104 V118 M238 64 H252 M332 64 H340 M254 26 L264 36 M320 92 L330 102 M330 26 L320 36 M264 92 L254 102"/>
+            </g>
+            <circle cx="292" cy="64" r="19" fill="#ffd166" stroke="#f0a03a" stroke-width="2"/>
+          </g>
+
+          <!-- clouds -->
+          <g id="cloud" opacity=".95">
+            <g fill="#e8eef6" opacity=".9">
+              <ellipse cx="180" cy="156" rx="46" ry="18"/>
+              <ellipse cx="152" cy="146" rx="26" ry="14"/>
+              <ellipse cx="208" cy="144" rx="28" ry="15"/>
+              <ellipse cx="184" cy="136" rx="22" ry="13"/>
+            </g>
+          </g>
+          <g fill="#e8eef6" opacity=".25">
+            <ellipse cx="270" cy="120" rx="26" ry="9"/>
+            <ellipse cx="286" cy="114" rx="16" ry="7"/>
+          </g>
+
+          <!-- sea -->
+          <g class="part" data-part="sea">
+            <path d="M0 330 H132 V430 H0 Z" fill="url(#seaGrad)"/>
+            <path d="M0 342 q14 -7 28 0 t28 0 t28 0 t28 0 t20 0" fill="none" stroke="#d8f4ff" stroke-width="2" opacity=".55"/>
+            <path d="M0 362 q14 -7 28 0 t28 0 t28 0 t28 0 t20 0" fill="none" stroke="#d8f4ff" stroke-width="2" opacity=".4"/>
+          </g>
+
+          <!-- land -->
+          <path d="M120 330 H340 V520 H120 Z" fill="url(#landGrad)"/>
+          <path d="M120 330 q30 -10 52 0 q28 12 52 0 q30 -12 58 0 q26 10 58 0 v10 H120 Z" fill="#4f8a3c" opacity=".8"/>
+          <rect x="120" y="440" width="220" height="80" fill="#3b2615"/>
+          <rect x="120" y="440" width="220" height="80" fill="url(#seaGrad)" opacity=".18"/>
+
+          <!-- mountain and runoff -->
+          <g class="part" data-part="runoff">
+            <path d="M196 330 L252 196 L318 330 Z" fill="url(#rockGrad)" stroke="#3f4c5f" stroke-width="1.5"/>
+            <path d="M226 250 L252 196 L278 250 L264 244 L252 256 L240 242 Z" fill="#eef3f9"/>
+            <path d="M252 256 q-18 28 -34 48 M252 256 q20 30 34 50" fill="none" stroke="#bfe8ff" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+            <path d="M236 288 l-6 10 M268 292 l6 10" stroke="#bfe8ff" stroke-width="2.4" stroke-linecap="round" opacity=".8"/>
+          </g>
+
+          <!-- plants -->
+          <g class="part" data-part="plant">
+            <path d="M146 332 V300" stroke="#6fae50" stroke-width="3"/>
+            <path d="M146 308 q-18 -14 -26 0 q16 12 26 0" fill="#6fae50" stroke="#3f7a32" stroke-width="1"/>
+            <path d="M146 308 q18 -14 26 0 q-16 12 -26 0" fill="#8ecf72" stroke="#3f7a32" stroke-width="1"/>
+            <path d="M160 332 V310 M160 316 q-12 -10 -18 0" stroke="#6fae50" stroke-width="2.4" fill="none"/>
+          </g>
+
+          <!-- river -->
+          <g class="part" data-part="river">
+            <path d="M236 330 q-16 24 -36 40 q-18 16 -30 28" fill="none" stroke="#2f7fa8" stroke-width="14" stroke-linecap="round"/>
+            <path d="M236 330 q-16 24 -36 40 q-18 16 -30 28" fill="none" stroke="#8fd0ff" stroke-width="7" stroke-linecap="round" opacity=".8"/>
+          </g>
+
+          <!-- lake -->
+          <g class="part" data-part="lake">
+            <ellipse cx="176" cy="394" rx="44" ry="18" fill="url(#seaGrad)" stroke="#2f7fa8" stroke-width="1.5"/>
+            <path d="M150 394 q10 -5 20 0 t20 0" fill="none" stroke="#d8f4ff" stroke-width="1.6" opacity=".6"/>
+          </g>
+
+          <!-- groundwater -->
+          <g class="part" data-part="ground">
+            <rect x="128" y="452" width="196" height="44" rx="8" fill="#1f4f70" opacity=".55"/>
+            <circle cx="150" cy="468" r="2" fill="#8fd0ff"/><circle cx="178" cy="478" r="1.7" fill="#8fd0ff"/>
+            <circle cx="208" cy="466" r="2" fill="#8fd0ff"/><circle cx="238" cy="482" r="1.7" fill="#8fd0ff"/>
+            <circle cx="268" cy="470" r="2" fill="#8fd0ff"/><circle cx="294" cy="484" r="1.6" fill="#8fd0ff"/>
+          </g>
+
+          <!-- evaporation wisps -->
+          <g id="evapGroup">
+            <path d="M34 330 q-6 -16 4 -26 q10 -10 2 -22" fill="none" stroke="#d8f4ff" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+            <path d="M62 330 q-7 -18 3 -30 q10 -12 2 -24" fill="none" stroke="#d8f4ff" stroke-width="3" stroke-linecap="round" opacity=".45"/>
+            <path d="M90 330 q-5 -14 4 -24 q9 -10 2 -20" fill="none" stroke="#d8f4ff" stroke-width="3" stroke-linecap="round" opacity=".35"/>
+          </g>
+
+          <!-- rain -->
+          <g id="rainGroup">
+            <g stroke="#8fd0ff" stroke-width="2.4" stroke-linecap="round" opacity=".9">
+              <path d="M154 174 L148 196 M170 176 L164 202 M186 174 L180 196 M202 176 L196 202 M218 174 L212 196 M158 196 L152 216 M194 198 L188 218"/>
+            </g>
+          </g>
+
+          <!-- the drop -->
+          <g id="droplet">
+            <circle r="12" fill="#8fd0ff" opacity=".18"/>
+            <circle r="6.5" fill="#bfe8ff" stroke="#ffffff" stroke-width="1.2"/>
+            <circle r="2" cx="-2" cy="-2" fill="#ffffff" opacity=".8"/>
+          </g>
+
+          <!-- labels -->
+          <g id="labels">
+            <g class="lab" data-part="sea"><text x="54" y="320" text-anchor="middle" data-i18n="lSea">sea</text></g>
+            <g class="lab" data-part="plant"><text x="160" y="292" text-anchor="start" data-i18n="lPlant">transpiration</text></g>
+            <g class="lab" data-part="cloud"><text x="184" y="122" text-anchor="middle" data-i18n="lCloud">condensation</text></g>
+            <g class="lab" data-part="rain"><text x="236" y="210" text-anchor="start" data-i18n="lRain">precipitation</text></g>
+            <g class="lab" data-part="runoff"><text x="292" y="286" text-anchor="end" data-i18n="lRunoff">runoff</text></g>
+            <g class="lab" data-part="river"><text x="222" y="360" text-anchor="start" data-i18n="lRiver">river</text></g>
+            <g class="lab" data-part="lake"><text x="176" y="424" text-anchor="middle" data-i18n="lLake">lake</text></g>
+            <g class="lab" data-part="ground"><text x="226" y="482" text-anchor="middle" data-i18n="lGround">groundwater</text></g>
+            <g class="lab"><text x="26" y="346" text-anchor="start" data-i18n="lEvap">evaporation</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+      <div class="toast" id="toast"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">The water cycle</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

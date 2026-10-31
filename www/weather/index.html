@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="Weather Station" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>Weather Station · Play &amp; Learn</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="weather.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">🌦️</span>
+      <span class="tb-title" data-i18n="title">Weather Station</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudRound">Round</span><b id="hud-round">1 / 3</b></div>
+      <div class="hud-chip hud-score"><span class="hud-label" data-i18n="hudScore">Score</span><b id="hud-score">0 / 3</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl" id="ctl">
+
+          <div class="readings" id="readings"></div>
+
+          <div class="ctl-block">
+            <div class="ctl-label" data-i18n="forecastLabel">FORECAST</div>
+            <div class="seg three" id="forecast-row"></div>
+          </div>
+
+          <button class="submit-btn" data-action="submit" id="forecast-submit" data-i18n="submit">MAKE THE FORECAST</button>
+          <button class="next-btn" data-action="next" id="forecast-next" data-i18n="next" hidden>NEXT ROUND</button>
+
+          <div class="feedback" id="weather-feedback" hidden></div>
+
+          <div class="result" id="weather-result" hidden>
+            <div class="res-stars" id="weather-stars">☆☆☆</div>
+            <p id="weather-res-text"></p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="scene">
+
+      <div class="scene-top">
+        <span class="scene-lead" id="scene-lead" data-i18n="lead">Weather station</span>
+        <span class="scene-status" id="scene-status" data-i18n="statusRead">Reading</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#17324d"/>
+              <stop offset="100%" stop-color="#3f6f88"/>
+            </linearGradient>
+            <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4f7a3e"/>
+              <stop offset="100%" stop-color="#2f4a27"/>
+            </linearGradient>
+            <linearGradient id="metalGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f8fafc"/>
+              <stop offset="100%" stop-color="#aab6c6"/>
+            </linearGradient>
+            <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#8fd0ff"/>
+              <stop offset="100%" stop-color="#2f7fa8"/>
+            </linearGradient>
+            <radialGradient id="sunGlowGrad">
+              <stop offset="0%" stop-color="rgba(255,220,120,.9)"/>
+              <stop offset="100%" stop-color="rgba(255,200,90,0)"/>
+            </radialGradient>
+            <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0b1220" flood-opacity="0.35"/>
+            </filter>
+          </defs>
+
+          <rect x="0" y="0" width="340" height="400" fill="url(#skyGrad)"/>
+          <rect x="0" y="400" width="340" height="120" fill="url(#groundGrad)"/>
+          <path d="M0 400 H340" stroke="#3f5f35" stroke-width="4"/>
+
+          <!-- the sky changes only after the forecast -->
+          <g id="fairSun" opacity=".35">
+            <circle cx="282" cy="74" r="54" fill="url(#sunGlowGrad)"/>
+            <g stroke="#ffd166" stroke-width="3" stroke-linecap="round">
+              <path d="M282 18 V30 M282 118 V130 M226 74 H238 M326 74 H334 M242 34 L251 43 M313 105 L322 114 M322 34 L313 43 M251 105 L242 114"/>
+            </g>
+            <circle cx="282" cy="74" r="18" fill="#ffd166" stroke="#f0a03a" stroke-width="2"/>
+          </g>
+          <g id="neutralCloud" opacity=".9">
+            <g fill="#dfe8f2" opacity=".8">
+              <ellipse cx="180" cy="116" rx="44" ry="16"/>
+              <ellipse cx="154" cy="108" rx="24" ry="12"/>
+              <ellipse cx="206" cy="106" rx="26" ry="13"/>
+            </g>
+          </g>
+          <g id="stormClouds" opacity="0">
+            <g fill="#59687a">
+              <ellipse cx="172" cy="108" rx="58" ry="22"/>
+              <ellipse cx="138" cy="98" rx="30" ry="16"/>
+              <ellipse cx="210" cy="96" rx="34" ry="18"/>
+              <ellipse cx="176" cy="86" rx="26" ry="14"/>
+            </g>
+          </g>
+          <g id="rainGroup" opacity="0">
+            <g stroke="#8fd0ff" stroke-width="2.2" stroke-linecap="round">
+              <path d="M132 126 L126 150 M148 128 L142 156 M164 126 L158 150 M180 128 L174 156 M196 126 L190 150 M212 128 L206 156 M140 154 L134 178 M172 156 L166 182 M204 154 L198 180"/>
+            </g>
+          </g>
+          <g id="windLines" opacity="0" stroke="#dfe8f2" stroke-width="2.2" stroke-linecap="round">
+            <path d="M248 180 q18 -8 36 0 M244 196 q22 -9 44 0 M250 212 q16 -7 32 0"/>
+          </g>
+
+          <!-- anemometer and wind vane -->
+          <g id="mast">
+            <rect x="76" y="150" width="6" height="250" fill="#7d8a99"/>
+            <rect x="107" y="160" width="5" height="240" fill="#7d8a99"/>
+            <circle cx="79" cy="150" r="5" fill="#c8d1dd"/>
+            <circle cx="109" cy="160" r="4" fill="#c8d1dd"/>
+            <g id="anemometer">
+              <g stroke="#c8d1dd" stroke-width="3" stroke-linecap="round">
+                <path d="M80 140 V120 M80 140 L100 150 M80 140 L60 150"/>
+              </g>
+              <circle cx="80" cy="140" r="4" fill="#8fa0b4"/>
+              <circle cx="80" cy="120" r="6" fill="#e8eef8" stroke="#8fa0b4" stroke-width="1"/>
+              <circle cx="100" cy="150" r="6" fill="#e8eef8" stroke="#8fa0b4" stroke-width="1"/>
+              <circle cx="60" cy="150" r="6" fill="#e8eef8" stroke="#8fa0b4" stroke-width="1"/>
+            </g>
+            <g id="vane">
+              <path d="M120 155 L106 150 L106 160 Z" fill="#e2453c" stroke="#a82f28" stroke-width="1"/>
+              <path d="M108 155 H132" stroke="#c8d1dd" stroke-width="3" stroke-linecap="round"/>
+            </g>
+          </g>
+
+          <!-- rain gauge -->
+          <g id="rainGauge">
+            <rect x="34" y="360" width="18" height="42" rx="3" fill="#24313f" stroke="#8fa0b4" stroke-width="1.2"/>
+            <rect id="rainGaugeFill" x="36" y="400" width="14" height="0" fill="url(#waterGrad)"/>
+            <path d="M34 366 H52 M34 372 H52 M34 378 H52" stroke="#8fa0b4" stroke-width=".8" opacity=".6"/>
+          </g>
+
+          <!-- instrument box -->
+          <g id="stationBox">
+            <rect x="140" y="268" width="116" height="94" rx="8" fill="#26313f" stroke="#516276" stroke-width="1.4"/>
+            <rect x="146" y="274" width="104" height="82" rx="5" fill="#1b2735"/>
+            <!-- thermometer -->
+            <rect x="154" y="286" width="10" height="60" rx="5" fill="#e8eef8" stroke="#8fa0b4" stroke-width="1"/>
+            <rect id="thermoFill" x="156" y="346" width="6" height="0" fill="#e2453c"/>
+            <circle cx="159" cy="350" r="7" fill="#e2453c" stroke="#a82f28" stroke-width="1"/>
+            <!-- hygrometer -->
+            <circle cx="185" cy="312" r="20" fill="#dfe8f2" stroke="#8fa0b4" stroke-width="1.4"/>
+            <path d="M185 312 L170 302 M185 312 L200 302" stroke="#8fa0b4" stroke-width="1" opacity=".5"/>
+            <g id="hygroNeedle"><path d="M185 312 V296" stroke="#2f4a27" stroke-width="2.4" stroke-linecap="round"/></g>
+            <circle cx="185" cy="312" r="3" fill="#2f4a27"/>
+            <!-- barometer -->
+            <circle cx="225" cy="312" r="20" fill="#dfe8f2" stroke="#8fa0b4" stroke-width="1.4"/>
+            <path d="M225 312 L210 302 M225 312 L240 302" stroke="#8fa0b4" stroke-width="1" opacity=".5"/>
+            <g id="baroNeedle"><path d="M225 312 V296" stroke="#2f4a27" stroke-width="2.4" stroke-linecap="round"/></g>
+            <circle cx="225" cy="312" r="3" fill="#2f4a27"/>
+          </g>
+
+          <!-- sunshine recorder -->
+          <g id="sunshine">
+            <rect x="278" y="286" width="6" height="108" fill="#7d8a99"/>
+            <circle cx="281" cy="276" r="14" fill="#dfe8f2" stroke="#8fa0b4" stroke-width="1.4"/>
+            <circle id="sunshineGlow" cx="281" cy="276" r="20" fill="#ffd166" opacity=".8"/>
+            <path d="M266 286 H296" stroke="#8fa0b4" stroke-width="2"/>
+          </g>
+
+          <!-- river and gauge -->
+          <g id="river">
+            <path d="M244 430 q26 -8 48 0 q22 8 48 0 v90 H244 Z" fill="url(#waterGrad)" opacity=".85"/>
+            <rect x="300" y="430" width="6" height="70" fill="#e8eef8"/>
+            <path d="M300 438 H306 M300 446 H306 M300 454 H306 M300 462 H306 M300 470 H306 M300 478 H306 M300 486 H306" stroke="#516276" stroke-width="1.4"/>
+            <rect id="riverGaugeFill" x="302" y="490" width="4" height="0" fill="#e2453c"/>
+          </g>
+
+          <!-- labels -->
+          <g id="labels">
+            <g class="lab"><text x="80" y="112" text-anchor="middle" data-i18n="lAnemometer">anemometer</text></g>
+            <g class="lab"><text x="136" y="146" text-anchor="start" data-i18n="lVane">wind vane</text></g>
+            <g class="lab"><text x="43" y="418" text-anchor="middle" data-i18n="lRainGauge">rain gauge</text></g>
+            <g class="lab"><text x="159" y="372" text-anchor="middle" data-i18n="lThermometer">thermometer</text></g>
+            <g class="lab"><text x="185" y="342" text-anchor="middle" data-i18n="lHygrometer">hygrometer</text></g>
+            <g class="lab"><text x="225" y="342" text-anchor="middle" data-i18n="lBarometer">barometer</text></g>
+            <g class="lab"><text x="288" y="258" text-anchor="middle" data-i18n="lSunshine">sunshine recorder</text></g>
+            <g class="lab"><text x="324" y="424" text-anchor="end" data-i18n="lRiverGauge">river gauge</text></g>
+            <g class="lab"><text x="198" y="386" text-anchor="middle" data-i18n="lStation">station</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+      <div class="toast" id="toast"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">How to predict the weather</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

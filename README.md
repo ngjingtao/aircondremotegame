@@ -2,7 +2,7 @@
 
 [![Build Android APK](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml/badge.svg)](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml)
 
-One little app, **ten** activities for a curious kid. The home screen shows ten picture
+One little app, **fourteen** activities for a curious kid. The home screen shows fourteen picture
 tiles — tap one and you're in.
 
 ```
@@ -24,21 +24,25 @@ tiles — tap one and you're in.
 │  │[ dryer    ]│ │[ tree     ]│                                       │
 │  │洗衣日    › │ │从种子到大树›│                                       │
 │  └────────────┘ └────────────┘                                       │
+│  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐          │
+│  │[ sandwich ]│ │[ tap/tank ]│ │[ the drop ]│ │[ weather  ]│          │
+│  │早餐三明治› │ │家里的水  › │ │水循环    › │ │气象站    › │          │
+│  └────────────┘ └────────────┘ └────────────┘ └────────────┘          │
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
 Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
-All ten activities speak **English and 中文**, work offline, and are installable as an app.
+All fourteen activities speak **English and 中文**, work offline, and are installable as an app.
 
-The ten tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
+The fourteen tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
 painted from one shared palette and split into three depth layers that drift gently and pull
 apart on hover. They are the only place the character guidelines in
 [`docs/character-bible.md`](docs/character-bible.md) are applied so far.
 
 ### The sticker book
 
-Under the tiles is the one thing that ties the ten activities together: a collection that
-every activity writes to. Fifteen stickers, earned by doing the thing the activity is about —
+Under the tiles is the one thing that ties the fourteen activities together: a collection that
+every activity writes to. Nineteen stickers, earned by doing the thing the activity is about —
 `shared/progress.js` holds the catalogue and the storage, and each activity awards its own from
 its render loop.
 
@@ -54,6 +58,10 @@ its render loop.
 | 🍳 Kitchen Hood | 1 | pulling every bit of the smoke out |
 | 🧺 Laundry Day | 2 | a clean wash, and a dry that stops in time, each with its star rating |
 | 🌱 From Seed to Tree | 1 | growing a seed all the way to seed dispersal, with its star rating |
+| 🥪 Breakfast Sandwich | 1 | cooking a balanced sandwich, with its star rating |
+| 💧 Water at Home | 1 | following the supply journey and drawing hot water, with its star rating |
+| 🌍 Water Cycle | 1 | following one drop through the whole cycle |
+| 🌦️ Weather Station | 1 | forecasting all three weather rounds, with its star rating |
 
 An earned sticker takes its activity's accent colour and shows the stars; the rest sit dimmed
 behind a dashed outline, so there is always something obviously missing. Awards only ever go
@@ -575,6 +583,134 @@ when you press **WATER**, and the leaves lose their colour when the tree is in t
 
 ---
 
+## 11 · 🥪 Breakfast Sandwich
+
+A build-and-cook game in two parts: choose the ingredients, then stop the egg at the right
+moment in the pan.
+
+| Choice | Options |
+|---|---|
+| Bread | white, wholemeal, sourdough |
+| Spread | butter, avocado, mayo, none |
+| Filling | fried egg, cheese, egg + cheese, bacon |
+| Vegetable | tomato, spinach, lettuce, none |
+
+The pan is a timing game. Low heat takes about **8 s**, medium **5 s** and high **3.5 s**. Stop
+while the marker is in the green band; too early leaves the egg runny, too late makes it rubbery
+and browned. The spread is not just flavour: it is a water barrier, so a wet tomato does not soak
+into the bread.
+
+Measured, and asserted in the tests:
+
+| Choices | Cook | Balance | Outcome |
+|---|---|---|---|
+| White · butter · egg · tomato | 5 s | 55 % | **2 ★** — cooked well, but not a balanced breakfast |
+| Wholemeal · avocado · egg + cheese · spinach | 5 s | **100 %** | **3 ★** — balanced and cooked just right |
+| White · butter · egg · tomato | 2.5 s | 55 % | **1 ★** — *"the egg is still runny"* |
+| White · butter · egg · tomato | 9 s | 55 % | **1 ★** — *"rubbery and browned"* |
+| White · **none** · egg · tomato | 5 s | 49 % | **2 ★** — *"the tomato juice soaked straight in"* |
+
+The facts on the card explain the real reasons: wholemeal gives fibre, avocado gives healthy fat,
+egg gives protein, vegetables add vitamins and fibre, and eggs should be cooked until white and
+yolk are set, especially for young children and older people.
+
+---
+
+## 12 · 💧 Water at Home
+
+Two connected halves: the **supply journey** from the river to the tap, and the **hot-water
+cylinder** in the house.
+
+### From the river to the tap
+
+| # | Stage | What happens |
+|---|---|---|
+| 1 | **Source** | river, reservoir or groundwater; protecting it is the first defence |
+| 2 | **Screens & grit** | bars catch sticks and plastic; sand and grit settle out |
+| 3 | **Coagulation** | alum or an iron salt makes fine dirt clump into flocs |
+| 4 | **Sedimentation** | the flocs settle as sludge and clear water flows off the top |
+| 5 | **Filtration** | sand, gravel and sometimes activated carbon trap what is left |
+| 6 | **Disinfection** | chlorine, chloramine, ozone or UV kills germs; a chlorine residual protects the pipes |
+| 7 | **Storage & pumps** | a covered tank or service reservoir keeps the mains under pressure |
+| 8 | **Meter & tap** | the meter measures use and the supply pipe delivers it to the tap |
+
+### The hot-water cylinder
+
+Cold water enters at the bottom; the element heats it; hot water rises and leaves at the top, so
+the tank **stratifies**. The thermostat switches the element on below the setpoint and off when
+it is reached. An anode rod sacrifices itself to protect the steel tank, and a pressure-relief
+valve lets expanding water escape.
+
+Storing at **60 °C or above** kills Legionella bacteria. A **mixing valve** then blends the hot
+water down to about **50 °C** at the tap so nobody is scalded. The game uses a time-lapse:
+**1.6 °C per second**, so 20 → 60 °C takes about 25 seconds.
+
+Measured:
+
+| Run | Result |
+|---|---|
+| Complete the eight supply steps, heat to 60 °C, draw | **3 ★** — safe storage, hot water |
+| Complete the supply, set 40 °C, heat and draw | **2 ★** — comfortable, but below the Legionella-safe storage temperature |
+| Press **DRAW** at 20 °C | refused — *cold* |
+
+The scene shows the works, the water tower, the house and tap; on the heater tab it shows the
+tank cutaway, the growing hot layer, the element glow, the thermostat, the anode, the mixing
+valve and the draw.
+
+---
+
+## 13 · 🌍 Water Cycle
+
+Follow one drop around a closed loop. The sun drives it upward and gravity brings it back.
+
+| # | Stage | What happens |
+|---|---|---|
+| 1 | **Evaporation** | the sun lifts water from the sea and lakes; about 86 % of global evaporation is from the oceans |
+| 2 | **Transpiration** | plants release water vapour through stomata; together with evaporation this is evapotranspiration |
+| 3 | **Condensation** | vapour cools and condenses on dust and sea salt; clouds are tiny droplets, not vapour |
+| 4 | **Precipitation** | droplets grow and fall as rain, snow or hail; a raindrop is about 0.5–5 mm |
+| 5 | **Runoff** | water flows over the ground into streams; plants and soil slow it and help it soak in |
+| 6 | **River** | streams join and carry water and soil downhill; a river gauge measures level and flow |
+| 7 | **Lake & groundwater** | water is stored in lakes or aquifers, sometimes for years |
+| 8 | **Back to the sea** | the river reaches the sea and the sun lifts it again |
+
+The droplet travels along the whole loop, the current part glows, rain only appears at the
+precipitation stage, and **WATCH** advances automatically every four seconds. The cycle has no
+start or end — the same water has been going round for billions of years.
+
+---
+
+## 14 · 🌦️ Weather Station
+
+Read the instruments, then make a forecast. The sky stays neutral until you submit, so the
+answer has to come from the measurements.
+
+| Instrument | What it measures | How to read it |
+|---|---|---|
+| **Barometer** | air pressure | high and rising → fair; low and falling → cloud and rain |
+| **Hygrometer** | humidity | closer to 100 % → more likely cloud and rain |
+| **Anemometer** | wind speed | strengthening wind often means a front is arriving |
+| **Wind vane** | wind direction | shows where the wind is coming from |
+| **Rain gauge** | rainfall | millimetres; 1 mm is one litre per square metre |
+| **Thermometer** | temperature | warm air holds more water vapour |
+| **Sunshine recorder** | hours of sun | bright, high-pressure days have more sun |
+| **River gauge** | river level | rises after rain, often lagging behind it |
+
+The three rounds and their readings:
+
+| Round | Pressure | Humidity | Wind | Rain | River | Sun | Forecast |
+|---|---|---|---|---|---|---|---|
+| 1 | **1024 rising** | 48 % | 8 km/h NW | 0 mm | 1.1 m | 8 h | **FAIR** |
+| 2 | **1006 falling** | 78 % | 22 km/h SW | 5 mm | 1.6 m | 2 h | **RAIN** |
+| 3 | **993 falling** | 92 % | 48 km/h W | 22 mm | 2.7 m | 0.5 h | **STORM** |
+
+Three correct forecasts earn **3 ★**, two earn **2 ★**, and any run that finishes gets at least
+**1 ★**. After each guess the scene changes to the real weather — sun, rain or a storm with
+wind lines — and the card explains why. The test plays all three correctly for 3 ★ and also
+checks that guessing *fair* every time scores exactly one.
+
+---
+
 ## Play it in a browser (fastest)
 
 Everything is plain HTML/CSS/JS — no build step.
@@ -653,6 +789,10 @@ Where it speaks:
 | **Breathing & Blood** | Each experiment is announced with what it does to the body. Tap the fact card to hear it again. |
 | **Laundry Day** | The instructions when either machine starts, and the result card when a wash or dry finishes. |
 | **From Seed to Tree** | Each phase is announced with its science fact as the tree reaches it, and the result card is read out. |
+| **Breakfast Sandwich** | The cooking window and the result card are read out. |
+| **Water at Home** | Every supply step is read out, and the heater safety notes are spoken when you change the setpoint or draw water. |
+| **Water Cycle** | Every stage is announced with its fact, in step mode or while WATCH plays. |
+| **Weather Station** | The forecast feedback and the reason for the weather are read out. |
 | **All activities** | Tap the help text to have the instructions read out. |
 
 If the device has no speech voices, the button hides itself and nothing else changes.
@@ -816,6 +956,22 @@ www/                          ← the whole app (no build step)
 │  ├─ index.html
 │  ├─ tree.css                          seed, roots, eight tree phases, shade net, weather
 │  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ sandwich/                            ── activity 11 ──
+│  ├─ index.html
+│  ├─ sandwich.css                      kitchen, pan, egg, sandwich stack, steam
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ waterhome/                           ── activity 12 ──
+│  ├─ index.html
+│  ├─ waterhome.css                     supply works, pipes, cylinder, hot layer, tap
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ cycle/                               ── activity 13 ──
+│  ├─ index.html
+│  ├─ cycle.css                         sea, cloud, rain, river, lake, droplet
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ weather/                             ── activity 14 ──
+│  ├─ index.html
+│  ├─ weather.css                       station, instruments, dials, sky states
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
 ├─ _devicelab.html                      dev-only: phone & iPad previews
 docs/character-bible.md                 the character, the palettes and the house style
 
@@ -823,8 +979,8 @@ server.js                               zero-dependency static server ($PORT awa
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        202 assertions over the ten simulations
-test/render.test.js                     104 assertions: every page booted, the artwork, the book, and nothing inline
+test/sim.test.js                        239 assertions over the fourteen simulations
+test/render.test.js                     156 assertions: every page booted, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json
@@ -848,7 +1004,7 @@ call a scene, so a `render()` that throws still passes every one of them while t
 completely dead. It happened: the train's scene referenced an undefined `clamp`, which threw on
 every frame — and because `main.js` calls `render()` *before* it schedules
 `requestAnimationFrame`, the throw killed the animation loop at boot. Pressing the throttle did
-nothing at all, yet all 56 simulation assertions passed. So this test boots each of the ten
+nothing at all, yet all 56 simulation assertions passed. So this test boots each of the fourteen
 pages for real — reading the exact `<script>` list out of its own HTML and loading it in order
 into a small fake DOM — then drives the `requestAnimationFrame` loop for ~3 seconds of frames and
 fails on any throw, on boot or on any later frame. The train is checked as behaviour too: apply
@@ -944,6 +1100,25 @@ the throttle, run the loop, and the train must actually roll.
   live, plus the growth and health model. The active stage is scaled from its base by
   `growth`, so you can see it swell a little inside each phase. Water drops and wind-blown
   seeds are built with `createElementNS` and animated in `scene.js`.
+* **The sandwich (sandwich)** — `www/sandwich/js/state.js` holds the four choice lists and the
+  cooking heat targets. `sandwich/js/scene.js` sets the bread and spread fills from the chosen
+  ids and reveals the filling/vegetable groups; `#panYolk` warms from yellow to brown with
+  `cookT`. The stack is drawn once in `index.html` with a layer per ingredient, and the pan and
+  plate crossfade as the phase changes.
+* **Water at home (waterhome)** — `www/waterhome/js/state.js` holds the eight supply steps and
+  the cylinder model (`HEAT_RATE`, thermostat hysteresis, `maxTemp`). The supply diagram is a
+  set of `.part` groups keyed by the current step's `lit`; the heater's `#hotLayer` height is
+  `(temp - ambient) / 50` of the tank. The dots along the main pipe and the draw drops are
+  created in `scene.js`.
+* **Water cycle (cycle)** — `www/cycle/js/state.js` holds the eight stages and `WATCH_SECONDS`.
+  `cycle/js/scene.js` has the drop's `PTS` stops; the drop interpolates between the current and
+  next point while WATCH runs, and the current `.part` and label are highlighted. Rain and
+  evaporation wisps are separate groups toggled by the stage.
+* **Weather station (weather)** — `www/weather/js/state.js` holds `ROUNDS`, each with a complete
+  set of instrument readings and the correct forecast. `weather/js/scene.js` drives the
+  anemometer, vane, rain gauge, thermometer, hygrometer, barometer, sunshine recorder and river
+  gauge from those readings. The sky is neutral during `read` and changes only after `submit`,
+  using the `fairSun` / `stormClouds` / `rainGroup` / `windLines` groups.
 
 ### Adding a language
 

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="Water at Home" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>Water at Home · Play &amp; Learn</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="waterhome.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">💧</span>
+      <span class="tb-title" data-i18n="title">Water at Home</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudTemp">Tank</span><b id="hud-temp">20°</b></div>
+      <div class="hud-chip hud-score"><span class="hud-label" data-i18n="hudDrawn">Draws</span><b id="hud-drawn">0</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl" id="ctl">
+
+          <div class="ctl-tabs">
+            <button class="tab on" id="tab-supply" data-action="tab" data-tab="supply">
+              <span>🚰</span><b data-i18n="tabSupply">FROM THE RIVER</b>
+            </button>
+            <button class="tab" id="tab-heater" data-action="tab" data-tab="heater">
+              <span>♨️</span><b data-i18n="tabHeater">HOT WATER</b>
+            </button>
+          </div>
+
+          <!-- supply journey -->
+          <div class="pane" id="pane-supply">
+            <div class="supply-steps" id="supply-steps"></div>
+            <div class="fact-card" id="supply-fact"></div>
+            <div class="nav-row">
+              <button class="nav-btn" data-action="stepDown" id="supply-back" data-i18n="back">BACK</button>
+              <button class="nav-btn go" data-action="stepUp" id="supply-next" data-i18n="next">NEXT</button>
+            </div>
+          </div>
+
+          <!-- hot-water cylinder -->
+          <div class="pane" id="pane-heater" hidden>
+            <div class="two-row">
+              <button class="ctl-btn power on" data-action="power" id="heater-power">
+                <span class="cb-ico">⏻</span><span data-i18n="power">POWER</span><i id="power-state">ON</i>
+              </button>
+              <div class="state-chip" id="heater-state">Heating</div>
+            </div>
+
+            <div class="ctl-block">
+              <div class="ctl-label" data-i18n="setpoint">SETPOINT</div>
+              <div class="seg four" id="setpoint-row"></div>
+            </div>
+
+            <div class="temp-card">
+              <div class="temp-top">
+                <span data-i18n="tankTemp">HOT WATER</span>
+                <b id="tank-temp">20°C</b>
+              </div>
+              <div class="temp-bar"><i id="tank-bar-fill"></i></div>
+              <div class="temp-band"></div>
+            </div>
+
+            <button class="draw-btn" data-action="draw" id="draw-btn">
+              <span>🚿</span><span data-i18n="draw">DRAW HOT WATER</span>
+            </button>
+
+            <div class="fact-card small" id="heater-fact" data-i18n="heaterFact"></div>
+
+            <div class="result" id="water-result" hidden>
+              <div class="res-stars" id="water-stars">☆☆☆</div>
+              <p id="water-res-text"></p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="scene">
+
+      <div class="scene-top">
+        <span class="scene-lead" id="scene-lead" data-i18n="leadSupply">Supply journey</span>
+        <span class="scene-status" id="scene-status" data-i18n="statusSupply">Following</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#17324d"/>
+              <stop offset="100%" stop-color="#2a5870"/>
+            </linearGradient>
+            <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#8fd0ff"/>
+              <stop offset="100%" stop-color="#2f7fa8"/>
+            </linearGradient>
+            <linearGradient id="metalGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f8fafc"/>
+              <stop offset="55%" stop-color="#dbe3ec"/>
+              <stop offset="100%" stop-color="#aab6c6"/>
+            </linearGradient>
+            <linearGradient id="hotGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ff7a5c"/>
+              <stop offset="100%" stop-color="#e2453c"/>
+            </linearGradient>
+            <radialGradient id="glowGrad">
+              <stop offset="0%" stop-color="rgba(255,150,60,.8)"/>
+              <stop offset="100%" stop-color="rgba(255,150,60,0)"/>
+            </radialGradient>
+            <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0b1220" flood-opacity="0.4"/>
+            </filter>
+            <clipPath id="tankClip"><rect x="100" y="158" width="140" height="220" rx="20"/></clipPath>
+          </defs>
+
+          <!-- ═════ supply journey ═════ -->
+          <g id="supplyScene">
+            <rect x="0" y="0" width="340" height="400" fill="url(#skyGrad)"/>
+            <rect x="0" y="330" width="340" height="70" fill="#3f5f35"/>
+            <rect x="0" y="396" width="340" height="124" fill="#3b2615"/>
+
+            <!-- river -->
+            <g class="part" data-part="source">
+              <rect x="0" y="330" width="104" height="70" fill="url(#waterGrad)"/>
+              <path d="M4 342 q12 -6 24 0 t24 0 t24 0 t24 0" fill="none" stroke="#bfe8ff" stroke-width="2" opacity=".6"/>
+              <path d="M8 356 q12 -6 24 0 t24 0 t24 0 t20 0" fill="none" stroke="#bfe8ff" stroke-width="2" opacity=".4"/>
+            </g>
+
+            <!-- treatment works -->
+            <rect x="108" y="250" width="152" height="110" rx="6" fill="#26313f" stroke="#425265" stroke-width="1.5"/>
+            <g class="part" data-part="screens">
+              <rect x="112" y="302" width="26" height="58" rx="3" fill="#1b2735" stroke="#8fa0b4" stroke-width="1.2"/>
+              <path d="M116 306 V356 M122 306 V356 M128 306 V356 M134 306 V356" stroke="#8fa0b4" stroke-width="1" opacity=".7"/>
+            </g>
+            <g class="part" data-part="coag">
+              <rect x="142" y="302" width="26" height="58" rx="3" fill="#25455f" stroke="#5fb6ef" stroke-width="1.2"/>
+              <path d="M148 346 V316 M156 346 V316 M155 316 L156 310" stroke="#c8ecff" stroke-width="1.5" stroke-linecap="round"/>
+            </g>
+            <g class="part" data-part="settle">
+              <rect x="172" y="302" width="26" height="58" rx="3" fill="#25455f" stroke="#5fb6ef" stroke-width="1.2"/>
+              <rect x="176" y="340" width="18" height="16" rx="2" fill="#8a6236" opacity=".8"/>
+              <path d="M176 330 H194" stroke="#bfe8ff" stroke-width="1" opacity=".5"/>
+            </g>
+            <g class="part" data-part="filter">
+              <rect x="202" y="302" width="26" height="58" rx="3" fill="#25455f" stroke="#5fb6ef" stroke-width="1.2"/>
+              <rect x="206" y="330" width="18" height="12" fill="#d9c08a"/>
+              <rect x="206" y="342" width="18" height="14" fill="#8a6236"/>
+            </g>
+            <g class="part" data-part="disinfect">
+              <rect x="232" y="302" width="26" height="58" rx="3" fill="#25455f" stroke="#5fb6ef" stroke-width="1.2"/>
+              <circle cx="240" cy="330" r="2" fill="#8ef0b4"/><circle cx="247" cy="340" r="1.6" fill="#8ef0b4"/>
+              <circle cx="244" cy="352" r="2.2" fill="#8ef0b4"/><path d="M238 312 H252" stroke="#c8ecff" stroke-width="3"/>
+            </g>
+
+            <!-- water tower -->
+            <g class="part" data-part="tank">
+              <rect x="262" y="200" width="38" height="50" rx="8" fill="url(#metalGrad)" stroke="#9fb0c4" stroke-width="1.4"/>
+              <path d="M266 250 V330 M296 250 V330 M266 270 L296 330 M296 270 L266 330" stroke="#7d8a99" stroke-width="3"/>
+              <rect x="258" y="196" width="46" height="7" rx="3.5" fill="#9fb0c4"/>
+            </g>
+
+            <!-- house and tap -->
+            <g id="house">
+              <rect x="300" y="286" width="38" height="110" fill="#d7e2ee" stroke="#9fb0c4" stroke-width="1.2"/>
+              <path d="M294 286 L319 268 L344 286 Z" fill="#b8543f"/>
+              <rect x="308" y="300" width="12" height="12" fill="#8fd0ff" stroke="#4aa8de" stroke-width="1"/>
+              <rect x="328" y="330" width="8" height="3" fill="#c8d1dd"/>
+            </g>
+            <g class="part" data-part="tap">
+              <path d="M319 352 V338 H332" fill="none" stroke="#c8d1dd" stroke-width="4" stroke-linecap="round"/>
+              <path d="M332 338 V348" stroke="#8fd0ff" stroke-width="3" stroke-linecap="round"/>
+            </g>
+
+            <!-- the main pipe and water dots -->
+            <path d="M40 364 H262" fill="none" stroke="#8fa0b4" stroke-width="5" stroke-linecap="round"/>
+            <path d="M262 364 H319" fill="none" stroke="#8fa0b4" stroke-width="5" stroke-linecap="round"/>
+            <path d="M280 330 V300" fill="none" stroke="#8fa0b4" stroke-width="5"/>
+            <g id="supplyDots"></g>
+
+            <!-- supply labels -->
+            <g id="supplyLabels">
+              <g class="lab" data-part="source"><text x="52" y="322" text-anchor="middle" data-i18n="lSource">source</text></g>
+              <g class="lab" data-part="screens"><text x="125" y="294" text-anchor="middle" data-i18n="lScreens">screens</text></g>
+              <g class="lab" data-part="coag"><text x="155" y="294" text-anchor="middle" data-i18n="lCoag">coagulation</text></g>
+              <g class="lab" data-part="settle"><text x="185" y="294" text-anchor="middle" data-i18n="lSettle">sedimentation</text></g>
+              <g class="lab" data-part="filter"><text x="215" y="294" text-anchor="middle" data-i18n="lFilter">filtration</text></g>
+              <g class="lab" data-part="disinfect"><text x="245" y="294" text-anchor="middle" data-i18n="lDisinfect">disinfection</text></g>
+              <g class="lab" data-part="tank"><text x="281" y="190" text-anchor="middle" data-i18n="lTank">storage</text></g>
+              <g class="lab" data-part="tap"><text x="334" y="278" text-anchor="end" data-i18n="lTap">tap</text></g>
+            </g>
+          </g>
+
+          <!-- ═════ hot-water cylinder ═════ -->
+          <g id="heaterScene" class="off">
+            <rect x="0" y="0" width="340" height="400" fill="#16202e"/>
+            <rect x="0" y="396" width="340" height="124" fill="#101820"/>
+
+            <!-- pipes behind the tank -->
+            <path d="M60 350 H100" fill="none" stroke="#8fa0b4" stroke-width="8"/>
+            <path d="M240 180 H300 V330" fill="none" stroke="#8fa0b4" stroke-width="8"/>
+            <path d="M300 258 V330" fill="none" stroke="#c8d1dd" stroke-width="4"/>
+
+            <!-- the cylinder -->
+            <rect x="92" y="150" width="156" height="236" rx="26" fill="url(#metalGrad)" stroke="#9fb0c4" stroke-width="2" filter="url(#soft)"/>
+            <g clip-path="url(#tankClip)">
+              <rect x="100" y="158" width="140" height="220" rx="20" fill="#2f7fa8" opacity=".85"/>
+              <rect id="hotLayer" x="100" y="362" width="140" height="0" fill="url(#hotGrad)" opacity=".9"/>
+              <ellipse id="heaterGlow" cx="170" cy="352" rx="34" ry="14" fill="url(#glowGrad)" opacity="0"/>
+              <path d="M144 356 q0 -16 12 -16 h28 q12 0 12 16" fill="none" stroke="#ffb37a" stroke-width="5" stroke-linecap="round"/>
+              <rect x="176" y="178" width="4" height="166" rx="2" fill="#c8d1dd" opacity=".8"/>
+            </g>
+            <rect x="92" y="150" width="156" height="236" rx="26" fill="none" stroke="#e8eef8" stroke-width="1.4" opacity=".5"/>
+            <text id="heaterTemp" x="170" y="320" text-anchor="middle" font-size="18" font-weight="800" fill="#fff7e8">20°C</text>
+
+            <!-- thermostat and anode -->
+            <rect x="250" y="224" width="18" height="40" rx="4" fill="#39414d" stroke="#8fa0b4" stroke-width="1.2"/>
+            <circle cx="259" cy="236" r="3" fill="#8ef0b4"/>
+            <path d="M232 214 V300" stroke="#c8d1dd" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+
+            <!-- tap -->
+            <rect x="294" y="252" width="14" height="6" rx="3" fill="#c8d1dd"/>
+            <path d="M301 258 V268" stroke="#c8d1dd" stroke-width="4" stroke-linecap="round"/>
+            <g id="drawDrops"></g>
+
+            <!-- heater labels -->
+            <g id="heaterLabels">
+              <g class="lab"><text x="58" y="342" text-anchor="start" data-i18n="lColdIn">cold in</text></g>
+              <g class="lab"><text x="306" y="170" text-anchor="end" data-i18n="lHotOut">hot out</text></g>
+              <g class="lab"><text x="170" y="382" text-anchor="middle" data-i18n="lElement">element</text></g>
+              <g class="lab"><text x="272" y="246" text-anchor="start" data-i18n="lThermostat">thermostat</text></g>
+              <g class="lab"><text x="238" y="206" text-anchor="start" data-i18n="lAnode">anode</text></g>
+              <g class="lab"><text x="308" y="230" text-anchor="end" data-i18n="lMix">mixing valve</text></g>
+              <g class="lab"><text x="312" y="278" text-anchor="start" data-i18n="lTap">tap</text></g>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+      <div class="toast" id="toast"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">Water at home</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

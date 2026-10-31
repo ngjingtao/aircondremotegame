@@ -46,7 +46,7 @@
       <p class="home-sub" data-i18n="pickSub">Tap a picture to start</p>
 
       <!-- ── shared paints for the tile illustrations ──
-           One hidden SVG so the ten scenes below share one palette. Every
+           One hidden SVG so the fourteen scenes below share one palette. Every
            value is straight out of docs/character-bible.md. -->
       <svg class="tile-defs" width="0" height="0" aria-hidden="true" focusable="false">
         <defs>
@@ -452,15 +452,159 @@
           <span class="tile-go">›</span>
         </a>
 
+        <!-- ⑪ Breakfast Sandwich — a cut sandwich with an egg and tomato -->
+        <a class="tile tile-sandwich" href="sandwich/index.html">
+          <div class="tile-art">
+            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+              <g class="tl back">
+                <rect x="0" y="0" width="96" height="96" fill="#2a1c12"/>
+                <ellipse cx="48" cy="80" rx="36" ry="8" fill="#dbe5f0"/>
+                <rect x="0" y="86" width="96" height="10" fill="#5a3f26"/>
+              </g>
+              <g class="tl mid">
+                <rect x="16" y="64" width="64" height="13" rx="6" fill="#e8b86a" stroke="#c99a5b" stroke-width="1"/>
+                <path d="M16 40 q0 -12 12 -12 h40 q12 0 12 12 v10 H16 Z" fill="#e8b86a" stroke="#c99a5b" stroke-width="1"/>
+                <g fill="#fff7e0" opacity=".9">
+                  <ellipse cx="34" cy="35" rx="2.4" ry="1.2"/><ellipse cx="52" cy="32" rx="2.4" ry="1.2"/><ellipse cx="70" cy="35" rx="2.4" ry="1.2"/>
+                </g>
+              </g>
+              <g class="tl front">
+                <rect x="20" y="58" width="56" height="6" rx="3" fill="#ffd166"/>
+                <ellipse cx="48" cy="54" rx="22" ry="7" fill="#fffdf5" stroke="#e4d8bc" stroke-width=".8"/>
+                <circle cx="48" cy="53" r="5" fill="#ffd34d"/>
+                <circle cx="30" cy="58" r="5" fill="#e2453c" stroke="#a82f28" stroke-width=".7"/>
+                <circle cx="66" cy="58" r="5" fill="#e2453c" stroke="#a82f28" stroke-width=".7"/>
+                <path d="M22 62 q8 -7 14 0 q8 -6 14 0 q8 -7 14 0 q8 -6 14 0" fill="none" stroke="#8ecf72" stroke-width="3.4" stroke-linecap="round"/>
+                <path d="M28 24 q-4 -8 2 -14 M48 20 q-4 -9 3 -16 M68 24 q-3 -8 2 -13" fill="none" stroke="#e8eef6" stroke-width="2.6" stroke-linecap="round" opacity=".55"/>
+              </g>
+            </svg>
+          </div>
+          <div class="tile-text">
+            <h2 data-i18n="tileSandwichTitle">Breakfast Sandwich</h2>
+            <p data-i18n="tileSandwichSub">Build a balanced sandwich, then cook the egg just right</p>
+          </div>
+          <span class="tile-go">›</span>
+        </a>
+
+        <!-- ⑫ Water at Home — a cylinder with hot water on top and a tap -->
+        <a class="tile tile-water" href="waterhome/index.html">
+          <div class="tile-art">
+            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+              <g class="tl back">
+                <rect x="0" y="0" width="96" height="96" fill="#152b3a"/>
+                <rect x="0" y="82" width="96" height="14" fill="#0e1c26"/>
+                <path d="M8 72 H88" stroke="#3f6b86" stroke-width="3"/>
+              </g>
+              <g class="tl mid">
+                <rect x="18" y="16" width="42" height="58" rx="12" fill="url(#tMetal)" stroke="#9fb0c4" stroke-width="1.3"/>
+                <rect x="23" y="21" width="32" height="20" rx="7" fill="#e2453c" opacity=".85"/>
+                <rect x="23" y="41" width="32" height="28" rx="7" fill="url(#tWater)" opacity=".85"/>
+                <path d="M50 30 H70 V44 M70 56 V72 M70 34 H78" fill="none" stroke="#9fb0c4" stroke-width="3" stroke-linecap="round"/>
+                <rect x="76" y="30" width="8" height="5" rx="2" fill="#c8d1dd"/>
+              </g>
+              <g class="tl front">
+                <circle cx="39" cy="27" r="2.6" fill="#ffe0b0"/>
+                <path d="M32 46 q7 -5 14 0 t14 0" fill="none" stroke="#bfe8ff" stroke-width="2" opacity=".7"/>
+                <path d="M30 60 q-3 -8 2 -14 M39 62 q-3 -8 2 -14 M48 60 q-3 -8 2 -14" fill="none" stroke="#e8eef6" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
+                <path d="M80 38 q0 6 -4 8" fill="none" stroke="#8fd0ff" stroke-width="2.2" stroke-linecap="round"/>
+                <circle cx="76" cy="48" r="2.4" fill="#8fd0ff"/>
+              </g>
+            </svg>
+          </div>
+          <div class="tile-text">
+            <h2 data-i18n="tileWaterTitle">Water at Home</h2>
+            <p data-i18n="tileWaterSub">Follow water from the river to the tap, then heat it and draw a hot shower</p>
+          </div>
+          <span class="tile-go">›</span>
+        </a>
+
+        <!-- ⑬ Water Cycle — sea, cloud, rain and a river -->
+        <a class="tile tile-cycle" href="cycle/index.html">
+          <div class="tile-art">
+            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+              <g class="tl back">
+                <rect x="0" y="0" width="96" height="56" fill="#17324d"/>
+                <path d="M0 56 H96 V96 H0 Z" fill="url(#tLeaf)" opacity=".8"/>
+                <path d="M52 56 L68 20 L88 56 Z" fill="#7d8a99"/>
+                <path d="M0 62 H34 V96 H0 Z" fill="url(#tWater)"/>
+              </g>
+              <g class="tl mid">
+                <g fill="#e8eef6" opacity=".9">
+                  <ellipse cx="44" cy="26" rx="18" ry="8"/>
+                  <ellipse cx="32" cy="21" rx="10" ry="6"/>
+                  <ellipse cx="55" cy="20" rx="11" ry="6"/>
+                </g>
+                <g stroke="#8fd0ff" stroke-width="2" stroke-linecap="round">
+                  <path d="M32 34 L29 46 M42 34 L39 48 M52 34 L49 46"/>
+                </g>
+                <path d="M58 50 q-8 16 -18 24 q-8 8 -16 10" fill="none" stroke="#2f7fa8" stroke-width="7" stroke-linecap="round"/>
+                <path d="M58 50 q-8 16 -18 24 q-8 8 -16 10" fill="none" stroke="#8fd0ff" stroke-width="3.4" stroke-linecap="round"/>
+              </g>
+              <g class="tl front">
+                <circle cx="80" cy="14" r="7" fill="#ffd166"/>
+                <circle cx="80" cy="14" r="12" fill="#ffd166" opacity=".18"/>
+                <circle cx="42" cy="55" r="4" fill="#bfe8ff" stroke="#fff" stroke-width="1"/>
+                <path d="M64 86 q-6 -10 2 -16 q8 6 2 16" fill="#6fae50"/>
+                <path d="M20 76 q8 -6 16 0" fill="none" stroke="#d8f4ff" stroke-width="1.8" opacity=".6"/>
+              </g>
+            </svg>
+          </div>
+          <div class="tile-text">
+            <h2 data-i18n="tileCycleTitle">Water Cycle</h2>
+            <p data-i18n="tileCycleSub">Follow one drop from the sea to the clouds, the rain, the river and back</p>
+          </div>
+          <span class="tile-go">›</span>
+        </a>
+
+        <!-- ⑭ Weather Station — instruments under a changing sky -->
+        <a class="tile tile-weather" href="weather/index.html">
+          <div class="tile-art">
+            <svg class="tile-svg" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+              <g class="tl back">
+                <rect x="0" y="0" width="96" height="64" fill="#17324d"/>
+                <path d="M0 64 H96 V96 H0 Z" fill="#3f5f35"/>
+                <path d="M0 78 q24 -6 48 0 q24 6 48 0 v18 H0 Z" fill="url(#tWater)" opacity=".8"/>
+              </g>
+              <g class="tl mid">
+                <rect x="20" y="34" width="3" height="38" fill="#9fb0c4"/>
+                <g class="tl-spin">
+                  <path d="M21.5 34 V24 M21.5 34 L31 39 M21.5 34 L12 39" stroke="#c8d1dd" stroke-width="2.2" stroke-linecap="round"/>
+                  <circle cx="21.5" cy="24" r="3" fill="#e8eef8"/><circle cx="31" cy="39" r="3" fill="#e8eef8"/><circle cx="12" cy="39" r="3" fill="#e8eef8"/>
+                </g>
+                <rect x="40" y="50" width="34" height="26" rx="4" fill="#26313f" stroke="#8fa0b4" stroke-width="1.2"/>
+                <circle cx="50" cy="62" r="6" fill="#dfe8f2" stroke="#8fa0b4" stroke-width="1"/>
+                <circle cx="65" cy="62" r="6" fill="#dfe8f2" stroke="#8fa0b4" stroke-width="1"/>
+                <rect x="82" y="46" width="8" height="26" rx="2" fill="#24313f" stroke="#8fa0b4" stroke-width="1"/>
+              </g>
+              <g class="tl front">
+                <circle cx="80" cy="18" r="7" fill="#ffd166"/>
+                <g fill="#e8eef6" opacity=".85">
+                  <ellipse cx="34" cy="16" rx="14" ry="6"/><ellipse cx="24" cy="12" rx="8" ry="4"/><ellipse cx="43" cy="11" rx="9" ry="5"/>
+                </g>
+                <g stroke="#8fd0ff" stroke-width="1.8" stroke-linecap="round">
+                  <path d="M24 24 L22 32 M34 24 L32 34 M44 24 L42 32"/>
+                </g>
+                <path d="M50 62 L55 57 M65 62 L60 67" stroke="#2f4a27" stroke-width="1.6" stroke-linecap="round"/>
+                <rect x="84" y="52" width="4" height="20" fill="#e2453c" opacity=".8"/>
+              </g>
+            </svg>
+          </div>
+          <div class="tile-text">
+            <h2 data-i18n="tileWeatherTitle">Weather Station</h2>
+            <p data-i18n="tileWeatherSub">Read the rain gauge, wind, pressure and river level, then forecast the weather</p>
+          </div>
+          <span class="tile-go">›</span>
+        </a>
+
       </div>
 
       <!-- ── the sticker book ──
-           The one thing that ties the ten activities together: each one
+           The one thing that ties the fourteen activities together: each one
            records what a child has managed, and it is collected here. -->
       <section class="book" id="book">
         <h2 class="book-title">
           <span data-i18n="bookTitle">My sticker book</span>
-          <b id="book-count">0 / 15</b>
+          <b id="book-count">0 / 19</b>
         </h2>
         <p class="book-note" id="book-note" data-i18n="bookHint">…</p>
         <div class="book-grid" id="book-grid"></div>

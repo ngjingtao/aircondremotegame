@@ -1,7 +1,7 @@
 {
   "name": "Play & Learn",
   "short_name": "Play & Learn",
-  "description": "Ten CSS-drawn activities for kids: Play Aircond, Food Eating, Train Driving, Breathing & Blood, Inside the Aircon, Toilet, Indah Water, Kitchen Hood, Laundry Day and From Seed to Tree.",
+  "description": "Fourteen CSS-drawn activities for kids: Play Aircond, Food Eating, Train Driving, Breathing & Blood, Inside the Aircon, Toilet, Indah Water, Kitchen Hood, Laundry Day, From Seed to Tree, Breakfast Sandwich, Water at Home, Water Cycle and Weather Station.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -30,6 +30,10 @@
     { "name": "Indah Water", "url": "indah/index.html" },
     { "name": "Kitchen Hood", "url": "hood/index.html" },
     { "name": "Laundry Day", "url": "laundry/index.html" },
-    { "name": "From Seed to Tree", "url": "tree/index.html" }
+    { "name": "From Seed to Tree", "url": "tree/index.html" },
+    { "name": "Breakfast Sandwich", "url": "sandwich/index.html" },
+    { "name": "Water at Home", "url": "waterhome/index.html" },
+    { "name": "Water Cycle", "url": "cycle/index.html" },
+    { "name": "Weather Station", "url": "weather/index.html" }
   ]
 }

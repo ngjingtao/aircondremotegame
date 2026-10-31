@@ -30,6 +30,14 @@
       tileLaundrySub: 'Wash the clothes, then dry them — without shrinking anything',
       tileTreeTitle: 'From Seed to Tree',
       tileTreeSub: 'Grow a seed into a tree — and learn what happens at every phase',
+      tileSandwichTitle: 'Breakfast Sandwich',
+      tileSandwichSub: 'Build a balanced sandwich, then cook the egg just right',
+      tileWaterTitle: 'Water at Home',
+      tileWaterSub: 'Follow water from the river to the tap, then heat it and draw a hot shower',
+      tileCycleTitle: 'Water Cycle',
+      tileCycleSub: 'Follow one drop from the sea to the clouds, the rain, the river and back',
+      tileWeatherTitle: 'Weather Station',
+      tileWeatherSub: 'Read the rain gauge, wind, pressure and river level, then forecast the weather',
 
       /* ── the sticker book ── */
       bookTitle: 'My sticker book',
@@ -50,9 +58,13 @@
       stWash: 'Wash a load really clean',
       stDry: 'Dry it just right',
       stTree: 'Grow a seed all the way to a new seed',
+      stSandwich: 'Cook a balanced breakfast sandwich',
+      stWater: 'Follow the water and store it hot',
+      stCycle: 'Follow a drop all the way round the water cycle',
+      stWeather: 'Forecast the weather from the instruments',
       foot: 'Made for curious kids',
       help: '?',
-      helpTitle: 'Ten activities',
+      helpTitle: 'Fourteen activities',
       helpBody: `
         <h3>❄ Play Aircond</h3>
         <ul>
@@ -117,6 +129,29 @@
           <li>Press <code>WATER</code> to top up the soil. Full sun dries it faster, so watch the marker.</li>
           <li>Too dry, too wet or the wrong light stalls growth and drains health. Reach seed dispersal with a healthy tree to earn the stars.</li>
         </ul>
+        <h3>🥪 Breakfast Sandwich</h3>
+        <ul>
+          <li>Choose a bread, spread, filling and vegetable, then cook the egg.</li>
+          <li>Stop while the marker is in the green band: low heat about 8 s, medium 5 s, high 3.5 s.</li>
+          <li>Wholemeal, avocado, egg and a vegetable make a balanced breakfast. A spread stops tomato juice making the bread soggy.</li>
+        </ul>
+        <h3>💧 Water at Home</h3>
+        <ul>
+          <li><code>FROM THE RIVER</code> — follow the eight treatment steps from source to tap.</li>
+          <li><code>HOT WATER</code> — set a temperature and watch the cylinder stratify. Draw hot water through the mixing valve.</li>
+          <li>Store at 60 °C or above for Legionella safety; the mixing valve brings it down to about 50 °C at the tap.</li>
+        </ul>
+        <h3>🌍 Water Cycle</h3>
+        <ul>
+          <li>Follow one drop through evaporation, transpiration, condensation, precipitation, runoff, river, lake and back to the sea.</li>
+          <li>Press <code>WATCH</code> to let the cycle play by itself, or tap any stage.</li>
+        </ul>
+        <h3>🌦️ Weather Station</h3>
+        <ul>
+          <li>Read the barometer, hygrometer, wind, rain gauge, river gauge and sunshine recorder.</li>
+          <li>Choose <code>FAIR</code>, <code>RAIN</code> or <code>STORM</code>, then reveal the weather and see why.</li>
+          <li>Falling pressure + rising humidity + strengthening wind usually means rain. High, rising pressure usually means fair.</li>
+        </ul>
         <h3>Buttons in the top bar</h3>
         <ul>
           <li><code>‹ Menu</code> — back to this screen (inside an activity).</li>
@@ -149,6 +184,14 @@
       tileLaundrySub: '先把衣服洗干净，再烘干 — 一件都不要缩水',
       tileTreeTitle: '从种子到大树',
       tileTreeSub: '把一颗种子种成大树 — 看看它一生里的每个阶段',
+      tileSandwichTitle: '早餐三明治',
+      tileSandwichSub: '搭配一份均衡的三明治，再把蛋煎得刚刚好',
+      tileWaterTitle: '家里的水',
+      tileWaterSub: '跟着水从河到水龙头，再加热、放出热水',
+      tileCycleTitle: '水循环',
+      tileCycleSub: '跟着一滴水从大海升上云层，变成雨、流进河，再回到大海',
+      tileWeatherTitle: '气象站',
+      tileWeatherSub: '读雨量、风、气压和河水水位，然后预报天气',
 
       /* ── 贴纸本 ── */
       bookTitle: '我的贴纸本',
@@ -169,9 +212,13 @@
       stWash: '把一桶衣服洗得干干净净',
       stDry: '把衣服烘得刚刚好',
       stTree: '把一颗种子种成大树，再结出新的种子',
+      stSandwich: '做一份均衡的早餐三明治',
+      stWater: '跟着水走完全程，并把水加热储存',
+      stCycle: '跟着一滴水走完整个水循环',
+      stWeather: '用仪器读数预报天气',
       foot: '给充满好奇心的小朋友',
       help: '?',
-      helpTitle: '十个小游戏',
+      helpTitle: '十四个小游戏',
       helpBody: `
         <h3>❄ 玩空调</h3>
         <ul>
@@ -236,6 +283,29 @@
           <li>按 <code>浇水</code> 给土加水。全日照下干得快，要盯着水分标记。</li>
           <li>太干、太湿或光照不对，生长就会停下，健康也会下降。让树健康地走到传播种子，就能拿到星星。</li>
         </ul>
+        <h3>🥪 早餐三明治</h3>
+        <ul>
+          <li>选面包、涂抹、馅料和蔬菜，然后煎蛋。</li>
+          <li>水分标记停在绿色区域时关火：小火约 8 秒，中火 5 秒，大火 3.5 秒。</li>
+          <li>全麦、牛油果、蛋和蔬菜就是均衡早餐。先涂一层酱，番茄汁才不会把面包泡软。</li>
+        </ul>
+        <h3>💧 家里的水</h3>
+        <ul>
+          <li><code>从河到水龙头</code> — 跟着八个净水步骤，从水源走到水龙头。</li>
+          <li><code>热水器</code> — 设定温度，看水箱怎么分层。再放出热水，经过混水阀。</li>
+          <li>储水保持 60°C 以上才安全；混水阀把出水降到约 50°C，防止烫伤。</li>
+        </ul>
+        <h3>🌍 水循环</h3>
+        <ul>
+          <li>跟着一滴水经历蒸发、蒸腾、凝结、降水、径流、河流、湖泊，再回到大海。</li>
+          <li>按 <code>自动播放</code> 让循环自己走，也可以点任意一个阶段。</li>
+        </ul>
+        <h3>🌦️ 气象站</h3>
+        <ul>
+          <li>读气压计、湿度计、风、雨量筒、水位计和日照计。</li>
+          <li>选 <code>晴天</code>、<code>下雨</code> 或 <code>暴风雨</code>，再揭晓天气，看看为什么。</li>
+          <li>气压下降 + 湿度上升 + 风变大，通常要下雨；气压高而且在上升，通常是好天气。</li>
+        </ul>
         <h3>顶栏按钮</h3>
         <ul>
           <li><code>‹ 菜单</code> — 回到这个页面（在小游戏里）。</li>
@@ -261,7 +331,11 @@
     indah:   { icon: '🚰', tint: '#3f9fd8' },
     hood:    { icon: '🍳', tint: '#f0a03a' },
     laundry: { icon: '🧺', tint: '#5fb6ef' },
-    tree:    { icon: '🌱', tint: '#6fbf5f' }
+    tree:    { icon: '🌱', tint: '#6fbf5f' },
+    sandwich: { icon: '🥪', tint: '#f0a03a' },
+    waterhome: { icon: '💧', tint: '#5fb6ef' },
+    cycle:   { icon: '🌍', tint: '#3f9fd8' },
+    weather: { icon: '🌦️', tint: '#8ecf72' }
   };
 
   function renderBook() {

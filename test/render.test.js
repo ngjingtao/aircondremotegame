@@ -344,7 +344,11 @@ const PAGES = [
   { dir: 'indah', name: 'Indah Water' },
   { dir: 'hood', name: 'Kitchen Hood' },
   { dir: 'laundry', name: 'Laundry Day' },
-  { dir: 'tree', name: 'From Seed to Tree' }
+  { dir: 'tree', name: 'From Seed to Tree' },
+  { dir: 'sandwich', name: 'Breakfast Sandwich' },
+  { dir: 'waterhome', name: 'Water at Home' },
+  { dir: 'cycle', name: 'Water Cycle' },
+  { dir: 'weather', name: 'Weather Station' }
 ];
 
 console.log('\n— Every page boots —');
@@ -640,6 +644,146 @@ console.log('\n— From Seed to Tree: the whole life cycle —');
   }
 }
 
+/* ─────────── the sandwich: choose, cook, build ─────────── */
+console.log('\n— Breakfast Sandwich: cook it just right —');
+{
+  const p = boot('sandwich');
+  if (p.bootError) bad('sandwich — boots', p.bootError);
+  else {
+    const sim = p.ARG.sim;
+
+    const make = (choices, cookSeconds) => {
+      sim.fresh();
+      Object.keys(choices).forEach(key => {
+        sim.press('set', { dataset: { key: key, value: choices[key] } });
+      });
+      sim.press('action');          // to the pan
+      sim.press('action');          // start cooking
+      for (let t = 0; t < cookSeconds; t += 0.016) sim.tick(0.016);
+      if (sim.s.phase === 'cook') sim.press('action');   // stop (unless it auto-stopped)
+      if (sim.s.phase === 'ready') sim.press('action');  // build
+      return sim.s;
+    };
+
+    const plain = make({}, 5);
+    eq('the default sandwich is built', plain.phase, 'done');
+    eq('  → with a perfect egg', plain.cookQuality >= 0.9, true);
+    eq('  → but it is not balanced', plain.stars, 2);
+
+    const balanced = make({ bread: 'wholemeal', spread: 'avocado', filling: 'eggcheese', veg: 'spinach' }, 5);
+    eq('a balanced sandwich earns three stars', balanced.stars, 3);
+
+    const runny = make({}, 2.5);
+    eq('stopping early leaves the egg runny', runny.reason, 'sandwichRunny');
+    eq('  → and loses a star', runny.stars, 1);
+
+    const burnt = make({}, 9);
+    eq('leaving it on the pan burns it', burnt.reason, 'sandwichBurnt');
+
+    const soggy = make({ spread: 'none', veg: 'tomato' }, 5);
+    eq('tomato with no spread makes the bread soggy', soggy.reason, 'sandwichSoggy');
+
+    if (p.errors.length) bad('sandwich — no errors while cooking', p.errors[0]);
+    else ok('sandwich — no errors while cooking');
+  }
+}
+
+/* ─────────── water supply and the hot cylinder ─────────── */
+console.log('\n— Water at Home: river to tap, then hot water —');
+{
+  const p = boot('waterhome');
+  if (p.bootError) bad('waterhome — boots', p.bootError);
+  else {
+    const sim = p.ARG.sim;
+
+    eq('the supply journey has eight steps', sim.SUPPLY.length, 8);
+    eq('it opens on the supply tab', sim.s.tab, 'supply');
+
+    for (let i = 0; i < 7; i++) sim.press('stepUp');
+    eq('the tour reaches the tap', sim.s.step, 7);
+    eq('  → and is marked complete', sim.s.supplyDone, true);
+
+    sim.press('tab', { dataset: { tab: 'heater' } });
+    eq('switching to the heater tab', sim.s.tab, 'heater');
+    eq('cold water cannot be drawn yet', sim.press('draw').sound, 'deny');
+
+    let t = 0;
+    while (sim.s.temp < 60 && t < 60) { sim.tick(0.05); t += 0.05; }
+    eq('the tank heats to 60 °C', sim.s.temp >= 59 && sim.s.temp <= 61, true);
+    eq('  → the thermostat has switched off', sim.s.heating, false);
+
+    sim.press('draw');
+    eq('a hot draw is recorded', sim.s.drawn, 1);
+    eq('  → and completes the activity', sim.s.used, true);
+    eq('  → the rating is three stars', sim.rating().stars, 3);
+
+    if (p.errors.length) bad('waterhome — no errors while heating', p.errors[0]);
+    else ok('waterhome — no errors while heating');
+  }
+}
+
+/* ─────────── the water cycle tour ─────────── */
+console.log('\n— Water Cycle: one drop, all the way round —');
+{
+  const p = boot('cycle');
+  if (p.bootError) bad('cycle — boots', p.bootError);
+  else {
+    const sim = p.ARG.sim;
+    eq('the cycle has eight stages', sim.STEPS.length, 8);
+
+    for (let i = 0; i < 7; i++) sim.press('next');
+    eq('the drop reaches the end of the cycle', sim.s.step, 7);
+    eq('  → the whole cycle has been seen', sim.s.seenAll, true);
+
+    sim.press('restart');
+    eq('restarting returns to the sea', sim.s.step, 0);
+    eq('  → and clears the completion', sim.s.seenAll, false);
+
+    sim.press('watch');
+    eq('watch mode turns on', sim.s.auto, true);
+    for (let t = 0; t < 4.2; t += 0.05) sim.tick(0.05);
+    eq('  → the clock advances the stage', sim.s.step, 1);
+
+    if (p.errors.length) bad('cycle — no errors while watching', p.errors[0]);
+    else ok('cycle — no errors while watching');
+  }
+}
+
+/* ─────────── the weather forecast challenge ─────────── */
+console.log('\n— Weather Station: read, forecast, reveal —');
+{
+  const p = boot('weather');
+  if (p.bootError) bad('weather — boots', p.bootError);
+  else {
+    const sim = p.ARG.sim;
+    eq('there are three forecast rounds', sim.ROUNDS.length, 3);
+    eq('it opens on round 1', sim.s.round, 0);
+
+    const forecast = (f) => {
+      sim.press('guess', { dataset: { forecast: f } });
+      sim.press('submit');
+      sim.press('next');
+    };
+
+    forecast('fair');
+    eq('the first forecast is revealed', sim.s.round, 1);
+    forecast('rain');
+    eq('the second forecast is revealed', sim.s.round, 2);
+    forecast('storm');
+    eq('the three rounds are complete', sim.s.phase, 'done');
+    eq('  → all three forecasts were right', sim.s.correct, 3);
+    eq('  → and it pays three stars', sim.rate().stars, 3);
+    eq('  → with the perfect card', sim.s.reason, 'weatherPerfect');
+
+    sim.press('again');
+    eq('trying again resets the rounds', sim.s.round, 0);
+    eq('  → and the score', sim.s.correct, 0);
+
+    if (p.errors.length) bad('weather — no errors while forecasting', p.errors[0]);
+    else ok('weather — no errors while forecasting');
+  }
+}
+
 /* ─────────── the train's sky tiles must not clip their own clouds ─────────── */
 console.log('\n— Train: sky layers —');
 {
@@ -685,7 +829,8 @@ console.log('\n— Nothing inline —');
 {
   const pages = ['index.html', 'aircond/index.html', 'food/index.html', 'train/index.html',
     'breath/index.html', 'aircare/index.html', 'toilet/index.html', 'indah/index.html', 'hood/index.html',
-    'laundry/index.html', 'tree/index.html'];
+    'laundry/index.html', 'tree/index.html', 'sandwich/index.html', 'waterhome/index.html',
+    'cycle/index.html', 'weather/index.html'];
 
   const inlineScript = [], inlineStyle = [];
   for (const rel of pages) {
@@ -728,16 +873,16 @@ console.log('\n— Home tiles —');
   const html = fs.readFileSync(path.join(WWW, 'index.html'), 'utf8');
 
   const tiles = html.match(/class="tile tile-[a-z]+"/g) || [];
-  eq('the home screen has ten tiles', tiles.length, 10);
+  eq('the home screen has fourteen tiles', tiles.length, 14);
 
   const svgs = html.match(/class="tile-svg"[^>]*viewBox="([^"]+)"/g) || [];
-  eq('every tile is an illustration, not a stack of spans', svgs.length, 10);
+  eq('every tile is an illustration, not a stack of spans', svgs.length, 14);
   eq('  → all on one 96×96 canvas', svgs.every(s => /viewBox="0 0 96 96"/.test(s)), true);
 
   /* three depth layers — the parallax and the idle drift both count on them */
   const layer = n => (html.match(new RegExp('class="tl ' + n + '"', 'g')) || []).length;
   eq('every scene has a back, mid and front layer',
-     layer('back') === 10 && layer('mid') === 10 && layer('front') === 10, true);
+     layer('back') === 14 && layer('mid') === 14 && layer('front') === 14, true);
 
   /* the tile illustrations use one shared palette. Every paint a shape asks for
      has to exist, or the shape silently renders black — and a paint nobody uses
@@ -770,7 +915,7 @@ console.log('\n— Sticker book on the home screen —');
 
   const p = boot('.');
   if (p.bootError) bad('home — boots', p.bootError);
-  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 15');
+  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 19');
 }
 
 /* ─────────── report ─────────── */
