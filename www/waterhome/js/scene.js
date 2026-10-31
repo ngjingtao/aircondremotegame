@@ -27,7 +27,11 @@ ARG.scene = (function () {
     els.heaterScene = document.getElementById('heaterScene');
     els.supplyDots = document.getElementById('supplyDots');
     els.hotLayer = document.getElementById('hotLayer');
-    els.heaterGlow = document.getElementById('heaterGlow');
+    els.warmLayer = document.getElementById('warmLayer');
+    els.upperGlow = document.getElementById('upperGlow');
+    els.lowerGlow = document.getElementById('lowerGlow');
+    els.upperLed = document.getElementById('upperLed');
+    els.lowerLed = document.getElementById('lowerLed');
     els.heaterTemp = document.getElementById('heaterTemp');
     els.drawDrops = document.getElementById('drawDrops');
     els.lead = document.getElementById('scene-lead');
@@ -86,7 +90,7 @@ ARG.scene = (function () {
       }
     }
 
-    /* heater: the hot layer grows from the top, the element glows */
+    /* heater: the hot layer grows from the top, the active element glows */
     if (S.tab === 'heater') {
       const tankTop = 162, tankH = 204;
       const frac = clamp((S.temp - ARG.sim.AMBIENT) / 50, 0, 1);
@@ -94,13 +98,21 @@ ARG.scene = (function () {
         els.hotLayer.setAttribute('y', (tankTop + tankH - frac * tankH).toFixed(1));
         els.hotLayer.setAttribute('height', (frac * tankH).toFixed(1));
       }
-      if (els.heaterGlow) els.heaterGlow.setAttribute('opacity', S.heating ? '0.85' : '0.08');
+      if (els.warmLayer) {
+        const wFrac = clamp((S.bottom - ARG.sim.AMBIENT) / 50, 0, 1);
+        els.warmLayer.setAttribute('y', (tankTop + tankH - wFrac * tankH).toFixed(1));
+        els.warmLayer.setAttribute('height', (wFrac * tankH).toFixed(1));
+      }
+      if (els.upperGlow) els.upperGlow.setAttribute('opacity', S.upperOn ? '0.9' : '0.04');
+      if (els.lowerGlow) els.lowerGlow.setAttribute('opacity', S.lowerOn ? '0.9' : '0.04');
+      if (els.upperLed) els.upperLed.setAttribute('fill', S.upperOn ? '#ffb37a' : '#5d6b7c');
+      if (els.lowerLed) els.lowerLed.setAttribute('fill', S.lowerOn ? '#ffb37a' : '#5d6b7c');
       if (els.heaterTemp) els.heaterTemp.textContent = Math.round(S.temp) + '°C';
       for (let i = 0; i < drawDrops.length; i++) {
         const d = drawDrops[i];
         const f = ((now * 1.4 + i / drawDrops.length) % 1);
         d.setAttribute('cx', (300 + Math.sin(now * 3 + i) * 2).toFixed(1));
-        d.setAttribute('cy', (330 + f * 58).toFixed(1));
+        d.setAttribute('cy', (270 + f * 58).toFixed(1));
         d.setAttribute('opacity', (S.drawPulse > 0.03 ? S.drawPulse * (1 - f) * 0.9 : 0).toFixed(2));
       }
     }
@@ -111,6 +123,8 @@ ARG.scene = (function () {
 
     const status = S.tab === 'supply' ? (S.supplyDone ? t('statusDone') : t('statusSupply'))
       : rating.stars > 0 ? t('statusDone')
+      : S.upperOn ? t('statusUpper')
+      : S.lowerOn ? t('statusLower')
       : S.temp >= S.setTemp - 0.5 ? t('statusReady')
       : t('statusHeater');
     if (lastStatus !== status) {
@@ -125,7 +139,10 @@ ARG.scene = (function () {
     if (S.tab === 'supply') note = S.supplyDone ? t('doneSupply') : t('tSupply');
     else if (rating.stars > 0) note = t(rating.reason);
     else if (S.setTemp < 60) note = t('tSafety');
-    else note = t(S.heating ? 'tHeater' : 'tSafety');
+    else if (S.upperOn) note = t('tUpper');
+    else if (S.lowerOn) note = t('tLower');
+    else if (S.temp >= S.setTemp - 0.5) note = t('tReadyHeater');
+    else note = t('tHeater');
     if (lastNote !== note) { lastNote = note; if (els.paneNote) els.paneNote.textContent = note; }
   }
 

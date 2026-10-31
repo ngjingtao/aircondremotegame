@@ -644,22 +644,30 @@ cylinder** in the house.
 
 ### The hot-water cylinder
 
-Cold water enters at the bottom; the element heats it; hot water rises and leaves at the top, so
-the tank **stratifies**. The thermostat switches the element on below the setpoint and off when
-it is reached. An anode rod sacrifices itself to protect the steel tank, and a pressure-relief
-valve lets expanding water escape.
+Cold water enters through a **dip tube** and is delivered near the bottom, so it does not mix
+with the hot water at the top. The cylinder has **two elements and two thermostats**:
 
-Storing at **60 °C or above** kills Legionella bacteria. A **mixing valve** then blends the hot
-water down to about **50 °C** at the tap so nobody is scalded. The game uses a time-lapse:
+- The **upper element** heats the top first. Hot water rises, so the upper thermostat is
+  satisfied first and switches it off.
+- The **lower element** then takes over and heats the bottom. The panel shows both temperatures
+  and two element LEDs, so you can see which one is working.
+- The **anode rod** sacrifices itself to protect the steel tank, the **T&P relief valve** lets
+  expanding water escape, and the **insulation** slows standing losses.
+- A **mixing valve** blends the hot water down to about **50 °C** at the tap.
+
+Storing at **60 °C or above** kills Legionella bacteria. The game uses a time-lapse:
 **1.6 °C per second**, so 20 → 60 °C takes about 25 seconds.
 
 Measured:
 
 | Run | Result |
 |---|---|
-| Complete the eight supply steps, heat to 60 °C, draw | **3 ★** — safe storage, hot water |
+| Complete the eight supply steps, heat to 60 °C, draw | **3 ★** — safe storage, hot water; upper element off, lower element still warming the bottom at about 31 °C |
 | Complete the supply, set 40 °C, heat and draw | **2 ★** — comfortable, but below the Legionella-safe storage temperature |
 | Press **DRAW** at 20 °C | refused — *cold* |
+
+The cutaway labels the dip tube, upper and lower elements, upper and lower thermostats, anode
+rod, T&P valve, insulation, drain valve, mixing valve and tap.
 
 The scene shows the works, the water tower, the house and tap; on the heater tab it shows the
 tank cutaway, the growing hot layer, the element glow, the thermostat, the anode, the mixing
@@ -1028,8 +1036,8 @@ server.js                               zero-dependency static server ($PORT awa
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        252 assertions over the fifteen simulations
-test/render.test.js                     175 assertions: every page booted, the artwork, the book, and nothing inline
+test/sim.test.js                        254 assertions over the fifteen simulations
+test/render.test.js                     176 assertions: every page booted, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json
@@ -1155,10 +1163,13 @@ the throttle, run the loop, and the train must actually roll.
   `cookT`. The stack is drawn once in `index.html` with a layer per ingredient, and the pan and
   plate crossfade as the phase changes.
 * **Water at home (waterhome)** — `www/waterhome/js/state.js` holds the eight supply steps and
-  the cylinder model (`HEAT_RATE`, thermostat hysteresis, `maxTemp`). The supply diagram is a
-  set of `.part` groups keyed by the current step's `lit`; the heater's `#hotLayer` height is
-  `(temp - ambient) / 50` of the tank. The dots along the main pipe and the draw drops are
-  created in `scene.js`.
+  the dual-element cylinder model (`HEAT_RATE`, upper/lower thermostats, `bottom`, `maxTemp`).
+  The upper element heats the top first; the lower element takes over once the upper thermostat
+  is satisfied. The supply diagram is a set of `.part` groups keyed by the current step's
+  `lit`; the heater's `#hotLayer` height follows the top temperature, and `#upperGlow` /
+  `#lowerGlow` show which element is on. The dots along the main pipe and the draw drops are
+  created in `scene.js`; the labels name the dip tube, both elements, both thermostats, anode,
+  T&P valve, insulation, drain valve and mixing valve.
 * **Water cycle (cycle)** — `www/cycle/js/state.js` holds the eight stages and `WATCH_SECONDS`.
   `cycle/js/scene.js` has the drop's `PTS` stops; the drop interpolates between the current and
   next point while WATCH runs, and the current `.part` and label are highlighted. Rain and

@@ -73,6 +73,18 @@
 }
 .fact-card.small{flex:0 0 auto;font-size:8.6px;max-height:70px;}
 
+.heater-notes{
+  flex:0 0 auto;display:flex;flex-direction:column;gap:4px;
+  padding:8px 10px;border-radius:10px;
+  background:#f5fafd;border:1px solid #c9d7e3;
+}
+.heater-notes div{display:flex;align-items:flex-start;gap:6px;font-size:8px;line-height:1.35;color:#4b5d6f;}
+.heater-notes i{
+  flex:0 0 14px;width:14px;height:14px;border-radius:50%;
+  background:#dbe7f1;color:#3d90d0;font-style:normal;font-size:7px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+}
+
 .nav-row{flex:0 0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:6px;}
 .nav-btn{
   padding:9px 6px;border-radius:10px;border:1px solid #c3d3e2;
@@ -102,6 +114,20 @@
 }
 .state-chip.heating{color:#c05a36;background:#fdece4;border-color:#f0bfa8;}
 
+/* dual-element indicators */
+.elements-row{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr .9fr;gap:5px;}
+.element-chip{
+  display:flex;align-items:center;gap:5px;padding:5px 6px;border-radius:8px;
+  background:#f4f9fc;border:1px solid #c3d3df;
+  font-size:7.2px;font-weight:800;color:#60758a;line-height:1.15;
+}
+.element-chip i{
+  flex:0 0 7px;width:7px;height:7px;border-radius:50%;
+  background:#9fb0c4;box-shadow:inset 0 0 2px rgba(0,0,0,.3);
+}
+.element-chip.on i{background:#ffb37a;box-shadow:0 0 6px rgba(255,150,80,.9);}
+.element-chip.relief i{background:#8ecf72;box-shadow:0 0 5px rgba(142,207,114,.6);}
+
 .ctl-block{flex:0 0 auto;}
 .ctl-label{font-size:8.5px;font-weight:800;letter-spacing:.5px;color:#6d8498;margin-bottom:4px;text-transform:uppercase;}
 .seg{display:grid;gap:5px;}
@@ -125,6 +151,8 @@
 .temp-bar{height:13px;margin-top:6px;border-radius:7px;background:#d8e3ec;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.12);}
 .temp-bar i{display:block;height:100%;width:0;border-radius:7px;background:linear-gradient(90deg,#5fb6ef,#ffb37a,#e2453c);transition:width .2s;}
 .temp-band{height:3px;margin-top:3px;border-radius:2px;background:linear-gradient(90deg,transparent 80%,rgba(142,207,114,.8) 80%);}
+.temp-bottom{display:flex;justify-content:space-between;align-items:baseline;margin-top:4px;font-size:7.5px;font-weight:800;color:#6d8498;text-transform:uppercase;letter-spacing:.4px;}
+.temp-bottom b{font-size:10px;color:#2f7fa8;letter-spacing:0;}
 
 .draw-btn{
   flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:6px;

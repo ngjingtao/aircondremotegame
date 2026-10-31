@@ -37,6 +37,8 @@ ARG.sim = (function () {
       bottom: 15,
       maxTemp: 20,
       heating: false,
+      upperOn: false,
+      lowerOn: false,
       used: false,
       drawn: 0,
       drawPulse: 0,
@@ -125,19 +127,30 @@ ARG.sim = (function () {
     dt = Math.min(dt, 0.08);
     S.drawPulse = Math.max(0, S.drawPulse - 2.2 * dt);
 
-    /* the thermostat has a little hysteresis, like a real cylinder */
-    S.heating = S.power && S.temp < S.setTemp - 0.4;
+    /* a real electric cylinder usually has two elements: the upper one
+       heats the top first, then the lower one takes over. */
+    const upperNeed = S.temp < S.setTemp - 0.4;
+    const lowerNeed = !upperNeed && S.bottom < S.setTemp - 5.4;
 
-    if (S.heating) {
+    S.upperOn = S.power && upperNeed;
+    S.lowerOn = S.power && lowerNeed;
+    S.heating = S.upperOn || S.lowerOn;
+
+    if (S.upperOn) {
       S.temp = clamp(S.temp + HEAT_RATE * dt, AMBIENT, 75);
-      S.bottom = clamp(S.bottom + HEAT_RATE * 0.55 * dt, AMBIENT - 5, S.temp - 4);
+      S.bottom = clamp(S.bottom + HEAT_RATE * 0.22 * dt, AMBIENT - 5, S.temp - 3);
+      S.energy += dt;
+    } else if (S.lowerOn) {
+      S.bottom = clamp(S.bottom + HEAT_RATE * 0.85 * dt, AMBIENT - 5, S.setTemp - 5);
+      if (S.temp < S.setTemp) S.temp = clamp(S.temp + HEAT_RATE * 0.04 * dt, AMBIENT, 75);
       S.energy += dt;
     } else {
       /* standing losses, and the hottest water stays at the top */
       S.temp = clamp(S.temp - 0.03 * dt, AMBIENT, 75);
-      S.bottom = clamp(S.bottom - 0.05 * dt, AMBIENT - 5, S.temp - 4);
+      S.bottom = clamp(S.bottom - 0.05 * dt, AMBIENT - 5, S.temp - 3);
     }
 
+    S.bottom = Math.min(S.bottom, S.temp - 3);
     S.maxTemp = Math.max(S.maxTemp, S.temp);
     return S;
   }

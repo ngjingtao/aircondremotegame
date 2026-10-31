@@ -711,7 +711,8 @@ console.log('\n— Water at Home: river to tap, then hot water —');
     let t = 0;
     while (sim.s.temp < 60 && t < 60) { sim.tick(0.05); t += 0.05; }
     eq('the tank heats to 60 °C', sim.s.temp >= 59 && sim.s.temp <= 61, true);
-    eq('  → the thermostat has switched off', sim.s.heating, false);
+    eq('  → the upper thermostat has switched off', sim.s.upperOn, false);
+    eq('  → and the lower element takes over', sim.s.lowerOn, true);
 
     sim.press('draw');
     eq('a hot draw is recorded', sim.s.drawn, 1);

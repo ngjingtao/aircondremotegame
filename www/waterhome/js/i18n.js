@@ -44,16 +44,28 @@ ARG.i18n = (function () {
       off: 'OFF',
       setpoint: 'SETPOINT',
       tankTemp: 'HOT WATER',
+      bottomTemp: 'BOTTOM',
       draw: 'DRAW HOT WATER',
+      upperElementShort: 'UPPER ELEMENT',
+      lowerElementShort: 'LOWER ELEMENT',
+      reliefShort: 'T&P VALVE',
       heating: 'Heating',
+      upperHeating: 'Heating upper',
+      lowerHeating: 'Heating lower',
       ready: 'At setpoint',
       cold: 'Cold',
-      heaterFact: 'Cold water enters at the bottom. The element heats it; hot water rises and leaves at the top. The thermostat switches the element on and off.',
+      heaterFact: 'Cold water comes in through the dip tube and is delivered near the bottom. The upper element heats the top first; when the upper thermostat is satisfied, the lower element takes over.',
 
       tSupply: 'Follow the water from its source to your tap. Each step is a real part of a water-treatment works.',
-      tHeater: 'Set a temperature and watch the tank stratify. Draw some hot water and see the tap temperature through the mixing valve.',
+      tHeater: 'Set a temperature and watch the two elements work. The upper element heats the top first, then the lower element heats the rest. Draw hot water and see the mixing valve at the tap.',
       tSafety: 'Store hot water at 60 °C or above to kill Legionella bacteria. A mixing valve then blends it down to about 50 °C at the tap so nobody is scalded.',
       tAnode: 'The magnesium or aluminium anode rod sacrifices itself to protect the steel tank from rust. The pressure-relief valve lets expanding water escape safely.',
+      tUpper: 'The upper element is heating the top of the tank. Hot water rises, so the top gets hot first and the upper thermostat switches it off.',
+      tLower: 'The upper thermostat is satisfied. The lower element now heats the bottom, so the whole tank reaches temperature.',
+      tReadyHeater: 'Both thermostats are satisfied. The tank is at the setpoint and ready to draw.',
+      nUpper: 'Upper element heats the top first.',
+      nLower: 'Then the lower element heats the bottom.',
+      nMix: 'The mixing valve caps the tap at about 50 °C.',
 
       waterPerfect: 'You followed the water from river to tap, and stored it at 60 °C or more before drawing it. Safe and efficient.',
       waterGood: 'The supply journey is complete and hot water works, but storing below 60 °C lets Legionella bacteria survive.',
@@ -63,6 +75,8 @@ ARG.i18n = (function () {
       leadHeater: 'Hot-water cylinder',
       statusSupply: 'Following',
       statusHeater: 'Heating',
+      statusUpper: 'Upper element',
+      statusLower: 'Lower element',
       statusReady: 'Ready',
       statusDone: 'Complete',
 
@@ -81,6 +95,14 @@ ARG.i18n = (function () {
       lThermostat: 'thermostat',
       lAnode: 'anode',
       lMix: 'mixing valve',
+      lInsulation: 'insulation',
+      lUpperElement: 'upper element',
+      lLowerElement: 'lower element',
+      lDipTube: 'dip tube',
+      lUpperThermostat: 'upper thermostat',
+      lLowerThermostat: 'lower thermostat',
+      lRelief: 'T&P valve',
+      lDrain: 'drain valve',
 
       helpTitle: 'Water at home',
       helpBody: `
@@ -97,10 +119,11 @@ ARG.i18n = (function () {
         </ul>
         <h3>The hot-water cylinder</h3>
         <ul>
-          <li>Cold water enters at the bottom and hot water leaves at the top, so the tank stratifies.</li>
-          <li>The thermostat switches the element on below the setpoint and off when it is reached.</li>
+          <li>Cold water enters through the <b>dip tube</b> and is delivered near the bottom, so it does not mix with the hot water at the top.</li>
+          <li>The <b>upper element</b> heats the top first. When its thermostat is satisfied it switches off, and the <b>lower element</b> takes over.</li>
+          <li>The tank is insulated, and the <b>anode rod</b> sacrifices itself to protect the steel from rust.</li>
+          <li>The <b>T&amp;P relief valve</b> lets expanding water escape safely.</li>
           <li>Store at <b>60 °C or above</b> to kill Legionella; a mixing valve blends it to about 50 °C at the tap.</li>
-          <li>The anode rod and pressure-relief valve protect the tank.</li>
         </ul>
         <h3>Three stars</h3>
         <ul>
@@ -149,16 +172,28 @@ ARG.i18n = (function () {
       off: '关',
       setpoint: '设定温度',
       tankTemp: '热水温度',
+      bottomTemp: '底部',
       draw: '放出热水',
+      upperElementShort: '上加热棒',
+      lowerElementShort: '下加热棒',
+      reliefShort: '泄压阀',
       heating: '正在加热',
+      upperHeating: '上加热棒',
+      lowerHeating: '下加热棒',
       ready: '到达设定',
       cold: '冷水',
-      heaterFact: '冷水从底部进来。加热棒把水加热；热水往上升，从顶部出去。恒温器会控制加热棒开和关。',
+      heaterFact: '冷水从进水管（dip tube）送到水箱底部。上面的加热棒先加热顶部；上恒温器满足后，下面的加热棒再接手。',
 
       tSupply: '跟着水从水源一路走到水龙头。每一步都是真实自来水厂的一部分。',
-      tHeater: '设定温度，看水箱里热水和冷水分层。放一些热水，看看混水阀后水龙头的温度。',
+      tHeater: '设定温度，看两根加热棒怎么工作。上面的加热棒先加热顶部，下面的再加热其余部分。放热水时看看混水阀后的水温。',
       tSafety: '热水要储存在 60°C 以上，才能杀死军团菌。混水阀再把水降到约 50°C，防止烫伤。',
       tAnode: '镁或铝阳极棒会“牺牲”自己，保护钢制水箱不生锈。压力释放阀则把膨胀的水安全放掉。',
+      tUpper: '上面的加热棒正在加热水箱顶部。热水往上升，所以顶部先变热，上恒温器先断电。',
+      tLower: '上恒温器已经满足。现在下面的加热棒加热底部，让整箱水都达到温度。',
+      tReadyHeater: '两个恒温器都满足了。水箱已经达到设定温度，可以放热水了。',
+      nUpper: '上加热棒先加热顶部。',
+      nLower: '接着下加热棒加热底部。',
+      nMix: '混水阀把出水限制在约 50°C。',
 
       waterPerfect: '你跟着水从河走到水龙头，还把水加热到 60°C 以上才使用。安全又节能。',
       waterGood: '供水旅程完成了，热水也能用；但储水低于 60°C，军团菌可能存活。',
@@ -168,6 +203,8 @@ ARG.i18n = (function () {
       leadHeater: '热水器剖面',
       statusSupply: '跟着水流',
       statusHeater: '正在加热',
+      statusUpper: '上加热棒',
+      statusLower: '下加热棒',
       statusReady: '已到达',
       statusDone: '完成',
 
@@ -186,6 +223,14 @@ ARG.i18n = (function () {
       lThermostat: '恒温器',
       lAnode: '阳极棒',
       lMix: '混水阀',
+      lInsulation: '保温层',
+      lUpperElement: '上加热棒',
+      lLowerElement: '下加热棒',
+      lDipTube: '进水管',
+      lUpperThermostat: '上恒温器',
+      lLowerThermostat: '下恒温器',
+      lRelief: '泄压阀',
+      lDrain: '排水阀',
 
       helpTitle: '家里的水',
       helpBody: `
@@ -202,10 +247,11 @@ ARG.i18n = (function () {
         </ul>
         <h3>热水器</h3>
         <ul>
-          <li>冷水从底部进来，热水从顶部出去，所以水箱会分层。</li>
-          <li>恒温器在低于设定温度时接通加热棒，到达设定温度就断开。</li>
+          <li>冷水从<b>进水管（dip tube）</b>送到水箱底部，不会和顶部的热水混在一起。</li>
+          <li><b>上加热棒</b>先加热顶部；上恒温器满足后断电，<b>下加热棒</b>再接手。</li>
+          <li>水箱有<b>保温层</b>，<b>阳极棒</b>会牺牲自己保护钢制水箱不生锈。</li>
+          <li><b>泄压阀</b>把膨胀的水安全放掉。</li>
           <li>储水要保持在 <b>60°C 以上</b> 杀死军团菌；混水阀再降到约 50°C 出水。</li>
-          <li>阳极棒和压力释放阀保护水箱。</li>
         </ul>
         <h3>三颗星</h3>
         <ul>

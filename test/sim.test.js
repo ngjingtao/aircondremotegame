@@ -755,7 +755,9 @@ console.log('\n— Water at Home —');
   let t = 0;
   while (cur().temp < 60 && t < 60) { sim.tick(0.05); t += 0.05; }
   check('the tank heats to 60 °C', cur().temp, 59, 61, ' °C');
-  eq('  → the thermostat switches off', cur().heating, false);
+  eq('  → the upper thermostat switches off', cur().upperOn, false);
+  eq('  → and the lower element takes over', cur().lowerOn, true);
+  check('  → with the bottom still cooler', cur().bottom, 20, 59, ' °C');
   sim.press('draw');
   eq('  → and a hot draw completes it', cur().used, true);
   eq('  → with three stars', sim.rating().stars, 3);

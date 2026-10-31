@@ -29,6 +29,11 @@ ARG.panel = (function () {
     els.setpoints = $('setpoint-row');
     els.temp = $('tank-temp');
     els.tempBar = $('tank-bar-fill');
+    els.bottomTemp = $('bottom-temp');
+    els.upperChip = $('upper-chip');
+    els.lowerChip = $('lower-chip');
+    els.upperLed = $('upper-led');
+    els.lowerLed = $('lower-led');
     els.draw = $('draw-btn');
     els.state = $('heater-state');
     els.result = $('water-result');
@@ -117,8 +122,15 @@ ARG.panel = (function () {
         els.hudTemp.classList.toggle('bad', S.temp < 30);
       }
     }
+    const bottom = Math.round(S.bottom);
+    if (seen.bottom !== bottom) {
+      seen.bottom = bottom;
+      setText(els.bottomTemp, bottom + '°C');
+    }
+    if (els.upperChip) els.upperChip.classList.toggle('on', S.upperOn);
+    if (els.lowerChip) els.lowerChip.classList.toggle('on', S.lowerOn);
     if (els.state) {
-      setText(els.state, t(S.heating ? 'heating' : S.temp >= S.setTemp - 0.5 ? 'ready' : 'cold'));
+      setText(els.state, t(S.upperOn ? 'upperHeating' : S.lowerOn ? 'lowerHeating' : S.temp >= S.setTemp - 0.5 ? 'ready' : 'cold'));
       els.state.classList.toggle('heating', S.heating);
     }
     if (els.draw) els.draw.disabled = S.temp < 30;
