@@ -62,6 +62,8 @@ ARG.i18n = (function () {
       w5: 'Clear the drain',
       w6: 'Clean the outdoor unit',
       w7: 'Put it back and run the fan',
+      adultStep: 'needs an adult',
+      adultNote: 'Grown-up step: ask an adult. Coil cleaner, the drain and the outdoor unit can be dangerous; a qualified technician should do the outdoor and electrical work.',
 
       f0: 'Never work on a live unit. Unplug it, or switch off the breaker. The fan can start by itself.',
       f1: 'The front panel hinges up. Gently lift it until it clicks and stays open.',
@@ -94,6 +96,7 @@ ARG.i18n = (function () {
         <h3>Safety first when washing</h3>
         <ul>
           <li><b>Unplug it first.</b> The fan can start on its own.</li>
+          <li><b>Steps marked 👤 need an adult.</b> Coil cleaner, the drain and the outdoor unit can be dangerous; a qualified technician should do the outdoor and electrical work.</li>
           <li>Never pour water on the electrics.</li>
           <li>Let the filters dry completely before putting them back.</li>
         </ul>
@@ -153,6 +156,8 @@ ARG.i18n = (function () {
       w5: '疏通排水管',
       w6: '清洗室外机',
       w7: '装回去，开送风干燥',
+      adultStep: '需要大人',
+      adultNote: '需要大人：清洗剂、排水管和室外机有危险；室外机和电气部分请让专业师傅处理。',
 
       f0: '千万不要带电作业。拔掉插头或关掉空气开关。风扇可能自己转起来。',
       f1: '前面板是向上翻开的，轻轻抬起到卡住的位置就好。',
@@ -184,6 +189,7 @@ ARG.i18n = (function () {
         <h3>清洗要注意安全</h3>
         <ul>
           <li><b>先断电。</b>风扇可能自己启动。</li>
+          <li><b>标有 👤 的步骤需要大人。</b>清洗剂、排水管和室外机有危险；室外机和电气部分请让专业师傅处理。</li>
           <li>不要把水浇到电器部分。</li>
           <li>滤网一定要完全晾干再装回去。</li>
         </ul>

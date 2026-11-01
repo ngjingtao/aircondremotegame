@@ -14,6 +14,8 @@ ARG.i18n = (function () {
 
       bBreathe: 'TAKE A BREATH',
       bHold: 'HOLD BREATH',
+      breathSafety: 'Never force breath-holding or fast breathing. Stop if you feel dizzy or unwell, and practise with an adult.',
+      breathShort: '⚠️ Never force a breath-hold',
       bRelease: 'BREATHE AGAIN',
 
       mLung: 'Lungs',
@@ -69,10 +71,13 @@ ARG.i18n = (function () {
       zoomBody: 'An alveolus is a tiny air sac at the end of your airways — you have about 300 million of them, giving a surface about the size of a tennis court. The wall is only one cell thick and wrapped in capillaries. Oxygen slips across into the blood, where it sticks to haemoglobin in red blood cells. Carbon dioxide slips the other way, out of the blood and into the air you breathe out.',
       zoomO2: 'Oxygen in',
       zoomCo2: 'Carbon dioxide out',
+      zoomAir: 'alveolus',
+      zoomBlood: 'blood',
 
       /* quiz */
       quizBtn: 'Quiz',
       quizTitle: 'Quick quiz',
+      ok: 'OK',
       quizQ1: 'What does breathing actually do?',
       quizQ1a: 'Brings oxygen in and takes carbon dioxide out',
       quizQ1b: 'Makes cold air',
@@ -109,6 +114,11 @@ ARG.i18n = (function () {
           <li><code>TAKE A BREATH</code> — a deep breath. Watch the oxygen meter rise.</li>
           <li><code>HOLD BREATH</code> — stop breathing and watch the oxygen fall and the carbon dioxide climb until your body forces a gasp.</li>
         </ul>
+        <h3>Stay safe</h3>
+        <ul>
+          <li><b>Never force breath-holding or fast breathing.</b> Stop if you feel dizzy, light-headed or unwell.</li>
+          <li>Practise with an adult nearby. This is a simulation — do not compete to hold your breath the longest.</li>
+        </ul>
         <h3>What to look at</h3>
         <ul>
           <li>The <b>lungs</b> inflate and deflate with every breath.</li>
@@ -127,6 +137,8 @@ ARG.i18n = (function () {
 
       bBreathe: '深吸一口气',
       bHold: '屏住呼吸',
+      breathSafety: '不要强迫自己屏气或快速呼吸。头晕、不舒服就马上停下，并且和大人一起练习。',
+      breathShort: '⚠️ 不要勉强屏气',
       bRelease: '继续呼吸',
 
       mLung: '肺',
@@ -182,10 +194,13 @@ ARG.i18n = (function () {
       zoomBody: '肺泡是气道末端的小气囊，你大约有三亿个，摊开的面积差不多有一个网球场那么大。肺泡壁只有一层细胞厚，外面包着毛细血管。氧气从这里溜进血液，粘在红细胞里的血红蛋白上；二氧化碳则从血液溜出来，跟着你呼出的气跑掉。',
       zoomO2: '氧气进来',
       zoomCo2: '二氧化碳出去',
+      zoomAir: '肺泡',
+      zoomBlood: '血液',
 
       /* quiz */
       quizBtn: '小测验',
       quizTitle: '快速小测验',
+      ok: '好',
       quizQ1: '呼吸到底在做什么？',
       quizQ1a: '把氧气吸进来，把二氧化碳排出去',
       quizQ1b: '制造冷空气',
@@ -221,6 +236,11 @@ ARG.i18n = (function () {
           <li><code>高海拔</code> — 每口气里的氧气更少，所以呼吸会变快，血液含氧也会降低。</li>
           <li><code>深吸一口气</code> — 看含氧量上升。</li>
           <li><code>屏住呼吸</code> — 看氧气下降、二氧化碳上升，最后身体逼你吸气。</li>
+        </ul>
+        <h3>注意安全</h3>
+        <ul>
+          <li><b>不要强迫自己屏气或快速呼吸。</b>头晕、发昏或不舒服就马上停下。</li>
+          <li>练习时让大人在旁边。这是模拟游戏 — 不要比赛谁屏气最久。</li>
         </ul>
         <h3>看什么</h3>
         <ul>

@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <script src="../shared/config.js"></script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <script src="../shared/prepaint.js"></script>
 <meta name="theme-color" content="#0b1220" />
+<meta name="description" content="呼吸与血液循环：做呼吸实验，看肺和心脏怎样把氧气送到全身。" />
 <!-- pwa -->
 <link rel="manifest" href="../manifest.webmanifest" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<meta name="apple-mobile-web-app-title" content="Breathing & Blood" />
+<meta name="apple-mobile-web-app-title" content="呼吸与血液循环" />
 <link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
 <link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
 <link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
@@ -19,7 +20,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
 <!-- /pwa -->
 <meta name="format-detection" content="telephone=no" />
-<title>Breathing &amp; Blood · Play &amp; Learn</title>
+<title>呼吸与血液循环 · 边玩边学</title>
 <link rel="stylesheet" href="../shared/ui.css" />
 <link rel="stylesheet" href="breath.css" />
 </head>
@@ -59,6 +60,8 @@
             <b data-i18n="title">Breathing &amp; Blood</b>
           </div>
 
+          <div class="safety-chip" data-i18n="breathShort">⚠️ 不要勉强屏气</div>
+
           <div class="pl-block">
             <div class="pl-label" data-i18n="experiment">Experiment</div>
             <div class="scenarios" id="scenarios"></div>
@@ -76,6 +79,8 @@
             <div class="pl-label" data-i18n="pattern">Breathing pattern</div>
             <div class="patterns" id="patterns"></div>
           </div>
+
+          <div class="safety-note" data-i18n="breathSafety">Never force breath-holding or fast breathing. Stop if you feel dizzy or unwell, and practise with an adult.</div>
 
           <div class="pl-actions">
             <button class="pl-btn breathe" data-action="breathe">
@@ -117,7 +122,7 @@
           <div class="pacer-ring r2"></div>
           <div class="pacer-core">
             <b id="pacer-count">4</b>
-            <span id="pacer-phase">Breathe in</span>
+            <span id="pacer-phase" data-i18n="paceIn">吸气</span>
           </div>
         </div>
         <svg id="body" viewBox="0 0 260 540" preserveAspectRatio="xMidYMid meet">
@@ -251,7 +256,7 @@
         <span class="lg-item"><i class="dot heart"></i><span data-i18n="oHeart">heart</span></span>
       </div>
 
-      <div class="speech" id="speech">Nice and calm.</div>
+      <div class="speech" id="speech">很平静。</div>
       <div class="toast" id="toast"></div>
     </section>
 
@@ -262,7 +267,7 @@
   <div class="overlay-card">
     <h2 id="help-title">How breathing and blood work</h2>
     <div id="help-body" class="help-body"></div>
-    <button class="overlay-close" id="help-close">OK</button>
+    <button class="overlay-close" id="help-close" data-i18n="ok">好</button>
   </div>
 </div>
 
@@ -317,24 +322,24 @@
       </g>
 
       <!-- labels -->
-      <text class="zlabel" x="118" y="18" text-anchor="middle" id="zLabelAir">alveolus</text>
-      <text class="zlabel blood" x="268" y="200" text-anchor="end" id="zLabelBlood">blood</text>
+      <text class="zlabel" x="118" y="18" text-anchor="middle" id="zLabelAir" data-i18n="zoomAir">alveolus</text>
+      <text class="zlabel blood" x="268" y="200" text-anchor="end" id="zLabelBlood" data-i18n="zoomBlood">blood</text>
     </svg>
     <div class="zoom-legend">
       <span><i class="lg o2"></i><b id="zoom-o2" data-i18n="zoomO2">Oxygen in</b></span>
       <span><i class="lg co2"></i><b id="zoom-co2" data-i18n="zoomCo2">Carbon dioxide out</b></span>
     </div>
     <p class="zoom-body" id="zoom-body" data-i18n="zoomBody"></p>
-    <button class="overlay-close" id="zoom-close">OK</button>
+    <button class="overlay-close" id="zoom-close" data-i18n="ok">好</button>
   </div>
 </div>
 
 <!-- ══════════ QUIZ ══════════ -->
 <div id="quiz-overlay" class="overlay" hidden>
   <div class="overlay-card quiz-card">
-    <h2 id="quiz-title">Quick quiz</h2>
+    <h2 id="quiz-title" data-i18n="quizTitle">快速小测验</h2>
     <div id="quiz-body"></div>
-    <button class="overlay-close" id="quiz-close">OK</button>
+    <button class="overlay-close" id="quiz-close" data-i18n="ok">好</button>
   </div>
 </div>
 

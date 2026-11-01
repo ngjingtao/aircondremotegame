@@ -15,11 +15,13 @@ ARG.panel = (function () {
 
   function build(handler) {
     onAction = handler;
+    const t = T();
     els.tabs = document.querySelectorAll('.tab');
     els.paneHow = document.getElementById('pane-how');
     els.paneWash = document.getElementById('pane-wash');
     els.steps = document.getElementById('steps');
     els.fact = document.getElementById('fact');
+    els.adultNote = document.getElementById('adult-note');
     els.powerState = document.getElementById('power-state');
     els.tempVal = document.getElementById('temp-val');
     els.nextBtn = document.getElementById('next-btn');
@@ -29,6 +31,7 @@ ARG.panel = (function () {
     els.steps.innerHTML = ARG.sim.STEPS.map((s, i) =>
       `<button class="step" data-action="jump" data-step="${i}">
          <span class="st-n">${i + 1}</span><span class="st-t" data-i18n="${s.key}"></span>
+         ${s.adult ? '<span class="st-adult" title="' + t('adultStep') + '" aria-label="' + t('adultStep') + '">👤</span>' : ''}
        </button>`).join('');
 
     els.steps.addEventListener('pointerdown', ev => {
@@ -79,9 +82,14 @@ ARG.panel = (function () {
           b.classList.toggle('done', i < S.step);
           b.classList.toggle('on', i === S.step);
         });
+        const cur = ARG.sim.STEPS[S.step];
         els.nextBtn.disabled = S.step >= ARG.sim.STEPS.length - 1;
         els.nextBtn.textContent = S.step >= ARG.sim.STEPS.length - 1 ? t('restart') : t('next');
-        els.fact.textContent = t(ARG.sim.STEPS[S.step].fact);
+        els.fact.textContent = t(cur.fact);
+        if (els.adultNote) {
+          els.adultNote.hidden = !cur.adult;
+          if (cur.adult) els.adultNote.textContent = t('adultNote');
+        }
       }
     }
 

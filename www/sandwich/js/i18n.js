@@ -50,6 +50,17 @@ ARG.i18n = (function () {
       statusReady: 'Cooked',
       statusDone: 'Served',
 
+      lPan: 'pan',
+      lEgg: 'egg',
+      lBread: 'bread',
+      lSpread: 'spread',
+      lFilling: 'filling',
+      lVeg: 'veg',
+      lPlate: 'plate',
+
+      cookSafety: 'Ask an adult: a real pan and stove get very hot. This is a simulation — cook with a grown-up.',
+      cookAdult: '👤 Ask an adult for the real stove',
+
       tBuild: 'Wholemeal bread, avocado, egg and a vegetable make a balanced breakfast. A spread also stops a wet tomato making the bread soggy.',
       tCook: 'Watch the egg. Stop while the marker is in the green band — too early is runny, too late is rubbery.',
       tReady: 'Stack it: bread, spread, filling, vegetables, then the top slice. Cut it in half so you can see the layers.',
@@ -77,6 +88,11 @@ ARG.i18n = (function () {
           <li>Press <code>TO THE PAN</code>, choose a heat, then <code>START COOKING</code>.</li>
           <li>Stop while the marker is in the green band. Low heat takes about 8 s, medium about 5 s, high about 3.5 s.</li>
           <li>Too early leaves the egg runny; too late makes it rubbery and browned.</li>
+        </ul>
+        <h3>Safety</h3>
+        <ul>
+          <li><b>Ask an adult.</b> A real pan, oil and stove get very hot. Cook with a grown-up and turn the handle away from the edge.</li>
+          <li>Wash your hands before and after touching food, and cook the egg until the white and yolk are set.</li>
         </ul>
         <h3>Three stars</h3>
         <ul>
@@ -131,6 +147,17 @@ ARG.i18n = (function () {
       statusReady: '煎好了',
       statusDone: '可以吃了',
 
+      lPan: '煎锅',
+      lEgg: '蛋',
+      lBread: '面包',
+      lSpread: '涂抹',
+      lFilling: '馅料',
+      lVeg: '蔬菜',
+      lPlate: '盘子',
+
+      cookSafety: '请大人帮忙：真实的煎锅和炉子很烫。这是模拟游戏，真的煎蛋要和大人在厨房里做。',
+      cookAdult: '👤 真炉子要请大人帮忙',
+
       tBuild: '全麦面包、牛油果、蛋和蔬菜，就是一份均衡的早餐。先涂一层酱，还能防止番茄的水把面包泡软。',
       tCook: '盯着蛋。水分标记停在绿色区域时关火 — 太早会流心，太晚会变橡皮。',
       tReady: '按顺序叠：面包、涂抹、馅料、蔬菜，再盖上另一片。切成两半，就能看到每一层。',
@@ -158,6 +185,11 @@ ARG.i18n = (function () {
           <li>按 <code>去煎锅</code>，选火力，再按 <code>开始煎</code>。</li>
           <li>水分标记停在绿色区域时关火。小火约 8 秒，中火约 5 秒，大火约 3.5 秒。</li>
           <li>太早蛋是流心的；太晚蛋会变橡皮，还会煎焦。</li>
+        </ul>
+        <h3>安全</h3>
+        <ul>
+          <li><b>请大人帮忙。</b>真实的煎锅、油和炉子很烫。和大人在厨房里做，锅柄要转离炉边。</li>
+          <li>碰食物前后要洗手；蛋要煎到蛋白和蛋黄都凝固。</li>
         </ul>
         <h3>三颗星</h3>
         <ul>

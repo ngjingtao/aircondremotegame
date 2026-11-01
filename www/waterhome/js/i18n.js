@@ -59,6 +59,8 @@ ARG.i18n = (function () {
       tSupply: 'Follow the water from its source to your tap. Each step is a real part of a water-treatment works.',
       tHeater: 'Set a temperature and watch the two elements work. The upper element heats the top first, then the lower element heats the rest. Draw hot water and see the mixing valve at the tap.',
       tSafety: 'Store hot water at 60 °C or above to kill Legionella bacteria. A mixing valve then blends it down to about 50 °C at the tap so nobody is scalded.',
+      hotSafety: 'Hot water can scald. Store at 60 °C or above; the mixing valve caps the tap at about 50 °C. Never test hot water with your hand.',
+      hotShort: 'Hot water can scald — never test it with your hand.',
       tAnode: 'The magnesium or aluminium anode rod sacrifices itself to protect the steel tank from rust. The pressure-relief valve lets expanding water escape safely.',
       tUpper: 'The upper element is heating the top of the tank. Hot water rises, so the top gets hot first and the upper thermostat switches it off.',
       tLower: 'The upper thermostat is satisfied. The lower element now heats the bottom, so the whole tank reaches temperature.',
@@ -124,6 +126,7 @@ ARG.i18n = (function () {
           <li>The tank is insulated, and the <b>anode rod</b> sacrifices itself to protect the steel from rust.</li>
           <li>The <b>T&amp;P relief valve</b> lets expanding water escape safely.</li>
           <li>Store at <b>60 °C or above</b> to kill Legionella; a mixing valve blends it to about 50 °C at the tap.</li>
+          <li><b>Never test hot water with your hand</b> — use a thermometer. This is a simulation; do not adjust a real cylinder yourself.</li>
         </ul>
         <h3>Three stars</h3>
         <ul>
@@ -187,6 +190,8 @@ ARG.i18n = (function () {
       tSupply: '跟着水从水源一路走到水龙头。每一步都是真实自来水厂的一部分。',
       tHeater: '设定温度，看两根加热棒怎么工作。上面的加热棒先加热顶部，下面的再加热其余部分。放热水时看看混水阀后的水温。',
       tSafety: '热水要储存在 60°C 以上，才能杀死军团菌。混水阀再把水降到约 50°C，防止烫伤。',
+      hotSafety: '热水会烫伤。储水保持在 60°C 以上；混水阀把出水限制在约 50°C。千万不要用手试水温。',
+      hotShort: '热水会烫伤 — 不要用手试水温。',
       tAnode: '镁或铝阳极棒会“牺牲”自己，保护钢制水箱不生锈。压力释放阀则把膨胀的水安全放掉。',
       tUpper: '上面的加热棒正在加热水箱顶部。热水往上升，所以顶部先变热，上恒温器先断电。',
       tLower: '上恒温器已经满足。现在下面的加热棒加热底部，让整箱水都达到温度。',
@@ -252,6 +257,7 @@ ARG.i18n = (function () {
           <li>水箱有<b>保温层</b>，<b>阳极棒</b>会牺牲自己保护钢制水箱不生锈。</li>
           <li><b>泄压阀</b>把膨胀的水安全放掉。</li>
           <li>储水要保持在 <b>60°C 以上</b> 杀死军团菌；混水阀再降到约 50°C 出水。</li>
+          <li><b>千万不要用手试水温</b> — 用温度计。这是模拟游戏；不要自己调整真实的热水器。</li>
         </ul>
         <h3>三颗星</h3>
         <ul>

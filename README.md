@@ -79,6 +79,19 @@ The shared rules live in `www/shared/ui.css` (phone sheet, fitted card and top b
 `www/shared/shell.js` (`isStacked()`, `stackPanel()` and the content fit); each activity's
 `js/main.js` only has to ask the shell for the stacked placement.
 
+### Safety, language and accessibility
+
+- **Safety first:** *Inside the Aircon* marks the coil, drain and outdoor-unit steps with a **👤**
+  badge and a grown-up warning; *Breakfast Sandwich* shows a stove warning when the pan appears;
+  *Water at Home* shows a scald warning beside the hot-water controls; *Breathing & Blood* warns
+  against forcing breath-holds. Each help card repeats the guidance.
+- **Chinese throughout:** the locked Chinese build has Chinese page titles and descriptions, the
+  sandwich scene labels are translated, and the pre-render speech bubbles no longer flash English.
+- **Metadata:** every page has a page-specific `<meta name="description">` and a localized
+  `<title>`; the web app manifest is Chinese too.
+- **Accessible names:** the shared icon toolbar and the air-conditioning remote's power, fan, lock,
+  light, reset, temperature and swing keys have bilingual `aria-label`s.
+
 ### The sticker book
 
 Under the tiles is the one thing that ties the fifteen activities together: a collection that
@@ -1077,7 +1090,7 @@ render.yaml                             Render blueprint (build + start commands
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
 test/sim.test.js                        254 assertions over the fifteen simulations
-test/render.test.js                     203 assertions: every page booted, the artwork, the book, and nothing inline
+test/render.test.js                     217 assertions: every page booted, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 capacitor.config.json

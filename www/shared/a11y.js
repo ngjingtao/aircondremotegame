@@ -15,12 +15,12 @@ ARG.a11y = (function () {
 
   const NAMES = {
     'btn-lang': 'Language / 语言',
-    'btn-sound': 'Sound effects',
-    'btn-voice': 'Spoken narration',
-    'btn-help': 'Help',
-    'btn-panel': 'Show or hide the controls',
-    'btn-quiz': 'Start the quiz',
-    'btn-home': 'Back to the menu'
+    'btn-sound': 'Sound effects / 音效',
+    'btn-voice': 'Spoken narration / 朗读',
+    'btn-help': 'Help / 帮助',
+    'btn-panel': 'Show or hide the controls / 显示或隐藏控制',
+    'btn-quiz': 'Start the quiz / 开始小测验',
+    'btn-home': 'Back to the menu / 返回菜单'
   };
 
   let lastPointer = 0;
@@ -32,7 +32,10 @@ ARG.a11y = (function () {
     });
     /* anything that only shows an emoji still needs a spoken name */
     document.querySelectorAll('button').forEach(b => {
-      if (b.getAttribute('aria-label') || b.getAttribute('title')) return;
+      if (b.getAttribute('aria-label')) return;
+      /* a title is already a usable name — promote it to aria-label */
+      const title = b.getAttribute('title');
+      if (title) { b.setAttribute('aria-label', title); return; }
       const txt = (b.textContent || '').replace(/\s+/g, ' ').trim();
       if (!txt) return;
       /* a label that is only symbols or emoji */
@@ -71,10 +74,24 @@ ARG.a11y = (function () {
     }, true);
   }
 
+  function title() {
+    if (!ARG.i18n || !ARG.i18n.t) return;
+    const name = ARG.i18n.t('title');
+    if (!name || name === 'title') return;
+    const suffix = ARG.i18n.lang === 'zh' ? ' · 边玩边学' : ' · Play & Learn';
+    if (document.title !== name + suffix) document.title = name + suffix;
+  }
+
   function init() {
     label();
     keyboard();
     focusRing();
+    title();
+    if (window.MutationObserver) {
+      new MutationObserver(title).observe(document.documentElement, {
+        attributes: true, attributeFilter: ['lang']
+      });
+    }
     /* the language has now been applied — fade the app in */
     document.documentElement.classList.remove('i18n-pending');
     /* some panels rebuild their buttons later */
@@ -82,5 +99,5 @@ ARG.a11y = (function () {
     setTimeout(label, 1500);
   }
 
-  return { init, label };
+  return { init, label, title };
 })();

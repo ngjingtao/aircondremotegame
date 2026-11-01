@@ -122,6 +122,18 @@
 .pl-btn.hold.on{background:linear-gradient(180deg,#ffc9b8,#ff9a7a);border-color:#e0642f;box-shadow:0 3px 0 #e0642f;}
 .pl-btn.hold.on .pb-txt{color:#4a1c05;}
 
+/* safety */
+.safety-note{
+  flex:0 0 auto;padding:6px 8px;border-radius:9px;
+  background:#fff4e5;border:1px solid #f0c58a;
+  font-size:8.3px;line-height:1.4;color:#7a4a12;
+}
+.safety-chip{
+  flex:0 0 auto;text-align:center;font-size:8px;font-weight:800;
+  color:#a05a1c;background:#fff4e5;border:1px solid #f0c58a;
+  border-radius:8px;padding:2px 6px;
+}
+
 /* meters */
 .pl-meters{flex:1 1 auto;display:flex;flex-direction:column;gap:6px;justify-content:center;min-height:0;}
 .meter{display:flex;align-items:center;gap:7px;}

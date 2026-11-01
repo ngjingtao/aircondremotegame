@@ -53,6 +53,15 @@
 /* cooking */
 .cook-panel{flex:0 0 auto;display:flex;flex-direction:column;gap:5px;}
 .cook-panel[hidden]{display:none;}
+.safety-note{
+  flex:0 0 auto;padding:6px 8px;border-radius:9px;
+  background:#fff4e5;border:1px solid #f0c58a;
+  font-size:7.8px;line-height:1.4;color:#7a4a12;
+}
+.adult-chip{
+  flex:0 0 auto;text-align:center;font-size:7.5px;font-weight:800;
+  color:#a05a1c;padding:1px 0;
+}
 .cook-card{
   position:relative;margin-top:5px;padding:7px 9px 8px;border-radius:11px;
   background:#e9e0d0;border:1px solid #d8cbb7;

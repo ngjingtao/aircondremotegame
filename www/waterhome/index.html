@@ -1,25 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <script src="../shared/config.js"></script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <script src="../shared/prepaint.js"></script>
 <meta name="theme-color" content="#0b1220" />
+<meta name="description" content="家里的水：跟着水从河流到水龙头，再了解热水器和安全储水。" />
 <meta name="format-detection" content="telephone=no" />
 <!-- pwa -->
 <link rel="manifest" href="../manifest.webmanifest" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<meta name="apple-mobile-web-app-title" content="Water at Home" />
+<meta name="apple-mobile-web-app-title" content="家里的水" />
 <link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
 <link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
 <link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
 <link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
 <!-- /pwa -->
-<title>Water at Home · Play &amp; Learn</title>
+<title>家里的水 · 边玩边学</title>
 <link rel="stylesheet" href="../shared/ui.css" />
 <link rel="stylesheet" href="waterhome.css" />
 </head>
@@ -99,11 +100,14 @@
               <div class="temp-bar"><i id="tank-bar-fill"></i></div>
               <div class="temp-band"></div>
               <div class="temp-bottom"><span data-i18n="bottomTemp">BOTTOM</span><b id="bottom-temp">15°C</b></div>
+              <div class="scald-hint" data-i18n="hotShort">Hot water can scald — never test it with your hand.</div>
             </div>
 
             <button class="draw-btn" data-action="draw" id="draw-btn">
               <span>🚿</span><span data-i18n="draw">DRAW HOT WATER</span>
             </button>
+
+            <div class="safety-note" data-i18n="hotSafety">Hot water can scald. Store at 60 °C or above; the mixing valve caps the tap at about 50 °C. Never test hot water with your hand.</div>
 
             <div class="fact-card small" id="heater-fact" data-i18n="heaterFact"></div>
 

@@ -1,25 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <script src="../shared/config.js"></script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <script src="../shared/prepaint.js"></script>
 <meta name="theme-color" content="#0b1220" />
+<meta name="description" content="早餐三明治：搭配一份均衡的早餐，再把蛋煎到刚刚好。" />
 <meta name="format-detection" content="telephone=no" />
 <!-- pwa -->
 <link rel="manifest" href="../manifest.webmanifest" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<meta name="apple-mobile-web-app-title" content="Breakfast Sandwich" />
+<meta name="apple-mobile-web-app-title" content="早餐三明治" />
 <link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
 <link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
 <link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
 <link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
 <!-- /pwa -->
-<title>Breakfast Sandwich · Play &amp; Learn</title>
+<title>早餐三明治 · 边玩边学</title>
 <link rel="stylesheet" href="../shared/ui.css" />
 <link rel="stylesheet" href="sandwich.css" />
 </head>
@@ -74,6 +75,7 @@
           </div>
 
           <div class="cook-panel" id="cook-panel" hidden>
+            <div class="safety-note" data-i18n="cookSafety">Ask an adult: a real pan and stove get very hot. This is a simulation — cook with a grown-up.</div>
             <div class="ctl-label" data-i18n="heat">HEAT</div>
             <div class="seg three" id="heat-row"></div>
             <div class="cook-card">
@@ -85,6 +87,7 @@
             </div>
           </div>
 
+          <div class="adult-chip" data-i18n="cookAdult">👤 Ask an adult</div>
           <button class="start-btn" data-action="action" id="sandwich-action" data-i18n="toPan">TO THE PAN</button>
 
           <div class="result" id="sandwich-result" hidden>

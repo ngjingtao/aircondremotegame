@@ -13,9 +13,9 @@ ARG.sim = (function () {
     { key: 'w1', fact: 'f1', scene: 'indoor', lit: 'panel' },
     { key: 'w2', fact: 'f2', scene: 'indoor', lit: 'filters' },
     { key: 'w3', fact: 'f3', scene: 'indoor', lit: 'filters' },
-    { key: 'w4', fact: 'f4', scene: 'indoor', lit: 'coil' },
-    { key: 'w5', fact: 'f5', scene: 'indoor', lit: 'drain' },
-    { key: 'w6', fact: 'f6', scene: 'outdoor', lit: 'outcoil' },
+    { key: 'w4', fact: 'f4', scene: 'indoor', lit: 'coil', adult: true },
+    { key: 'w5', fact: 'f5', scene: 'indoor', lit: 'drain', adult: true },
+    { key: 'w6', fact: 'f6', scene: 'outdoor', lit: 'outcoil', adult: true },
     { key: 'w7', fact: 'f7', scene: 'outdoor', lit: 'all' }
   ];
 

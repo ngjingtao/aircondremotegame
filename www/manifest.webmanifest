@@ -1,7 +1,7 @@
 {
-  "name": "Play & Learn",
-  "short_name": "Play & Learn",
-  "description": "Fifteen CSS-drawn activities for kids: Play Aircond, Food Eating, Train Driving, Breathing & Blood, Inside the Aircon, Toilet, Indah Water, Kitchen Hood, Laundry Day, From Seed to Tree, Breakfast Sandwich, Water at Home, Water Cycle, Weather Station and How a Car Engine Works.",
+  "name": "边玩边学",
+  "short_name": "边玩边学",
+  "description": "十五个给小朋友的互动小游戏：玩空调、吃东西、开火车、呼吸与血液循环、空调的秘密、马桶、英达丽水、抽油烟机、洗衣日、从种子到大树、早餐三明治、家里的水、水循环、气象站和汽车发动机怎样工作。",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -9,7 +9,7 @@
   "orientation": "any",
   "background_color": "#0b1220",
   "theme_color": "#0b1220",
-  "lang": "en",
+  "lang": "zh-CN",
   "categories": ["education", "games", "kids"],
   "icons": [
     { "src": "icons/icon-120.png", "sizes": "120x120", "type": "image/png" },
@@ -21,20 +21,20 @@
     { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    { "name": "Play Aircond", "url": "aircond/index.html" },
-    { "name": "Food Eating", "url": "food/index.html" },
-    { "name": "Train Driving", "url": "train/index.html" },
-    { "name": "Breathing & Blood", "url": "breath/index.html" },
-    { "name": "Inside the Aircon", "url": "aircare/index.html" },
-    { "name": "Toilet", "url": "toilet/index.html" },
-    { "name": "Indah Water", "url": "indah/index.html" },
-    { "name": "Kitchen Hood", "url": "hood/index.html" },
-    { "name": "Laundry Day", "url": "laundry/index.html" },
-    { "name": "From Seed to Tree", "url": "tree/index.html" },
-    { "name": "Breakfast Sandwich", "url": "sandwich/index.html" },
-    { "name": "Water at Home", "url": "waterhome/index.html" },
-    { "name": "Water Cycle", "url": "cycle/index.html" },
-    { "name": "Weather Station", "url": "weather/index.html" },
-    { "name": "How a Car Engine Works", "url": "engine/index.html" }
+    { "name": "玩空调", "url": "aircond/index.html" },
+    { "name": "吃东西", "url": "food/index.html" },
+    { "name": "开火车", "url": "train/index.html" },
+    { "name": "呼吸与血液循环", "url": "breath/index.html" },
+    { "name": "空调的秘密", "url": "aircare/index.html" },
+    { "name": "马桶", "url": "toilet/index.html" },
+    { "name": "英达丽水", "url": "indah/index.html" },
+    { "name": "抽油烟机", "url": "hood/index.html" },
+    { "name": "洗衣日", "url": "laundry/index.html" },
+    { "name": "从种子到大树", "url": "tree/index.html" },
+    { "name": "早餐三明治", "url": "sandwich/index.html" },
+    { "name": "家里的水", "url": "waterhome/index.html" },
+    { "name": "水循环", "url": "cycle/index.html" },
+    { "name": "气象站", "url": "weather/index.html" },
+    { "name": "汽车发动机怎样工作", "url": "engine/index.html" }
   ]
 }

@@ -760,6 +760,7 @@ console.log('\n— Weather Station: read, forecast, reveal —');
     const sim = p.ARG.sim;
     eq('there are three forecast rounds', sim.ROUNDS.length, 3);
     eq('it opens on round 1', sim.s.round, 0);
+    eq('the browser title is localized', p.document.title, '气象站 · 边玩边学');
 
     /* every reading and every instrument in the picture opens its explainer */
     const weatherHtml = fs.readFileSync(path.join(WWW, 'weather', 'index.html'), 'utf8');
@@ -1042,6 +1043,52 @@ console.log('\n— Phone and iPad layouts —');
      /:last-child:nth-child\(odd\)/.test(homeCss), false);
   eq('  → and the sticker book fits four across on a phone',
      /minmax\(70px,1fr\)/.test(homeCss), true);
+}
+
+/* ─────────── metadata, safety notes and accessible names ─────────── */
+console.log('\n— Metadata, safety and accessible names —');
+{
+  const pages = ['.', 'aircond', 'aircare', 'breath', 'cycle', 'engine', 'food', 'hood',
+    'indah', 'laundry', 'sandwich', 'toilet', 'tree', 'waterhome', 'weather', 'train'];
+  const htmlOf = p => fs.readFileSync(path.join(WWW, p, 'index.html'), 'utf8');
+
+  const noDesc = pages.filter(p => !/name="description"\s+content="[^"]+"/.test(htmlOf(p)));
+  eq('every page has a meta description', noDesc.join(' ') || 'none', 'none');
+  const noZh = pages.filter(p => !/<html lang="zh-CN">/.test(htmlOf(p)));
+  eq('  → and declares Chinese', noZh.join(' ') || 'none', 'none');
+  const badTitle = pages.filter(p => !/<title>[^<]*边玩边学<\/title>/.test(htmlOf(p)));
+  eq('  → and a localized Chinese title', badTitle.join(' ') || 'none', 'none');
+
+  const aircareState = fs.readFileSync(path.join(WWW, 'aircare', 'js', 'state.js'), 'utf8');
+  eq('the aircon wash marks the three dangerous steps',
+     (aircareState.match(/adult: true/g) || []).length, 3);
+  eq('  → and shows a grown-up warning',
+     /id="adult-note"/.test(htmlOf('aircare')), true);
+  eq('the sandwich warns about the stove',
+     /data-i18n="cookSafety"/.test(htmlOf('sandwich')), true);
+  eq('the hot-water panel warns about scalding',
+     /data-i18n="hotSafety"/.test(htmlOf('waterhome')), true);
+  eq('the breathing panel warns about forcing it',
+     /data-i18n="breathSafety"/.test(htmlOf('breath')), true);
+  eq('  → and the safety strings are translated',
+     /cookSafety:/.test(fs.readFileSync(path.join(WWW, 'sandwich', 'js', 'i18n.js'), 'utf8')) &&
+     /hotSafety:/.test(fs.readFileSync(path.join(WWW, 'waterhome', 'js', 'i18n.js'), 'utf8')) &&
+     /breathSafety:/.test(fs.readFileSync(path.join(WWW, 'breath', 'js', 'i18n.js'), 'utf8')) &&
+     /adultNote:/.test(fs.readFileSync(path.join(WWW, 'aircare', 'js', 'i18n.js'), 'utf8')), true);
+
+  const sandwichI18n = fs.readFileSync(path.join(WWW, 'sandwich', 'js', 'i18n.js'), 'utf8');
+  eq('the sandwich scene labels are translated',
+     /lPan:/.test(sandwichI18n) && /lEgg:/.test(sandwichI18n) && /lBread:/.test(sandwichI18n), true);
+  eq('  → and the pre-render speech bubbles are Chinese',
+     /id="speech">我饿了！/.test(htmlOf('food')) &&
+     /id="speech">很平静。/.test(htmlOf('breath')), true);
+
+  const air = htmlOf('aircond');
+  const labelled = ['power', 'fan', 'lock', 'light', 'reset'].every(k =>
+    new RegExp('data-action="' + k + '"[^>]*aria-label=').test(air));
+  eq('the aircon remote names its icon-only keys', labelled, true);
+  eq('  → and the shared icon buttons are named in both languages',
+     /Sound effects \/ 音效/.test(fs.readFileSync(path.join(WWW, 'shared', 'a11y.js'), 'utf8')), true);
 }
 
 /* ─────────── the sticker book draws on the home screen ─────────── */

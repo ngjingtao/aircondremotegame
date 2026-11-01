@@ -398,6 +398,7 @@
 
   function apply() {
     document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.title = lang === 'zh' ? '边玩边学' : 'Play & Learn';
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const v = DICT[lang][el.dataset.i18n];
       if (v !== undefined) el.textContent = v;
