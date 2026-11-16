@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-menu-2';
+const CACHE = 'play-learn-neural-1';
 
 const ASSETS = [
   './',
@@ -238,6 +238,10 @@ self.addEventListener('fetch', event => {
   let url;
   try { url = new URL(req.url); } catch (e) { return; }
   if (url.origin !== self.location.origin) return;
+
+  /* Narration must never come from the offline cache: it is synthesized on
+     demand and can fail; the page has a device-voice fallback for that. */
+  if (/\/tts\/?$/.test(url.pathname)) return;
 
   /* Page loads go to the network first, so a new deploy is picked up on the
      very next launch — no waiting for a cache-version bump or a double refresh.

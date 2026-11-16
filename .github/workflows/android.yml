@@ -61,7 +61,7 @@ jobs:
           ls "$SDK/build-tools" || true
 
       - name: Install npm dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Run the simulation tests
         run: npm test

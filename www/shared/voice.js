@@ -36,12 +36,52 @@ ARG.voice = (function () {
   /* a marker, so "is it speaking?" is true even before the TTS engine
      finishes starting */
   const NATIVE = { native: true };
+  const CLOUD = { cloud: true };
+
+  let cloudSeq = 0;
+  let cloudAudio = null;
+  let cloudUrl = null;
+  let cloudTimers = [];
 
   function native() {
     try { return window.AndroidTts || null; } catch (e) { return null; }
   }
 
-  function hasSpeech() { return !!native() || !!synth; }
+  function ttsConfig() { return (ARG.config && ARG.config.tts) || {}; }
+
+  function isAppleDevice() {
+    const ua = (typeof navigator !== 'undefined' && navigator.userAgent) || '';
+    if (/iPad|iPhone|iPod/.test(ua)) return true;
+    return !!(typeof navigator !== 'undefined' && navigator.platform === 'MacIntel' &&
+      navigator.maxTouchPoints > 1);
+  }
+
+  /* auto = neural voice on desktop/Android; iPad keeps its excellent
+     offline Apple voices */
+  function cloudWanted() {
+    const c = ttsConfig();
+    if (c.enabled === false) return false;
+    const mode = c.mode || 'auto';
+    if (mode === 'system' || mode === 'off') return false;
+    if (mode === 'cloud') return true;
+    return !isAppleDevice();
+  }
+
+  function cloudUsable() {
+    return cloudWanted() &&
+      typeof fetch === 'function' &&
+      typeof Audio !== 'undefined' &&
+      typeof Blob !== 'undefined' &&
+      typeof URL !== 'undefined' &&
+      typeof URL.createObjectURL === 'function';
+  }
+
+  function hasSpeech() { return cloudUsable() || !!native() || !!synth; }
+
+  function ttsBase() {
+    const c = ttsConfig();
+    return String(c.base || '').replace(/\/$/, '');
+  }
 
   function langTag() { return lang === 'zh' ? 'zh-CN' : 'en-US'; }
 
@@ -70,18 +110,51 @@ ARG.voice = (function () {
   document.addEventListener('pointerdown', unlock);
   document.addEventListener('touchend', unlock);
 
-  /* pure lookup — never refreshes or notifies, so state() cannot recurse */
+  /* Pure lookup — never refreshes or notifies, so state() cannot recurse.
+     Rank the candidates instead of taking the first: Linux/Firefox often
+     lists a robotic eSpeak voice before a good one. */
+  const BAD_VOICE = /espeak|espeak-ng|festival|pico|flite|mbrola|robot|compact/i;
+
   function findVoice() {
     if (!voices.length) return null;
     const want = lang === 'zh' ? 'zh' : 'en';
-    let v = voices.find(x => (x.lang || '').toLowerCase().replace('_', '-').startsWith(want));
-    if (!v && want === 'zh') {
-      v = voices.find(x => /chinese|mandarin|中文|普通话|ting-?ting|mei-?jia|sin-?ji/i.test(x.name || ''));
-    }
-    if (!v && want === 'en') {
-      v = voices.find(x => /english/i.test(x.name || ''));
-    }
-    return v || null;
+    const candidates = voices.filter(x => {
+      const l = (x.lang || '').toLowerCase().replace('_', '-');
+      if (l.startsWith(want)) return true;
+      if (want === 'zh') return /chinese|mandarin|中文|普通话/i.test(x.name || '');
+      return /english/i.test(x.name || '');
+    });
+    if (!candidates.length) return null;
+
+    let best = null;
+    let bestScore = -1e9;
+    candidates.forEach(v => {
+      const name = v.name || '';
+      const l = (v.lang || '').toLowerCase().replace('_', '-');
+      let score = 0;
+
+      if (want === 'zh') {
+        if (l.startsWith('zh-cn') || l.startsWith('cmn')) score += 30;
+        else if (l.startsWith('zh-tw')) score += 5;
+        else if (l.startsWith('zh')) score += 15;
+      } else {
+        if (l.startsWith('en-us')) score += 30;
+        else if (l.startsWith('en-gb')) score += 25;
+        else if (l.startsWith('en')) score += 15;
+      }
+
+      if (v.localService === false) score += 25;
+      if (/natural|neural/i.test(name)) score += 60;
+      if (/online/i.test(name)) score += 35;
+      if (/google/i.test(name)) score += 30;
+      if (/xiaoxiao|yunxi|yunyang|xiaoyi|huihui|yaoyao|kangkang/i.test(name)) score += 40;
+      if (/ting-?ting|mei-?jia|sin-?ji/i.test(name)) score += 35;
+      if (/samantha|karen|moira|daniel|alex/i.test(name)) score += 20;
+      if (BAD_VOICE.test(name)) score -= 100;
+
+      if (score > bestScore) { bestScore = score; best = v; }
+    });
+    return best;
   }
 
   function pickVoice() {
@@ -157,11 +230,124 @@ ARG.voice = (function () {
 
   /* stop whatever is speaking, whichever engine owns it */
   function halt() {
+    cloudSeq++;
+    clearCloud();
     if (synth) { try { synth.cancel(); } catch (e) {} }
     const n = native();
     if (n) { try { n.stop(); } catch (e) {} }
     nativeId = null;
     current = null;
+  }
+
+  /* ─────────── the neural voice (server /tts) ─────────── */
+
+  function clearCloud() {
+    cloudTimers.forEach(t => { try { clearTimeout(t); } catch (e) {} });
+    cloudTimers = [];
+    if (cloudAudio) {
+      cloudAudio.onended = null;
+      cloudAudio.onerror = null;
+      try { cloudAudio.pause(); } catch (e) {}
+      cloudAudio = null;
+    }
+    if (cloudUrl) {
+      try { if (URL && URL.revokeObjectURL) URL.revokeObjectURL(cloudUrl); } catch (e) {}
+      cloudUrl = null;
+    }
+  }
+
+  function base64Bytes(b64) {
+    try {
+      const bin = atob(b64);
+      const out = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+      return out;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /* Edge sends the start of each spoken word; use it for the same
+     word-by-word highlight the browser voices give us. */
+  function scheduleCloudWords(words, my) {
+    if (!speakingEl || !wordMarks || !words || !words.length) return;
+    words.forEach(w => {
+      if (!w || typeof w.startChar !== 'number' || w.startChar < 0) return;
+      const delay = Math.max(0, (w.start || 0) * 1000);
+      const start = w.startChar;
+      const len = Math.max(1, (w.endChar || start + 1) - start);
+      cloudTimers.push(setTimeout(() => {
+        if (my !== cloudSeq) return;
+        showProgress(start, len);
+      }, delay));
+    });
+  }
+
+  function fallbackCloud(myGen, body, rate) {
+    if (myGen !== gen) return;
+    clearCloud();
+    current = null;
+    const n = native();
+    if (n && speakNative(body, rate, myGen)) return;
+    nativeGen = -1;
+    if (speakWeb(body, rate, myGen)) return;
+    endHighlight();
+    notify();
+  }
+
+  function speakCloud(body, rate, myGen) {
+    if (!cloudUsable()) return false;
+    const my = ++cloudSeq;
+    const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timer = ctrl ? setTimeout(() => { try { ctrl.abort(); } catch (e) {} }, 8000) : 0;
+    const url = ttsBase() + '/tts?lang=' + (lang === 'zh' ? 'zh' : 'en') +
+      '&rate=' + encodeURIComponent(rate) +
+      '&text=' + encodeURIComponent(body);
+
+    current = CLOUD;
+    notify();
+
+    fetch(url, ctrl ? { signal: ctrl.signal } : undefined)
+      .then(res => {
+        if (!res || !res.ok) throw new Error('tts ' + (res ? res.status : 'network'));
+        return res.json();
+      })
+      .then(data => {
+        if (my !== cloudSeq || myGen !== gen) return;
+        if (!data || !data.audio) throw new Error('tts empty');
+        const bytes = base64Bytes(data.audio);
+        if (!bytes) throw new Error('tts decode');
+
+        const blob = new Blob([bytes], { type: 'audio/mpeg' });
+        const audio = new Audio();
+        audio.src = URL.createObjectURL(blob);
+        cloudUrl = audio.src;
+        cloudAudio = audio;
+        current = audio;
+
+        audio.onended = () => {
+          if (my !== cloudSeq) return;
+          clearCloud();
+          current = null;
+          endHighlight();
+          notify();
+        };
+        audio.onerror = () => fallbackCloud(myGen, body, rate);
+
+        const play = audio.play();
+        if (play && typeof play.then === 'function') {
+          play.then(() => {
+            if (my !== cloudSeq) return;
+            scheduleCloudWords(data.words || [], my);
+          }).catch(() => fallbackCloud(myGen, body, rate));
+        } else {
+          scheduleCloudWords(data.words || [], my);
+        }
+      })
+      .catch(() => fallbackCloud(myGen, body, rate))
+      .finally(() => { if (timer) clearTimeout(timer); });
+
+    return true;
   }
 
   /* ─────────── the Android system engine ─────────── */
@@ -271,11 +457,13 @@ ARG.voice = (function () {
     const body = clean(text);
     if (!body) return false;
     const o = opts || {};
-    const rate = o.rate || 0.92;
+    const rate = o.rate || 0.95;
+    const myGen = gen;
 
-    if (speakNative(body, rate, gen)) return true;
+    if (speakCloud(body, rate, myGen)) return true;
+    if (speakNative(body, rate, myGen)) return true;
     nativeGen = -1;                      // ignore any late native callback
-    return speakWeb(body, rate, gen);
+    return speakWeb(body, rate, myGen);
   }
 
   function stop() {
@@ -303,9 +491,12 @@ ARG.voice = (function () {
       enabled,
       supported: hasSpeech(),
       native: !!native(),
+      cloud: cloudUsable(),
       speaking: !!current,
       lang,
-      voiceName: native() ? 'Android system TTS' : ((findVoice() || {}).name || '')
+      voiceName: cloudUsable()
+        ? 'Neural voice (online)'
+        : (native() ? 'Android system TTS' : ((findVoice() || {}).name || ''))
     };
   }
 

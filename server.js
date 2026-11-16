@@ -1,14 +1,17 @@
 /* ═══════════════════════════════════════════════════════════
-   server.js — zero-dependency static server for Play & Learn
+   server.js — static server + neural narration for Play & Learn
 
-   Used for local development (`npm start`) and on Render.
-   Binds to $PORT when the host provides one, so it works on
-   Render / Railway / Fly without extra configuration.
+   Serves `www/` for local development (`npm start`) and on Render, and
+   exposes GET /tts (Microsoft Edge Read Aloud via msedge-tts) so desktop
+   and Android can use a neural voice. Binds to $PORT when the host
+   provides one, so it works on Render / Railway / Fly.
    ═══════════════════════════════════════════════════════════ */
 
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
+const os = require('os');
 
 const ROOT = path.join(__dirname, 'www');
 const PORT = process.env.PORT || 5173;
@@ -54,7 +57,7 @@ const SECURITY = {
     "script-src 'self'",
     "style-src 'self'",
     "img-src 'self' data:",
-    "media-src 'self'",
+    "media-src 'self' blob:",
     "font-src 'self'",
     "connect-src 'self'",
     "object-src 'none'",
@@ -69,6 +72,158 @@ function reply(res, status, body, extra) {
     'Content-Type': 'text/plain; charset=utf-8',
     'Cache-Control': 'no-store'
   }, SECURITY, extra || {}));
+  res.end(body);
+}
+
+/* ─────────────────────────────────────────
+   Neural narration — Microsoft Edge Read Aloud via msedge-tts
+
+   No API key. The browser asks /tts?text=…&lang=zh; we synthesize on the
+   server and return { audio: base64 mp3, words: [...] }. The client prefers
+   this on desktop and Android, and falls back to the device's own TTS when
+   it cannot reach us or when the network is down.
+
+   This is an unofficial Microsoft endpoint. It sounds far better than
+   eSpeak on Linux, but it is not a paid SLA; the fallback is the point.
+   ───────────────────────────────────────── */
+const TTS_VOICES = { zh: 'zh-CN-XiaoxiaoNeural', en: 'en-US-AriaNeural' };
+const TTS_MAX_TEXT = 400;
+const TTS_CACHE_MAX = 120;
+const TTS_CACHE = new Map();
+const ttsHits = new Map();
+let edgeTts = null;
+
+async function loadEdgeTts() {
+  if (!edgeTts) edgeTts = await import('msedge-tts');
+  return edgeTts;
+}
+
+function escapeXml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+/* Edge returns word boundaries in 100-nanosecond units. Map each spoken word
+   back to the original string so the page can highlight it. */
+function mapWords(meta, text) {
+  const out = [];
+  let cursor = 0;
+  const list = (meta && meta.Metadata) || [];
+  list.forEach(m => {
+    if (!m || m.Type !== 'WordBoundary') return;
+    const d = m.Data || {};
+    const raw = (d.text && d.text.Text) || '';
+    if (!raw) return;
+    let idx = text.indexOf(raw, cursor);
+    if (idx < 0) idx = Math.min(cursor, text.length);
+    const startChar = idx;
+    const endChar = Math.min(text.length, idx + raw.length);
+    cursor = endChar;
+    out.push({
+      text: raw,
+      start: Math.max(0, (d.Offset || 0) / 1e7),
+      end: Math.max(0, ((d.Offset || 0) + (d.Duration || 0)) / 1e7),
+      startChar: startChar,
+      endChar: endChar
+    });
+  });
+  return out;
+}
+
+function ttsAllowed(req) {
+  const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() ||
+    (req.socket && req.socket.remoteAddress) || 'unknown';
+  const now = Date.now();
+  let b = ttsHits.get(ip);
+  if (!b || now - b.t > 60000) { b = { t: now, n: 0 }; ttsHits.set(ip, b); }
+  b.n++;
+  if (ttsHits.size > 500) {
+    for (const [k, v] of ttsHits) if (now - v.t > 120000) ttsHits.delete(k);
+  }
+  return b.n <= 100;
+}
+
+async function synthesize(text, lang, rate) {
+  const mod = await loadEdgeTts();
+  const voice = TTS_VOICES[lang] || TTS_VOICES.zh;
+  const tts = new mod.MsEdgeTTS({ connectionTimeoutMs: 12000, synthesisTimeoutMs: 30000 });
+  await tts.setMetadata(voice, mod.OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3, {
+    wordBoundaryEnabled: true
+  });
+
+  const dir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'jke-tts-'));
+  try {
+    const out = await tts.toFile(dir, escapeXml(text), { rate: rate });
+    const audio = await fs.promises.readFile(out.audioFilePath);
+    let meta = { Metadata: [] };
+    if (out.metadataFilePath) {
+      try { meta = JSON.parse(await fs.promises.readFile(out.metadataFilePath, 'utf8')); } catch (e) {}
+    }
+    return { audio: audio, words: mapWords(meta, text), voice: voice };
+  } finally {
+    fs.promises.rm(dir, { recursive: true, force: true }).catch(() => {});
+  }
+}
+
+function replyJson(res, status, obj, extra) {
+  const body = JSON.stringify(obj);
+  const headers = Object.assign({
+    'Content-Type': 'application/json; charset=utf-8',
+    'Content-Length': Buffer.byteLength(body),
+    'Cache-Control': 'no-store',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, HEAD'
+  }, SECURITY, extra || {});
+  res.writeHead(status, headers);
+  res.end(body);
+}
+
+async function handleTts(req, res, url) {
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    return replyJson(res, 405, { error: 'method not allowed' });
+  }
+
+  let text = (url.searchParams.get('text') || '').trim();
+  const lang = (url.searchParams.get('lang') || 'zh').toLowerCase().startsWith('en') ? 'en' : 'zh';
+  let rate = parseFloat(url.searchParams.get('rate') || '0.95');
+  if (!isFinite(rate)) rate = 0.95;
+  rate = Math.max(0.5, Math.min(1.4, rate));
+
+  if (!text) return replyJson(res, 400, { error: 'text required' });
+  if (text.length > TTS_MAX_TEXT) return replyJson(res, 400, { error: 'text too long' });
+  if (!ttsAllowed(req)) return replyJson(res, 429, { error: 'slow down' });
+
+  const key = crypto.createHash('sha256').update(lang + '|' + rate + '|' + text).digest('hex');
+  let hit = TTS_CACHE.get(key);
+  if (!hit) {
+    try {
+      hit = await synthesize(text, lang, rate);
+    } catch (e) {
+      console.error('tts failed:', e && e.message);
+      return replyJson(res, 502, { error: 'tts unavailable' });
+    }
+    if (TTS_CACHE.size >= TTS_CACHE_MAX) TTS_CACHE.delete(TTS_CACHE.keys().next().value);
+    TTS_CACHE.set(key, hit);
+  }
+
+  const body = JSON.stringify({
+    voice: hit.voice,
+    words: hit.words,
+    audio: hit.audio.toString('base64')
+  });
+
+  res.writeHead(200, Object.assign({
+    'Content-Type': 'application/json; charset=utf-8',
+    'Content-Length': Buffer.byteLength(body),
+    'Cache-Control': 'public, max-age=86400',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, HEAD',
+    'X-TTS-Voice': hit.voice
+  }, SECURITY));
+
+  if (req.method === 'HEAD') return res.end();
   res.end(body);
 }
 
@@ -135,6 +290,20 @@ function sendFile(res, file, stat, req) {
 function handle(req, res) {
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     return reply(res, 405, 'Method not allowed');
+  }
+
+  let urlObj;
+  try {
+    urlObj = new URL(req.url || '/', 'http://localhost');
+  } catch (e) {
+    return reply(res, 400, 'Bad request');
+  }
+  if (urlObj.pathname === '/tts') {
+    handleTts(req, res, urlObj).catch(e => {
+      console.error('tts handler failed:', e && e.message);
+      try { replyJson(res, 502, { error: 'tts failed' }); } catch (e2) {}
+    });
+    return;
   }
 
   const resolved = resolveFile(req.url || '/');

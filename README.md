@@ -1051,12 +1051,14 @@ starting with `_`.
 
 ### Hosting it as a website
 
-`server.js` is a zero-dependency static server for `www/`. It binds to `$PORT` when the host
-provides one, so it drops straight onto Render / Railway / Fly with no configuration.
+`server.js` serves `www/` and hosts the `/tts` neural voice route. It binds to `$PORT` when the
+host provides one, so it drops straight onto Render / Railway / Fly with little configuration.
+`msedge-tts` is the only runtime dependency; it has a pnpm-only install hook, so the repo sets
+`ignore-scripts=true` in `.npmrc` and the deploy commands also pass `--ignore-scripts`.
 
 | Setting | Value |
 |---|---|
-| Build command | `npm ci --omit=dev && npm run stamp` |
+| Build command | `npm ci --omit=dev --ignore-scripts && npm run stamp` |
 | Start command | `node server.js` |
 | Health check | `/` |
 
@@ -1091,10 +1093,10 @@ With the lock off, the interface starts in Chinese and stays there unless the bu
 and that choice is remembered on the device. Every label, speech bubble, science fact and help
 screen exists in both languages.
 
-**🗣️ Voice** — every activity has a voice button next to the sound button. In a browser,
-narration uses the built-in speech voices (Web Speech API), so nothing is downloaded and it
-works offline. It follows the interface language: pick a Chinese voice for Chinese, an English
-voice for English.
+**🗣️ Voice** — every activity has a voice button next to the sound button. On desktop and
+Android, narration prefers a **neural voice** from the server (below); the iPad uses the built-in
+Apple voices. It follows the interface language and falls back to a device voice when the
+network is unavailable.
 
 **On Android the browser's speech is replaced by the phone's own engine.** A Capacitor WebView
 often reports no voices, or silently never starts an utterance — which is why narration used to
@@ -1106,12 +1108,22 @@ fail in the APK. `MainActivity` now hands the page `window.AndroidTts`, a tiny b
   Android offers to download one;
 * word-by-word highlighting still works on Android 8+ through
   `UtteranceProgressListener.onRangeStart`; older phones just outline the card;
-* in a browser, or on iOS, nothing changes — the Web Speech path is still the fallback.
+* this is the fallback when the neural voice cannot be reached.
 
 This depends on an installed system TTS engine (Google TTS or the vendor's), which nearly every
-Android phone has. It is *independent of the WebView*, not of the operating system. A fully
-self-contained voice would mean bundling a model (Piper / sherpa-onnx), which is a much larger
-change.
+Android phone has.
+
+**Neural voice on desktop and Android.** The server exposes `GET /tts?text=…&lang=zh`. It
+synthesizes with Microsoft Edge's Read Aloud voices through `msedge-tts` — **no API key** — and
+returns an MP3 plus word timings, so the read-along highlight is kept. `shared/voice.js` prefers
+it on every non-Apple device and falls back to the device engine (or Web Speech) when the request
+fails or the phone is offline. The iPad keeps its Apple voices. Set `tts.mode` in
+`shared/config.js` to `system` to stay entirely offline, or `cloud` to try the neural voice
+everywhere.
+
+Two things to know: this is an **unofficial Microsoft endpoint, not a paid SLA** — the device
+fallback is deliberate — and the sentence text is sent to Microsoft for synthesis. The web app
+uses the same-origin route; the Android app points `tts.base` at the public site.
 
 **While it reads, the words light up.** Tap a fact card or the help text and each word is
 highlighted as it is spoken (on browsers that report word boundaries — Chrome and Edge do; on
@@ -1135,7 +1147,8 @@ Where it speaks:
 | **Electricity · Magnets · Light · Sun Bear · Speaker · Computer · Power · Safety** | Every step reads itself as it opens, word by word; tap a key word to hear the word and its meaning. |
 | **All activities** | Tap the help text to have the instructions read out. |
 
-If the device has no speech voices, the button hides itself and nothing else changes.
+If neither a device voice nor the neural route is available, the button hides itself and nothing
+else changes.
 
 ## ◧ Bigger picture on a small screen
 
@@ -1353,12 +1366,13 @@ www/                          ← the whole app (no build step)
 ├─ _devicelab.html                      dev-only: phone & iPad previews
 docs/character-bible.md                 the character, the palettes and the house style
 
-server.js                               zero-dependency static server ($PORT aware)
+server.js                               static server + /tts neural voice ($PORT aware)
+.npmrc                                  ignore dependency install scripts (msedge-tts)
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
 test/sim.test.js                        310 assertions over the twenty-three simulations
-test/voice.test.js                       32 assertions: native TTS first, Web Speech fallback, word ranges
+test/voice.test.js                       43 assertions: neural voice, native/Web Speech fallback, word ranges
 test/render.test.js                     311 assertions: every page booted, the menu, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)

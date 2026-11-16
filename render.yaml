@@ -5,7 +5,7 @@
 #
 # If your Render service was created by hand in the dashboard instead of from
 # this file, set these in Settings:
-#   Build Command : npm ci --omit=dev
+#   Build Command : npm ci --omit=dev --ignore-scripts
 #   Start Command : node server.js
 #   Health Check  : /
 
@@ -14,7 +14,7 @@ services:
     name: jk-play-n-learn
     runtime: node
     plan: free
-    buildCommand: npm ci --omit=dev && npm run stamp
+    buildCommand: npm ci --omit=dev --ignore-scripts && npm run stamp
     startCommand: node server.js
     healthCheckPath: /
     autoDeploy: true

@@ -30,6 +30,7 @@ function req(path, method) {
         type: res.headers['content-type'],
         cache: res.headers['cache-control'],
         csp: res.headers['content-security-policy'] || '',
+        cors: res.headers['access-control-allow-origin'] || '',
         bytes: n
       }));
     });
@@ -69,6 +70,20 @@ function req(path, method) {
   console.log((hasBoth ? 'ok  ' : 'FAIL') + " script-src and style-src both 'self' only");
   if (!hasBoth) bad++;
   console.log('     ' + csp);
+
+  /* ── the neural voice route validates before it touches the network ── */
+  console.log('\n— TTS route —');
+  const ttsNoText = await req('/tts');
+  console.log((ttsNoText.status === 400 ? 'ok  ' : 'FAIL') + ' missing text -> ' + ttsNoText.status + ' json=' + ttsNoText.cors);
+  if (ttsNoText.status !== 400 || ttsNoText.cors !== '*') bad++;
+
+  const ttsLong = await req('/tts?text=' + 'a'.repeat(401));
+  console.log((ttsLong.status === 400 ? 'ok  ' : 'FAIL') + ' 401 chars -> ' + ttsLong.status);
+  if (ttsLong.status !== 400) bad++;
+
+  const ttsPost = await req('/tts', 'POST');
+  console.log((ttsPost.status === 405 ? 'ok  ' : 'FAIL') + ' POST -> ' + ttsPost.status);
+  if (ttsPost.status !== 405) bad++;
 
   /* and a HEAD, which health checks use */
   const head = await req('/', 'HEAD');

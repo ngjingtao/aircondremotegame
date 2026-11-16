@@ -68,7 +68,7 @@ function makeCard(html) {
 
 function load(opts) {
   opts = opts || {};
-  const calls = { synth: [], native: [], utterances: [], nativeStop: 0 };
+  const calls = { synth: [], native: [], utterances: [], nativeStop: 0, fetched: [], audios: [] };
   const store = {};
   let seq = 0;
 
@@ -96,6 +96,12 @@ function load(opts) {
     return els[id];
   };
 
+  class AudioStub {
+    constructor() { this.src = ''; this.played = false; this.paused = false; calls.audios.push(this); }
+    play() { this.played = true; return Promise.resolve(); }
+    pause() { this.paused = true; }
+  }
+
   const document = {
     addEventListener() {},
     removeEventListener() {},
@@ -112,7 +118,7 @@ function load(opts) {
     document,
     navigator: {
       language: 'zh-CN',
-      userAgent: opts.android ? 'Mozilla/5.0 (Linux; Android 14; Pixel 8)' : 'node-test'
+      userAgent: opts.ua || (opts.android ? 'Mozilla/5.0 (Linux; Android 14; Pixel 8)' : 'node-test')
     },
     localStorage: {
       getItem: k => (k in store ? store[k] : null),
@@ -125,6 +131,30 @@ function load(opts) {
     innerWidth: 1200,
     innerHeight: 700
   };
+
+  if (opts.cloud) {
+    sandbox.fetch = function (url) {
+      calls.fetched.push(String(url));
+      if (opts.fetchFails) {
+        return Promise.resolve({ ok: false, status: 502, json: function () { return Promise.resolve({}); } });
+      }
+      return Promise.resolve({
+        ok: true,
+        status: 200,
+        json: function () {
+          return Promise.resolve({
+            audio: 'SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA',
+            words: [{ text: '你好', start: 0.1, end: 0.5, startChar: 0, endChar: 2 }]
+          });
+        }
+      });
+    };
+    sandbox.Audio = AudioStub;
+    sandbox.Blob = class { constructor(parts, options) { this.parts = parts; this.type = options && options.type; } };
+    sandbox.URL = { createObjectURL: function () { return 'blob:tts'; }, revokeObjectURL: function () {} };
+    sandbox.atob = global.atob;
+    sandbox.AbortController = global.AbortController;
+  }
   sandbox.window = sandbox;
   sandbox.self = sandbox;
   vm.createContext(sandbox);
@@ -133,6 +163,7 @@ function load(opts) {
   vm.runInContext(fs.readFileSync(path.join(WWW, 'shared', 'voice.js'), 'utf8'), sandbox, { filename: 'shared/voice.js' });
 
   sandbox.ARG.i18n = { lang: 'zh', t: k => k };
+  sandbox.ARG.config = opts.config || { tts: { enabled: false } };
   sandbox.ARG.voice.syncLang();
 
   return { ARG: sandbox.ARG, calls, els, document };
@@ -147,7 +178,7 @@ console.log('\n— Voice: Android system TTS first —');
   eq('speaking the sentence succeeds', v.speak('你好 <b>世界</b>'), true);
   eq('the native engine got the cleaned sentence', p.calls.native[0].text, '你好 世界');
   eq('  → in the interface language', p.calls.native[0].lang, 'zh-CN');
-  eq('  → at the reading rate', p.calls.native[0].rate, 0.92);
+  eq('  → at the reading rate', p.calls.native[0].rate, 0.95);
   eq('  → and Web Speech was left alone', p.calls.synth.length, 0);
   eq('it reports that it is speaking', v.speaking, true);
   let st = null;
@@ -256,10 +287,69 @@ console.log('\n— Voice: a new sentence owns the card —');
   eq('a stale end leaves the new sentence alone', second.innerHTML, '第二句');
 }
 
-console.log('\n' + '─'.repeat(72));
-console.log(passed + ' passed, ' + failed + ' failed');
-if (failed) {
-  console.log('\nFailures:');
-  failures.forEach(f => console.log('  • ' + f));
-  process.exit(1);
-}
+(async () => {
+  const flush = () => new Promise(resolve => setImmediate(resolve));
+
+  console.log('\n— Voice: the neural cloud voice —');
+  {
+    const p = load({
+      cloud: true,
+      config: { tts: { enabled: true, mode: 'auto', base: '' } }
+    });
+    const v = p.ARG.voice;
+    eq('the cloud voice reports as supported', v.supported, true);
+    eq('speaking succeeds', v.speak('你好世界'), true);
+    await flush();
+    eq('it asked /tts once', p.calls.fetched.length, 1);
+    ok('  → with the sentence and language',
+       /\/tts\?lang=zh/.test(p.calls.fetched[0]) && /text=%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/.test(p.calls.fetched[0]),
+       p.calls.fetched[0]);
+    eq('  → and an audio element is playing', p.calls.audios.length, 1);
+    eq('  → with playback started', p.calls.audios[0].played, true);
+    v.stop();
+    eq('stopping pauses the audio', p.calls.audios[0].paused, true);
+  }
+  {
+    const p = load({
+      cloud: true,
+      noNative: true,
+      ua: 'Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X)',
+      config: { tts: { enabled: true, mode: 'auto', base: '' } }
+    });
+    const v = p.ARG.voice;
+    v.speak('你好');
+    await flush();
+    eq('an iPad keeps its device voice', p.calls.fetched.length, 0);
+    eq('  → and Web Speech speaks', p.calls.synth.length, 1);
+  }
+  {
+    const p = load({
+      cloud: true,
+      noNative: true,
+      fetchFails: true,
+      config: { tts: { enabled: true, mode: 'auto', base: '' } }
+    });
+    const v = p.ARG.voice;
+    v.speak('你好');
+    await flush(); await flush(); await flush();
+    eq('a failed neural request falls back', p.calls.synth.length, 1);
+  }
+  {
+    const p = load({
+      cloud: true,
+      config: { tts: { enabled: true, mode: 'system', base: '' } }
+    });
+    const v = p.ARG.voice;
+    v.speak('你好');
+    await flush();
+    eq('system mode never calls the network', p.calls.fetched.length, 0);
+  }
+
+  console.log('\n' + '─'.repeat(72));
+  console.log(passed + ' passed, ' + failed + ' failed');
+  if (failed) {
+    console.log('\nFailures:');
+    failures.forEach(f => console.log('  • ' + f));
+    process.exit(1);
+  }
+})();

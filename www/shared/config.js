@@ -13,6 +13,22 @@ ARG.config = {
 
   /* Lock the whole app to one language and hide the EN / 中文 button.
      'zh' = Chinese only,  'en' = English only,  null = switcher enabled. */
-  lockLang: 'zh'
+  lockLang: 'zh',
+
+  /* Neural narration through the server's /tts route.
+     mode: 'auto'   — neural on desktop and Android, device voices on iPad
+           'cloud'  — always try the neural voice first
+           'system' — never use the network; device voices only
+           'off'    — same as the voice button being off
+     base: '' means same origin. The Android/iOS app runs on localhost, so it
+     points at the public server instead. */
+  tts: {
+    enabled: true,
+    mode: 'auto',
+    base: (typeof location !== 'undefined' &&
+           (location.protocol === 'file:' || location.hostname === 'localhost'))
+      ? 'https://jk-play-n-learn.onrender.com'
+      : ''
+  }
 
 };
