@@ -1127,10 +1127,17 @@ Two things to know: this is an **unofficial Microsoft endpoint, not a paid SLA**
 fallback is deliberate — and the sentence text is sent to Microsoft for synthesis. The web app
 uses the same-origin route; the Android app points `tts.base` at the public site.
 
-**While it reads, the words light up.** Tap a fact card or the help text and each word is
-highlighted as it is spoken (on browsers that report word boundaries — Chrome and Edge do; on
-iOS the card is outlined instead). Narrated steps outline the note card so you can see which
-text is being talked about.
+**While it reads, the words light up — everywhere.** Every utterance now has a visible
+transcript: if the activity already shows the sentence (a fact card, a note, a lesson step),
+that card is highlighted word by word; if it only calls `speak()` — a status, a result, a
+spoken hint — the shared **caption bar** at the bottom shows the sentence and highlights the
+current word. That is true for the neural, native and Web Speech engines alike.
+
+**Pages read themselves on entry.** After a page loads, `shared/voice.js` reads its main visible
+passage once (the fact card or the instruction note); lesson pages read step one through their
+own engine. Browsers block audible autoplay until a gesture, so on desktop/Android the first
+sentence is fetched and waits: a **“点一下开始朗读 / Tap to listen”** caption appears, and the
+first tap plays it. The iPad's local voices usually start without that step.
 
 Where it speaks:
 

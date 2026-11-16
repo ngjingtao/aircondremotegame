@@ -176,8 +176,64 @@ ARG.voice = (function () {
   /* the element whose text is being read, so we can highlight word by word */
   let speakingEl = null;
   let wordMarks = null;
+  let outlineEl = null;
+  let captionEl = null;
+  let captionText = null;
+  let lastSpokeAt = 0;
+
+  /* ─────────── the read-along caption ───────────
+     Every utterance gets a visible subtitle, even when the activity only
+     calls speak(text) with no card of its own. The caption text is the
+     highlight target, so cloud/native/Web Speech all mark words there. */
+  function ensureCaption() {
+    if (captionEl) return captionText;
+    if (typeof document === 'undefined' || !document.body || !document.createElement) return null;
+    captionEl = document.createElement('div');
+    captionEl.id = 'tts-caption';
+    captionEl.className = 'tts-caption';
+    captionEl.hidden = true;
+    captionText = document.createElement('span');
+    captionText.id = 'tts-caption-text';
+    captionEl.appendChild(captionText);
+    document.body.appendChild(captionEl);
+    return captionText;
+  }
+
+  function captionOn(text) {
+    const el = ensureCaption();
+    if (!el) return null;
+    el.textContent = text;
+    if (captionEl) {
+      captionEl.hidden = false;
+      captionEl.classList.remove('tts-waiting');
+    }
+    return el;
+  }
+
+  function hideCaption() {
+    if (!captionEl) return;
+    captionEl.hidden = true;
+    captionEl.classList.remove('tts-waiting');
+  }
+
+  function showTapHint() {
+    const el = ensureCaption();
+    if (!el || !captionEl) return;
+    if (speakingEl !== el) {
+      el.textContent = lang === 'zh' ? '🔊 点一下开始朗读' : '🔊 Tap to listen';
+    }
+    captionEl.hidden = false;
+    captionEl.classList.add('tts-waiting');
+  }
+
+  function clearTapHint() {
+    if (!captionEl) return;
+    captionEl.classList.remove('tts-waiting');
+    if (speakingEl !== captionText) captionEl.hidden = true;
+  }
 
   function clearHighlight() {
+    if (outlineEl) { outlineEl.classList.remove('tts-reading'); outlineEl = null; }
     if (speakingEl && wordMarks) {
       const now = speakingEl.innerHTML;
       /* Only put the original markup back if the card still holds this
@@ -221,6 +277,7 @@ ARG.voice = (function () {
   function endHighlight() {
     if (speakingEl) speakingEl.classList.remove('tts-reading');
     clearHighlight();
+    hideCaption();
   }
 
   /* Begin a new narration. The generation makes every callback from the
@@ -228,6 +285,8 @@ ARG.voice = (function () {
   function startSpeech() {
     gen++;
     halt();
+    clearTapHint();
+    lastSpokeAt = Date.now();
   }
 
   /* stop whatever is speaking, whichever engine owns it */
@@ -275,6 +334,7 @@ ARG.voice = (function () {
   function armCloudGesture(audio, words, my, myGen, body, rate) {
     if (my !== cloudSeq) return;
     clearCloudGesture();
+    showTapHint();
     const events = ['pointerdown', 'keydown'];
     const tryPlay = () => {
       clearCloudGesture();
@@ -282,9 +342,10 @@ ARG.voice = (function () {
       const p = audio.play();
       if (p && typeof p.then === 'function') {
         p.then(() => {
-          if (my === cloudSeq) scheduleCloudWords(words, my);
+          if (my === cloudSeq) { clearTapHint(); scheduleCloudWords(words, my); }
         }).catch(() => fallbackCloud(myGen, body, rate));
       } else {
+        clearTapHint();
         scheduleCloudWords(words, my);
       }
     };
@@ -375,6 +436,7 @@ ARG.voice = (function () {
         if (play && typeof play.then === 'function') {
           play.then(() => {
             if (my !== cloudSeq) return;
+            clearTapHint();
             scheduleCloudWords(data.words || [], my);
           }).catch(err => {
             if (isAutoplayBlocked(err)) {
@@ -432,8 +494,7 @@ ARG.voice = (function () {
     if (nativeGen !== gen || !nativeMatches(id)) return;
     nativeId = null;
     current = null;
-    if (speakingEl) speakingEl.classList.remove('tts-reading');
-    clearHighlight();
+    endHighlight();
     notify();
   }
 
@@ -465,15 +526,13 @@ ARG.voice = (function () {
     u.onend = () => {
       if (myGen !== gen) return;
       if (current === u) current = null;
-      if (speakingEl) speakingEl.classList.remove('tts-reading');
-      clearHighlight();
+      endHighlight();
       notify();
     };
     u.onerror = () => {
       if (myGen !== gen) return;
       if (current === u) current = null;
-      if (speakingEl) speakingEl.classList.remove('tts-reading');
-      clearHighlight();
+      endHighlight();
       notify();
     };
     try { synth.speak(u); } catch (e) { return false; }
@@ -484,15 +543,28 @@ ARG.voice = (function () {
 
   function speakIn(el, text, opts) {
     startSpeech();
-    beginHighlight(el, text);
-    const ok = runSpeech(text, opts);
+    const body = clean(text);
+    if (!enabled || !body) { endHighlight(); return false; }
+    if (el) {
+      beginHighlight(el, body);
+    } else {
+      const cap = captionOn(body);
+      if (cap) beginHighlight(cap, body);
+    }
+    const ok = runSpeech(body, opts);
     if (!ok) endHighlight();
     return ok;
   }
 
   function speak(text, opts) {
     startSpeech();
-    return runSpeech(text, opts);
+    const body = clean(text);
+    if (!enabled || !body) return false;
+    const cap = captionOn(body);
+    if (cap) beginHighlight(cap, body);
+    const ok = runSpeech(body, opts);
+    if (!ok) endHighlight();
+    return ok;
   }
 
   function runSpeech(text, opts) {
@@ -602,13 +674,15 @@ ARG.voice = (function () {
      it just outlines the card so the reader can see what is being talked about */
   function speakLinked(el, text, opts) {
     startSpeech();
-    clearHighlight();
-    if (el && enabled) {
-      speakingEl = el;
-      wordMarks = { plain: '', html: el.innerHTML };
+    const body = clean(text);
+    if (!enabled || !body) return false;
+    const cap = captionOn(body);
+    if (cap) beginHighlight(cap, body);
+    if (el) {
+      outlineEl = el;
       el.classList.add('tts-reading');
     }
-    const ok = runSpeech(text, opts);
+    const ok = runSpeech(body, opts);
     if (!ok) endHighlight();
     return ok;
   }
@@ -617,6 +691,42 @@ ARG.voice = (function () {
   function syncLang() {
     setLang(ARG.i18n && ARG.i18n.lang ? ARG.i18n.lang : 'zh');
   }
+
+  /* On entering a page, read the main visible passage once. Lesson pages
+     already read step one, so they are skipped. A short delay lets the
+     activity fill its note/fact card. */
+  const AUTO_SELECTORS = ['#fact-text', '#pane-note', '#fact', '#speech'];
+  let autoReadDone = false;
+
+  function autoReadPage() {
+    if (autoReadDone) return;
+    autoReadDone = true;
+    if (!enabled) return;
+    if (document.hidden) return;
+    /* inside the devicelab iframes, do not talk over each other */
+    if (typeof window !== 'undefined' && window.top && window.top !== window.self) return;
+    if (document.getElementById('ls-fact')) return;   // the lesson engine does this
+    if (Date.now() - lastSpokeAt < 1500) return;       // the activity already spoke
+
+    let tries = 0;
+    function tick() {
+      if (!enabled) return;
+      if (Date.now() - lastSpokeAt < 1500) return;
+      let el = null;
+      for (let i = 0; i < AUTO_SELECTORS.length; i++) {
+        const e = document.querySelector(AUTO_SELECTORS[i]);
+        if (e && clean(e.textContent).length > 3) { el = e; break; }
+      }
+      if (el) {
+        speakIn(el, clean(el.textContent));
+        return;
+      }
+      if (++tries < 10) setTimeout(tick, 300);
+    }
+    setTimeout(tick, 700);
+  }
+
+  setTimeout(autoReadPage, 700);
 
   return {
     speak, say: speak, speakIn, speakLinked, stop, toggle, setLang, watch, attach, speakOnTap, syncLang,

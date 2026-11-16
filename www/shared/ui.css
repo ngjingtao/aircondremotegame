@@ -318,3 +318,54 @@ button{ min-height:28px; }
   .toast{font-size:16px;padding:13px 22px;border-radius:15px;max-width:70%;}
 }
 
+
+/* ─────────── the read-along caption ───────────
+   Injected by shared/voice.js. Every utterance has a visible transcript, and
+   the current word is marked, so the reader can see where the voice is. */
+.tts-caption{
+  position:fixed;
+  left:50%;
+  bottom:calc(16px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  z-index:80;
+  max-width:min(760px,94vw);
+  max-height:32vh;
+  overflow:hidden;
+  padding:9px 14px;
+  border-radius:12px;
+  background:rgba(6,12,22,.9);
+  border:1px solid rgba(140,190,240,.35);
+  color:#e8eef8;
+  font-size:13px;
+  line-height:1.5;
+  text-align:center;
+  box-shadow:0 8px 24px rgba(0,0,0,.45);
+  pointer-events:none;
+  backdrop-filter:blur(4px);
+  transition:opacity .2s;
+}
+.tts-caption[hidden]{display:none;}
+.tts-caption mark.tts-word{
+  background:rgba(125,211,252,.6);
+  color:#04121f;
+  border-radius:3px;
+  padding:0 1px;
+}
+.tts-caption.tts-waiting{animation:ttsWait 1.4s ease-in-out infinite;}
+@keyframes ttsWait{0%,100%{opacity:.72;}50%{opacity:1;}}
+
+@media (max-width:520px){
+  .tts-caption{
+    font-size:11px;
+    padding:7px 10px;
+    bottom:calc(10px + env(safe-area-inset-bottom));
+    max-width:96vw;
+    border-radius:10px;
+  }
+}
+@media (min-width:700px) and (min-height:560px){
+  .tts-caption{font-size:15px;padding:11px 18px;border-radius:14px;}
+}
+@media (prefers-reduced-motion: reduce){
+  .tts-caption.tts-waiting{animation:none;}
+}
