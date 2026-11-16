@@ -1013,8 +1013,8 @@ console.log('\n— The two-level menu —');
 
   eq('the home has a topic grid', /id="cat-grid"/.test(html), true);
   eq('  → and a back button', /id="cat-back"/.test(html), true);
-  eq('  → the activity groups start hidden',
-     /<div class="groups" id="groups" hidden>/.test(html), true);
+  eq('  → the activity groups are in the page',
+     /<div class="groups" id="groups">/.test(html), true);
   eq('the topics are built from the groups', /function buildCategories/.test(homeJs), true);
   eq('  → with a route for deep links',
      /function renderRoute/.test(homeJs) && /history\.pushState/.test(homeJs), true);

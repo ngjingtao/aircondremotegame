@@ -23,6 +23,16 @@
     navigator.serviceWorker.register(swUrl).catch(function () { /* offline is a bonus, never fatal */ });
   });
 
+  /* A new worker precaches new HTML and JS. Without this, a tab that was
+     open during a deploy can keep the old scripts while the network serves
+     the new HTML — which is how the topic menu can look empty. */
+  var hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', function () {
+    if (!hadController || window.__swReloading) return;
+    window.__swReloading = true;
+    window.location.reload();
+  });
+
   /* standalone (home-screen) mode gets a class so CSS can tweak if needed */
   var standalone = ('standalone' in navigator && navigator.standalone) ||
     (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
