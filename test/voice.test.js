@@ -98,7 +98,15 @@ function load(opts) {
 
   class AudioStub {
     constructor() { this.src = ''; this.played = false; this.paused = false; calls.audios.push(this); }
-    play() { this.played = true; return Promise.resolve(); }
+    play() {
+      this.played = true;
+      if (opts.playBlocked) {
+        const err = new Error('blocked by the autoplay policy');
+        err.name = 'NotAllowedError';
+        return Promise.reject(err);
+      }
+      return Promise.resolve();
+    }
     pause() { this.paused = true; }
   }
 
@@ -308,6 +316,20 @@ console.log('\n— Voice: a new sentence owns the card —');
     eq('  → with playback started', p.calls.audios[0].played, true);
     v.stop();
     eq('stopping pauses the audio', p.calls.audios[0].paused, true);
+  }
+  {
+    const p = load({
+      cloud: true,
+      noNative: true,
+      playBlocked: true,
+      config: { tts: { enabled: true, mode: 'auto', base: '' } }
+    });
+    const v = p.ARG.voice;
+    v.speak('你好');
+    await flush(); await flush();
+    eq('an autoplay block does not fall back to the old voice', p.calls.synth.length, 0);
+    eq('  → the neural sentence is kept for the first tap', p.calls.audios.length, 1);
+    v.stop();
   }
   {
     const p = load({

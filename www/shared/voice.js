@@ -42,6 +42,8 @@ ARG.voice = (function () {
   let cloudAudio = null;
   let cloudUrl = null;
   let cloudTimers = [];
+  let cloudGesture = null;
+  let cloudResume = null;
 
   function native() {
     try { return window.AndroidTts || null; } catch (e) { return null; }
@@ -241,7 +243,13 @@ ARG.voice = (function () {
 
   /* ─────────── the neural voice (server /tts) ─────────── */
 
+  function clearCloudGesture() {
+    if (cloudGesture) { try { cloudGesture(); } catch (e) {} cloudGesture = null; }
+    cloudResume = null;
+  }
+
   function clearCloud() {
+    clearCloudGesture();
     cloudTimers.forEach(t => { try { clearTimeout(t); } catch (e) {} });
     cloudTimers = [];
     if (cloudAudio) {
@@ -254,6 +262,35 @@ ARG.voice = (function () {
       try { if (URL && URL.revokeObjectURL) URL.revokeObjectURL(cloudUrl); } catch (e) {}
       cloudUrl = null;
     }
+  }
+
+  /* Browsers block audio that starts without a gesture. Keep the fetched
+     sentence ready and play it on the first tap, instead of dropping to the
+     old device voice. */
+  function isAutoplayBlocked(err) {
+    return !!err && (err.name === 'NotAllowedError' ||
+      /autoplay|user gesture|interact|not allowed/i.test(err.message || ''));
+  }
+
+  function armCloudGesture(audio, words, my, myGen, body, rate) {
+    if (my !== cloudSeq) return;
+    clearCloudGesture();
+    const events = ['pointerdown', 'keydown'];
+    const tryPlay = () => {
+      clearCloudGesture();
+      if (my !== cloudSeq) return;
+      const p = audio.play();
+      if (p && typeof p.then === 'function') {
+        p.then(() => {
+          if (my === cloudSeq) scheduleCloudWords(words, my);
+        }).catch(() => fallbackCloud(myGen, body, rate));
+      } else {
+        scheduleCloudWords(words, my);
+      }
+    };
+    events.forEach(ev => document.addEventListener(ev, tryPlay, false));
+    cloudGesture = () => events.forEach(ev => document.removeEventListener(ev, tryPlay, false));
+    cloudResume = tryPlay;
   }
 
   function base64Bytes(b64) {
@@ -339,7 +376,13 @@ ARG.voice = (function () {
           play.then(() => {
             if (my !== cloudSeq) return;
             scheduleCloudWords(data.words || [], my);
-          }).catch(() => fallbackCloud(myGen, body, rate));
+          }).catch(err => {
+            if (isAutoplayBlocked(err)) {
+              armCloudGesture(audio, data.words || [], my, myGen, body, rate);
+            } else {
+              fallbackCloud(myGen, body, rate);
+            }
+          });
         } else {
           scheduleCloudWords(data.words || [], my);
         }
@@ -545,7 +588,11 @@ ARG.voice = (function () {
     el.style.cursor = 'pointer';
     el.addEventListener('pointerdown', ev => {
       ev.stopPropagation();
-      if (current) { stop(); return; }
+      if (current) {
+        /* the first tap is also what unlocks a blocked neural sentence */
+        if (cloudResume) { cloudResume(); return; }
+        stop(); return;
+      }
       const txt = typeof getText === 'function' ? getText() : (el.textContent || '');
       speakIn(el, txt);
     });

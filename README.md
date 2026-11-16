@@ -1117,7 +1117,9 @@ Android phone has.
 synthesizes with Microsoft Edge's Read Aloud voices through `msedge-tts` — **no API key** — and
 returns an MP3 plus word timings, so the read-along highlight is kept. `shared/voice.js` prefers
 it on every non-Apple device and falls back to the device engine (or Web Speech) when the request
-fails or the phone is offline. The iPad keeps its Apple voices. Set `tts.mode` in
+fails or the phone is offline. Browsers block audible autoplay, so the **first sentence is kept
+ready and starts on the first tap** (anywhere, the sentence, or READ AGAIN) rather than dropping
+to the old device voice. The iPad keeps its Apple voices. Set `tts.mode` in
 `shared/config.js` to `system` to stay entirely offline, or `cloud` to try the neural voice
 everywhere.
 
@@ -1372,7 +1374,7 @@ render.yaml                             Render blueprint (build + start commands
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
 test/sim.test.js                        310 assertions over the twenty-three simulations
-test/voice.test.js                       43 assertions: neural voice, native/Web Speech fallback, word ranges
+test/voice.test.js                       45 assertions: neural voice, autoplay, native/Web Speech fallback, word ranges
 test/render.test.js                     311 assertions: every page booted, the menu, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
