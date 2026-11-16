@@ -1,0 +1,45 @@
+/* ═══════════════════════════════════════════════════════════
+   Electricity — the activity's own palette and picture
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ls-paper:#f2fbff;
+  --ls-paper2:#e0f1fb;
+  --ls-paper3:#cbe5f3;
+  --ls-edge:#b7d7e8;
+  --ls-ink:#263f4e;
+  --ls-dim:#5c7787;
+  --ls-accent:#0f8fd6;
+  --ls-accent2:#7fd0ff;
+}
+
+#scene{background:linear-gradient(180deg,#0e1a2c,#081120);}
+
+/* the current only runs once the switch is closed */
+#art .flow{opacity:0;transition:opacity .35s;}
+#art.live .flow{opacity:.95;animation:eFlow 1s linear infinite;}
+@keyframes eFlow{to{stroke-dashoffset:-18;}}
+
+#switch-arm-closed{opacity:0;transition:opacity .18s;}
+#art.live #switch-arm-closed{opacity:1;}
+#art.live #switch-arm-open{opacity:0;}
+
+#bulb-glow{transition:opacity .35s;}
+#art.lit #bulb-glow{opacity:1;}
+#bulb-glass{transition:fill .35s,stroke .35s;}
+#art.lit #bulb-glass{fill:#fff2b8;stroke:#ffe9a8;}
+#filament{transition:stroke .3s;}
+#art.lit #filament{stroke:#ffd166;}
+
+/* the socket and the tray are present all the time but come forward
+   when their step is the one being read */
+#socket,#tray{opacity:.55;transition:opacity .3s;}
+#socket.on,#tray.on{opacity:1;}
+#socket .bolt{opacity:.4;transition:opacity .3s;}
+#art.warn #socket .bolt{opacity:1;animation:eWarn .8s ease-in-out infinite;}
+@keyframes eWarn{0%,100%{opacity:.35;}50%{opacity:1;}}
+
+@media (prefers-reduced-motion: reduce){
+  #art .flow{animation:none !important;opacity:.95;}
+  #art.live .flow{opacity:.95;}
+}

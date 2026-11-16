@@ -4,7 +4,7 @@ Everything here is written to match what is **already** in the code — the hex
 values are the real ones, and each rule says where it lives. Where something is
 only a plan, it says so.
 
-The point of this document is that the fifteen activities stop looking like fifteen
+The point of this document is that the twenty-three activities stop looking like twenty-three
 separate projects. A child should recognise the boy, the room, the light and the
 outlines as *the same world* before they read a single word.
 
@@ -199,14 +199,14 @@ look like pages from the same book:
   it goes wrong, a retry, and missions that unlock as you pass them. The train's
   is in `train/js/state.js`: ★ for delivering everyone before the clock, ★★ for
   never running past a platform, ★★★ for never taking a crossing over the limit.
-* **the fifteen home tiles are illustrations**, drawn as SVG scenes in
+* **the twenty-three home tiles are illustrations**, drawn as SVG scenes in
   `www/index.html` and painted from one shared palette declared at the top of
   that file. Every tile has three depth layers (`tl back` / `tl mid` /
   `tl front`) which drift gently and separate on hover, and the whole set can
   be stilled by `prefers-reduced-motion`. `npm test` asserts the count, the
   canvas, the layers, and that no shape references a paint that does not exist.
-* **the sticker book** (`shared/progress.js`) — twenty stickers, one, two or
-  three per activity, so the fifteen activities that are otherwise separate all feed
+* **the sticker book** (`shared/progress.js`) — twenty-eight stickers, one, two or
+  three per activity, so the twenty-three activities that are otherwise separate all feed
   one collection on the home screen. Each activity awards its own from its render
   loop; awards only ever go up, so re-earning cannot lose a sticker.
 * **Kai appears in the tiles too** — the same skin, hair, shirt and remote as
@@ -232,7 +232,7 @@ look like pages from the same book:
 ## 5 · The home tiles
 
 Done. Each tile is a *moment*, not an object — which is what makes a child want
-to tap it. All fifteen are SVG scenes in `www/index.html`, on one 96×96 canvas,
+to tap it. All twenty-three are SVG scenes in `www/index.html`, on one 96×96 canvas,
 painted from the shared `#t…` palette declared just above them.
 
 | Tile | The moment |

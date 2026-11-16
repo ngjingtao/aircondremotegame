@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="description" content="马来熊：认识世界上最小的熊，看它的胸斑、长舌头和爪子，学会保护雨林里的马来熊。" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="马来熊" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>马来熊 · 边玩边学</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="../shared/lesson.css" />
+<link rel="stylesheet" href="sunbear.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html#science" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">🐻</span>
+      <span class="tb-title" data-i18n="title">Sun Bear</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudStep">Step</span><b id="hud-step">1 / 6</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl" id="ctl">
+
+          <div class="ls-head">
+            <span class="ls-kicker" data-i18n="lead">Sun bear</span>
+            <span class="ls-count" id="ls-count">1 / 6</span>
+            <button class="ls-read" id="ls-replay" data-action="replay" title="Read again">🔊</button>
+          </div>
+          <div class="ls-track"><i id="ls-bar"></i></div>
+
+          <div class="ls-steps" id="ls-steps"></div>
+
+          <h3 class="ls-title" id="ls-title"></h3>
+          <div class="fact-card ls-fact" id="ls-fact"></div>
+
+          <div class="ls-words" id="ls-words"></div>
+          <div class="ls-worddef" id="ls-worddef" hidden></div>
+
+          <div class="nav-row">
+            <button class="nav-btn" id="ls-back" data-action="prev" data-i18n="back">BACK</button>
+            <button class="nav-btn go" id="ls-next" data-action="next" data-i18n="next">NEXT</button>
+          </div>
+
+          <div class="result" id="ls-result" hidden>
+            <div class="res-stars">★☆☆</div>
+            <p id="ls-result-text"></p>
+            <button class="nav-btn" data-action="again" data-i18n="again">START AGAIN</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="scene">
+
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="lead">Sun bear</span>
+        <span class="scene-status" id="scene-status" data-i18n="status">Into the rainforest</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="sbSky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1d3b2a"/>
+              <stop offset="60%" stop-color="#142a1d"/>
+              <stop offset="100%" stop-color="#0a140d"/>
+            </linearGradient>
+            <linearGradient id="sbGround" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a2a1a"/>
+              <stop offset="100%" stop-color="#1d140c"/>
+            </linearGradient>
+            <linearGradient id="sbTree" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#4a3118"/>
+              <stop offset="55%" stop-color="#6b4a2a"/>
+              <stop offset="100%" stop-color="#3b2614"/>
+            </linearGradient>
+            <radialGradient id="sbGlow">
+              <stop offset="0%" stop-color="#ffd166" stop-opacity=".65"/>
+              <stop offset="100%" stop-color="#ffd166" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="sbShield" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#a8e08a"/>
+              <stop offset="100%" stop-color="#4f9a3c"/>
+            </linearGradient>
+          </defs>
+
+          <rect width="340" height="520" fill="url(#sbSky)"/>
+
+          <!-- canopy and vines -->
+          <g fill="#0f2418">
+            <ellipse cx="30" cy="8" rx="72" ry="46"/>
+            <ellipse cx="130" cy="-8" rx="82" ry="48"/>
+            <ellipse cx="240" cy="2" rx="80" ry="48"/>
+            <ellipse cx="330" cy="-2" rx="70" ry="44"/>
+          </g>
+          <g stroke="#2f5a24" stroke-width="3" stroke-linecap="round" fill="none" opacity=".7">
+            <path d="M40 28 q-8 34 -2 60"/>
+            <path d="M96 16 q10 30 2 54"/>
+            <path d="M300 22 q-8 30 0 52"/>
+          </g>
+
+          <!-- left trunk -->
+          <rect x="10" y="40" width="30" height="380" rx="6" fill="#3b2614"/>
+          <path d="M18 60 v330 M30 70 v320" stroke="#5a3a20" stroke-width="2" opacity=".6"/>
+
+          <!-- the big tree, climbed at step 5 -->
+          <g id="tree">
+            <rect x="252" y="0" width="56" height="420" rx="7" fill="url(#sbTree)"/>
+            <path d="M262 10 v390 M278 6 v396 M294 12 v388" stroke="#8a6238" stroke-width="2" opacity=".45"/>
+            <path d="M252 214 q-34 -12 -60 -4" fill="none" stroke="#4a3118" stroke-width="11" stroke-linecap="round"/>
+            <g fill="#2f5a24" opacity=".9">
+              <ellipse cx="212" cy="200" rx="20" ry="10"/>
+              <ellipse cx="190" cy="190" rx="14" ry="8"/>
+              <ellipse cx="236" cy="188" rx="16" ry="9"/>
+            </g>
+          </g>
+
+          <!-- forest floor -->
+          <rect y="415" width="340" height="105" fill="url(#sbGround)"/>
+          <path d="M0 415 q60 -10 120 0 t120 0 t100 -4 v8 H0 Z" fill="#2f4a27"/>
+          <g stroke="#3f7a32" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8">
+            <path d="M40 470 q-16 -22 -30 -26 M40 470 q-4 -26 8 -38 M40 470 q16 -20 30 -22"/>
+            <path d="M300 480 q-18 -18 -30 -18 M300 480 q0 -22 12 -32 M300 480 q18 -16 30 -14"/>
+          </g>
+
+          <!-- the sun bear -->
+          <g id="bear" class="part" data-lab="size">
+            <ellipse cx="122" cy="394" rx="18" ry="12" fill="#232028"/>
+            <ellipse cx="178" cy="394" rx="18" ry="12" fill="#232028"/>
+            <path d="M104 296 q-12 34 4 60" fill="none" stroke="#2b2830" stroke-width="24" stroke-linecap="round"/>
+            <path d="M196 296 q12 34 -4 60" fill="none" stroke="#2b2830" stroke-width="24" stroke-linecap="round"/>
+            <ellipse cx="150" cy="330" rx="56" ry="66" fill="#2b2830"/>
+            <circle cx="150" cy="240" r="44" fill="#2b2830"/>
+            <circle cx="118" cy="206" r="15" fill="#2b2830"/>
+            <circle cx="182" cy="206" r="15" fill="#2b2830"/>
+            <circle cx="118" cy="206" r="7.5" fill="#6b4a3a"/>
+            <circle cx="182" cy="206" r="7.5" fill="#6b4a3a"/>
+            <ellipse cx="150" cy="258" rx="21" ry="15" fill="#a9845f"/>
+            <ellipse cx="150" cy="252" rx="7.5" ry="5" fill="#16151a"/>
+            <path d="M150 257 v6 M150 263 q-6 4 -10 0 M150 263 q6 4 10 0" stroke="#3a2a1e" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+            <circle cx="134" cy="230" r="4.6" fill="#0c0b0f"/>
+            <circle cx="166" cy="230" r="4.6" fill="#0c0b0f"/>
+            <circle cx="135.5" cy="228.4" r="1.5" fill="#fff"/>
+            <circle cx="167.5" cy="228.4" r="1.5" fill="#fff"/>
+            <path id="chestPatch" d="M128 288 q22 -16 44 0 q-4 28 -22 32 q-18 -4 -22 -32 Z" fill="#ffb347" stroke="#d98a28" stroke-width="1.5"/>
+            <ellipse cx="106" cy="366" rx="14" ry="10" fill="#232028"/>
+            <ellipse cx="194" cy="366" rx="14" ry="10" fill="#232028"/>
+            <g stroke="#e8d7c0" stroke-width="1.8" stroke-linecap="round">
+              <path d="M98 372 l-4 5 M105 375 l-2 6 M112 373 l0 6"/>
+              <path d="M188 373 l0 6 M195 375 l2 6 M202 372 l4 5"/>
+            </g>
+          </g>
+
+          <!-- step 1: how big it is -->
+          <g id="size" data-lab="size">
+            <path d="M226 196 V404" stroke="#ffd166" stroke-width="1.8" stroke-dasharray="5 5"/>
+            <path d="M219 196 h14 M219 404 h14" stroke="#ffd166" stroke-width="2.6" stroke-linecap="round"/>
+            <text x="220" y="186" text-anchor="end" font-size="10" font-weight="800" fill="#ffd166">1.2–1.5 m</text>
+          </g>
+
+          <!-- step 2: the sun patch -->
+          <g id="patchFx" data-lab="patch">
+            <ellipse cx="150" cy="300" rx="46" ry="40" fill="url(#sbGlow)"/>
+            <g stroke="#ffd166" stroke-width="2" stroke-linecap="round">
+              <path d="M150 250 v-10 M150 350 v10 M98 300 h-10 M202 300 h10 M114 264 l-7 -7 M186 336 l7 7 M186 264 l7 -7 M114 336 l-7 7"/>
+            </g>
+          </g>
+
+          <!-- step 3: the tongue and the hive -->
+          <g id="honey" data-lab="tongue food">
+            <g transform="translate(272 286)" fill="#f0a03a" stroke="#b5721a" stroke-width="1.4">
+              <path d="M0 -9 L8 -4.5 L8 4.5 L0 9 L-8 4.5 L-8 -4.5 Z"/>
+              <path d="M16 -4 L24 0 L24 9 L16 13 L8 9 L8 0 Z"/>
+              <path d="M8 13 L16 18 L16 27 L8 31 L0 27 L0 18 Z"/>
+            </g>
+            <path d="M266 304 q-3 8 3 13" fill="none" stroke="#f0a03a" stroke-width="3" stroke-linecap="round"/>
+            <path d="M258 306 q0 6 2 9" fill="none" stroke="#f0a03a" stroke-width="2" stroke-linecap="round"/>
+          </g>
+          <g id="tongueFx" data-lab="tongue">
+            <path d="M166 264 q44 6 72 14 q20 5 38 -2" fill="none" stroke="#ff8fa3" stroke-width="5" stroke-linecap="round"/>
+            <path d="M270 279 l7 1 M270 279 l6 -5" stroke="#ff8fa3" stroke-width="3" stroke-linecap="round"/>
+          </g>
+
+          <!-- step 4: the food on the forest floor -->
+          <g id="food" data-lab="food">
+            <path d="M28 415 q2 -36 26 -36 q24 0 26 36 Z" fill="#8a6a3a" stroke="#5f4826" stroke-width="1.5"/>
+            <g fill="#5f4826">
+              <circle cx="46" cy="398" r="2"/><circle cx="58" cy="404" r="1.8"/>
+              <circle cx="40" cy="408" r="1.6"/><circle cx="54" cy="392" r="1.5"/>
+            </g>
+            <g fill="#1a1a1f">
+              <circle cx="76" cy="412" r="1.8"/><circle cx="84" cy="407" r="1.8"/>
+              <circle cx="92" cy="414" r="1.6"/><circle cx="86" cy="420" r="1.6"/>
+            </g>
+            <circle cx="180" cy="448" r="8" fill="#e85d5d" stroke="#a33b3b" stroke-width="1"/>
+            <path d="M180 440 q4 -6 9 -5" stroke="#3f7a32" stroke-width="2" fill="none"/>
+            <circle cx="200" cy="458" r="6" fill="#f0a03a" stroke="#b5721a" stroke-width="1"/>
+            <ellipse cx="226" cy="444" rx="7" ry="4.5" fill="#2b2830"/>
+            <path d="M220 444 h-4 M232 444 h4 M226 440 v-3" stroke="#2b2830" stroke-width="1.6" stroke-linecap="round"/>
+          </g>
+
+          <!-- step 5: grip marks on the trunk -->
+          <g id="grip" data-lab="climb">
+            <path d="M268 300 l-8 4 M272 316 l-8 3 M276 332 l-8 3 M270 348 l-8 3"
+                  stroke="#e8d7c0" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+          </g>
+
+          <!-- step 6: vulnerable, and how to help -->
+          <g id="protect" data-lab="protect">
+            <path d="M272 96 l34 13 v30 q0 32 -34 47 q-34 -15 -34 -47 v-30 Z"
+                  fill="url(#sbShield)" stroke="#2f5a24" stroke-width="2"/>
+            <text x="272" y="146" text-anchor="middle" font-size="15" font-weight="900" fill="#173a1c">VU</text>
+            <g fill="#173a1c">
+              <circle cx="262" cy="166" r="3"/><circle cx="272" cy="163" r="3"/><circle cx="282" cy="166" r="3"/>
+              <ellipse cx="272" cy="174" rx="6" ry="4.5"/>
+            </g>
+            <path d="M226 118 q-6 -8 2 -12 q4 -2 6 2 q2 -4 6 -2 q8 4 2 12 l-8 8 Z" fill="#ff8fa3" opacity=".85"/>
+            <path d="M324 146 q-5 -7 2 -10 q3 -2 5 2 q2 -4 5 -2 q7 3 2 10 l-7 7 Z" fill="#ff8fa3" opacity=".7"/>
+          </g>
+
+          <!-- labels -->
+          <g id="labels">
+            <g class="lab" id="lBear" data-lab="size patch tongue food protect"><text x="150" y="180" text-anchor="middle" data-i18n="lBear">sun bear</text></g>
+            <g class="lab" data-lab="patch"><text x="212" y="300" data-i18n="lPatch">chest patch</text></g>
+            <g class="lab" data-lab="tongue"><text x="214" y="246" data-i18n="lTongue">tongue</text></g>
+            <g class="lab" data-lab="tongue food"><text x="300" y="336" text-anchor="end" data-i18n="lHoney">honey</text></g>
+            <g class="lab" data-lab="food"><text x="52" y="370" text-anchor="middle" data-i18n="lTermite">termite mound</text></g>
+            <g class="lab" data-lab="climb"><text x="216" y="300" data-i18n="lClaw">claws</text></g>
+            <g class="lab" data-lab="protect"><text x="272" y="210" text-anchor="middle" data-i18n="lVU">vulnerable</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">The sun bear</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="../shared/lesson.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

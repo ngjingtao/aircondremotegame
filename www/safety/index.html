@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="description" content="安全用电：不碰插座、湿手不碰电、不要过载、换掉破损电线，认识接地、漏电保护器和雷雨天的安全做法。" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="安全用电" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>安全用电 · 边玩边学</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="../shared/lesson.css" />
+<link rel="stylesheet" href="safety.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html#machines" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">⚠️</span>
+      <span class="tb-title" data-i18n="title">Electrical Safety</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudStep">Step</span><b id="hud-step">1 / 6</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl" id="ctl">
+
+          <div class="ls-head">
+            <span class="ls-kicker" data-i18n="lead">Electrical safety</span>
+            <span class="ls-count" id="ls-count">1 / 6</span>
+            <button class="ls-read" id="ls-replay" data-action="replay" title="Read again">🔊</button>
+          </div>
+          <div class="ls-track"><i id="ls-bar"></i></div>
+
+          <div class="ls-steps" id="ls-steps"></div>
+
+          <h3 class="ls-title" id="ls-title"></h3>
+          <div class="fact-card ls-fact" id="ls-fact"></div>
+
+          <div class="ls-words" id="ls-words"></div>
+          <div class="ls-worddef" id="ls-worddef" hidden></div>
+
+          <div class="nav-row">
+            <button class="nav-btn" id="ls-back" data-action="prev" data-i18n="back">BACK</button>
+            <button class="nav-btn go" id="ls-next" data-action="next" data-i18n="next">NEXT</button>
+          </div>
+
+          <div class="result" id="ls-result" hidden>
+            <div class="res-stars">★☆☆</div>
+            <p id="ls-result-text"></p>
+            <button class="nav-btn" data-action="again" data-i18n="again">START AGAIN</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="scene">
+
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="lead">Electrical safety</span>
+        <span class="scene-status" id="scene-status" data-i18n="status">Staying safe</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="sfWall" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2a2230"/>
+              <stop offset="100%" stop-color="#141018"/>
+            </linearGradient>
+            <linearGradient id="sfFloor" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a2c1c"/>
+              <stop offset="100%" stop-color="#1c140c"/>
+            </linearGradient>
+          </defs>
+
+          <rect width="340" height="520" fill="url(#sfWall)"/>
+          <rect y="470" width="340" height="50" fill="url(#sfFloor)"/>
+
+          <!-- the socket -->
+          <g id="socketGroup" data-lab="socket">
+            <rect x="30" y="85" width="64" height="50" rx="7" fill="#e8eef6" stroke="#8fa0b4" stroke-width="1.5"/>
+            <rect x="38" y="93" width="48" height="34" rx="4" fill="#f7fafc" stroke="#c8d1dd"/>
+            <circle cx="53" cy="106" r="3.4" fill="#2b3440"/>
+            <circle cx="73" cy="106" r="3.4" fill="#2b3440"/>
+            <path d="M58 119 h10" stroke="#2b3440" stroke-width="2.6" stroke-linecap="round"/>
+            <rect x="30" y="85" width="64" height="6" rx="3" fill="#c8d1dd"/>
+          </g>
+
+          <!-- poking it with a key: never do this -->
+          <g id="poke" data-lab="socket">
+            <rect x="96" y="150" width="8" height="30" rx="2" fill="#c8d1dd" stroke="#8fa0b4"
+                  transform="rotate(-28 100 165)"/>
+            <circle cx="96" cy="145" r="6" fill="#c8d1dd" stroke="#8fa0b4"/>
+            <circle cx="118" cy="128" r="17" fill="none" stroke="#f87171" stroke-width="4"/>
+            <path d="M106 116 L130 140" stroke="#f87171" stroke-width="4" stroke-linecap="round"/>
+          </g>
+
+          <!-- the warning sign -->
+          <g id="sign" data-lab="socket">
+            <path d="M205 84 l34 58 h-68 Z" fill="#ffd166" stroke="#c98a2e" stroke-width="2"/>
+            <path d="M205 102 l-8 18 h7 l-5 14 12 -18 h-7 l6 -14 Z" fill="#3a2a05"/>
+            <text x="205" y="160" text-anchor="middle" font-size="10" font-weight="800" fill="#ffd166">230 V</text>
+          </g>
+
+          <!-- water and a plug -->
+          <g id="waterFx" data-lab="water">
+            <path d="M108 58 h42 v9 h-9 v15 h-9 V67 h-24 Z" fill="#8fa0b4" stroke="#5b6b7d" stroke-width="1"/>
+            <g fill="#8fd0ff">
+              <ellipse cx="142" cy="96" rx="3" ry="5"/><ellipse cx="136" cy="114" rx="3" ry="5"/>
+              <ellipse cx="143" cy="132" rx="3" ry="5"/><ellipse cx="137" cy="150" rx="2.6" ry="4.4"/>
+            </g>
+            <ellipse cx="142" cy="170" rx="38" ry="9" fill="#4aa8de" opacity=".55"/>
+            <rect x="124" y="158" width="24" height="14" rx="3" fill="#e8eef6" stroke="#8fa0b4"
+                  transform="rotate(-10 136 165)"/>
+            <path d="M148 165 q14 4 22 12" stroke="#2b2830" stroke-width="3" fill="none"/>
+          </g>
+
+          <!-- the RCD / fuse box -->
+          <g id="rcd" data-lab="earth">
+            <rect x="245" y="80" width="72" height="84" rx="7" fill="#e8eef6" stroke="#8fa0b4" stroke-width="1.5"/>
+            <rect x="255" y="92" width="52" height="30" rx="3" fill="#c8d1dd"/>
+            <path d="M281 96 v20" stroke="#2b3440" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="281" cy="124" r="6" fill="#f87171" stroke="#b53d3d"/>
+            <path d="M271 138 h20 M271 146 h20" stroke="#8fa0b4" stroke-width="2"/>
+            <path d="M281 164 v10" stroke="#8fa0b4" stroke-width="3"/>
+          </g>
+
+          <!-- extension lead with too much plugged in -->
+          <g id="strip" data-lab="overload">
+            <rect x="25" y="255" width="172" height="46" rx="9" fill="#e8eef6" stroke="#8fa0b4" stroke-width="1.5"/>
+            <g fill="#c8d1dd" stroke="#8fa0b4" stroke-width="1">
+              <rect x="34" y="264" width="24" height="28" rx="3"/><rect x="64" y="264" width="24" height="28" rx="3"/>
+              <rect x="94" y="264" width="24" height="28" rx="3"/><rect x="124" y="264" width="24" height="28" rx="3"/>
+              <rect x="154" y="264" width="34" height="28" rx="3"/>
+            </g>
+            <g fill="#3b4a63">
+              <rect x="36" y="258" width="20" height="10" rx="3"/><rect x="66" y="256" width="20" height="10" rx="3"/>
+              <rect x="96" y="258" width="20" height="10" rx="3"/><rect x="126" y="256" width="20" height="10" rx="3"/>
+            </g>
+            <path d="M46 258 q-14 -18 2 -30 M76 256 q16 -20 0 -34 M106 258 q-12 -22 4 -34 M136 256 q16 -18 0 -30"
+                  fill="none" stroke="#2b2830" stroke-width="3" stroke-linecap="round"/>
+            <path d="M188 278 q22 -10 34 2" fill="none" stroke="#2b2830" stroke-width="3"/>
+            <path d="M40 250 q-8 -10 0 -18 M60 248 q8 -10 0 -18 M80 250 q-8 -10 0 -18"
+                  fill="none" stroke="#f87171" stroke-width="2.6" stroke-linecap="round" opacity=".85"/>
+          </g>
+
+          <!-- appliance on the lead -->
+          <g id="kettle">
+            <path d="M225 262 h48 l-6 52 h-36 Z" fill="#c8d1dd" stroke="#8fa0b4" stroke-width="1.5"/>
+            <path d="M273 270 q16 6 0 20" fill="none" stroke="#8fa0b4" stroke-width="4" stroke-linecap="round"/>
+            <path d="M236 262 q10 -18 26 0" fill="none" stroke="#8fa0b4" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="249" cy="280" r="3" fill="#f87171"/>
+            <path d="M225 290 q-16 -10 -28 -8" fill="none" stroke="#2b2830" stroke-width="3"/>
+          </g>
+
+          <!-- damaged cord -->
+          <g id="cordGroup" data-lab="cord">
+            <path d="M100 350 q34 22 58 36" fill="none" stroke="#2b2830" stroke-width="7" stroke-linecap="round"/>
+            <path d="M198 404 q28 16 40 22" fill="none" stroke="#2b2830" stroke-width="7" stroke-linecap="round"/>
+            <g stroke="#e0a51e" stroke-width="2.4" fill="none" stroke-linecap="round">
+              <path d="M158 384 q14 6 24 10"/>
+              <path d="M160 390 q14 4 24 8"/>
+              <path d="M162 396 q13 2 22 6"/>
+            </g>
+            <rect x="236" y="424" width="18" height="14" rx="3" fill="#2b2830" stroke="#5b6b7d" transform="rotate(18 245 431)"/>
+            <path d="M240 438 l-2 6 M250 441 l-1 6" stroke="#8fa0b4" stroke-width="2"/>
+          </g>
+          <g id="cordBreak" data-lab="cord">
+            <circle cx="174" cy="398" r="16" fill="#ffd166" opacity=".22"/>
+            <g stroke="#ffd166" stroke-width="2.6" stroke-linecap="round">
+              <path d="M162 388 L154 380 M186 408 L194 416 M160 404 L150 408 M190 388 L198 384"/>
+            </g>
+          </g>
+
+          <!-- earth pin and the ground symbol -->
+          <g id="earthFx" data-lab="earth">
+            <rect x="284" y="192" width="42" height="44" rx="6" fill="#e8eef6" stroke="#8fa0b4" stroke-width="1.5"/>
+            <rect x="292" y="200" width="26" height="20" rx="3" fill="#c8d1dd"/>
+            <path d="M300 220 v8 M313 220 v8 M306 220 v8" stroke="#5b6b7d" stroke-width="3" stroke-linecap="round"/>
+            <path d="M305 244 V420" fill="none" stroke="#8ef0b4" stroke-width="3" stroke-dasharray="5 4"/>
+            <path d="M291 420 h28 M296 427 h18 M301 434 h8" stroke="#8ef0b4" stroke-width="3.4" stroke-linecap="round"/>
+          </g>
+
+          <!-- storm and short circuit -->
+          <g id="stormFx" data-lab="storm">
+            <path d="M20 16 l-12 34 h12 l-7 26 22 -36 h-12 l9 -24 Z" fill="#ffd166" opacity=".9"/>
+            <g fill="#9fb3cc" opacity=".55">
+              <circle cx="248" cy="238" r="8"/><circle cx="258" cy="228" r="5"/><circle cx="238" cy="228" r="4"/>
+            </g>
+            <path d="M214 410 l-8 10 l9 -4 l-6 12" fill="none" stroke="#ffd166" stroke-width="3.4" stroke-linecap="round"/>
+            <path d="M204 420 l-10 4 M224 414 l10 -4" stroke="#ffd166" stroke-width="2.4" stroke-linecap="round"/>
+          </g>
+
+          <!-- labels -->
+          <g id="labels">
+            <g class="lab" data-lab="socket"><text x="62" y="152" text-anchor="middle" data-i18n="lSocket">socket</text></g>
+            <g class="lab" data-lab="water"><text x="142" y="208" text-anchor="middle" data-i18n="lWater">water</text></g>
+            <g class="lab" data-lab="overload"><text x="105" y="325" text-anchor="middle" data-i18n="lStrip">extension lead</text></g>
+            <g class="lab" data-lab="cord"><text x="186" y="456" text-anchor="middle" data-i18n="lCord">damaged cord</text></g>
+            <g class="lab" data-lab="earth"><text x="281" y="178" text-anchor="middle" data-i18n="lRcd">RCD</text></g>
+            <g class="lab" data-lab="earth"><text x="334" y="246" text-anchor="end" data-i18n="lEarth">earth</text></g>
+            <g class="lab" data-lab="storm"><text x="56" y="84" data-i18n="lStorm">lightning</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">Staying safe with electricity</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="../shared/lesson.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

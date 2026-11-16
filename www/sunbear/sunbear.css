@@ -1,0 +1,50 @@
+/* ═══════════════════════════════════════════════════════════
+   Sun Bear — the activity's own palette and picture
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ls-paper:#f6fbf2;
+  --ls-paper2:#e8f4e0;
+  --ls-paper3:#d5e8c8;
+  --ls-edge:#c2d9b4;
+  --ls-ink:#2e4024;
+  --ls-dim:#63795a;
+  --ls-accent:#4f9a3c;
+  --ls-accent2:#a8e08a;
+}
+
+#scene{background:linear-gradient(180deg,#0c1a11,#060d08);}
+
+/* one idea at a time */
+#size,#patchFx,#tongueFx,#honey,#food,#protect,#grip{
+  opacity:0;pointer-events:none;
+  transition:opacity .35s ease;
+}
+#art.size #size,
+#art.patch #patchFx,
+#art.tongue #tongueFx,
+#art.tongue #honey,
+#art.food #honey,
+#art.food #food,
+#art.protect #protect,
+#art.climb #grip{opacity:1;}
+
+/* step 5: the bear goes up the trunk */
+#bear{
+  transform-box:fill-box;
+  transform-origin:center;
+  transition:transform .6s cubic-bezier(.3,1.2,.5,1);
+}
+#art.climb #bear{transform:translate(95px,-60px) rotate(-8deg);}
+#art.climb #lBear{opacity:0;}
+
+/* the sun patch breathes while it is the subject */
+#art.patch #chestPatch{animation:sbPatch 1.8s ease-in-out infinite;}
+@keyframes sbPatch{
+  0%,100%{filter:none;}
+  50%{filter:drop-shadow(0 0 7px #ffd166);}
+}
+
+@media (prefers-reduced-motion: reduce){
+  #art.patch #chestPatch{animation:none !important;}
+}

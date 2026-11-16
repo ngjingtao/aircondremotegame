@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="description" content="电的旅行：跟着电流走过电池、电线、开关和灯泡，认识导体和绝缘体，学会安全用电。" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="电的旅行" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>电的旅行 · 边玩边学</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="../shared/lesson.css" />
+<link rel="stylesheet" href="electric.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html#science" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">⚡</span>
+      <span class="tb-title" data-i18n="title">Electricity</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudStep">Step</span><b id="hud-step">1 / 6</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl" id="ctl">
+
+          <div class="ls-head">
+            <span class="ls-kicker" data-i18n="lead">Electricity</span>
+            <span class="ls-count" id="ls-count">1 / 6</span>
+            <button class="ls-read" id="ls-replay" data-action="replay" title="Read again">🔊</button>
+          </div>
+          <div class="ls-track"><i id="ls-bar"></i></div>
+
+          <div class="ls-steps" id="ls-steps"></div>
+
+          <h3 class="ls-title" id="ls-title"></h3>
+          <div class="fact-card ls-fact" id="ls-fact"></div>
+
+          <div class="ls-words" id="ls-words"></div>
+          <div class="ls-worddef" id="ls-worddef" hidden></div>
+
+          <div class="nav-row">
+            <button class="nav-btn" id="ls-back" data-action="prev" data-i18n="back">BACK</button>
+            <button class="nav-btn go" id="ls-next" data-action="next" data-i18n="next">NEXT</button>
+          </div>
+
+          <div class="result" id="ls-result" hidden>
+            <div class="res-stars">★☆☆</div>
+            <p id="ls-result-text"></p>
+            <button class="nav-btn" data-action="again" data-i18n="again">START AGAIN</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="scene">
+
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="lead">Electricity</span>
+        <span class="scene-status" id="scene-status" data-i18n="status">Following the current</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="eWall" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#182a44"/>
+              <stop offset="100%" stop-color="#0b1626"/>
+            </linearGradient>
+            <linearGradient id="eTable" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#7a5632"/>
+              <stop offset="100%" stop-color="#3d2915"/>
+            </linearGradient>
+            <linearGradient id="eMetal" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f7fafc"/>
+              <stop offset="100%" stop-color="#b6c1d0"/>
+            </linearGradient>
+            <linearGradient id="eGlass" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#dff3ff"/>
+              <stop offset="100%" stop-color="#9fd6f5"/>
+            </linearGradient>
+            <radialGradient id="eGlow">
+              <stop offset="0%" stop-color="#fff3b0" stop-opacity=".95"/>
+              <stop offset="55%" stop-color="#ffd166" stop-opacity=".45"/>
+              <stop offset="100%" stop-color="#ffd166" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="eSoft" x="-40%" y="-40%" width="180%" height="180%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0b1220" flood-opacity=".45"/>
+            </filter>
+          </defs>
+
+          <rect width="340" height="520" fill="url(#eWall)"/>
+          <rect y="410" width="340" height="110" fill="url(#eTable)"/>
+          <rect y="410" width="340" height="4" fill="#a0784a" opacity=".5"/>
+
+          <!-- wall socket, the safety step -->
+          <g class="part" data-lab="safe" id="socket">
+            <rect x="244" y="24" width="70" height="58" rx="9" fill="#e8eef6" stroke="#aeb9c9" stroke-width="1.5"/>
+            <circle cx="264" cy="47" r="4.2" fill="#2b3a4a"/>
+            <circle cx="286" cy="47" r="4.2" fill="#2b3a4a"/>
+            <rect x="260" y="60" width="34" height="7" rx="3.5" fill="#c8d1dd"/>
+            <path class="bolt" d="M279 8 l-10 18 h9 l-6 15 16 -20 h-9 l7 -13 Z" fill="#ffd166"/>
+          </g>
+
+          <!-- the loop: battery -> switch -> bulb -> back -->
+          <g class="part" data-lab="loop" id="loop">
+            <path d="M100 340 V150 H160" fill="none" stroke="#c8d1dd" stroke-width="10" stroke-linecap="round"/>
+            <path d="M210 150 H270 V210" fill="none" stroke="#c8d1dd" stroke-width="10" stroke-linecap="round"/>
+            <path d="M270 262 V330 H60 V340" fill="none" stroke="#c8d1dd" stroke-width="10" stroke-linecap="round"/>
+            <path d="M100 340 V150 H160" fill="none" stroke="#8a97a8" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M210 150 H270 V210" fill="none" stroke="#8a97a8" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M270 262 V330 H60 V340" fill="none" stroke="#8a97a8" stroke-width="3.5" stroke-linecap="round"/>
+            <path class="flow" d="M100 340 V150 H160 M210 150 H270 V210 M270 262 V330 H60 V340 M160 150 H210"
+                  fill="none" stroke="#8fd0ff" stroke-width="5" stroke-linecap="round"
+                  stroke-dasharray="5 13"/>
+          </g>
+
+          <!-- battery -->
+          <g class="part" data-lab="battery" id="battery">
+            <rect x="40" y="340" width="80" height="56" rx="8" fill="url(#eMetal)" stroke="#8b98a8" stroke-width="1.5" filter="url(#eSoft)"/>
+            <rect x="42" y="358" width="76" height="18" fill="#f0a03a" opacity=".9"/>
+            <text x="80" y="371" text-anchor="middle" font-size="11" font-weight="800" fill="#3a2405"
+                  font-family="-apple-system,Segoe UI,sans-serif">1.5 V</text>
+            <rect x="56" y="334" width="8" height="7" rx="2" fill="#c8d1dd"/>
+            <rect x="96" y="334" width="8" height="7" rx="2" fill="#c8d1dd"/>
+            <text x="60" y="331" text-anchor="middle" font-size="10" font-weight="800" fill="#8fd0ff">−</text>
+            <text x="100" y="331" text-anchor="middle" font-size="10" font-weight="800" fill="#ffd166">+</text>
+          </g>
+
+          <!-- switch -->
+          <g class="part" data-lab="switch" id="switch">
+            <rect x="152" y="142" width="10" height="16" rx="3" fill="#c8d1dd"/>
+            <rect x="208" y="142" width="10" height="16" rx="3" fill="#c8d1dd"/>
+            <g id="switch-arm-open"><path d="M160 150 L198 124" stroke="#ffd166" stroke-width="5" stroke-linecap="round"/></g>
+            <g id="switch-arm-closed"><path d="M160 150 L210 150" stroke="#ffd166" stroke-width="5" stroke-linecap="round"/></g>
+            <circle cx="160" cy="150" r="3.2" fill="#ffe9a8"/>
+            <circle cx="210" cy="150" r="3.2" fill="#ffe9a8"/>
+          </g>
+
+          <!-- bulb -->
+          <g class="part" data-lab="bulb" id="bulb">
+            <circle id="bulb-glow" cx="270" cy="236" r="54" fill="url(#eGlow)" opacity="0"/>
+            <path d="M262 256 h16 v10 h-16 Z" fill="url(#eMetal)" stroke="#8b98a8" stroke-width="1"/>
+            <circle id="bulb-glass" cx="270" cy="236" r="26" fill="url(#eGlass)" opacity=".85" stroke="#dff3ff" stroke-width="2"/>
+            <path id="filament" d="M262 242 q4 -14 8 0 q4 14 8 0" fill="none" stroke="#8a97a8" stroke-width="2.2" stroke-linecap="round"/>
+          </g>
+
+          <!-- conductors and insulators, on the table -->
+          <g class="part" data-lab="conductors" id="tray">
+            <rect x="196" y="424" width="130" height="68" rx="10" fill="#25344a" stroke="#3b4d68" stroke-width="1.5"/>
+            <path d="M208 438 h18 v4 h-18 Z" fill="url(#eMetal)"/>
+            <path d="M210 442 v20 l4 6 4 -6 v-20 Z" fill="url(#eMetal)"/>
+            <path d="M240 438 q12 -6 12 6 q0 10 -12 10 q-8 0 -8 -8 q0 -6 8 -6 q6 0 6 6 q0 5 -6 5"
+                  fill="none" stroke="#c8d1dd" stroke-width="2.4" stroke-linecap="round"/>
+            <rect x="270" y="438" width="20" height="34" rx="5" fill="#e88fa0" stroke="#b56a7a"/>
+            <rect x="298" y="444" width="20" height="28" rx="3" fill="#8a6a3a" stroke="#5f4826"/>
+            <text x="228" y="486" text-anchor="middle" font-size="7.5" fill="#9fb3cc" data-i18n="lConductor">导体</text>
+            <text x="304" y="486" text-anchor="middle" font-size="7.5" fill="#9fb3cc" data-i18n="lInsulator">绝缘体</text>
+          </g>
+
+          <!-- labels -->
+          <g id="labels">
+            <g class="lab" data-lab="battery"><text x="80" y="412" text-anchor="middle" data-i18n="lBattery">电池</text></g>
+            <g class="lab" data-lab="switch"><text x="185" y="106" text-anchor="middle" data-i18n="lSwitch">开关</text></g>
+            <g class="lab" data-lab="bulb"><text x="300" y="198" text-anchor="end" data-i18n="lBulb">灯泡</text></g>
+            <g class="lab" data-lab="loop"><text x="236" y="140" text-anchor="middle" data-i18n="lWire">电线</text></g>
+            <g class="lab" data-lab="safe"><text x="279" y="100" text-anchor="middle" data-i18n="lDanger">危险</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">Electricity</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="../shared/lesson.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

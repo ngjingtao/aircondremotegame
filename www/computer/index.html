@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="description" content="电脑：跟着数据从键盘出发，经过处理器、内存和硬盘，再从屏幕输出，认识程序与二进制。" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="电脑" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>电脑 · 边玩边学</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="../shared/lesson.css" />
+<link rel="stylesheet" href="computer.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html#machines" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">💻</span>
+      <span class="tb-title" data-i18n="title">Computer</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudStep">Step</span><b id="hud-step">1 / 6</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl" id="ctl">
+
+          <div class="ls-head">
+            <span class="ls-kicker" data-i18n="lead">Computer</span>
+            <span class="ls-count" id="ls-count">1 / 6</span>
+            <button class="ls-read" id="ls-replay" data-action="replay" title="Read again">🔊</button>
+          </div>
+          <div class="ls-track"><i id="ls-bar"></i></div>
+
+          <div class="ls-steps" id="ls-steps"></div>
+
+          <h3 class="ls-title" id="ls-title"></h3>
+          <div class="fact-card ls-fact" id="ls-fact"></div>
+
+          <div class="ls-words" id="ls-words"></div>
+          <div class="ls-worddef" id="ls-worddef" hidden></div>
+
+          <div class="nav-row">
+            <button class="nav-btn" id="ls-back" data-action="prev" data-i18n="back">BACK</button>
+            <button class="nav-btn go" id="ls-next" data-action="next" data-i18n="next">NEXT</button>
+          </div>
+
+          <div class="result" id="ls-result" hidden>
+            <div class="res-stars">★☆☆</div>
+            <p id="ls-result-text"></p>
+            <button class="nav-btn" data-action="again" data-i18n="again">START AGAIN</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="scene">
+
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="lead">Computer</span>
+        <span class="scene-status" id="scene-status" data-i18n="status">Following the data</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="pcSky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#182233"/>
+              <stop offset="100%" stop-color="#0a1018"/>
+            </linearGradient>
+            <linearGradient id="pcScreen" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1b4a6b"/>
+              <stop offset="100%" stop-color="#0d2233"/>
+            </linearGradient>
+            <radialGradient id="pcGlow">
+              <stop offset="0%" stop-color="#8fd0ff" stop-opacity=".55"/>
+              <stop offset="100%" stop-color="#8fd0ff" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <rect width="340" height="520" fill="url(#pcSky)"/>
+
+          <!-- the laptop screen -->
+          <g id="screen" data-lab="output">
+            <rect x="45" y="40" width="250" height="160" rx="10" fill="#1b2430" stroke="#3b4d68" stroke-width="2"/>
+            <rect x="55" y="50" width="230" height="140" rx="5" fill="url(#pcScreen)"/>
+            <circle cx="92" cy="82" r="13" fill="#ffd166"/>
+            <path d="M55 168 q46 -46 86 -12 q38 -40 78 -4 q32 -22 66 12 V190 H55 Z" fill="#2f6a4a" opacity=".75"/>
+            <rect x="70" y="100" width="78" height="46" rx="4" fill="#0b1220" opacity=".55" stroke="#8fd0ff" stroke-width="1"/>
+            <rect x="76" y="107" width="26" height="3" fill="#8fd0ff"/>
+            <rect x="76" y="114" width="56" height="2.4" fill="#5f8fb0"/>
+            <rect x="76" y="120" width="48" height="2.4" fill="#5f8fb0"/>
+            <rect x="76" y="126" width="60" height="2.4" fill="#5f8fb0"/>
+            <rect x="76" y="132" width="34" height="2.4" fill="#5f8fb0"/>
+            <rect x="160" y="88" width="92" height="58" rx="4" fill="#0b1220" opacity=".42" stroke="#8fd0ff" stroke-width="1"/>
+            <rect x="167" y="95" width="34" height="3" fill="#8ef0b4"/>
+            <rect x="167" y="102" width="64" height="2.2" fill="#5f8fb0"/>
+            <rect x="167" y="108" width="52" height="2.2" fill="#5f8fb0"/>
+            <rect x="55" y="176" width="230" height="14" fill="#0b1220" opacity=".55"/>
+            <circle cx="66" cy="183" r="3" fill="#8fd0ff"/>
+            <rect x="236" y="180" width="40" height="6" rx="3" fill="#2b3440"/>
+          </g>
+
+          <!-- keyboard and base -->
+          <g id="keyboard" data-lab="input">
+            <rect x="35" y="200" width="270" height="20" rx="8" fill="#2b3440" stroke="#3b4d68" stroke-width="1.5"/>
+            <rect x="45" y="220" width="250" height="62" rx="6" fill="#202834" stroke="#3b4d68" stroke-width="1.5"/>
+            <g fill="#3b4d68">
+              <rect x="54" y="226" width="16" height="8" rx="1.5"/><rect x="74" y="226" width="16" height="8" rx="1.5"/><rect x="94" y="226" width="16" height="8" rx="1.5"/><rect x="114" y="226" width="16" height="8" rx="1.5"/><rect x="134" y="226" width="16" height="8" rx="1.5"/><rect x="154" y="226" width="16" height="8" rx="1.5"/><rect x="174" y="226" width="16" height="8" rx="1.5"/><rect x="194" y="226" width="16" height="8" rx="1.5"/><rect x="214" y="226" width="16" height="8" rx="1.5"/><rect x="234" y="226" width="16" height="8" rx="1.5"/><rect x="254" y="226" width="32" height="8" rx="1.5"/>
+              <rect x="54" y="238" width="22" height="8" rx="1.5"/><rect x="80" y="238" width="16" height="8" rx="1.5"/><rect x="100" y="238" width="16" height="8" rx="1.5"/><rect x="120" y="238" width="16" height="8" rx="1.5"/><rect x="140" y="238" width="16" height="8" rx="1.5"/><rect x="160" y="238" width="16" height="8" rx="1.5"/><rect x="180" y="238" width="16" height="8" rx="1.5"/><rect x="200" y="238" width="16" height="8" rx="1.5"/><rect x="220" y="238" width="16" height="8" rx="1.5"/><rect x="240" y="238" width="16" height="8" rx="1.5"/><rect x="260" y="238" width="26" height="8" rx="1.5"/>
+              <rect x="54" y="250" width="26" height="8" rx="1.5"/><rect x="84" y="250" width="16" height="8" rx="1.5"/><rect x="104" y="250" width="16" height="8" rx="1.5"/><rect x="124" y="250" width="16" height="8" rx="1.5"/><rect x="144" y="250" width="16" height="8" rx="1.5"/><rect x="164" y="250" width="16" height="8" rx="1.5"/><rect x="184" y="250" width="16" height="8" rx="1.5"/><rect x="204" y="250" width="16" height="8" rx="1.5"/><rect x="224" y="250" width="16" height="8" rx="1.5"/><rect x="244" y="250" width="42" height="8" rx="1.5"/>
+            </g>
+            <rect x="140" y="262" width="60" height="14" rx="3" fill="#2b3440" stroke="#3b4d68" stroke-width="1"/>
+            <ellipse cx="318" cy="250" rx="11" ry="16" fill="#2b3440" stroke="#3b4d68" stroke-width="1.5"/>
+            <path d="M318 240 v8" stroke="#8fa0b4" stroke-width="2" stroke-linecap="round"/>
+          </g>
+
+          <!-- inside the computer -->
+          <g id="board">
+            <rect x="20" y="315" width="300" height="175" rx="12" fill="#10241c" stroke="#2f5a44" stroke-width="1.5"/>
+            <path d="M30 330 H310 M30 395 H310" stroke="#1d3a2c" stroke-width="1"/>
+
+            <g id="cpu" data-lab="cpu program">
+              <rect x="55" y="345" width="58" height="58" rx="6" fill="#c8d1dd" stroke="#8fa0b4" stroke-width="1.5"/>
+              <rect x="64" y="354" width="40" height="40" rx="3" fill="#e0a51e" opacity=".85"/>
+              <path d="M64 364 h40 M64 374 h40 M64 384 h40 M74 354 v40 M84 354 v40 M94 354 v40" stroke="#8a5a10" stroke-width="1" opacity=".7"/>
+            </g>
+
+            <g id="ram" data-lab="ram">
+              <rect x="135" y="340" width="82" height="14" rx="3" fill="#3f9fd8" stroke="#2b6f9a" stroke-width="1"/>
+              <rect x="135" y="360" width="82" height="14" rx="3" fill="#3f9fd8" stroke="#2b6f9a" stroke-width="1"/>
+              <path d="M140 344 v6 M148 344 v6 M156 344 v6 M164 344 v6 M172 344 v6 M180 344 v6 M188 344 v6 M196 344 v6 M204 344 v6" stroke="#1b4a6b" stroke-width="1"/>
+              <path d="M140 364 v6 M148 364 v6 M156 364 v6 M164 364 v6 M172 364 v6 M180 364 v6 M188 364 v6 M196 364 v6 M204 364 v6" stroke="#1b4a6b" stroke-width="1"/>
+            </g>
+
+            <g id="ssd" data-lab="storage">
+              <rect x="240" y="340" width="62" height="42" rx="5" fill="#2b3440" stroke="#8fa0b4" stroke-width="1.5"/>
+              <rect x="248" y="348" width="46" height="9" rx="2" fill="#8fd0ff"/>
+              <rect x="248" y="362" width="24" height="4" rx="2" fill="#5f8fb0"/>
+              <circle cx="292" cy="373" r="3" fill="#8ef0b4"/>
+            </g>
+
+            <circle cx="78" cy="443" r="22" fill="#1b2430" stroke="#3b4d68" stroke-width="1.5"/>
+            <g fill="#3b4d68">
+              <ellipse cx="78" cy="436" rx="4" ry="10"/><ellipse cx="78" cy="450" rx="4" ry="10"/>
+              <ellipse cx="71" cy="443" rx="10" ry="4"/><ellipse cx="85" cy="443" rx="10" ry="4"/>
+            </g>
+            <circle cx="78" cy="443" r="3" fill="#8fa0b4"/>
+            <rect x="120" y="430" width="100" height="26" rx="6" fill="#2b3440" stroke="#3b4d68" stroke-width="1.5"/>
+            <path d="M128 443 h12" stroke="#8ef0b4" stroke-width="2" stroke-linecap="round"/>
+            <rect x="232" y="430" width="64" height="26" rx="6" fill="#2b3440" stroke="#3b4d68" stroke-width="1.5"/>
+            <circle cx="246" cy="443" r="4" fill="#ffd166"/><circle cx="260" cy="443" r="4" fill="#8fd0ff"/>
+          </g>
+
+          <!-- data paths, one job at a time -->
+          <g id="pInput" data-lab="input" fill="none" stroke="#8fd0ff" stroke-width="2.4" stroke-dasharray="6 5">
+            <path d="M180 282 V318 H80 V345"/>
+            <path d="M174 292 L180 282 L186 292" stroke-linejoin="round"/>
+          </g>
+          <g id="pCpu" data-lab="cpu program" fill="none" stroke="#ffd166" stroke-width="2.2">
+            <circle cx="84" cy="374" r="46" fill="url(#pcGlow)" stroke="none" opacity=".6"/>
+          </g>
+          <g id="pRam" data-lab="ram" fill="none" stroke="#8fd0ff" stroke-width="2.4" stroke-dasharray="6 5">
+            <path d="M113 370 H135"/>
+            <path d="M127 364 L135 370 L127 376" stroke-linejoin="round"/>
+          </g>
+          <g id="pStore" data-lab="storage" fill="none" stroke="#8fd0ff" stroke-width="2.4" stroke-dasharray="6 5">
+            <path d="M113 382 H230 V366 H240"/>
+            <path d="M232 360 L240 366 L232 372" stroke-linejoin="round"/>
+            <rect x="150" y="405" width="18" height="22" rx="2" fill="#8fd0ff" opacity=".25" stroke="#8fd0ff"/>
+          </g>
+          <g id="pOut" data-lab="output" fill="none" stroke="#8ef0b4" stroke-width="2.4" stroke-dasharray="6 5">
+            <path d="M84 345 V300 H170 V200"/>
+            <path d="M164 208 L170 200 L176 208" stroke-linejoin="round"/>
+          </g>
+          <g id="binary" data-lab="program">
+            <text x="170" y="476" text-anchor="middle" font-family="monospace" font-size="15" font-weight="700" fill="#8ef0b4" opacity=".9">0101 1010 0110 1001</text>
+            <circle cx="84" cy="374" r="52" fill="none" stroke="#8ef0b4" stroke-width="1.5" stroke-dasharray="4 5" opacity=".8"/>
+          </g>
+
+          <!-- labels -->
+          <g id="labels">
+            <g class="lab" data-lab="output"><text x="170" y="30" text-anchor="middle" data-i18n="lScreen">screen</text></g>
+            <g class="lab" data-lab="input"><text x="170" y="300" text-anchor="middle" data-i18n="lKeyboard">keyboard</text></g>
+            <g class="lab" data-lab="cpu program"><text x="84" y="334" text-anchor="middle" data-i18n="lCpu">CPU</text></g>
+            <g class="lab" data-lab="ram"><text x="176" y="334" text-anchor="middle" data-i18n="lRam">RAM</text></g>
+            <g class="lab" data-lab="storage"><text x="271" y="398" text-anchor="middle" data-i18n="lSsd">SSD</text></g>
+            <g class="lab" data-lab="input"><text x="318" y="224" text-anchor="middle" data-i18n="lInput">input</text></g>
+            <g class="lab" data-lab="program"><text x="170" y="460" text-anchor="middle" data-i18n="lBinary">0 and 1</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">What is inside a computer</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="../shared/lesson.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

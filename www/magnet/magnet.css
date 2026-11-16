@@ -1,0 +1,45 @@
+/* ═══════════════════════════════════════════════════════════
+   Magnets — the activity's own palette and picture
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ls-paper:#fdf8ef;
+  --ls-paper2:#f6ecda;
+  --ls-paper3:#eadbc2;
+  --ls-edge:#dcc8a8;
+  --ls-ink:#4a3a24;
+  --ls-dim:#7d6a4f;
+  --ls-accent:#c98a2e;
+  --ls-accent2:#f0c06a;
+}
+
+#scene{background:linear-gradient(180deg,#1b1710,#0d0b08);}
+
+/* each step brings forward only the diagram it talks about */
+#pairs,#field,#chain,#compass,#poleRings{
+  opacity:0;pointer-events:none;
+  transition:opacity .35s ease;
+}
+#art.pairs #pairs,
+#art.field #field,
+#art.chain #chain,
+#art.compass #compass,
+#art.poles #poleRings{opacity:1;}
+
+/* a magnet lifts the iron things off the shelf */
+#ironObjects{transition:transform .55s cubic-bezier(.3,1.2,.5,1);}
+#art.attract #ironObjects{transform:translateY(-34px);}
+
+/* the poles breathe while step 2 is being read */
+#art.poles #poleRings circle{animation:mRing 1.6s ease-in-out infinite;}
+@keyframes mRing{0%,100%{opacity:.45;}50%{opacity:1;}}
+
+/* the compass needle settles towards north */
+#needle{transform-box:fill-box;transform-origin:center;}
+#art.compass #needle{animation:mNeedle 3s ease-in-out infinite;}
+@keyframes mNeedle{0%,100%{transform:rotate(-7deg);}50%{transform:rotate(7deg);}}
+
+@media (prefers-reduced-motion: reduce){
+  #art.poles #poleRings circle,
+  #art.compass #needle{animation:none !important;}
+}

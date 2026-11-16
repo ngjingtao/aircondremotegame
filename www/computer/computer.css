@@ -1,0 +1,46 @@
+/* ═══════════════════════════════════════════════════════════
+   Computer — the activity's own palette and picture
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ls-paper:#eef7fb;
+  --ls-paper2:#e0eff7;
+  --ls-paper3:#cbe2ef;
+  --ls-edge:#b5d3e3;
+  --ls-ink:#244050;
+  --ls-dim:#5c7a8a;
+  --ls-accent:#2f7fb8;
+  --ls-accent2:#7fc4f5;
+}
+
+#scene{background:linear-gradient(180deg,#101a2b,#070c14);}
+
+/* each step shows only its own data path */
+#pInput,#pCpu,#pRam,#pStore,#pOut,#binary{opacity:0;transition:opacity .35s;}
+#art.input #pInput{opacity:1;}
+#art.cpu #pCpu{opacity:1;}
+#art.ram #pRam{opacity:1;}
+#art.storage #pStore{opacity:1;}
+#art.output #pOut{opacity:1;}
+#art.program #binary{opacity:1;}
+
+/* current flowing along the path */
+#art.input #pInput path:first-child,
+#art.ram #pRam path:first-child,
+#art.storage #pStore path:first-child,
+#art.output #pOut path:first-child{
+  animation:pcDash 1.1s linear infinite;
+}
+@keyframes pcDash{to{stroke-dashoffset:-22;}}
+
+/* the screen comes alive at the output step */
+#art.output #screen{filter:drop-shadow(0 0 12px rgba(143,208,255,.55));}
+
+/* the processor pulses while it is the subject */
+#art.cpu #cpu,#art.program #cpu{animation:pcCpu 1.6s ease-in-out infinite;}
+@keyframes pcCpu{0%,100%{filter:none;}50%{filter:drop-shadow(0 0 9px #ffd166);}}
+
+@media (prefers-reduced-motion: reduce){
+  #art.input #pInput path,#art.ram #pRam path,#art.storage #pStore path,#art.output #pOut path,
+  #art.cpu #cpu,#art.program #cpu{animation:none !important;}
+}

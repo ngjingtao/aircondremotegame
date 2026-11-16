@@ -349,7 +349,15 @@ const PAGES = [
   { dir: 'waterhome', name: 'Water at Home' },
   { dir: 'cycle', name: 'Water Cycle' },
   { dir: 'weather', name: 'Weather Station' },
-  { dir: 'engine', name: 'How a Car Engine Works' }
+  { dir: 'engine', name: 'How a Car Engine Works' },
+  { dir: 'electric', name: 'Electricity', loop: false },
+  { dir: 'magnet', name: 'Magnets', loop: false },
+  { dir: 'light', name: 'Light & Shadow', loop: false },
+  { dir: 'sunbear', name: 'Sun Bear', loop: false },
+  { dir: 'speaker', name: 'Speaker', loop: false },
+  { dir: 'computer', name: 'Computer', loop: false },
+  { dir: 'power', name: 'Power Journey', loop: false },
+  { dir: 'safety', name: 'Electrical Safety', loop: false }
 ];
 
 console.log('\n— Every page boots —');
@@ -951,27 +959,27 @@ console.log('\n— Home tiles —');
 {
   const html = fs.readFileSync(path.join(WWW, 'index.html'), 'utf8');
 
-  const tiles = html.match(/class="tile tile-[a-z]+"/g) || [];
-  eq('the home screen has fifteen tiles', tiles.length, 15);
+  const tiles = html.match(/class="tile tile-[a-z]+(?: [^"]*)?"/g) || [];
+  eq('the home screen has twenty-three tiles', tiles.length, 23);
 
   /* level-1 groups make the larger collection navigable */
   const groupBlocks = html.match(/<section class="group"[\s\S]*?<\/section>/g) || [];
-  eq('the home screen has five groups', groupBlocks.length, 5);
+  eq('the home screen has seven groups', groupBlocks.length, 7);
   const groupCounts = groupBlocks.map(b => (b.match(/class="tile tile-/g) || []).length);
-  eq('  → grouped 3 / 3 / 3 / 3 / 3', groupCounts.join(','), '3,3,3,3,3');
+  eq('  → grouped 3 / 3 / 3 / 3 / 3 / 4 / 4', groupCounts.join(','), '3,3,3,3,3,4,4');
   const groupKeys = groupBlocks.map(b => (b.match(/data-group="([^"]+)"/) || [])[1]);
-  eq('  → home, kitchen, water, nature, body',
-     groupKeys.join(','), 'home,kitchen,water,nature,body');
-  eq('  → every group has a heading', (html.match(/class="group-title"/g) || []).length, 5);
+  eq('  → home, kitchen, water, nature, body, science, machines',
+     groupKeys.join(','), 'home,kitchen,water,nature,body,science,machines');
+  eq('  → every group has a heading', (html.match(/class="group-title"/g) || []).length, 7);
 
   const svgs = html.match(/class="tile-svg"[^>]*viewBox="([^"]+)"/g) || [];
-  eq('every tile is an illustration, not a stack of spans', svgs.length, 15);
+  eq('every tile is an illustration, not a stack of spans', svgs.length, 23);
   eq('  → all on one 96×96 canvas', svgs.every(s => /viewBox="0 0 96 96"/.test(s)), true);
 
   /* three depth layers — the parallax and the idle drift both count on them */
   const layer = n => (html.match(new RegExp('class="tl ' + n + '"', 'g')) || []).length;
   eq('every scene has a back, mid and front layer',
-     layer('back') === 15 && layer('mid') === 15 && layer('front') === 15, true);
+     layer('back') === 23 && layer('mid') === 23 && layer('front') === 23, true);
 
   /* the tile illustrations use one shared palette. Every paint a shape asks for
      has to exist, or the shape silently renders black — and a paint nobody uses
@@ -996,6 +1004,44 @@ console.log('\n— Home tiles —');
 }
 
 /* ─────────── phone and iPad layouts ─────────── */
+/* ─────────── the two-level menu ─────────── */
+console.log('\n— The two-level menu —');
+{
+  const html = fs.readFileSync(path.join(WWW, 'index.html'), 'utf8');
+  const homeJs = fs.readFileSync(path.join(WWW, 'home.js'), 'utf8');
+  const homeCss = fs.readFileSync(path.join(WWW, 'home.css'), 'utf8');
+
+  eq('the home has a topic grid', /id="cat-grid"/.test(html), true);
+  eq('  → and a back button', /id="cat-back"/.test(html), true);
+  eq('  → the activity groups start hidden',
+     /<div class="groups" id="groups" hidden>/.test(html), true);
+  eq('the topics are built from the groups', /function buildCategories/.test(homeJs), true);
+  eq('  → with a route for deep links',
+     /function renderRoute/.test(homeJs) && /history\.pushState/.test(homeJs), true);
+  eq('  → and a description for every topic',
+     (homeJs.match(/cat[A-Z][a-zA-Z]+Desc:/g) || []).length >= 14, true);
+  eq('the group headings are not repeated',
+     /#groups \.group-title\{display:none;\}/.test(homeCss), true);
+  eq('the newest topic spans the full row',
+     /\.cat-card\[data-cat="machines"\]\{grid-column:1\/-1;\}/.test(homeCss), true);
+
+  /* every activity's Menu button must land on its own topic */
+  const topicOf = {
+    aircond: 'home', aircare: 'home', laundry: 'home',
+    food: 'kitchen', sandwich: 'kitchen', hood: 'kitchen',
+    waterhome: 'water', toilet: 'water', indah: 'water',
+    tree: 'nature', cycle: 'nature', weather: 'nature',
+    breath: 'body', train: 'body', engine: 'body',
+    electric: 'science', magnet: 'science', light: 'science', sunbear: 'science',
+    speaker: 'machines', computer: 'machines', power: 'machines', safety: 'machines'
+  };
+  const wrong = Object.keys(topicOf).filter(function (dir) {
+    const page = fs.readFileSync(path.join(WWW, dir, 'index.html'), 'utf8');
+    return page.indexOf('href="../index.html#' + topicOf[dir] + '"') < 0;
+  });
+  eq('every activity Menu button returns to its topic', wrong.join(' ') || 'none', 'none');
+}
+
 console.log('\n— Phone and iPad layouts —');
 {
   const ui = fs.readFileSync(path.join(WWW, 'shared', 'ui.css'), 'utf8');
@@ -1029,7 +1075,8 @@ console.log('\n— Phone and iPad layouts —');
      /MutationObserver\(queueFit\)/.test(shell), true);
 
   const panelPages = ['aircond', 'aircare', 'breath', 'cycle', 'engine', 'food', 'hood',
-    'indah', 'laundry', 'sandwich', 'toilet', 'tree', 'waterhome', 'weather'];
+    'indah', 'laundry', 'sandwich', 'toilet', 'tree', 'waterhome', 'weather',
+    'electric', 'magnet', 'light', 'sunbear', 'speaker', 'computer', 'power', 'safety'];
   const missing = panelPages.filter(p => {
     const js = fs.readFileSync(path.join(WWW, p, 'js', 'main.js'), 'utf8');
     return !/ARG\.shell\.isStacked\(\)/.test(js) || !/ARG\.shell\.stackPanel\(/.test(js);
@@ -1043,13 +1090,20 @@ console.log('\n— Phone and iPad layouts —');
      /:last-child:nth-child\(odd\)/.test(homeCss), false);
   eq('  → and the sticker book fits four across on a phone',
      /minmax\(70px,1fr\)/.test(homeCss), true);
+
+  /* the two four-lesson groups are 2 × 2 on a phone, 4 across on a tablet */
+  eq('the four-lesson groups are 2 × 2 on a phone',
+     /\.group\[data-group="science"\] \.tiles,[\s\S]*?grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/.test(homeCss), true);
+  eq('  → and four across on a tablet',
+     /\.group\[data-group="science"\] \.tiles,[\s\S]*?grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/.test(homeCss), true);
 }
 
 /* ─────────── metadata, safety notes and accessible names ─────────── */
 console.log('\n— Metadata, safety and accessible names —');
 {
   const pages = ['.', 'aircond', 'aircare', 'breath', 'cycle', 'engine', 'food', 'hood',
-    'indah', 'laundry', 'sandwich', 'toilet', 'tree', 'waterhome', 'weather', 'train'];
+    'indah', 'laundry', 'sandwich', 'toilet', 'tree', 'waterhome', 'weather', 'train',
+    'electric', 'magnet', 'light', 'sunbear', 'speaker', 'computer', 'power', 'safety'];
   const htmlOf = p => fs.readFileSync(path.join(WWW, p, 'index.html'), 'utf8');
 
   const noDesc = pages.filter(p => !/name="description"\s+content="[^"]+"/.test(htmlOf(p)));
@@ -1100,7 +1154,71 @@ console.log('\n— Sticker book on the home screen —');
 
   const p = boot('.');
   if (p.bootError) bad('home — boots', p.bootError);
-  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 20');
+  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 28');
+}
+
+/* ─────────── the science lab: steps, words and reading ─────────── */
+console.log('\n— Science and machines: eight step-by-step lessons —');
+{
+  const lessons = [
+    { dir: 'electric', sticker: 'electric',
+      labs: ['battery', 'loop', 'switch', 'bulb', 'conductors', 'safe'] },
+    { dir: 'magnet', sticker: 'magnet',
+      labs: ['attract', 'poles', 'pairs', 'field', 'chain', 'compass'] },
+    { dir: 'light', sticker: 'light',
+      labs: ['sources', 'straight', 'shadow', 'near', 'mirror', 'refract'] },
+    { dir: 'sunbear', sticker: 'sunbear',
+      labs: ['size', 'patch', 'tongue', 'food', 'climb', 'protect'] },
+    { dir: 'speaker', sticker: 'speaker',
+      labs: ['speaker', 'motor', 'signal', 'cone', 'pitch', 'volume'] },
+    { dir: 'computer', sticker: 'computer',
+      labs: ['input', 'cpu', 'ram', 'storage', 'output', 'program'] },
+    { dir: 'power', sticker: 'power',
+      labs: ['plant', 'stepup', 'grid', 'sub', 'meter', 'socket'] },
+    { dir: 'safety', sticker: 'safety',
+      labs: ['socket', 'water', 'overload', 'cord', 'earth', 'storm'] }
+  ];
+
+  const lessonJs = fs.readFileSync(path.join(WWW, 'shared', 'lesson.js'), 'utf8');
+  eq('the lesson engine reads the sentence aloud with the word highlight',
+     /speakIn\(els\.fact/.test(lessonJs), true);
+  eq('  → and a key word can be tapped to hear it',
+     /data-action="word"/.test(lessonJs) && /function sayWord/.test(lessonJs), true);
+  eq('  → a step is read as soon as it opens',
+     /if \(!opts\.silent\) speakStep\(\)/.test(lessonJs), true);
+
+  for (const L of lessons) {
+    const p = boot(L.dir);
+    if (p.bootError) { bad(L.dir + ' — boots', p.bootError); continue; }
+
+    eq(L.dir + ' has six lesson steps', p.ARG.lesson.total, 6);
+
+    /* every step must be teachable: a title, a sentence and key words */
+    const thin = p.ARG.sim.STEPS.filter(s => !s.title || !s.fact || !(s.words || []).length);
+    eq('  → every step has a title, a sentence and words', thin.length, 0);
+
+    /* the part the step points at must exist in the page */
+    const html = fs.readFileSync(path.join(WWW, L.dir, 'index.html'), 'utf8');
+    const labSet = new Set();
+    let mm;
+    const labRe = /data-lab="([^"]+)"/g;
+    while ((mm = labRe.exec(html))) String(mm[1]).split(/\s+/).forEach(k => labSet.add(k));
+    const missing = L.labs.filter(k => !labSet.has(k));
+    eq('  → every step has a part to light up', missing.join(' ') || 'none', 'none');
+
+    /* tapping NEXT through all six steps completes the lesson and pays the sticker */
+    for (let i = 0; i < 5; i++) p.ARG.lesson.press('next');
+    eq('  → the last step marks the lesson complete', p.ARG.sim.s.seenAll, true);
+    eq('  → and pays its sticker', p.ARG.progress.starsOf(L.sticker), 1);
+
+    /* restarting must return to step one and clear the completion */
+    p.ARG.lesson.restart();
+    eq('  → start again returns to the first step', p.ARG.sim.s.step, 0);
+    eq('  → and clears the completion', p.ARG.sim.s.seenAll, false);
+
+    if (p.errors.length) bad(L.dir + ' — no errors while stepping', p.errors[0]);
+    else ok(L.dir + ' — no errors while stepping');
+  }
 }
 
 /* ─────────── report ─────────── */

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="description" content="光和影子：认识光源、光走直线、影子怎么来、影子为什么会变大，还有反射和折射。" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="光和影子" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>光和影子 · 边玩边学</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="../shared/lesson.css" />
+<link rel="stylesheet" href="light.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html#science" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">💡</span>
+      <span class="tb-title" data-i18n="title">Light &amp; Shadow</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudStep">Step</span><b id="hud-step">1 / 6</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl" id="ctl">
+
+          <div class="ls-head">
+            <span class="ls-kicker" data-i18n="lead">Light &amp; shadow</span>
+            <span class="ls-count" id="ls-count">1 / 6</span>
+            <button class="ls-read" id="ls-replay" data-action="replay" title="Read again">🔊</button>
+          </div>
+          <div class="ls-track"><i id="ls-bar"></i></div>
+
+          <div class="ls-steps" id="ls-steps"></div>
+
+          <h3 class="ls-title" id="ls-title"></h3>
+          <div class="fact-card ls-fact" id="ls-fact"></div>
+
+          <div class="ls-words" id="ls-words"></div>
+          <div class="ls-worddef" id="ls-worddef" hidden></div>
+
+          <div class="nav-row">
+            <button class="nav-btn" id="ls-back" data-action="prev" data-i18n="back">BACK</button>
+            <button class="nav-btn go" id="ls-next" data-action="next" data-i18n="next">NEXT</button>
+          </div>
+
+          <div class="result" id="ls-result" hidden>
+            <div class="res-stars">★☆☆</div>
+            <p id="ls-result-text"></p>
+            <button class="nav-btn" data-action="again" data-i18n="again">START AGAIN</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="scene">
+
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="lead">Light &amp; shadow</span>
+        <span class="scene-status" id="scene-status" data-i18n="status">Following the light</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="lWall" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1a2433"/>
+              <stop offset="100%" stop-color="#0a1018"/>
+            </linearGradient>
+            <linearGradient id="lFloor" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a2c1c"/>
+              <stop offset="100%" stop-color="#1c140c"/>
+            </linearGradient>
+            <linearGradient id="lScreen" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e9f1f8"/>
+              <stop offset="100%" stop-color="#b8c8d8"/>
+            </linearGradient>
+            <linearGradient id="lWater" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#8fd0ff"/>
+              <stop offset="100%" stop-color="#3f8fc0"/>
+            </linearGradient>
+            <radialGradient id="lGlow">
+              <stop offset="0%" stop-color="#fff3b0" stop-opacity=".95"/>
+              <stop offset="55%" stop-color="#ffd166" stop-opacity=".4"/>
+              <stop offset="100%" stop-color="#ffd166" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <rect width="340" height="520" fill="url(#lWall)"/>
+          <rect y="400" width="340" height="120" fill="url(#lFloor)"/>
+          <rect y="400" width="340" height="3" fill="#8a6238" opacity=".5"/>
+
+          <!-- the wall screen the light lands on -->
+          <rect id="screen" x="258" y="72" width="72" height="326" rx="6" fill="url(#lScreen)" opacity=".9" stroke="#8fa4b8" stroke-width="1.5"/>
+
+          <!-- the lamp -->
+          <g id="lamp" data-lab="sources near">
+            <rect x="44" y="238" width="9" height="158" rx="4" fill="#3b4a63"/>
+            <rect x="28" y="394" width="56" height="10" rx="5" fill="#2c3a52"/>
+            <path d="M70 238 q12 -72 34 -108" fill="none" stroke="#4a5c78" stroke-width="7" stroke-linecap="round"/>
+            <path d="M84 128 h40 l-9 26 h-22 Z" fill="#f0a03a" stroke="#c07d24" stroke-width="1.5"/>
+            <circle cx="104" cy="154" r="8" fill="#ffd166"/>
+          </g>
+
+          <!-- step 1: the source and the eye -->
+          <g id="sources">
+            <g stroke="#ffd166" stroke-width="2.4" stroke-linecap="round" opacity=".7">
+              <path d="M104 154 L58 96 M104 154 L150 82 M104 154 L196 104 M104 154 L34 148 M104 154 L148 174"/>
+            </g>
+            <circle cx="104" cy="154" r="30" fill="url(#lGlow)" opacity=".5"/>
+            <g id="eye" data-lab="sources">
+              <path d="M276 48 q24 -18 48 0 q-24 18 -48 0 Z" fill="#e8eef6" stroke="#9fb3cc" stroke-width="1.5"/>
+              <circle cx="300" cy="48" r="7" fill="#4aa8de"/>
+              <circle cx="302" cy="46" r="2.4" fill="#0b1220"/>
+            </g>
+          </g>
+
+          <!-- step 2: the beam through a slit -->
+          <g id="straight" data-lab="straight">
+            <path d="M104 158 L300 330" fill="none" stroke="#ffe9a8" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+            <rect x="156" y="176" width="28" height="19" rx="2" fill="#243247" stroke="#3b4d68" stroke-width="1.5"/>
+            <rect x="156" y="240" width="28" height="104" rx="2" fill="#243247" stroke="#3b4d68" stroke-width="1.5"/>
+            <circle id="spot" cx="300" cy="330" r="10" fill="#fff3b0" opacity=".9"/>
+            <circle cx="300" cy="330" r="20" fill="url(#lGlow)" opacity=".55"/>
+          </g>
+
+          <!-- steps 3 and 4: the tree and its shadow -->
+          <g id="shadow" data-lab="shadow near">
+            <rect x="196" y="320" width="12" height="80" rx="3" fill="#6b4a2a"/>
+            <circle cx="202" cy="300" r="28" fill="#4f8a3c" stroke="#2f5a24" stroke-width="1.5"/>
+            <circle cx="180" cy="316" r="19" fill="#5c9a46" stroke="#2f5a24" stroke-width="1.2"/>
+            <circle cx="224" cy="316" r="19" fill="#5c9a46" stroke="#2f5a24" stroke-width="1.2"/>
+            <ellipse id="treeShadow" cx="252" cy="410" rx="44" ry="10" fill="#000" opacity=".62"/>
+          </g>
+
+          <!-- step 5: the mirror -->
+          <g id="mirrorGroup" data-lab="mirror">
+            <path d="M169 302 V378 M146 380 h46" stroke="#4a5c78" stroke-width="4.5" stroke-linecap="round"/>
+            <rect x="158" y="256" width="22" height="88" rx="6" fill="#c8d1dd" stroke="#8fa4b8" stroke-width="1.5"
+                  transform="rotate(38 169 300)"/>
+            <rect x="163" y="261" width="12" height="78" rx="4" fill="#bfe8ff" stroke="#6fb6dd" stroke-width="1.5"
+                  transform="rotate(38 169 300)"/>
+            <path d="M166 270 L180 282" stroke="#ffffff" stroke-width="2" opacity=".75"
+                  transform="rotate(38 169 300)"/>
+            <path d="M110 165 L169 300" fill="none" stroke="#ffe9a8" stroke-width="3.4" stroke-linecap="round"/>
+            <path d="M169 300 L300 175" fill="none" stroke="#ffe9a8" stroke-width="3.4" stroke-linecap="round"/>
+            <path d="M162 288 L156 281 M176 312 L182 319" stroke="#ffd166" stroke-width="2.4" stroke-linecap="round"/>
+          </g>
+
+          <!-- step 6: refraction -->
+          <g id="refractGroup" data-lab="refract">
+            <rect x="120" y="300" width="86" height="100" rx="7" fill="#dff3ff" opacity=".22" stroke="#9fd6f5" stroke-width="2"/>
+            <rect x="122" y="340" width="82" height="58" rx="4" fill="url(#lWater)" opacity=".75"/>
+            <path d="M138 270 L166 340 L186 398" fill="none" stroke="#f0a03a" stroke-width="5" stroke-linecap="round"/>
+            <path d="M166 340 L196 398" fill="none" stroke="#9fd6f5" stroke-width="2.4" stroke-dasharray="5 6"/>
+          </g>
+
+          <!-- labels -->
+          <g id="labels">
+            <g class="lab" data-lab="sources"><text x="104" y="214" text-anchor="middle" data-i18n="lSource">light source</text></g>
+            <g class="lab" data-lab="sources"><text x="300" y="24" text-anchor="middle" data-i18n="lEye">eye</text></g>
+            <g class="lab" data-lab="straight"><text x="202" y="204" text-anchor="middle" data-i18n="lLight">light</text></g>
+            <g class="lab" data-lab="shadow near"><text x="300" y="438" text-anchor="middle" data-i18n="lShadow">shadow</text></g>
+            <g class="lab" data-lab="shadow near"><text x="240" y="360" text-anchor="middle" data-i18n="lTree">tree</text></g>
+            <g class="lab" data-lab="mirror"><text x="150" y="330" text-anchor="end" data-i18n="lMirror">mirror</text></g>
+            <g class="lab" data-lab="refract"><text x="163" y="428" text-anchor="middle" data-i18n="lGlass">glass</text></g>
+            <g class="lab" data-lab="refract"><text x="206" y="282" text-anchor="start" data-i18n="lStraw">straw</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">Light and shadow</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="../shared/lesson.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="description" content="电从发电厂到家里：看涡轮和发电机怎样发电，变压器怎样升降压，高压电怎样走过铁塔和变电站，最后到 230 伏的插座。" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="电从发电厂到家里" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>电从发电厂到家里 · 边玩边学</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="../shared/lesson.css" />
+<link rel="stylesheet" href="power.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html#machines" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">⚡</span>
+      <span class="tb-title" data-i18n="title">From Power Plant to Home</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudStep">Step</span><b id="hud-step">1 / 6</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl" id="ctl">
+
+          <div class="ls-head">
+            <span class="ls-kicker" data-i18n="lead">Power journey</span>
+            <span class="ls-count" id="ls-count">1 / 6</span>
+            <button class="ls-read" id="ls-replay" data-action="replay" title="Read again">🔊</button>
+          </div>
+          <div class="ls-track"><i id="ls-bar"></i></div>
+
+          <div class="ls-steps" id="ls-steps"></div>
+
+          <h3 class="ls-title" id="ls-title"></h3>
+          <div class="fact-card ls-fact" id="ls-fact"></div>
+
+          <div class="ls-words" id="ls-words"></div>
+          <div class="ls-worddef" id="ls-worddef" hidden></div>
+
+          <div class="nav-row">
+            <button class="nav-btn" id="ls-back" data-action="prev" data-i18n="back">BACK</button>
+            <button class="nav-btn go" id="ls-next" data-action="next" data-i18n="next">NEXT</button>
+          </div>
+
+          <div class="result" id="ls-result" hidden>
+            <div class="res-stars">★☆☆</div>
+            <p id="ls-result-text"></p>
+            <button class="nav-btn" data-action="again" data-i18n="again">START AGAIN</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="scene">
+
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="lead">Power journey</span>
+        <span class="scene-status" id="scene-status" data-i18n="status">Following the electricity</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="pwSky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#18324a"/>
+              <stop offset="100%" stop-color="#0b1624"/>
+            </linearGradient>
+            <linearGradient id="pwGround" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2f4a27"/>
+              <stop offset="100%" stop-color="#16240f"/>
+            </linearGradient>
+            <radialGradient id="pwGlow">
+              <stop offset="0%" stop-color="#ffd166" stop-opacity=".55"/>
+              <stop offset="100%" stop-color="#ffd166" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <rect width="340" height="520" fill="url(#pwSky)"/>
+          <circle cx="300" cy="62" r="18" fill="#ffe9a8" opacity=".5"/>
+          <g fill="#22384d" opacity=".85">
+            <ellipse cx="66" cy="96" rx="48" ry="14"/>
+            <ellipse cx="100" cy="84" rx="30" ry="12"/>
+            <ellipse cx="250" cy="122" rx="42" ry="12"/>
+            <ellipse cx="282" cy="112" rx="28" ry="10"/>
+          </g>
+          <path d="M190 76 q6 -5 12 0 M204 70 q6 -5 12 0" stroke="#9fb3cc" fill="none" stroke-width="1.6" opacity=".55"/>
+          <rect y="400" width="340" height="120" fill="url(#pwGround)"/>
+          <path d="M0 400 q50 -8 100 0 t100 0 t100 0 t40 0 v6 H0 Z" fill="#3f5a2f"/>
+
+          <!-- 1. the power plant -->
+          <g id="plant" data-lab="plant">
+            <rect x="8" y="318" width="60" height="82" rx="4" fill="#3b4a63" stroke="#5b6b7d" stroke-width="1.5"/>
+            <rect x="16" y="258" width="12" height="60" fill="#5b6b7d"/>
+            <rect x="14" y="254" width="16" height="6" rx="2" fill="#7d8a99"/>
+            <g id="smoke" fill="#9fb3cc">
+              <circle cx="22" cy="246" r="6" opacity=".55"/><circle cx="16" cy="234" r="4" opacity=".45"/><circle cx="28" cy="232" r="3.4" opacity=".4"/>
+            </g>
+            <circle cx="38" cy="360" r="15" fill="#1b2430" stroke="#8fa0b4" stroke-width="1.5"/>
+            <path d="M40 352 l-7 11 h5 l-3 9 9 -12 h-5 l4 -8 Z" fill="#ffd166"/>
+            <rect x="12" y="330" width="8" height="8" fill="#8fd0ff" opacity=".7"/>
+            <rect x="12" y="346" width="8" height="8" fill="#8fd0ff" opacity=".7"/>
+            <rect x="54" y="330" width="8" height="8" fill="#8fd0ff" opacity=".7"/>
+            <rect x="54" y="346" width="8" height="8" fill="#8fd0ff" opacity=".7"/>
+          </g>
+
+          <!-- 2. the step-up transformer -->
+          <g id="stepup" data-lab="stepup">
+            <rect x="78" y="344" width="32" height="46" rx="3" fill="#5b6b7d" stroke="#8fa0b4" stroke-width="1.5"/>
+            <path d="M84 352 q5 -8 10 0 q5 8 10 0 M84 362 q5 -8 10 0 q5 8 10 0 M84 372 q5 -8 10 0 q5 8 10 0"
+                  fill="none" stroke="#c98a4a" stroke-width="2"/>
+            <path d="M78 390 h32" stroke="#3b4d68" stroke-width="3"/>
+          </g>
+
+          <!-- 3. pylons and high-voltage cables -->
+          <g id="grid" data-lab="grid">
+            <g stroke="#8fa0b4" stroke-width="3" fill="none" stroke-linecap="round">
+              <path d="M112 400 L121 228 H129 L138 400"/>
+              <path d="M105 252 H145 M108 282 H142"/>
+              <path d="M167 400 L176 228 H184 L193 400"/>
+              <path d="M160 252 H200 M163 282 H197"/>
+            </g>
+            <g fill="#c8d1dd">
+              <circle cx="108" cy="252" r="2.5"/><circle cx="142" cy="252" r="2.5"/>
+              <circle cx="124" cy="228" r="2.5"/>
+              <circle cx="163" cy="252" r="2.5"/><circle cx="197" cy="252" r="2.5"/>
+              <circle cx="179" cy="228" r="2.5"/>
+            </g>
+            <path id="hvWire" d="M66 330 Q72 340 78 350 M110 350 Q118 280 124 228 M129 228 Q152 260 176 228 M184 228 Q210 300 232 348"
+                  fill="none" stroke="#ffd166" stroke-width="2" stroke-dasharray="7 6" opacity=".9"/>
+          </g>
+
+          <!-- 4. the substation -->
+          <g id="sub" data-lab="sub">
+            <rect x="215" y="344" width="58" height="56" rx="4" fill="#2b3440" stroke="#5b6b7d" stroke-width="1.5"/>
+            <path d="M215 356 H273 M215 372 H273 M221 344 V400 M235 344 V400 M249 344 V400 M263 344 V400"
+                  stroke="#3b4d68" stroke-width="1"/>
+            <rect x="222" y="360" width="14" height="18" rx="2" fill="#5b6b7d"/>
+            <rect x="242" y="360" width="14" height="18" rx="2" fill="#5b6b7d"/>
+            <path d="M229 352 v8 M249 352 v8" stroke="#ffd166" stroke-width="2"/>
+          </g>
+
+          <!-- 5. the house, meter and socket -->
+          <g id="house">
+            <rect x="285" y="320" width="50" height="80" rx="3" fill="#6b4a2a" stroke="#4a3118" stroke-width="1.5"/>
+            <path d="M278 322 L310 292 L338 322 Z" fill="#b53d3d" stroke="#8a2a2a" stroke-width="1.5"/>
+            <rect x="294" y="334" width="16" height="14" rx="1.5" fill="#bfe8ff" stroke="#4a6a7a"/>
+            <path d="M302 334 v14 M294 341 h16" stroke="#4a6a7a" stroke-width="1"/>
+            <rect x="322" y="346" width="9" height="10" rx="2" fill="#e8eef6" stroke="#8fa0b4"/>
+            <rect x="292" y="366" width="14" height="34" rx="1.5" fill="#4a3118"/>
+            <circle cx="303" cy="384" r="1.6" fill="#ffd166"/>
+            <g id="meter" data-lab="meter">
+              <rect x="286" y="352" width="14" height="10" rx="2" fill="#c8d1dd" stroke="#5b6b7d"/>
+              <path d="M289 357 h8" stroke="#2b3440" stroke-width="1.5"/>
+            </g>
+            <g id="socket" data-lab="socket">
+              <rect x="321" y="344" width="10" height="13" rx="2" fill="#e8eef6" stroke="#5b6b7d" stroke-width="1"/>
+              <circle cx="324" cy="349" r="1.4" fill="#2b3440"/>
+              <circle cx="328" cy="349" r="1.4" fill="#2b3440"/>
+              <path d="M323 354 h6" stroke="#2b3440" stroke-width="1.6" stroke-linecap="round"/>
+            </g>
+          </g>
+          <path id="distWire" d="M273 366 Q280 350 286 348" fill="none" stroke="#8ef0b4" stroke-width="2" stroke-dasharray="6 5"/>
+
+          <!-- 6. the socket close-up -->
+          <g id="socketBig" data-lab="socket">
+            <path d="M320 354 Q300 408 222 430" fill="none" stroke="#8fa0b4" stroke-width="1.6" stroke-dasharray="4 4" opacity=".7"/>
+            <rect x="120" y="424" width="100" height="64" rx="10" fill="#e8eef6" stroke="#8fa0b4" stroke-width="2"/>
+            <rect x="132" y="436" width="76" height="40" rx="6" fill="#f7fafc" stroke="#c8d1dd"/>
+            <circle cx="158" cy="452" r="4" fill="#2b3440"/>
+            <circle cx="182" cy="452" r="4" fill="#2b3440"/>
+            <path d="M164 466 h12" stroke="#2b3440" stroke-width="3" stroke-linecap="round"/>
+            <path d="M140 444 v24 M200 444 v24" stroke="#c8d1dd" stroke-width="2"/>
+            <text x="170" y="483" text-anchor="middle" font-size="7" font-weight="800" fill="#5b6b7d">230 V · 50 Hz</text>
+          </g>
+
+          <!-- labels -->
+          <g id="labels">
+            <g class="lab" data-lab="plant"><text x="38" y="424" text-anchor="middle" data-i18n="lPlant">power plant</text></g>
+            <g class="lab" data-lab="stepup"><text x="94" y="424" text-anchor="middle" data-i18n="lStepup">step-up</text></g>
+            <g class="lab" data-lab="grid"><text x="152" y="208" text-anchor="middle" data-i18n="lGrid">high voltage</text></g>
+            <g class="lab" data-lab="sub"><text x="244" y="424" text-anchor="middle" data-i18n="lSub">substation</text></g>
+            <g class="lab" data-lab="meter"><text x="304" y="390" text-anchor="start" data-i18n="lMeter">meter</text></g>
+            <g class="lab" data-lab="socket"><text x="170" y="508" text-anchor="middle" data-i18n="lSocket">socket 230 V</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">The journey of electricity</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="../shared/lesson.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

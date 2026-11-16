@@ -1,7 +1,7 @@
 {
   "name": "边玩边学",
   "short_name": "边玩边学",
-  "description": "十五个给小朋友的互动小游戏：玩空调、吃东西、开火车、呼吸与血液循环、空调的秘密、马桶、英达丽水、抽油烟机、洗衣日、从种子到大树、早餐三明治、家里的水、水循环、气象站和汽车发动机怎样工作。",
+  "description": "二十三个给小朋友的互动小游戏：玩空调、吃东西、开火车、呼吸与血液循环、空调的秘密、马桶、英达丽水、抽油烟机、洗衣日、从种子到大树、早餐三明治、家里的水、水循环、气象站、汽车发动机怎样工作，还有电、磁铁、光、马来熊、扬声器、电脑、电的旅程和安全用电。",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -35,6 +35,14 @@
     { "name": "家里的水", "url": "waterhome/index.html" },
     { "name": "水循环", "url": "cycle/index.html" },
     { "name": "气象站", "url": "weather/index.html" },
-    { "name": "汽车发动机怎样工作", "url": "engine/index.html" }
+    { "name": "汽车发动机怎样工作", "url": "engine/index.html" },
+    { "name": "电的旅行", "url": "electric/index.html" },
+    { "name": "磁铁的秘密", "url": "magnet/index.html" },
+    { "name": "光和影子", "url": "light/index.html" },
+    { "name": "马来熊", "url": "sunbear/index.html" },
+    { "name": "扬声器", "url": "speaker/index.html" },
+    { "name": "电脑", "url": "computer/index.html" },
+    { "name": "电的旅程", "url": "power/index.html" },
+    { "name": "安全用电", "url": "safety/index.html" }
   ]
 }

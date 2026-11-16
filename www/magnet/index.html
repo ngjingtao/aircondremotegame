@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="description" content="磁铁的秘密：看磁铁吸什么、两个磁极怎么相吸相斥、看不见的磁场，还有磁化和指南针。" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="磁铁的秘密" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>磁铁的秘密 · 边玩边学</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="../shared/lesson.css" />
+<link rel="stylesheet" href="magnet.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html#science" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">🧲</span>
+      <span class="tb-title" data-i18n="title">Magnets</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudStep">Step</span><b id="hud-step">1 / 6</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl" id="ctl">
+
+          <div class="ls-head">
+            <span class="ls-kicker" data-i18n="lead">Magnets</span>
+            <span class="ls-count" id="ls-count">1 / 6</span>
+            <button class="ls-read" id="ls-replay" data-action="replay" title="Read again">🔊</button>
+          </div>
+          <div class="ls-track"><i id="ls-bar"></i></div>
+
+          <div class="ls-steps" id="ls-steps"></div>
+
+          <h3 class="ls-title" id="ls-title"></h3>
+          <div class="fact-card ls-fact" id="ls-fact"></div>
+
+          <div class="ls-words" id="ls-words"></div>
+          <div class="ls-worddef" id="ls-worddef" hidden></div>
+
+          <div class="nav-row">
+            <button class="nav-btn" id="ls-back" data-action="prev" data-i18n="back">BACK</button>
+            <button class="nav-btn go" id="ls-next" data-action="next" data-i18n="next">NEXT</button>
+          </div>
+
+          <div class="result" id="ls-result" hidden>
+            <div class="res-stars">★☆☆</div>
+            <p id="ls-result-text"></p>
+            <button class="nav-btn" data-action="again" data-i18n="again">START AGAIN</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="scene">
+
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="lead">Magnets</span>
+        <span class="scene-status" id="scene-status" data-i18n="status">Feeling the pull</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="mWall" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#22303f"/>
+              <stop offset="100%" stop-color="#10161d"/>
+            </linearGradient>
+            <linearGradient id="mShelf" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#8a6238"/>
+              <stop offset="100%" stop-color="#4a3118"/>
+            </linearGradient>
+            <linearGradient id="mMetal" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f7fafc"/>
+              <stop offset="100%" stop-color="#aeb9c9"/>
+            </linearGradient>
+            <radialGradient id="mGlow">
+              <stop offset="0%" stop-color="#ffd166" stop-opacity=".55"/>
+              <stop offset="100%" stop-color="#ffd166" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <rect width="340" height="520" fill="url(#mWall)"/>
+          <ellipse cx="170" cy="286" rx="132" ry="78" fill="url(#mGlow)" opacity=".18"/>
+
+          <!-- the field, shown from step 4 -->
+          <g id="field" data-lab="field">
+            <ellipse cx="170" cy="277" rx="118" ry="56" fill="none" stroke="#8fd0ff" stroke-width="2" opacity=".55"/>
+            <ellipse cx="170" cy="277" rx="96" ry="40" fill="none" stroke="#8fd0ff" stroke-width="2" opacity=".42"/>
+            <ellipse cx="170" cy="277" rx="74" ry="24" fill="none" stroke="#8fd0ff" stroke-width="2" opacity=".32"/>
+          </g>
+
+          <!-- two magnets facing each other, shown from step 3 -->
+          <g id="pairs" data-lab="pairs">
+            <g>
+              <rect x="50" y="100" width="56" height="26" rx="6" fill="#e85d5d" stroke="#b53d3d" stroke-width="1.2"/>
+              <text x="98" y="118" text-anchor="middle" font-size="13" font-weight="900" fill="#fff">N</text>
+              <rect x="150" y="100" width="56" height="26" rx="6" fill="#e85d5d" stroke="#b53d3d" stroke-width="1.2"/>
+              <text x="158" y="118" text-anchor="middle" font-size="13" font-weight="900" fill="#fff">N</text>
+              <path d="M112 113 H94 M102 107 L94 113 L102 119" fill="none" stroke="#ffd166" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M144 113 H162 M154 107 L162 113 L154 119" fill="none" stroke="#ffd166" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="222" y="118" font-size="10" font-weight="800" fill="#ffd166" data-i18n="lRepel">repel</text>
+            </g>
+            <g>
+              <rect x="50" y="154" width="56" height="26" rx="6" fill="#e85d5d" stroke="#b53d3d" stroke-width="1.2"/>
+              <text x="98" y="172" text-anchor="middle" font-size="13" font-weight="900" fill="#fff">N</text>
+              <rect x="150" y="154" width="56" height="26" rx="6" fill="#4aa8de" stroke="#2f7fa8" stroke-width="1.2"/>
+              <text x="158" y="172" text-anchor="middle" font-size="13" font-weight="900" fill="#fff">S</text>
+              <path d="M110 167 H126 M120 162 L126 167 L120 172" fill="none" stroke="#8ef0b4" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M146 167 H132 M138 162 L132 167 L138 172" fill="none" stroke="#8ef0b4" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="222" y="172" font-size="10" font-weight="800" fill="#8ef0b4" data-i18n="lAttract">attract</text>
+            </g>
+          </g>
+
+          <!-- compass, shown from step 6 -->
+          <g id="compass" data-lab="compass">
+            <circle cx="285" cy="145" r="36" fill="#f4f8fc" stroke="#8b98a8" stroke-width="2"/>
+            <circle cx="285" cy="145" r="30" fill="#e8eef6"/>
+            <g id="needle">
+              <path d="M285 116 L292 145 L285 139 L278 145 Z" fill="#e85d5d"/>
+              <path d="M285 174 L292 145 L285 151 L278 145 Z" fill="#8fd0ff"/>
+            </g>
+            <circle cx="285" cy="145" r="3" fill="#33414f"/>
+            <text x="285" y="106" text-anchor="middle" font-size="10" font-weight="800" fill="#ffd166">N</text>
+          </g>
+
+          <!-- the bar magnet -->
+          <g class="part" data-lab="poles attract" id="magnet">
+            <rect x="90" y="250" width="80" height="54" rx="10" fill="#e85d5d" stroke="#b53d3d" stroke-width="1.5"/>
+            <rect x="170" y="250" width="80" height="54" rx="10" fill="#4aa8de" stroke="#2f7fa8" stroke-width="1.5"/>
+            <rect x="168" y="250" width="4" height="54" fill="#0b1220" opacity=".18"/>
+            <text x="130" y="285" text-anchor="middle" font-size="20" font-weight="900" fill="#fff">N</text>
+            <text x="210" y="285" text-anchor="middle" font-size="20" font-weight="900" fill="#fff">S</text>
+          </g>
+
+          <!-- pole rings, shown from step 2 -->
+          <g id="poleRings">
+            <circle cx="110" cy="277" r="31" fill="none" stroke="#ffd166" stroke-width="1.8" stroke-dasharray="5 6"/>
+            <circle cx="230" cy="277" r="31" fill="none" stroke="#ffd166" stroke-width="1.8" stroke-dasharray="5 6"/>
+          </g>
+
+          <!-- the shelf and the things on it -->
+          <rect x="30" y="372" width="290" height="12" rx="4" fill="url(#mShelf)"/>
+          <rect x="30" y="372" width="290" height="2" fill="#a0784a" opacity=".7"/>
+
+          <g id="ironObjects" data-lab="attract">
+            <!-- iron nail -->
+            <rect x="114" y="336" width="10" height="5" rx="2" fill="url(#mMetal)"/>
+            <path d="M119 341 v24 l0 7" fill="none" stroke="#c8d1dd" stroke-width="3.4" stroke-linecap="round"/>
+            <path d="M115 372 h8" stroke="#aeb9c9" stroke-width="2"/>
+            <!-- paperclip -->
+            <path d="M146 344 q10 -6 11 5 q0 9 -11 9 q-8 0 -8 -8 q0 -6 8 -6 q7 0 7 6 q0 5 -7 5"
+                  fill="none" stroke="#c8d1dd" stroke-width="2.6" stroke-linecap="round"/>
+          </g>
+
+          <g id="nonObjects">
+            <rect x="214" y="338" width="26" height="34" rx="5" fill="#e88fa0" stroke="#b56a7a" stroke-width="1"/>
+            <rect x="250" y="344" width="28" height="28" rx="3" fill="#8a6a3a" stroke="#5f4826" stroke-width="1"/>
+            <rect x="286" y="348" width="30" height="24" rx="3" fill="#8fd0ff" stroke="#4aa8de" stroke-width="1"/>
+            <path d="M290 352 v6 M296 352 v6 M302 352 v6 M308 352 v6" stroke="#0b4a6b" stroke-width="1.2"/>
+          </g>
+
+          <!-- a magnetised nail with a chain of paperclips, shown from step 5 -->
+          <g id="chain" data-lab="chain">
+            <rect x="164" y="302" width="12" height="5" rx="2" fill="url(#mMetal)"/>
+            <path d="M170 307 v25" stroke="#c8d1dd" stroke-width="3.4" stroke-linecap="round"/>
+            <ellipse cx="170" cy="338" rx="5" ry="7" fill="none" stroke="#c8d1dd" stroke-width="2.4"/>
+            <ellipse cx="170" cy="350" rx="5" ry="7" fill="none" stroke="#c8d1dd" stroke-width="2.4"/>
+            <ellipse cx="170" cy="362" rx="5" ry="7" fill="none" stroke="#c8d1dd" stroke-width="2.4"/>
+          </g>
+
+          <!-- labels -->
+          <g id="labels">
+            <g class="lab" data-lab="field"><text x="170" y="212" text-anchor="middle" data-i18n="lField">magnetic field</text></g>
+            <g class="lab" data-lab="poles attract"><text x="170" y="240" text-anchor="middle" data-i18n="lMagnet">magnet</text></g>
+            <g class="lab" data-lab="attract"><text x="119" y="394" text-anchor="middle" data-i18n="lNail">iron nail</text></g>
+            <g class="lab" data-lab="attract"><text x="152" y="394" text-anchor="middle" data-i18n="lClip">paperclip</text></g>
+            <g class="lab" data-lab="attract"><text x="227" y="394" text-anchor="middle" data-i18n="lEraser">eraser</text></g>
+            <g class="lab" data-lab="attract"><text x="264" y="394" text-anchor="middle" data-i18n="lWood">wood</text></g>
+            <g class="lab" data-lab="attract"><text x="300" y="394" text-anchor="middle" data-i18n="lRuler">plastic ruler</text></g>
+            <g class="lab" data-lab="compass"><text x="285" y="196" text-anchor="middle" data-i18n="lCompass">compass</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">Magnets</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="../shared/lesson.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

@@ -9,7 +9,15 @@
     en: {
       appName: 'Play & Learn',
       pickOne: 'What shall we play?',
-      pickSub: 'Tap a picture to start',
+      pickSub: 'Pick a topic, then an activity',
+      allTopics: 'All topics',
+      catHomeDesc: 'Air conditioning, servicing and laundry',
+      catKitchenDesc: 'Food, sandwiches and the kitchen hood',
+      catWaterDesc: 'Water at home, the toilet and the sewer',
+      catNatureDesc: 'Trees, the water cycle and the weather',
+      catBodyDesc: 'Breathing, trains and engines',
+      catScienceDesc: 'Electricity, magnets, light and the sun bear',
+      catMachinesDesc: 'Speaker, computer, power and safety',
       tileAirTitle: 'Play Aircond',
       tileAirSub: 'Drive the remote, make the boy happy, cold or hot',
       tileFoodTitle: 'Food Eating',
@@ -40,11 +48,29 @@
       tileWeatherSub: 'Read the rain gauge, wind, pressure and river level, then forecast the weather',
       tileEngineTitle: 'How a Car Engine Works',
       tileEngineSub: 'Watch the piston, valves and spark plug through intake, compression, power and exhaust',
+      tileElectricTitle: 'Electricity',
+      tileElectricSub: 'Follow the current — one step, one sentence, read aloud',
+      tileMagnetTitle: 'Magnets',
+      tileMagnetSub: 'Poles, fields and a compass — step by step',
+      tileLightTitle: 'Light & Shadow',
+      tileLightSub: 'Shadows, mirrors and a straw that looks broken',
+      tileSunbearTitle: 'Sun Bear',
+      tileSunbearSub: 'The world\u2019s smallest bear — and how to help it',
+      tileSpeakerTitle: 'Speaker',
+      tileSpeakerSub: 'How a coil and a cone turn current into sound',
+      tileComputerTitle: 'Computer',
+      tileComputerSub: 'Input, CPU, memory, storage and output — inside the box',
+      tilePowerTitle: 'Power Journey',
+      tilePowerSub: 'From the generator to the socket, step by step',
+      tileSafetyTitle: 'Electrical Safety',
+      tileSafetySub: 'Six rules that keep electricity safe at home',
       groupHome: 'Home machines',
       groupKitchen: 'Kitchen',
       groupWater: 'Water systems',
       groupNature: 'Nature & weather',
       groupTravel: 'Body & transport',
+      groupScience: 'Science lab',
+      groupMachines: 'Electricity & machines',
 
       /* ── the sticker book ── */
       bookTitle: 'My sticker book',
@@ -70,9 +96,17 @@
       stCycle: 'Follow a drop all the way round the water cycle',
       stWeather: 'Forecast the weather from the instruments',
       stEngine: 'See all four strokes of a car engine',
+      stElectric: 'Follow the current all the way round',
+      stMagnet: 'Find the poles, the field and the compass',
+      stLight: 'Follow light, shadow, reflection and refraction',
+      stSunbear: 'Meet the smallest bear and learn how to help it',
+      stSpeaker: 'Follow a signal from the coil to the cone',
+      stComputer: 'Follow data from input to output',
+      stPower: 'Follow electricity from the plant to the socket',
+      stSafety: 'Learn the six safety rules',
       foot: 'Made for curious kids',
       help: '?',
-      helpTitle: 'Fifteen activities',
+      helpTitle: 'Twenty-three activities',
       helpBody: `
         <h3>❄ Play Aircond</h3>
         <ul>
@@ -166,9 +200,53 @@
           <li>Press <code>START</code> and change <code>IDLE</code>, <code>CRUISE</code> or <code>REV</code>. This is slow motion: a real engine does this many times a second.</li>
           <li><code>STEP</code> freezes one stroke at a time. Only the power stroke makes power; the other three prepare and clean up.</li>
         </ul>
+        <h3>🔬 Electricity</h3>
+        <ul>
+          <li>Six steps around one circuit: battery, closed loop, switch, bulb, conductors, safety.</li>
+          <li>Each step is read aloud as it opens. Tap a key word to hear it and see what it means.</li>
+          <li>The switch closes and the bulb lights as you move through the lesson.</li>
+        </ul>
+        <h3>🔬 Magnets</h3>
+        <ul>
+          <li>What a magnet pulls, the two poles, like poles repelling, the field, magnetising and a compass.</li>
+          <li>Watch the iron things lift off the shelf, and the field lines appear around the bar magnet.</li>
+        </ul>
+        <h3>🔬 Light &amp; Shadow</h3>
+        <ul>
+          <li>Light sources, straight beams, shadows, why a shadow grows, reflection and refraction.</li>
+          <li>Bring the lamp closer and watch the tree's shadow grow; then see a straw bend in water.</li>
+        </ul>
+        <h3>🐻 Sun Bear</h3>
+        <ul>
+          <li>Meet the smallest bear in the world — its sun-shaped chest patch, 20–25 cm tongue and climbing claws.</li>
+          <li>Find out what it eats, where it lives, and why it is listed as Vulnerable.</li>
+          <li>Every step is read aloud; tap a key word to hear what it means.</li>
+        </ul>
+        <h3>🔌 Speaker</h3>
+        <ul>
+          <li>Six steps from the signal to the magnet, coil, cone and sound waves.</li>
+          <li>Pitch is frequency; volume is amplitude. The waveform changes with the step.</li>
+        </ul>
+        <h3>💻 Computer</h3>
+        <ul>
+          <li>Input → processor → memory → storage → output, drawn on one cutaway.</li>
+          <li>RAM forgets when the power goes off; storage keeps files.</li>
+          <li>Everything inside is 0s and 1s.</li>
+        </ul>
+        <h3>⚡ Power Journey</h3>
+        <ul>
+          <li>Generator → step-up transformer → pylons → substation → meter → 230 V socket.</li>
+          <li>High voltage means a smaller current, so less energy is lost on the way.</li>
+        </ul>
+        <h3>⚠️ Electrical Safety</h3>
+        <ul>
+          <li>Never poke a socket; keep water away; do not overload one lead.</li>
+          <li>Replace damaged cords; use the earth pin and the RCD.</li>
+          <li>In a storm or a short circuit: switch off if safe, tell a grown-up, call 999 for a fire.</li>
+        </ul>
         <h3>Buttons in the top bar</h3>
         <ul>
-          <li><code>‹ Menu</code> — back to this screen (inside an activity).</li>
+          <li><code>‹ Menu</code> — back to this topic (inside an activity).</li>
           <li><code>EN / 中文</code> — switch language.</li>
           <li><code>🔊 / 🔇</code> — sound on or off.</li>
         </ul>
@@ -177,7 +255,15 @@
     zh: {
       appName: '边玩边学',
       pickOne: '今天玩什么？',
-      pickSub: '点一下图片就开始',
+      pickSub: '先选主题，再选活动',
+      allTopics: '全部主题',
+      catHomeDesc: '空调、空调清洗和洗衣',
+      catKitchenDesc: '吃东西、三明治和抽油烟机',
+      catWaterDesc: '家里的水、马桶和污水',
+      catNatureDesc: '树木、水循环和天气',
+      catBodyDesc: '呼吸、火车和发动机',
+      catScienceDesc: '电、磁铁、光和马来熊',
+      catMachinesDesc: '扬声器、电脑、电和安全',
       tileAirTitle: '玩空调',
       tileAirSub: '操作遥控器，看看男孩是舒服、冷还是热',
       tileFoodTitle: '吃东西',
@@ -208,11 +294,29 @@
       tileWeatherSub: '读雨量、风、气压和河水水位，然后预报天气',
       tileEngineTitle: '汽车发动机怎样工作',
       tileEngineSub: '看活塞、气门和火花塞走完进气、压缩、做功和排气',
+      tileElectricTitle: '电的旅行',
+      tileElectricSub: '跟着电流走：一步一步，一边看一边读',
+      tileMagnetTitle: '磁铁的秘密',
+      tileMagnetSub: '磁极、磁场和指南针：一步一步来',
+      tileLightTitle: '光和影子',
+      tileLightSub: '影子、镜子，还有插在水里像断了的吸管',
+      tileSunbearTitle: '马来熊',
+      tileSunbearSub: '世界上最小的熊，以及怎样保护它',
+      tileSpeakerTitle: '扬声器',
+      tileSpeakerSub: '线圈和振膜怎样把电流变成声音',
+      tileComputerTitle: '电脑',
+      tileComputerSub: '看看输入、处理器、内存、存储和输出',
+      tilePowerTitle: '电的旅程',
+      tilePowerSub: '跟着电从发电机一路走到插座',
+      tileSafetyTitle: '安全用电',
+      tileSafetySub: '让家里用电安全的六条规则',
       groupHome: '家里的机器',
       groupKitchen: '厨房',
       groupWater: '水系统',
       groupNature: '自然与天气',
       groupTravel: '身体与出行',
+      groupScience: '科学实验室',
+      groupMachines: '电与机器',
 
       /* ── 贴纸本 ── */
       bookTitle: '我的贴纸本',
@@ -238,9 +342,17 @@
       stCycle: '跟着一滴水走完整个水循环',
       stWeather: '用仪器读数预报天气',
       stEngine: '看完汽车发动机的四个冲程',
+      stElectric: '跟着电流走完一整圈',
+      stMagnet: '找到磁极、磁场和指南针',
+      stLight: '跟着光，看见影子、反射和折射',
+      stSunbear: '认识世界上最小的熊，学会保护它',
+      stSpeaker: '跟着信号从线圈走到振膜',
+      stComputer: '跟着数据从输入走到输出',
+      stPower: '跟着电从发电厂走到插座',
+      stSafety: '记住六条安全用电规则',
       foot: '给充满好奇心的小朋友',
       help: '?',
-      helpTitle: '十五个小游戏',
+      helpTitle: '二十三个小游戏',
       helpBody: `
         <h3>❄ 玩空调</h3>
         <ul>
@@ -334,9 +446,53 @@
           <li>按 <code>启动</code>，再切换 <code>怠速</code>、<code>巡航</code> 或 <code>高转</code>。这是慢动作：真实发动机每秒会做好多次。</li>
           <li><code>单步</code> 可以一次停在一个冲程上。只有做功冲程产生动力，其他三个在准备和清理。</li>
         </ul>
+        <h3>🔬 电的旅行</h3>
+        <ul>
+          <li>沿着一个电路走六步：电池、闭合电路、开关、灯泡、导体、安全用电。</li>
+          <li>每一步打开时都会自动读出来。点关键词，可以听它的意思。</li>
+          <li>走到开关那一步，开关合上，灯泡亮起来。</li>
+        </ul>
+        <h3>🔬 磁铁的秘密</h3>
+        <ul>
+          <li>磁铁吸什么、两个磁极、同极相斥、看不见的磁场、磁化，还有指南针。</li>
+          <li>看铁钉和回形针被吸起来，看磁场线在磁铁周围出现。</li>
+        </ul>
+        <h3>🔬 光和影子</h3>
+        <ul>
+          <li>光源、光走直线、影子、影子为什么变大、反射和折射。</li>
+          <li>把灯靠近树，影子会变大；再看看插在水里的吸管怎样“折断”。</li>
+        </ul>
+        <h3>🐻 马来熊</h3>
+        <ul>
+          <li>认识世界上最小的熊：像太阳的胸斑、20–25 厘米的长舌头，还有爬树的爪子。</li>
+          <li>看看它吃什么、住在哪里，为什么被列为“易危”。</li>
+          <li>每一步都会读出来；点关键词，可以听它的意思。</li>
+        </ul>
+        <h3>🔌 扬声器</h3>
+        <ul>
+          <li>从信号到磁铁、线圈、振膜和声音，一共六步。</li>
+          <li>频率决定音高，振幅决定音量；波形也会跟着变。</li>
+        </ul>
+        <h3>💻 电脑</h3>
+        <ul>
+          <li>输入 → 处理器 → 内存 → 存储 → 输出，都画在一张剖面图里。</li>
+          <li>内存一关机就忘；硬盘和固态硬盘会把文件留下来。</li>
+          <li>电脑里面的一切，最后都是 0 和 1。</li>
+        </ul>
+        <h3>⚡ 电的旅程</h3>
+        <ul>
+          <li>发电机 → 升压变压器 → 铁塔 → 变电站 → 电表 → 230 伏插座。</li>
+          <li>电压高、电流小，路上损失的电就少。</li>
+        </ul>
+        <h3>⚠️ 安全用电</h3>
+        <ul>
+          <li>不碰插座；水和电分开；一个插线板不要接太多电器。</li>
+          <li>换掉破损电线；用接地线和漏电保护器。</li>
+          <li>雷雨或短路时：安全的话先关总开关，告诉大人；起火打 999。</li>
+        </ul>
         <h3>顶栏按钮</h3>
         <ul>
-          <li><code>‹ 菜单</code> — 回到这个页面（在小游戏里）。</li>
+          <li><code>‹ 菜单</code> — 回到这个主题（在小游戏里）。</li>
           <li><code>EN / 中文</code> — 切换语言。</li>
           <li><code>🔊 / 🔇</code> — 开关声音。</li>
         </ul>
@@ -364,8 +520,184 @@
     waterhome: { icon: '💧', tint: '#5fb6ef' },
     cycle:   { icon: '🌍', tint: '#3f9fd8' },
     weather: { icon: '🌦️', tint: '#8ecf72' },
-    engine:  { icon: '⚙️', tint: '#f0a03a' }
+    engine:  { icon: '⚙️', tint: '#f0a03a' },
+    electric: { icon: '⚡', tint: '#ffd166' },
+    magnet:  { icon: '🧲', tint: '#e85d5d' },
+    light:   { icon: '💡', tint: '#ffc978' },
+    sunbear: { icon: '🐻', tint: '#ffb347' },
+    speaker: { icon: '🔊', tint: '#8fd0ff' },
+    computer: { icon: '💻', tint: '#3f9fd8' },
+    power:   { icon: '⚡', tint: '#ffd166' },
+    safety:  { icon: '⚠️', tint: '#f87171' }
   };
+
+  /* level 1 → one card per group; level 2 → that group's tiles.
+     A new group needs its section in index.html plus one line here and its
+     cat…Desc strings in both dictionaries. */
+  const GROUP_META = {
+    home:     { title: 'groupHome',     desc: 'catHomeDesc' },
+    kitchen:  { title: 'groupKitchen',  desc: 'catKitchenDesc' },
+    water:    { title: 'groupWater',    desc: 'catWaterDesc' },
+    nature:   { title: 'groupNature',   desc: 'catNatureDesc' },
+    body:     { title: 'groupTravel',   desc: 'catBodyDesc' },
+    science:  { title: 'groupScience',  desc: 'catScienceDesc' },
+    machines: { title: 'groupMachines', desc: 'catMachinesDesc' }
+  };
+
+  let lastCategory = null;
+
+  function countText(n) {
+    return lang === 'zh' ? n + ' 个活动' : n + (n === 1 ? ' activity' : ' activities');
+  }
+
+  function scrollHomeTop() {
+    const h = $('home');
+    if (h) h.scrollTop = 0;
+  }
+
+  function buildCategories() {
+    const host = $('cat-grid');
+    const groupsHost = $('groups');
+    if (!host || !groupsHost) return;
+
+    host.innerHTML = '';
+    const groups = Array.prototype.slice.call(groupsHost.querySelectorAll('.group'));
+
+    groups.forEach(group => {
+      const key = group.dataset.group;
+      const meta = GROUP_META[key];
+      if (!meta) return;
+
+      const iconEl = group.querySelector('.gt-ico');
+      const count = group.querySelectorAll('.tile').length;
+      const title = DICT[lang][meta.title];
+      const desc = DICT[lang][meta.desc];
+
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'cat-card';
+      card.dataset.cat = key;
+      card.setAttribute('aria-label', title + ' — ' + countText(count));
+
+      const icon = document.createElement('span');
+      icon.className = 'cat-ico';
+      icon.textContent = iconEl ? iconEl.textContent : '•';
+      icon.setAttribute('aria-hidden', 'true');
+
+      const text = document.createElement('span');
+      text.className = 'cat-text';
+
+      const name = document.createElement('b');
+      name.textContent = title;
+
+      const sub = document.createElement('span');
+      sub.className = 'cat-desc';
+      sub.textContent = desc;
+
+      const num = document.createElement('span');
+      num.className = 'cat-count';
+      num.textContent = countText(count);
+
+      text.appendChild(name);
+      text.appendChild(sub);
+      text.appendChild(num);
+
+      const go = document.createElement('span');
+      go.className = 'cat-go';
+      go.textContent = '›';
+      go.setAttribute('aria-hidden', 'true');
+
+      card.appendChild(icon);
+      card.appendChild(text);
+      card.appendChild(go);
+      card.addEventListener('click', () => openCategory(key));
+
+      host.appendChild(card);
+    });
+  }
+
+  function openCategory(key) {
+    if (ARG.audio && ARG.audio.blip) ARG.audio.blip();
+    if (window.history && history.pushState) {
+      try {
+        history.pushState({ cat: key }, '', '#' + key);
+      } catch (e) {
+        location.hash = key;          // file:// can refuse pushState
+      }
+    } else {
+      location.hash = key;
+    }
+    renderRoute({ focus: true });
+  }
+
+  function backToAll() {
+    if (ARG.audio && ARG.audio.blip) ARG.audio.blip();
+    /* replace, rather than history.back(): after a refresh the previous entry
+       may be outside the app, and ‹ All topics must never leave it */
+    if (window.history && history.replaceState) {
+      try {
+        history.replaceState(null, '', location.pathname + location.search);
+      } catch (e) {
+        location.hash = '';
+      }
+    } else {
+      location.hash = '';
+    }
+    renderRoute({ focus: true });
+  }
+
+  function renderRoute(opts) {
+    opts = opts || {};
+    const groupsHost = $('groups');
+    const catHost = $('cat-grid');
+    const back = $('cat-back');
+    const book = $('book');
+    const titleEl = $('home-title');
+    const subEl = $('home-sub');
+
+    if (!groupsHost) return;
+    const groups = Array.prototype.slice.call(groupsHost.querySelectorAll('.group'));
+    const key = (location.hash || '').replace(/^#/, '');
+    const group = groups.filter(g => g.dataset.group === key)[0];
+    const meta = group ? GROUP_META[key] : null;
+
+    if (!group || !meta) {
+      if (key && window.history && history.replaceState) {
+        try {
+          history.replaceState(null, '', location.pathname + location.search);
+        } catch (e) { /* file:// */ }
+      }
+      groupsHost.hidden = true;
+      if (catHost) catHost.hidden = false;
+      if (back) back.hidden = true;
+      if (book) book.hidden = false;
+      document.body.classList.remove('in-category');
+      if (titleEl) titleEl.textContent = DICT[lang].pickOne;
+      if (subEl) subEl.textContent = DICT[lang].pickSub;
+      document.title = lang === 'zh' ? '边玩边学' : 'Play & Learn';
+      scrollHomeTop();
+      if (opts.focus && lastCategory) {
+        const card = document.querySelector('.cat-card[data-cat="' + lastCategory + '"]');
+        if (card) card.focus();
+      }
+      return;
+    }
+
+    lastCategory = key;
+    groupsHost.hidden = false;
+    groups.forEach(g => { g.hidden = g !== group; });
+    if (catHost) catHost.hidden = true;
+    if (back) back.hidden = false;
+    if (book) book.hidden = true;
+    document.body.classList.add('in-category');
+
+    const title = DICT[lang][meta.title];
+    if (titleEl) titleEl.textContent = title;
+    if (subEl) subEl.textContent = DICT[lang][meta.desc] + ' · ' + countText(group.querySelectorAll('.tile').length);
+    document.title = title + ' · ' + (lang === 'zh' ? '边玩边学' : 'Play & Learn');
+    scrollHomeTop();
+    if (opts.focus && back) back.focus();
+  }
 
   function renderBook() {
     const host = $('book-grid');
@@ -408,6 +740,8 @@
     $('help-title').textContent = DICT[lang].helpTitle;
     $('help-body').innerHTML = DICT[lang].helpBody;
     renderBook();
+    buildCategories();
+    renderRoute();
   }
 
   function boot() {
@@ -426,6 +760,12 @@
       e.currentTarget.textContent = on ? '🔊' : '🔇';
     });
     $('btn-sound').textContent = ARG.audio.enabled ? '🔊' : '🔇';
+
+    const back = $('cat-back');
+    if (back) back.addEventListener('click', backToAll);
+    if (window.history && window.addEventListener) {
+      window.addEventListener('popstate', () => renderRoute({ focus: true }));
+    }
 
     ARG.voice.attach();
     ARG.a11y.init();

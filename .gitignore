@@ -19,3 +19,6 @@ Thumbs.db
 .idea/
 *.iml
 .vscode/
+
+# harness memory store
+.memsearch/

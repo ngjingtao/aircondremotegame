@@ -1,0 +1,47 @@
+/* ═══════════════════════════════════════════════════════════
+   Speaker — the activity's own palette and picture
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ls-paper:#fbf6ee;
+  --ls-paper2:#f3e9db;
+  --ls-paper3:#e6d6c2;
+  --ls-edge:#d8c4a8;
+  --ls-ink:#43362a;
+  --ls-dim:#7d6a58;
+  --ls-accent:#c97a2e;
+  --ls-accent2:#f0b06a;
+}
+
+#scene{background:linear-gradient(180deg,#131c2b,#070c14);}
+
+/* the waveform: base for the signal, dense for pitch, tall for volume */
+#wave,#waveHigh,#waveBig{opacity:0;transition:opacity .3s;}
+#art.speaker #wave,#art.motor #wave,#art.signal #wave,#art.cone #wave{opacity:1;}
+#art.pitch #waveHigh{opacity:1;}
+#art.volume #waveBig{opacity:1;}
+
+#waves,#air,#motion{opacity:0;transition:opacity .35s;}
+#art.cone #waves,#art.pitch #waves,#art.volume #waves{opacity:1;}
+#art.cone #air{opacity:1;}
+#art.signal #motion,#art.cone #motion,#art.pitch #motion,#art.volume #motion{opacity:1;}
+
+/* the cone really moves while the lesson is about movement */
+#cone{
+  transform-box:fill-box;
+  transform-origin:center;
+}
+#art.cone #cone{animation:spkCone .18s ease-in-out infinite alternate;}
+#art.pitch #cone{animation:spkCone .08s ease-in-out infinite alternate;}
+#art.volume #cone{animation:spkConeBig .16s ease-in-out infinite alternate;}
+@keyframes spkCone{from{transform:translateX(-2px);}to{transform:translateX(2px);}}
+@keyframes spkConeBig{from{transform:translateX(-5px);}to{transform:translateX(5px);}}
+
+#art.volume #waves{transform:scale(1.12);transform-origin:left center;}
+#art.cone #waves path,#art.pitch #waves path,#art.volume #waves path{animation:spkWave 1.4s ease-in-out infinite;}
+@keyframes spkWave{0%,100%{opacity:.35;}50%{opacity:.9;}}
+
+@media (prefers-reduced-motion: reduce){
+  #art.cone #cone,#art.pitch #cone,#art.volume #cone,
+  #art.cone #waves path,#art.pitch #waves path,#art.volume #waves path{animation:none !important;}
+}

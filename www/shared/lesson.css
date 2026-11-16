@@ -1,0 +1,198 @@
+/* ═══════════════════════════════════════════════════════════
+   shared/lesson.css — the lesson card shared by the science lab
+
+   The three science lessons all use the same control card: a step rail,
+   the spoken sentence, key-word chips and BACK / NEXT. Only the palette
+   and the picture below are the activity's own.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ctl-w:300px;
+  --ctl-h:640px;
+  --ctl-scale:1;
+
+  /* overridden by each lesson's own stylesheet */
+  --ls-paper:#f4fbff;
+  --ls-paper2:#e3f2fb;
+  --ls-paper3:#cfe6f3;
+  --ls-edge:#b9d6e6;
+  --ls-ink:#28414f;
+  --ls-dim:#5f7a8a;
+  --ls-accent:#3d90d0;
+  --ls-accent2:#7fc4f5;
+}
+
+/* ─────────── the two columns ─────────── */
+#ctl-panel{
+  flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+  padding:10px 6px calc(10px + env(safe-area-inset-bottom));
+  min-width:0;overflow:hidden;
+}
+#ctl-scaler{position:relative;width:var(--ctl-w);height:var(--ctl-h);flex:0 0 auto;}
+
+#scene{
+  flex:1 1 auto;position:relative;min-width:0;overflow:hidden;
+  display:flex;flex-direction:column;
+  border-left:1px solid var(--line);
+  background:linear-gradient(180deg,#101a2b,#0a1120);
+}
+
+/* ─────────── the card ─────────── */
+.ctl{
+  position:absolute;top:0;left:0;
+  width:var(--ctl-w);height:var(--ctl-h);
+  transform:scale(var(--ctl-scale));transform-origin:top left;
+  border-radius:24px;padding:12px 13px;
+  display:flex;flex-direction:column;gap:7px;
+  background:linear-gradient(165deg,var(--ls-paper),var(--ls-paper2) 58%,var(--ls-paper3));
+  box-shadow:0 22px 44px rgba(0,0,0,.55), 0 4px 0 var(--ls-edge),
+             inset 0 2px 3px rgba(255,255,255,.9), inset 0 -6px 14px rgba(0,0,0,.07);
+  color:var(--ls-ink);
+}
+
+/* progress */
+.ls-head{flex:0 0 auto;display:flex;align-items:center;gap:6px;min-height:20px;}
+.ls-kicker{
+  font-size:8px;font-weight:900;letter-spacing:.7px;text-transform:uppercase;
+  color:var(--ls-dim);
+}
+.ls-count{
+  margin-left:auto;font-size:9px;font-weight:800;font-variant-numeric:tabular-nums;
+  color:var(--ls-ink);
+}
+.ls-read{
+  width:24px;height:24px;min-height:24px;padding:0;border-radius:8px;
+  border:1px solid var(--ls-edge);background:#fff;color:var(--ls-ink);
+  font-size:11px;line-height:1;cursor:pointer;font-family:inherit;
+}
+.ls-read:active,.ls-read.pressed{transform:scale(.92);}
+.ls-track{
+  flex:0 0 auto;height:6px;border-radius:99px;overflow:hidden;
+  background:rgba(20,50,70,.12);
+}
+.ls-track i{
+  display:block;height:100%;width:16%;border-radius:99px;
+  background:linear-gradient(90deg,var(--ls-accent2),var(--ls-accent));
+  transition:width .3s ease;
+}
+
+/* the step rail */
+.ls-steps{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+.ls-step{
+  display:flex;align-items:center;gap:5px;padding:5px 6px;border-radius:8px;
+  border:1px solid var(--ls-edge);background:linear-gradient(180deg,#fff,var(--ls-paper));
+  font-family:inherit;cursor:pointer;text-align:left;min-height:28px;
+  color:var(--ls-dim);
+  transition:background .15s,border-color .15s,color .15s;
+}
+.ls-step .ls-n{
+  flex:0 0 16px;width:16px;height:16px;border-radius:50%;
+  background:var(--ls-paper2);color:var(--ls-dim);
+  font-size:8px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+}
+.ls-step .ls-t{font-size:7.4px;font-weight:800;line-height:1.15;}
+.ls-step.done{background:#e2f4e6;border-color:#a9d09e;color:#3c6b34;}
+.ls-step.done .ls-n{background:#8ecf72;color:#1e3c12;}
+.ls-step.on{background:linear-gradient(180deg,#d8f0ff,#9fd6f5);border-color:var(--ls-accent);color:#06344f;}
+.ls-step.on .ls-n{background:var(--ls-accent);color:#fff;}
+.ls-step:active{transform:scale(.98);}
+
+/* the sentence */
+.ls-title{
+  flex:0 0 auto;margin:1px 0 0;font-size:12px;line-height:1.2;
+  color:#0f4c75;letter-spacing:-.1px;
+}
+.ls-fact{
+  flex:1 1 auto;min-height:58px;overflow-y:auto;padding:8px 9px;border-radius:10px;
+  background:#fff;border:1px solid var(--ls-edge);
+  font-size:9px;line-height:1.5;color:var(--ls-ink);
+  overscroll-behavior:contain;
+}
+
+/* key words */
+.ls-words{flex:0 0 auto;display:flex;flex-wrap:wrap;gap:4px;min-height:0;}
+.word-chip{
+  padding:4px 9px;border-radius:999px;border:1px solid var(--ls-edge);
+  background:#fff;color:#2b5b74;font-family:inherit;
+  font-size:8px;font-weight:800;cursor:pointer;min-height:24px;
+  transition:background .15s,color .15s,border-color .15s;
+}
+.word-chip.on{background:var(--ls-accent);border-color:var(--ls-accent);color:#fff;}
+.word-chip:active{transform:scale(.96);}
+.ls-worddef{
+  flex:0 0 auto;padding:6px 8px;border-radius:8px;
+  background:#fff8e6;border:1px solid #e6d3a3;border-left:3px solid #f0a03a;
+  font-size:8.5px;line-height:1.45;color:#5a4526;
+}
+
+/* navigation */
+.nav-row{flex:0 0 auto;display:grid;grid-template-columns:1fr 1.5fr;gap:6px;}
+.nav-btn{
+  padding:9px 6px;border-radius:10px;border:1px solid var(--ls-edge);
+  background:linear-gradient(180deg,#fff,var(--ls-paper));box-shadow:0 2px 0 var(--ls-edge);
+  font-family:inherit;font-size:9.5px;font-weight:800;color:var(--ls-ink);cursor:pointer;
+}
+.nav-btn:active,.nav-btn.pressed{transform:translateY(2px);box-shadow:0 0 0 var(--ls-edge);}
+.nav-btn.go{
+  background:linear-gradient(180deg,var(--ls-accent2),var(--ls-accent));
+  border-color:var(--ls-accent);box-shadow:0 2px 0 var(--ls-accent);color:#06344f;
+}
+.nav-btn:disabled{opacity:.4;}
+
+/* the result card */
+.result{
+  flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:7px 10px;border-radius:11px;
+  background:linear-gradient(180deg,#fff7e8,#f3e3c8);border:1px solid #e3c795;
+}
+.result[hidden]{display:none;}
+.res-stars{font-size:18px;line-height:1;letter-spacing:2px;color:#e0a51e;text-shadow:0 0 8px rgba(255,190,50,.35);}
+.result p{margin:0;font-size:9px;line-height:1.4;text-align:center;color:#6b5638;}
+.result .nav-btn{width:100%;margin-top:2px;}
+
+/* ─────────── the picture column ─────────── */
+.scene-top{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:9px 11px 0;z-index:5;}
+.scene-lead{font-size:11px;font-weight:800;letter-spacing:.4px;color:#9fc4d8;}
+.scene-status{
+  margin-left:auto;font-size:11px;font-weight:800;letter-spacing:.4px;
+  background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);
+  border-radius:999px;padding:3px 12px;color:#8ee6ff;
+}
+.art-wrap{flex:1 1 auto;position:relative;min-height:0;display:flex;align-items:center;justify-content:center;padding:4px 6px;}
+#art{width:100%;height:100%;display:block;}
+
+.pane-note{
+  flex:0 0 auto;margin:0 10px calc(10px + env(safe-area-inset-bottom));
+  padding:9px 12px;border-radius:13px;
+  background:linear-gradient(180deg,rgba(140,200,240,.14),rgba(140,200,240,.05));
+  border:1px solid rgba(150,210,240,.28);
+  font-size:11px;line-height:1.5;color:#e0f2ee;
+  max-width:760px;align-self:center;width:calc(100% - 20px);
+}
+
+/* shared highlight for whatever part a step points at */
+.part{transition:filter .3s,opacity .3s;}
+.part.on{filter:drop-shadow(0 0 7px rgba(255,209,102,.9));}
+.lab text{
+  font-size:8px;font-weight:800;fill:rgba(226,244,238,.64);
+  stroke:rgba(8,20,30,.9);stroke-width:2.2;paint-order:stroke fill;
+  transition:fill .25s;
+}
+.lab.on text{fill:#ffd166;}
+
+@media (max-width:520px){
+  .scene-lead{display:none;}
+  .pane-note{font-size:10px;padding:7px 10px;}
+}
+@media (max-height:560px){
+  .scene-top{padding:6px 9px 0;}
+  .pane-note{font-size:10px;padding:6px 10px;}
+}
+@media (min-width:700px) and (min-height:560px){
+  .scene-top{padding:14px 18px 0;gap:12px;}
+  .scene-lead{font-size:14px;}
+  .scene-status{font-size:13.5px;padding:5px 16px;}
+  .lab text{font-size:10.5px;}
+  .pane-note{font-size:14px;padding:13px 16px;border-radius:16px;}
+}

@@ -5,7 +5,7 @@
 #home{
   flex:1 1 auto;
   overflow-y:auto;
-  display:flex;align-items:center;justify-content:center;
+  display:flex;align-items:flex-start;justify-content:center;
   padding:18px;
   background:
     radial-gradient(900px 500px at 20% -10%, rgba(56,189,248,.18), transparent 60%),
@@ -42,8 +42,8 @@
 }
 
 /* ── the tiles ──
-   Three per row on every size. Five groups of three fill the grid neatly and
-   a phone shows the whole menu in five short rows instead of a long list.
+   Three per row on every size. Five groups of three plus two 2 × 2 panels keep the menu tidy,
+   and a phone shows it in seven short rows instead of one long list.
    Each tile is a little card: picture on top, name underneath. */
 .tiles{
   display:grid;
@@ -75,6 +75,9 @@
 .tile-cycle:hover{box-shadow:0 18px 40px rgba(63,159,216,.30);}
 .tile-weather:hover{box-shadow:0 18px 40px rgba(142,207,114,.30);}
 .tile-engine:hover{box-shadow:0 18px 40px rgba(240,160,58,.30);}
+.tile-electric:hover{box-shadow:0 18px 40px rgba(255,209,102,.30);}
+.tile-magnet:hover{box-shadow:0 18px 40px rgba(232,93,93,.30);}
+.tile-light:hover{box-shadow:0 18px 40px rgba(255,201,120,.30);}
 
 .tile::after{
   content:"";position:absolute;inset:0;pointer-events:none;
@@ -98,6 +101,9 @@
 .tile-cycle .tile-art{background:linear-gradient(160deg,#123a4a,#0a1f2c);}
 .tile-weather .tile-art{background:linear-gradient(160deg,#18302c,#0d1f1c);}
 .tile-engine .tile-art{background:linear-gradient(160deg,#1a2533,#0c131c);}
+.tile-electric .tile-art{background:linear-gradient(160deg,#1b2a4a,#0e1830);}
+.tile-magnet .tile-art{background:linear-gradient(160deg,#3a2a1c,#1d140c);}
+.tile-light .tile-art{background:linear-gradient(160deg,#1a2a44,#0c1524);}
 
 .tile-text{flex:0 1 auto;min-width:0;width:100%;}
 .tile-text h2{margin:0;font-size:11.5px;line-height:1.22;letter-spacing:-.1px;font-weight:700;}
@@ -244,4 +250,158 @@
   .tile-text h2{font-size:18px;line-height:1.2;}
   .tile-text p{font-size:12px;line-height:1.4;margin-top:5px;}
   .home-foot{margin-top:30px;font-size:14px;gap:14px;}
+}
+
+/* ── the four-lesson groups ──
+   Science lab and Electricity & machines each have four tiles. On a phone
+   they are a tidy 2 × 2; on a tablet they are one row of four. */
+.group[data-group="science"] .tiles,
+.group[data-group="machines"] .tiles{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.tile-sunbear{
+  background:linear-gradient(150deg,rgba(255,179,71,.13),rgba(43,43,51,.30));
+  border-color:rgba(255,179,71,.28);
+}
+.tile-sunbear:hover{box-shadow:0 18px 40px rgba(255,179,71,.28);}
+.tile-sunbear .tile-art{background:linear-gradient(160deg,#2a3a1c,#16240f);}
+
+.tile-speaker .tile-art{background:linear-gradient(160deg,#22304a,#0e1830);}
+.tile-speaker:hover{box-shadow:0 18px 40px rgba(143,208,255,.28);}
+.tile-computer .tile-art{background:linear-gradient(160deg,#1b2a4a,#0c1524);}
+.tile-computer:hover{box-shadow:0 18px 40px rgba(63,159,216,.28);}
+.tile-power .tile-art{background:linear-gradient(160deg,#1a2a44,#0b1624);}
+.tile-power:hover{box-shadow:0 18px 40px rgba(255,209,102,.28);}
+.tile-safety .tile-art{background:linear-gradient(160deg,#3a2430,#1c1018);}
+.tile-safety:hover{box-shadow:0 18px 40px rgba(248,113,113,.28);}
+
+@media (max-width:520px){
+  .group[data-group="science"] .tile-art,
+  .group[data-group="machines"] .tile-art{max-width:84px;}
+  .group[data-group="science"] .tile-text h2,
+  .group[data-group="machines"] .tile-text h2{font-size:12px;}
+}
+
+@media (min-width:700px) and (min-height:560px){
+  .group[data-group="science"] .tiles,
+  .group[data-group="machines"] .tiles{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+}
+
+/* wide but short screens (landscape phones) still fit four across */
+@media (min-width:700px) and (max-height:559px){
+  .group[data-group="science"] .tiles,
+  .group[data-group="machines"] .tiles{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+}
+
+/* ─────────── the two-level menu: topics first ─────────── */
+.cat-back{
+  display:flex;
+  width:max-content;
+  margin:0 auto 10px;
+  padding:7px 13px;
+  border-radius:999px;
+  border:1px solid rgba(120,170,225,.35);
+  background:rgba(255,255,255,.06);
+  color:#bfe9ff;
+  font:inherit;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.2px;
+  min-height:34px;
+  cursor:pointer;
+  transition:background .15s,border-color .15s;
+}
+.cat-back:hover{background:rgba(56,189,248,.16);border-color:rgba(56,189,248,.5);}
+.cat-back:active{transform:scale(.97);}
+
+/* the group headings become the category cards, so they are not repeated */
+#groups .group-title{display:none;}
+
+.cat-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:11px;
+  margin:4px 0 18px;
+}
+.cat-card{
+  --cat:#38bdf8;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  min-height:82px;
+  padding:12px 13px;
+  border-radius:18px;
+  border:1px solid color-mix(in srgb,var(--cat) 38%,transparent);
+  background:linear-gradient(150deg,color-mix(in srgb,var(--cat) 18%,transparent),rgba(255,255,255,.03));
+  color:var(--txt);
+  font:inherit;
+  text-align:left;
+  cursor:pointer;
+  -webkit-appearance:none;
+  appearance:none;
+  transition:transform .16s,border-color .16s,box-shadow .16s;
+}
+.cat-card:hover{
+  transform:translateY(-2px);
+  border-color:color-mix(in srgb,var(--cat) 68%,transparent);
+  box-shadow:0 14px 30px rgba(0,0,0,.35);
+}
+.cat-card:active{transform:scale(.985);}
+.cat-ico{
+  flex:0 0 auto;
+  font-size:27px;
+  line-height:1;
+  filter:drop-shadow(0 0 8px color-mix(in srgb,var(--cat) 55%,transparent));
+}
+.cat-text{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1 1 auto;}
+.cat-text b{font-size:13.5px;line-height:1.2;letter-spacing:-.1px;}
+.cat-desc{font-size:10px;line-height:1.35;color:var(--txt-dim);}
+.cat-count{
+  margin-top:2px;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.4px;
+  text-transform:uppercase;
+  color:color-mix(in srgb,var(--cat) 72%,white);
+}
+.cat-go{flex:0 0 auto;font-size:22px;line-height:1;color:rgba(255,255,255,.3);}
+
+/* the newest group gets a full-width feature card, so the odd count stays tidy */
+.cat-card[data-cat="machines"]{grid-column:1/-1;}
+
+.cat-card[data-cat="home"]{--cat:#38bdf8;}
+.cat-card[data-cat="kitchen"]{--cat:#f0a03a;}
+.cat-card[data-cat="water"]{--cat:#5fb6ef;}
+.cat-card[data-cat="nature"]{--cat:#8ecf72;}
+.cat-card[data-cat="body"]{--cat:#f87171;}
+.cat-card[data-cat="science"]{--cat:#c9a6ff;}
+.cat-card[data-cat="machines"]{--cat:#ffd166;}
+
+@media (min-width:560px){
+  .cat-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;}
+}
+
+@media (max-width:520px){
+  .cat-card{min-height:76px;padding:10px;gap:9px;border-radius:15px;}
+  .cat-ico{font-size:23px;}
+  .cat-go{display:none;}
+  .cat-text b{font-size:12px;}
+  .cat-desc{font-size:9px;}
+  .cat-count{font-size:8px;}
+}
+
+@media (min-width:700px) and (min-height:560px){
+  .cat-grid{gap:16px;margin-bottom:22px;}
+  .cat-card{min-height:104px;padding:16px 18px;gap:15px;border-radius:22px;}
+  .cat-ico{font-size:36px;}
+  .cat-text b{font-size:17px;}
+  .cat-desc{font-size:12px;}
+  .cat-count{font-size:10.5px;}
+  .cat-go{font-size:28px;}
+  .cat-back{font-size:13px;padding:9px 16px;margin-bottom:14px;}
 }

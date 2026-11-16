@@ -863,13 +863,42 @@ console.log('\n— How a Car Engine Works —');
   check('the crank turns at the rev speed', (() => { const a = cur().angle; sim.tick(0.1); return cur().angle - a; })(), 50, 80, '°');
 }
 
+console.log('\n— Science and machines: the lessons —');
+{
+  const lessons = [
+    { dir: 'electric', first: 'battery', last: 'safe' },
+    { dir: 'magnet', first: 'attract', last: 'compass' },
+    { dir: 'light', first: 'sources', last: 'refract' },
+    { dir: 'sunbear', first: 'size', last: 'protect' },
+    { dir: 'speaker', first: 'speaker', last: 'volume' },
+    { dir: 'computer', first: 'input', last: 'program' },
+    { dir: 'power', first: 'plant', last: 'socket' },
+    { dir: 'safety', first: 'socket', last: 'storm' }
+  ];
+
+  for (const L of lessons) {
+    const ARG = load(L.dir, [L.dir + '/js/state.js']);
+    const sim = ARG.sim;
+
+    eq(L.dir + ' is a six-step lesson', sim.STEPS.length, 6);
+    eq('  → it opens on ' + L.first, sim.STEPS[0].scene, L.first);
+    eq('  → and ends on ' + L.last, sim.STEPS[5].scene, L.last);
+
+    eq('  → every step carries key words', sim.STEPS.every(st => (st.words || []).length > 0), true);
+    eq('  → each step has a sentence to read', sim.STEPS.every(st => !!st.fact && !!st.title), true);
+    eq('  → no step shares a scene with another',
+       new Set(sim.STEPS.map(st => st.scene)).size, 6);
+    eq('  → it starts on step one, unseen', sim.s.step === 0 && sim.s.seenAll === false, true);
+  }
+}
+
 console.log('\n— The sticker book —');
 {
   const ARG = load('shared', ['shared/progress.js']);
   const p = ARG.progress;
 
   p.reset();
-  eq('the book has twenty stickers', p.count, 20);
+  eq('the book has twenty-eight stickers', p.count, 28);
   eq('and starts empty', p.earned(), 0);
   eq('  → with no stars', p.total(), 0);
 
@@ -888,16 +917,19 @@ console.log('\n— The sticker book —');
   eq('the total adds the stars up', p.total(), 4);
 
   const book = p.book();
-  eq('every catalogue sticker is in the book', book.length, 20);
+  eq('every catalogue sticker is in the book', book.length, 28);
   eq('  → each knows its activity', book[0].activity, 'aircond');
   eq('  → and has a label to explain it', typeof book[0].label, 'string');
   const acts = {};
   book.forEach(c => { acts[c.activity] = (acts[c.activity] || 0) + 1; });
-  eq('every activity in the app contributes', Object.keys(acts).length, 15);
+  eq('every activity in the app contributes', Object.keys(acts).length, 23);
   eq('  → the two with missions contribute three each, the laundry two, the rest one',
      acts.aircond === 3 && acts.train === 3 && acts.laundry === 2 &&
      acts.tree === 1 && acts.sandwich === 1 && acts.waterhome === 1 &&
-     acts.cycle === 1 && acts.weather === 1 && acts.engine === 1, true);
+     acts.cycle === 1 && acts.weather === 1 && acts.engine === 1 &&
+     acts.electric === 1 && acts.magnet === 1 && acts.light === 1 &&
+     acts.sunbear === 1 && acts.speaker === 1 && acts.computer === 1 &&
+     acts.power === 1 && acts.safety === 1, true);
 
   /* a corrupt store must not take the home screen down with it */
   const ARG2 = load('shared', ['shared/progress.js']);

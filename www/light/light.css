@@ -1,0 +1,52 @@
+/* ═══════════════════════════════════════════════════════════
+   Light — the activity's own palette and picture
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ls-paper:#fffaf0;
+  --ls-paper2:#fdf1dc;
+  --ls-paper3:#f2dfbf;
+  --ls-edge:#e2cda6;
+  --ls-ink:#4a3b26;
+  --ls-dim:#7d6a4f;
+  --ls-accent:#e08a2e;
+  --ls-accent2:#ffc978;
+}
+
+#scene{background:linear-gradient(180deg,#0f1826,#070c14);}
+
+/* one diagram at a time */
+#sources,#straight,#shadow,#mirrorGroup,#refractGroup{
+  opacity:0;pointer-events:none;
+  transition:opacity .35s ease;
+}
+#art.sources #sources,
+#art.straight #straight,
+#art.shadow #shadow,
+#art.near #shadow,
+#art.mirror #mirrorGroup,
+#art.refract #refractGroup{opacity:1;}
+
+/* step 4: the lamp comes closer, so the shadow grows */
+#lamp{transition:transform .55s cubic-bezier(.3,1.2,.5,1);}
+#art.near #lamp{transform:translate(46px,16px);}
+
+#treeShadow{
+  transform-box:fill-box;transform-origin:center;
+  transition:transform .55s cubic-bezier(.3,1.2,.5,1);
+}
+#art.near #treeShadow{transform:scale(1.5);}
+
+/* the wall screen is not the subject while the shadow is */
+#art.shadow #screen,#art.near #screen{opacity:.32;}
+
+/* the spot and the beam breathe a little while they are the subject */
+#art.straight #spot{animation:lSpot 1.8s ease-in-out infinite;}
+@keyframes lSpot{0%,100%{opacity:.65;}50%{opacity:1;}}
+#art.mirror #mirrorGroup path{animation:lBeam 2.2s ease-in-out infinite;}
+@keyframes lBeam{0%,100%{opacity:.75;}50%{opacity:1;}}
+
+@media (prefers-reduced-motion: reduce){
+  #art.straight #spot,
+  #art.mirror #mirrorGroup path{animation:none !important;}
+}

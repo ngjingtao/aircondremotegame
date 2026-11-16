@@ -2,7 +2,7 @@
 
 [![Build Android APK](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml/badge.svg)](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml)
 
-One little app, **fifteen** activities for a curious kid. The home screen shows fifteen picture
+One little app, **twenty-three** activities for a curious kid. The home screen shows twenty-three picture
 tiles — tap one and you're in.
 
 ```
@@ -36,30 +36,64 @@ tiles — tap one and you're in.
 │  │[ the hill ]│ │[ tunnel   ]│ │[ engine   ]│                         │
 │  │呼吸与血液  │ │开火车      │ │汽车发动机  │                         │
 │  └────────────┘ └────────────┘ └────────────┘                         │
+│  🔬 SCIENCE LAB                                                       │
+│  ┌────────────┐ ┌────────────┐                                         │
+│  │[ the bulb ]│ │[ magnet   ]│                                         │
+│  │电的旅行    │ │磁铁的秘密  │                                         │
+│  └────────────┘ └────────────┘                                         │
+│  ┌────────────┐ ┌────────────┐                                         │
+│  │[ the lamp ]│ │[ sun bear ]│                                         │
+│  │光和影子    │ │马来熊      │                                         │
+│  └────────────┘ └────────────┘                                         │
+│  🔌 ELECTRICITY & MACHINES                                            │
+│  ┌────────────┐ ┌────────────┐                                         │
+│  │[ speaker  ]│ │[ laptop   ]│                                         │
+│  │扬声器      │ │电脑        │                                         │
+│  └────────────┘ └────────────┘                                         │
+│  ┌────────────┐ ┌────────────┐                                         │
+│  │[ pylon    ]│ │[ warning  ]│                                         │
+│  │电的旅程    │ │安全用电    │                                         │
+│  └────────────┘ └────────────┘                                         │
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
-Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
-All fifteen activities speak **English and 中文**, work offline, and are installable as an app.
+> The screen above is the **activity level** inside a topic. The first screen is seven topic
+> cards; tap one to get here.
 
-The fifteen tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
+Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
+All twenty-three activities speak **English and 中文**, work offline, and are installable as an app.
+
+The twenty-three tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
 painted from one shared palette and split into three depth layers that drift gently and pull
 apart on hover. They are the only place the character guidelines in
 [`docs/character-bible.md`](docs/character-bible.md) are applied so far.
 
-The tiles are grouped under five headings so the larger menu stays navigable: **Home machines**
-(3), **Kitchen** (3), **Water systems** (3), **Nature & weather** (3) and **Body & transport**
-(3). Three per row means every group is one clean row on a tablet and two short rows on a
-phone, and the whole menu fits in five rows instead of a long scrolling list.
+The activities are grouped under seven topics: **Home machines** (3), **Kitchen** (3),
+**Water systems** (3), **Nature & weather** (3), **Body & transport** (3), **Science lab** (4)
+and **Electricity & machines** (4).
+
+### The two-level menu
+
+With twenty-three activities, the home is a **two-level menu** rather than one long scroll:
+
+1. **Topics** — seven cards, each with its icon, name, a one-line description and the number of
+   activities. The newest group spans the full row, so the odd count stays tidy.
+2. **Activities** — tapping a topic shows only its tiles, under the topic's name, with a
+   `‹ All topics` button. The topic lives in the URL (`index.html#science`), so the browser's
+   Back button, a refresh and a shared link all land in the same place.
+
+Every activity's `‹ Menu` button carries its own topic hash, so leaving an activity returns to
+the topic you came from, not the very top. The sticker book stays on the topics screen, where
+it is the reward you come back to.
 
 ### Phone and tablet layout
 
 The layout is tuned for a phone held in portrait (Xiaomi 14, 393 × 852 CSS px) and for an iPad
 in either orientation (768 × 1024 and 1024 × 768).
 
-- **Home** — always three columns. On a phone the cards are compact (66 px picture, name only);
-  on an iPad the picture is 128 px and the one-line description comes back. Five groups of
-  three means the menu no longer needs a long scroll.
+- **Home** — level 1 is seven topic cards: two columns on a phone, three on a tablet, with the
+  newest topic spanning the row. Level 2 is the activity grid: the three-per-row groups stay
+  three across; the four-lesson groups are 2 × 2 on a phone and a row of four on a tablet.
 - **Activities on a phone** — a side-by-side split left the illustration about 170 px wide and
   the control text under 5 px, so portrait phones stack instead: the scene gets the full width
   on top, and the control panel becomes a full-width sheet at the bottom. The sheet **hugs the
@@ -94,8 +128,8 @@ The shared rules live in `www/shared/ui.css` (phone sheet, fitted card and top b
 
 ### The sticker book
 
-Under the tiles is the one thing that ties the fifteen activities together: a collection that
-every activity writes to. Twenty stickers, earned by doing the thing the activity is about —
+Under the tiles is the one thing that ties the twenty-three activities together: a collection that
+every activity writes to. Twenty-eight stickers, earned by doing the thing the activity is about —
 `shared/progress.js` holds the catalogue and the storage, and each activity awards its own from
 its render loop.
 
@@ -116,6 +150,14 @@ its render loop.
 | 🌍 Water Cycle | 1 | following one drop through the whole cycle |
 | 🌦️ Weather Station | 1 | forecasting all three weather rounds, with its star rating |
 | ⚙️ How a Car Engine Works | 1 | watching all four strokes of the engine |
+| ⚡ Electricity | 1 | reading every step of the circuit |
+| 🧲 Magnets | 1 | reaching the compass at the end of the lesson |
+| 💡 Light & Shadow | 1 | following light through shadow, reflection and refraction |
+| 🐻 Sun Bear | 1 | reaching the conservation step at the end of the lesson |
+| 🔊 Speaker | 1 | following the signal to the cone and the sound |
+| 💻 Computer | 1 | following data from input to output |
+| ⚡ Power Journey | 1 | following electricity from the plant to the socket |
+| ⚠️ Electrical Safety | 1 | reading all six safety rules |
 
 An earned sticker takes its activity's accent colour and shows the stars; the rest sit dimmed
 behind a dashed outline, so there is always something obviously missing. Awards only ever go
@@ -816,6 +858,180 @@ earned, then walks through the same four strokes with STEP.
 
 ---
 
+## The science lab — one step, one sentence, one read
+
+The eight step-by-step lessons — four in Science lab, four in Electricity & machines — are built
+on one shared engine: `www/shared/lesson.js` and `www/shared/lesson.css`. They are the first
+activities where the teaching unit is a **step**, not a free-play simulation:
+
+* every step is a numbered card in the rail, and tapping one jumps straight to it;
+* the sentence for that step is **read aloud as the step opens** (Web Speech API), with the
+  same word-by-word highlight as the rest of the app;
+* the **key words** under the sentence are buttons — tap one and it is spoken with a one-line,
+  kid-sized meaning;
+* the picture changes with the step: a switch closes, iron things lift, a shadow grows;
+* reaching the last step marks the lesson complete and pays its sticker.
+
+Each activity supplies only its strings (`js/i18n.js`), its six steps with their words
+(`js/state.js`), and the picture (`js/scene.js`). There is no `panel.js`: the engine owns the
+card, the rail, the navigation and the reading. Adding a fourth lesson means adding those three
+files, a stylesheet and a tile — not another copy of the step UI.
+
+Because every step is one short sentence, the screen stays readable for a five-year-old: the
+card carries the sentence and the three key words, while the `?` overlay carries the paragraphs.
+
+---
+
+## 16 · ⚡ Electricity
+
+A six-step tour of one circuit. The switch closes and the current starts to move as the lesson
+reaches it; the bulb lights at the bulb step.
+
+| # | Step | The picture | What it teaches |
+|---|---|---|---|
+| 1 | **Battery** | a cell with + and − terminals | stored chemical energy pushes current out of the positive terminal |
+| 2 | **Closed circuit** | the whole loop | current only flows round a complete loop; break it and it stops |
+| 3 | **Switch** | the lever swings shut | a switch is a gate for the current |
+| 4 | **Bulb** | the filament glows | electrical energy becomes light and heat |
+| 5 | **Conductors** | a nail and a paperclip beside an eraser, wood and a plastic ruler | metals conduct; plastic, rubber and wood insulate |
+| 6 | **Safety** | the wall socket and its lightning bolt | mains is 230 V — never poke anything into a socket |
+
+The key words are 电池 · 正极和负极 · 电路 · 电流 · 开关 · 灯丝 · 电能 · 导体 · 绝缘体 ·
+市电 · 安全用电.
+
+---
+
+## 17 · 🧲 Magnets
+
+Six steps that build from "what does it pull?" to why a compass points north.
+
+| # | Step | The picture | What it teaches |
+|---|---|---|---|
+| 1 | **What it attracts** | the nail and paperclip lift off the shelf | iron, steel and nickel are magnetic; plastic, wood and glass are not |
+| 2 | **Two poles** | dashed rings on the two ends | a north and a south pole, strongest at the ends |
+| 3 | **Attract and repel** | two pairs of magnets with arrows | like poles repel, opposite poles attract |
+| 4 | **The field** | three field lines appear | the field is invisible; iron filings show its shape |
+| 5 | **Magnetising** | a nail hangs from the magnet with paperclips on it | stroking iron makes a temporary magnet |
+| 6 | **Compass and Earth** | a compass needle settles north | the needle is a tiny magnet; the Earth is a giant one |
+
+The key words are 磁铁 · 铁 · 磁极 · 北极 · 吸引 · 排斥 · 磁场 · 铁屑 · 磁化 · 指南针 · 地磁.
+
+---
+
+## 18 · 💡 Light & Shadow
+
+Six steps from "where does light come from?" to why a straw looks broken in water. The lamp
+physically moves closer at step 4, and the tree's shadow grows with it.
+
+| # | Step | The picture | What it teaches |
+|---|---|---|---|
+| 1 | **Sources** | the lamp's rays and an eye | the Sun, lamps and fireflies make their own light; light entering the eye is seeing |
+| 2 | **Straight lines** | a beam through a slit in a card | light does not bend around corners |
+| 3 | **The shadow** | a tree and the dark shape beside it | an opaque object blocks light and leaves a shadow |
+| 4 | **Shadows change** | the lamp slides closer, the shadow grows | closer light = bigger shadow, always on the opposite side |
+| 5 | **Reflection** | a mirror on a stand, incident and reflected beams | light bounces off a mirror; we see most objects by reflected light |
+| 6 | **Refraction** | a straw in a glass of water, with a dashed "unbent" line | light changes direction entering water |
+
+The key words are 光源 · 眼睛 · 直线传播 · 挡住 · 影子 · 不透明 · 方向 · 大小 · 反射 ·
+镜子 · 折射 · 吸管.
+
+---
+
+## 19 · 🐻 Sun Bear
+
+Six steps through the life of the sun bear — the smallest bear in the world, and one that
+lives in Malaysia's rainforests.
+
+| # | Step | The picture | What it teaches |
+|---|---|---|---|
+| 1 | **The smallest bear** | a measuring line beside the bear | about 1.2–1.5 m long and 25–65 kg; it lives in the Southeast Asian rainforest |
+| 2 | **The sun patch** | the chest patch glows and grows rays | the orange patch looks like a sun, and every bear's patch is unique |
+| 3 | **A very long tongue** | the tongue reaches a hive on the trunk | a 20–25 cm tongue licks honey out of tree holes |
+| 4 | **Honey and insects** | a termite mound, ants, beetles and fruit appear | its diet, and why it is also called the honey bear |
+| 5 | **A rainforest climber** | the bear climbs the trunk, claws showing | curved claws make it a strong climber that sleeps in trees |
+| 6 | **Protecting the sun bear** | a shield with a paw and hearts | it is Vulnerable: protect forests and never buy wildlife products |
+
+The key words are 马来熊 · 雨林 · 胸斑 · 指纹 · 舌头 · 蜂巢 · 白蚁 · 蜜熊 · 攀爬 · 爪子 ·
+易危 · 保护.
+
+The step-by-step lessons sit in two groups of four — **Science lab** and **Electricity & machines**.
+Each group is a 2 × 2 panel on a phone and one row of four on a tablet, which keeps the menu's
+three-per-row rhythm intact.
+
+---
+
+## 20 · 🔊 Speaker
+
+A cutaway speaker: the signal and the coil on the left, the cone and the sound waves on the right.
+The waveform swaps for each step, and the cone visibly moves.
+
+| # | Step | The picture | What it teaches |
+|---|---|---|---|
+| 1 | **What a speaker does** | the whole cutaway | it turns an electrical signal into sound |
+| 2 | **Magnet and coil** | the coil in the magnet gap | current makes the coil an electromagnet |
+| 3 | **The signal moves it** | a changing waveform | reversing current reverses the push |
+| 4 | **The cone moves air** | cone, air dots and waves | the cone pushes the air, and that is sound |
+| 5 | **Frequency is pitch** | a dense waveform | faster vibration = higher pitch |
+| 6 | **Amplitude is volume** | a tall waveform | bigger vibration = louder sound |
+
+The key words are 扬声器 · 信号 · 线圈 · 磁铁 · 振膜 · 振动 · 频率 · 音高 · 振幅 · 音量.
+
+---
+
+## 21 · 💻 Computer
+
+A laptop above and its inside below: keyboard, CPU, RAM, SSD, fan and battery, with a data path
+that changes for each job.
+
+| # | Step | The picture | What it teaches |
+|---|---|---|---|
+| 1 | **Input** | keyboard, mouse and a path into the board | information coming in |
+| 2 | **The processor** | the CPU glows | it follows the program and does the work |
+| 3 | **Memory** | RAM sticks | fast, temporary, forgotten when off |
+| 4 | **Storage** | the SSD and a file | long-term, survives a power cut |
+| 5 | **Output** | a path up to the lit screen | the result comes back to you |
+| 6 | **Programs and binary** | `0101` across the board | instructions, and everything is 0s and 1s |
+
+The key words are 输入 · 处理器 · 内存 · 存储 · 输出 · 程序 · 二进制.
+
+---
+
+## 22 · ⚡ Power Journey
+
+One landscape, left to right: power plant, step-up transformer, pylons, substation, house with a
+meter, and a socket callout at the end.
+
+| # | Step | The picture | What it teaches |
+|---|---|---|---|
+| 1 | **Making electricity** | plant with a spinning generator and smoke | turbine + generator |
+| 2 | **Stepping up** | the transformer beside the plant | higher voltage, smaller current, less loss |
+| 3 | **High-voltage transmission** | pylons and moving current | the grid crosses the country |
+| 4 | **The substation** | fenced transformers | voltage comes down step by step |
+| 5 | **Distribution and meter** | the wire to the house and its meter | the meter records what you use |
+| 6 | **At the socket** | a 230 V / 50 Hz callout | Malaysian sockets and safety |
+
+The key words are 涡轮 · 发电机 · 变压器 · 高压 · 变电站 · 电表 · 伏特 · 赫兹.
+
+---
+
+## 23 · ⚠️ Electrical Safety
+
+Six hazards on one wall. Each step brings one forward, with the warning sign, the RCD and the
+earth wire in place.
+
+| # | Step | The picture | What it teaches |
+|---|---|---|---|
+| 1 | **Never poke a socket** | a key, a red cross and a 230 V sign | fingers and metal never go in |
+| 2 | **Water and electricity** | a dripping tap and a plug in a puddle | wet hands stay away |
+| 3 | **Do not overload** | an extension lead with too many plugs | heat and fire |
+| 4 | **Damaged cords** | a broken cord with bare copper and sparks | replace it, do not tape it |
+| 5 | **Earth and the RCD** | a three-pin plug, earth wire and RCD | leaking current goes to ground |
+| 6 | **Short circuits and storms** | lightning, smoke and a short | switch off, tell a grown-up, call 999 for fire |
+
+The key words are 插座 · 绝缘 · 接地线 · 漏电保护器 · 过载 · 短路 · 雷雨.
+
+---
+
 ## Play it in a browser (fastest)
 
 Everything is plain HTML/CSS/JS — no build step.
@@ -875,10 +1091,27 @@ With the lock off, the interface starts in Chinese and stays there unless the bu
 and that choice is remembered on the device. Every label, speech bubble, science fact and help
 screen exists in both languages.
 
-**🗣️ Voice** — every activity has a voice button next to the sound button. Narration uses the
-browser's built-in speech voices (Web Speech API), so nothing is downloaded and it works
-offline. It follows the interface language: pick a Chinese voice for Chinese, an English voice
-for English.
+**🗣️ Voice** — every activity has a voice button next to the sound button. In a browser,
+narration uses the built-in speech voices (Web Speech API), so nothing is downloaded and it
+works offline. It follows the interface language: pick a Chinese voice for Chinese, an English
+voice for English.
+
+**On Android the browser's speech is replaced by the phone's own engine.** A Capacitor WebView
+often reports no voices, or silently never starts an utterance — which is why narration used to
+fail in the APK. `MainActivity` now hands the page `window.AndroidTts`, a tiny bridge to
+`android.speech.tts.TextToSpeech` (`SystemTts.java`), and `shared/voice.js` prefers it:
+
+* the sentence goes to the same TTS engine the rest of the phone uses, at normal media volume;
+* the voice follows the interface language (`zh-CN` / `en-US`); if no Chinese voice is installed,
+  Android offers to download one;
+* word-by-word highlighting still works on Android 8+ through
+  `UtteranceProgressListener.onRangeStart`; older phones just outline the card;
+* in a browser, or on iOS, nothing changes — the Web Speech path is still the fallback.
+
+This depends on an installed system TTS engine (Google TTS or the vendor's), which nearly every
+Android phone has. It is *independent of the WebView*, not of the operating system. A fully
+self-contained voice would mean bundling a model (Piper / sherpa-onnx), which is a much larger
+change.
 
 **While it reads, the words light up.** Tap a fact card or the help text and each word is
 highlighted as it is spoken (on browsers that report word boundaries — Chrome and Edge do; on
@@ -899,6 +1132,7 @@ Where it speaks:
 | **Water Cycle** | Every stage is announced with its fact, in step mode or while WATCH plays. |
 | **Weather Station** | The forecast feedback and the reason for the weather are read out. |
 | **How a Car Engine Works** | Each stroke is read out in STEP mode, and the result card when all four have been seen. |
+| **Electricity · Magnets · Light · Sun Bear · Speaker · Computer · Power · Safety** | Every step reads itself as it opens, word by word; tap a key word to hear the word and its meaning. |
 | **All activities** | Tap the help text to have the instructions read out. |
 
 If the device has no speech voices, the button hides itself and nothing else changes.
@@ -1008,7 +1242,7 @@ cd android
 
 ```
 www/                          ← the whole app (no build step)
-├─ index.html  home.css  home.js        the activity picker
+├─ index.html  home.css  home.js        the two-level topic picker
 ├─ manifest.webmanifest                 PWA: standalone display, icons, shortcuts
 ├─ sw.js                                service worker — caches every page and asset
 ├─ pwa.js                               registers the service worker, detects standalone
@@ -1021,7 +1255,9 @@ www/                          ← the whole app (no build step)
 │  ├─ audio.js                          WebAudio blips (no audio files)
 │  ├─ voice.js                          spoken narration (Web Speech API)
 │  ├─ shell.js                          the ◧ fold-away control panel
-│  └─ a11y.js                           aria labels + keyboard support
+│  ├─ a11y.js                           aria labels + keyboard support
+│  ├─ lesson.js                         the step-by-step lesson engine (steps · words · reading)
+│  └─ lesson.css                        the lesson card, step rail and key-word chips
 ├─ aircond/                             ── activity 1 ──
 │  ├─ index.html
 │  ├─ aircond.css                       remote skin, LCD, room, character animations
@@ -1082,6 +1318,38 @@ www/                          ← the whole app (no build step)
 │  ├─ index.html
 │  ├─ engine.css                        cutaway cylinder, piston, rod, valves, crank
 │  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ electric/                            ── activity 16 ──
+│  ├─ index.html
+│  ├─ electric.css                      circuit, switch, bulb, conductor tray
+│  └─ js/ i18n.js · state.js · scene.js · main.js
+├─ magnet/                              ── activity 17 ──
+│  ├─ index.html
+│  ├─ magnet.css                        bar magnet, poles, field, compass
+│  └─ js/ i18n.js · state.js · scene.js · main.js
+├─ light/                               ── activity 18 ──
+│  ├─ index.html
+│  ├─ light.css                         lamp, beam, tree shadow, mirror, glass
+│  └─ js/ i18n.js · state.js · scene.js · main.js
+├─ sunbear/                             ── activity 19 ──
+│  ├─ index.html
+│  ├─ sunbear.css                       rainforest, the bear, hive, termite mound
+│  └─ js/ i18n.js · state.js · scene.js · main.js
+├─ speaker/                             ── activity 20 ──
+│  ├─ index.html
+│  ├─ speaker.css                       cutaway speaker, coil, cone, waveform
+│  └─ js/ i18n.js · state.js · scene.js · main.js
+├─ computer/                            ── activity 21 ──
+│  ├─ index.html
+│  ├─ computer.css                      laptop, board, CPU, RAM, SSD, data paths
+│  └─ js/ i18n.js · state.js · scene.js · main.js
+├─ power/                               ── activity 22 ──
+│  ├─ index.html
+│  ├─ power.css                         plant, pylons, substation, house, socket
+│  └─ js/ i18n.js · state.js · scene.js · main.js
+├─ safety/                              ── activity 23 ──
+│  ├─ index.html
+│  ├─ safety.css                        socket, water, lead, cord, RCD, storm
+│  └─ js/ i18n.js · state.js · scene.js · main.js
 ├─ _devicelab.html                      dev-only: phone & iPad previews
 docs/character-bible.md                 the character, the palettes and the house style
 
@@ -1089,10 +1357,12 @@ server.js                               zero-dependency static server ($PORT awa
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        254 assertions over the fifteen simulations
-test/render.test.js                     217 assertions: every page booted, the artwork, the book, and nothing inline
+test/sim.test.js                        310 assertions over the twenty-three simulations
+test/voice.test.js                       32 assertions: native TTS first, Web Speech fallback, word ranges
+test/render.test.js                     311 assertions: every page booted, the menu, the artwork, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
+│  └─ app/src/main/java/.../SystemTts.java   native TTS bridge (window.AndroidTts)
 capacitor.config.json
 .github/workflows/android.yml           runs the tests, then builds the APK
 ```
@@ -1100,7 +1370,7 @@ capacitor.config.json
 ## Tests
 
 ```bash
-npm test              # the simulation models, then every page booted and run
+npm test              # the models, the voice router, then every page booted and run
 npm run test:server   # malformed URLs, traversal, security headers (needs npm start running)
 ```
 
@@ -1114,7 +1384,7 @@ call a scene, so a `render()` that throws still passes every one of them while t
 completely dead. It happened: the train's scene referenced an undefined `clamp`, which threw on
 every frame — and because `main.js` calls `render()` *before* it schedules
 `requestAnimationFrame`, the throw killed the animation loop at boot. Pressing the throttle did
-nothing at all, yet all 56 simulation assertions passed. So this test boots each of the fifteen
+nothing at all, yet all 56 simulation assertions passed. So this test boots each of the twenty-three
 pages for real — reading the exact `<script>` list out of its own HTML and loading it in order
 into a small fake DOM — then drives the `requestAnimationFrame` loop for ~3 seconds of frames and
 fails on any throw, on boot or on any later frame. The train is checked as behaviour too: apply

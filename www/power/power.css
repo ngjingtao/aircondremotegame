@@ -1,0 +1,36 @@
+/* ═══════════════════════════════════════════════════════════
+   Power — the activity's own palette and picture
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ls-paper:#f7f4ea;
+  --ls-paper2:#efe9d8;
+  --ls-paper3:#e0d6bf;
+  --ls-edge:#d2c3a4;
+  --ls-ink:#3f3826;
+  --ls-dim:#776a50;
+  --ls-accent:#c98a2e;
+  --ls-accent2:#f0c06a;
+}
+
+#scene{background:linear-gradient(180deg,#0e1a2a,#070c14);}
+
+#smoke,#socketBig{transition:opacity .35s;}
+#smoke{opacity:0;}
+#art.plant #smoke{opacity:.8;}
+#socketBig{opacity:0;}
+#art.socket #socketBig{opacity:1;}
+
+/* current only moves while the step is about the cables */
+#hvWire,#distWire{opacity:.25;}
+#art.grid #hvWire{opacity:.95;animation:pwDash 1s linear infinite;}
+#art.meter #distWire{opacity:.95;animation:pwDash 1s linear infinite;}
+@keyframes pwDash{to{stroke-dashoffset:-26;}}
+
+#art.plant #plant{filter:drop-shadow(0 0 8px rgba(255,209,102,.5));}
+#art.grid #grid{filter:drop-shadow(0 0 7px rgba(255,209,102,.55));}
+#art.sub #sub{filter:drop-shadow(0 0 7px rgba(143,240,180,.55));}
+
+@media (prefers-reduced-motion: reduce){
+  #art.grid #hvWire,#art.meter #distWire{animation:none !important;}
+}

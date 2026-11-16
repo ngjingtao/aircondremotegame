@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-66849fc';
+const CACHE = 'play-learn-menu-1';
 
 const ASSETS = [
   './',
@@ -34,6 +34,8 @@ const ASSETS = [
   'shared/voice.js',
   'shared/shell.js',
   'shared/a11y.js',
+  'shared/lesson.js',
+  'shared/lesson.css',
 
   'aircond/index.html',
   'aircond/aircond.css',
@@ -153,7 +155,63 @@ const ASSETS = [
   'engine/js/state.js',
   'engine/js/scene.js',
   'engine/js/panel.js',
-  'engine/js/main.js'
+  'engine/js/main.js',
+
+  'electric/index.html',
+  'electric/electric.css',
+  'electric/js/i18n.js',
+  'electric/js/state.js',
+  'electric/js/scene.js',
+  'electric/js/main.js',
+
+  'magnet/index.html',
+  'magnet/magnet.css',
+  'magnet/js/i18n.js',
+  'magnet/js/state.js',
+  'magnet/js/scene.js',
+  'magnet/js/main.js',
+
+  'light/index.html',
+  'light/light.css',
+  'light/js/i18n.js',
+  'light/js/state.js',
+  'light/js/scene.js',
+  'light/js/main.js',
+
+  'sunbear/index.html',
+  'sunbear/sunbear.css',
+  'sunbear/js/i18n.js',
+  'sunbear/js/state.js',
+  'sunbear/js/scene.js',
+  'sunbear/js/main.js',
+
+  'speaker/index.html',
+  'speaker/speaker.css',
+  'speaker/js/i18n.js',
+  'speaker/js/state.js',
+  'speaker/js/scene.js',
+  'speaker/js/main.js',
+
+  'computer/index.html',
+  'computer/computer.css',
+  'computer/js/i18n.js',
+  'computer/js/state.js',
+  'computer/js/scene.js',
+  'computer/js/main.js',
+
+  'power/index.html',
+  'power/power.css',
+  'power/js/i18n.js',
+  'power/js/state.js',
+  'power/js/scene.js',
+  'power/js/main.js',
+
+  'safety/index.html',
+  'safety/safety.css',
+  'safety/js/i18n.js',
+  'safety/js/state.js',
+  'safety/js/scene.js',
+  'safety/js/main.js'
 ];
 
 self.addEventListener('install', event => {

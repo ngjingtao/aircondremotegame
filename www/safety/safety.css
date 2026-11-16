@@ -1,0 +1,38 @@
+/* ═══════════════════════════════════════════════════════════
+   Electrical Safety — the activity's own palette and picture
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ls-paper:#fdf3f0;
+  --ls-paper2:#f8e6e1;
+  --ls-paper3:#eed2cb;
+  --ls-edge:#e0beb5;
+  --ls-ink:#4a2e2a;
+  --ls-dim:#8a635b;
+  --ls-accent:#d64b3c;
+  --ls-accent2:#ff9a86;
+}
+
+#scene{background:linear-gradient(180deg,#231a26,#0c0910);}
+
+/* only the hazard being explained is brought forward */
+#poke,#waterFx,#cordBreak,#earthFx,#stormFx{opacity:0;transition:opacity .35s;}
+#art.socket #poke{opacity:1;}
+#art.water #waterFx{opacity:1;}
+#art.cord #cordBreak{opacity:1;}
+#art.earth #earthFx{opacity:1;}
+#art.storm #stormFx{opacity:1;}
+
+/* the warning parts pulse while they are the subject */
+#art.socket #socketGroup{animation:sfWarn 1.5s ease-in-out infinite;}
+#art.water #waterFx ellipse:last-of-type{animation:sfWater 1.6s ease-in-out infinite;}
+#art.storm #stormFx path:first-child{animation:sfBolt 1.2s ease-in-out infinite;}
+@keyframes sfWarn{0%,100%{filter:none;}50%{filter:drop-shadow(0 0 9px #f87171);}}
+@keyframes sfWater{0%,100%{opacity:.35;}50%{opacity:.7;}}
+@keyframes sfBolt{0%,100%{opacity:.45;}50%{opacity:1;}}
+
+@media (prefers-reduced-motion: reduce){
+  #art.socket #socketGroup,
+  #art.water #waterFx ellipse:last-of-type,
+  #art.storm #stormFx path:first-child{animation:none !important;}
+}
