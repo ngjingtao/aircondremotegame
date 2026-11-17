@@ -1206,6 +1206,13 @@ console.log('\n— Science and machines: eight step-by-step lessons —');
     const missing = L.labs.filter(k => !labSet.has(k));
     eq('  → every step has a part to light up', missing.join(' ') || 'none', 'none');
 
+    /* an AI illustration can replace the hand-drawn SVG per step */
+    eq('  → an art plate slot exists', /id="art-plate"/.test(html), true);
+    eq('  → the plate loader is included', /shared\/art\.js/.test(html), true);
+    const sceneJs = fs.readFileSync(path.join(WWW, L.dir, 'js', 'scene.js'), 'utf8');
+    eq('  → each step asks for its plate',
+       new RegExp("ARG\\.art\\.show\\('" + L.dir + "'").test(sceneJs), true);
+
     /* tapping NEXT through all six steps completes the lesson and pays the sticker */
     for (let i = 0; i < 5; i++) p.ARG.lesson.press('next');
     eq('  → the last step marks the lesson complete', p.ARG.sim.s.seenAll, true);

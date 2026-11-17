@@ -196,3 +196,15 @@
   .lab text{font-size:10.5px;}
   .pane-note{font-size:14px;padding:13px 16px;border-radius:16px;}
 }
+
+/* an AI plate sits over the hand-drawn SVG; the SVG stays as fallback */
+.art-plate{
+  position:absolute;
+  inset:4px 6px;
+  width:calc(100% - 12px);
+  height:calc(100% - 8px);
+  object-fit:cover;
+  border-radius:12px;
+  display:block;
+}
+.art-plate[hidden]{display:none;}

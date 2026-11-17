@@ -744,6 +744,29 @@
     renderRoute();
   }
 
+  /* optional AI tile art; the inline SVG tiles are the fallback */
+  function mountTileArt() {
+    if (!(ARG.config && ARG.config.art && ARG.config.art.tiles)) return;
+    const tiles = document.querySelectorAll('.tile');
+    Array.prototype.forEach.call(tiles, tile => {
+      const key = (tile.getAttribute('href') || '').split('/')[0];
+      const art = tile.querySelector('.tile-art');
+      if (!key || !art || art.querySelector('.tile-img')) return;
+      const img = document.createElement('img');
+      img.className = 'tile-img';
+      img.alt = '';
+      img.hidden = true;
+      img.onload = function () {
+        img.hidden = false;
+        const svg = art.querySelector('.tile-svg');
+        if (svg) svg.style.display = 'none';
+      };
+      img.onerror = function () { img.remove(); };
+      img.src = 'art/tiles/' + key + '.webp';
+      art.appendChild(img);
+    });
+  }
+
   function boot() {
     $('btn-lang').addEventListener('click', () => {
       if (!(ARG.config && ARG.config.lockLang)) {
@@ -783,6 +806,7 @@
     ARG.voice.speakOnTap($('help-body'));
 
     apply();
+    mountTileArt();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);

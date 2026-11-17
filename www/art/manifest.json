@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "format": "webp",
+  "lessonPlate": {
+    "width": 1024,
+    "height": 1536,
+    "count": 48
+  },
+  "tile": {
+    "width": 512,
+    "height": 512,
+    "count": 23
+  },
+  "lessons": {
+    "electric": [
+      "01.webp",
+      "02.webp",
+      "03.webp",
+      "04.webp",
+      "05.webp",
+      "06.webp"
+    ],
+    "magnet": [
+      "01.webp",
+      "02.webp",
+      "03.webp",
+      "04.webp",
+      "05.webp",
+      "06.webp"
+    ],
+    "light": [
+      "01.webp",
+      "02.webp",
+      "03.webp",
+      "04.webp",
+      "05.webp",
+      "06.webp"
+    ],
+    "sunbear": [
+      "01.webp",
+      "02.webp",
+      "03.webp",
+      "04.webp",
+      "05.webp",
+      "06.webp"
+    ],
+    "speaker": [
+      "01.webp",
+      "02.webp",
+      "03.webp",
+      "04.webp",
+      "05.webp",
+      "06.webp"
+    ],
+    "computer": [
+      "01.webp",
+      "02.webp",
+      "03.webp",
+      "04.webp",
+      "05.webp",
+      "06.webp"
+    ],
+    "power": [
+      "01.webp",
+      "02.webp",
+      "03.webp",
+      "04.webp",
+      "05.webp",
+      "06.webp"
+    ],
+    "safety": [
+      "01.webp",
+      "02.webp",
+      "03.webp",
+      "04.webp",
+      "05.webp",
+      "06.webp"
+    ]
+  },
+  "tiles": [
+    "aircond.webp",
+    "food.webp",
+    "train.webp",
+    "breath.webp",
+    "aircare.webp",
+    "toilet.webp",
+    "indah.webp",
+    "hood.webp",
+    "laundry.webp",
+    "tree.webp",
+    "sandwich.webp",
+    "waterhome.webp",
+    "cycle.webp",
+    "weather.webp",
+    "engine.webp",
+    "electric.webp",
+    "magnet.webp",
+    "light.webp",
+    "sunbear.webp",
+    "speaker.webp",
+    "computer.webp",
+    "power.webp",
+    "safety.webp"
+  ]
+}

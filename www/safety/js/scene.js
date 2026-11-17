@@ -33,6 +33,7 @@ ARG.scene = (function () {
       });
     }
 
+    if (ARG.art) ARG.art.show('safety', n);
     const status = $('scene-status');
     if (status) status.textContent = ARG.i18n.t(step.title);
     const note = $('pane-note');

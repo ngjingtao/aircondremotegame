@@ -92,6 +92,11 @@
   border-radius:12px;
   display:flex;align-items:center;justify-content:center;
 }
+.tile-img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;border-radius:inherit;display:block;
+}
+.tile-img[hidden]{display:none;}
 .tile-air .tile-art{background:linear-gradient(160deg,#12324a,#0d2233);}
 .tile-food .tile-art{background:linear-gradient(160deg,#4a2a12,#33200d);}
 .tile-laundry .tile-art{background:linear-gradient(160deg,#123a3a,#0d2426);}

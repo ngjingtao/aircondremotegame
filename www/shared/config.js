@@ -22,6 +22,13 @@ ARG.config = {
            'off'    — same as the voice button being off
      base: '' means same origin. The Android/iOS app runs on localhost, so it
      points at the public server instead. */
+  /* Optional AI-generated illustrations. Leave these false until the files
+     exist; docs/art/ explains the exact paths and prompts. */
+  art: {
+    lessons: false,
+    tiles: false
+  },
+
   tts: {
     enabled: true,
     mode: 'auto',

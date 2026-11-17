@@ -1159,6 +1159,30 @@ Where it speaks:
 If neither a device voice nor the neural route is available, the button hides itself and nothing
 else changes.
 
+## Optional: AI-generated illustrations
+
+The eight step lessons and the 23 home tiles can be replaced by illustrated
+plates without touching the lesson logic. The hand-drawn SVG stays as the
+fallback, and two gates in `shared/config.js` stay off until the files exist.
+
+The illustration work is deliberately split into a **standalone handoff task**
+for a stronger image model:
+
+| File | What it is |
+|---|---|
+| [`docs/art/README.md`](docs/art/README.md) | the split and reading order |
+| [`docs/art/BRIEF.md`](docs/art/BRIEF.md) | style, palette, sizes, rules |
+| [`docs/art/SCENES.md`](docs/art/SCENES.md) | what each of the 48 plates and 23 tiles must show |
+| [`docs/art/PROMPTS.md`](docs/art/PROMPTS.md) | master/negative prompt and a prompt per file |
+| [`docs/art/INTEGRATION.md`](docs/art/INTEGRATION.md) | paths, gates, fallback, cache, verification |
+| [`docs/art/CHECKLIST.md`](docs/art/CHECKLIST.md) | acceptance pass |
+| [`docs/art/HANDOFF.md`](docs/art/HANDOFF.md) | the message to copy to the image AI |
+
+- **48 lesson plates:** `www/art/lessons/<lesson>/01..06.webp`, 1024×1536.
+- **23 tiles:** `www/art/tiles/<key>.webp`, 512×512.
+- Enable with `art: { lessons: true, tiles: true }` in `shared/config.js`.
+- With the gates off there are no requests and no 404s.
+
 ## ◧ Bigger picture on a small screen
 
 Every activity has a **◧ button** in the top bar that folds the control panel away so the
@@ -1374,6 +1398,9 @@ www/                          ← the whole app (no build step)
 │  └─ js/ i18n.js · state.js · scene.js · main.js
 ├─ _devicelab.html                      dev-only: phone & iPad previews
 docs/character-bible.md                 the character, the palettes and the house style
+docs/art/                               illustration handoff: brief, prompts, integration
+www/art/                                drop-in AI plates + tiles (empty until generated)
+www/shared/art.js                       optional plate loader with SVG fallback
 
 server.js                               static server + /tts neural voice ($PORT aware)
 .npmrc                                  ignore dependency install scripts (msedge-tts)
@@ -1382,7 +1409,7 @@ scripts/stamp.js                        stamps the sw.js cache from the git comm
 scripts/build-apk.js                    cross-platform APK build
 test/sim.test.js                        310 assertions over the twenty-three simulations
 test/voice.test.js                       45 assertions: neural voice, autoplay, native/Web Speech fallback, word ranges
-test/render.test.js                     311 assertions: every page booted, the menu, the artwork, the book, and nothing inline
+test/render.test.js                     335 assertions: every page booted, the menu, the artwork, the art hook, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 │  └─ app/src/main/java/.../SystemTts.java   native TTS bridge (window.AndroidTts)
