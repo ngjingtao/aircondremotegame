@@ -1004,18 +1004,21 @@ console.log('\n— Photo Camera —');
   eq('  → the exposure is still readable', r.exposure, 'over');
 }
 
-console.log('\n— Language lock —');
+console.log('\n— Language gate —');
 {
-  const ARG = load('aircond', ['shared/config.js', 'aircond/js/i18n.js']);
-  const lock = ARG.config.lockLang;
-  eq('a language lock is configured', !!lock, true);
-  eq('the interface starts in the locked language', ARG.i18n.lang, lock);
-  ARG.i18n.toggle();
-  eq('  → and the toggle cannot move it', ARG.i18n.lang, lock);
-  ARG.i18n.setLang('en');
-  eq('  → and setLang cannot either', ARG.i18n.lang, lock);
-  eq('  → and the strings really are the locked ones',
+  const ARG = load('aircond', ['shared/config.js', 'shared/lang.js', 'aircond/js/i18n.js']);
+  eq('the hard language lock is off', ARG.config.lockLang, null);
+  eq('the interface starts in Chinese', ARG.i18n.lang, 'zh');
+  eq('  → and the strings are the Chinese ones',
      ARG.i18n.t('title') !== 'Play Aircond', true);
+
+  eq('the gate needs five correct sums', ARG.langGate.need, 5);
+  eq('  → and grants five minutes', ARG.langGate.seconds, 300);
+
+  ARG.i18n.setLang('en');
+  eq('English can still be selected by the gate', ARG.i18n.lang, 'en');
+  ARG.i18n.setLang('zh');
+  eq('  → and Chinese comes back', ARG.i18n.lang, 'zh');
 }
 
 console.log('\n' + '─'.repeat(72));

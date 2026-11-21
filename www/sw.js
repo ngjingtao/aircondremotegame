@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-25-2';
+const CACHE = 'play-learn-lang-2';
 
 const ASSETS = [
   './',
@@ -29,6 +29,7 @@ const ASSETS = [
   'shared/config.js',
   'shared/prepaint.js',
   'shared/store.js',
+  'shared/lang.js',
   'shared/progress.js',
   'shared/audio.js',
   'shared/voice.js',

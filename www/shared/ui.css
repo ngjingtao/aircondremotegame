@@ -369,3 +369,46 @@ button{ min-height:28px; }
 @media (prefers-reduced-motion: reduce){
   .tts-caption.tts-waiting{animation:none;}
 }
+
+/* ─────────── language gate: timer and maths quiz ─────────── */
+.lang-timer{
+  position:fixed;left:50%;top:calc(52px + env(safe-area-inset-top));
+  transform:translateX(-50%);z-index:96;
+  padding:5px 13px;border-radius:999px;
+  background:rgba(6,12,22,.92);border:1px solid rgba(255,209,102,.55);
+  color:#ffd166;font-size:12px;font-weight:800;letter-spacing:.7px;
+  box-shadow:0 6px 18px rgba(0,0,0,.4);pointer-events:none;
+}
+.lang-timer[hidden]{display:none;}
+.lang-quiz-card{max-width:380px;}
+.lang-quiz-sub{font-size:12px;line-height:1.5;color:#9fb3c6;margin:0 0 12px;}
+.lang-quiz-q{
+  font-size:30px;font-weight:800;text-align:center;color:#e8eef8;
+  letter-spacing:1px;margin:8px 0 12px;
+}
+.lang-quiz-input{
+  width:100%;box-sizing:border-box;display:block;
+  padding:10px 12px;border-radius:11px;border:1px solid rgba(140,190,240,.4);
+  background:rgba(255,255,255,.08);color:#f8fbff;
+  font:inherit;font-size:22px;font-weight:800;text-align:center;
+  outline:none;
+}
+.lang-quiz-input:focus{border-color:#67e8f9;box-shadow:0 0 0 3px rgba(103,232,249,.18);}
+.lang-quiz-progress{font-size:11px;color:#9fb3c6;text-align:center;margin:8px 0 2px;letter-spacing:.4px;}
+.lang-quiz-feedback{min-height:18px;font-size:12px;font-weight:800;text-align:center;color:#9fb3c6;}
+.lang-quiz-feedback.ok{color:#3ddc84;}
+.lang-quiz-submit{
+  width:100%;margin-top:10px;padding:11px;border-radius:11px;border:none;
+  background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#04121f;
+  font:inherit;font-size:13px;font-weight:800;cursor:pointer;
+}
+.lang-quiz-cancel{
+  width:100%;margin-top:8px;padding:9px;border-radius:10px;
+  border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);
+  color:#9fb3c6;font:inherit;font-size:12px;font-weight:700;cursor:pointer;
+}
+@media (max-width:520px){
+  .lang-quiz-q{font-size:24px;}
+  .lang-quiz-input{font-size:19px;padding:9px 10px;}
+  .lang-timer{font-size:11px;padding:4px 10px;}
+}

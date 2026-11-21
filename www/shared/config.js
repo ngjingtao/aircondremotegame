@@ -2,18 +2,19 @@
    shared/config.js — build-time switches
 
    ┌─────────────────────────────────────────────────────────┐
-   │  TO BRING THE ENGLISH OPTION BACK:                      │
-   │  change  lockLang: 'zh'   to   lockLang: null           │
-   │  (that one word is the only thing you need to edit)     │
+   │  ENGLISH IS UNLOCKED BY THE MATHS GATE:                 │
+   │  5 correct one-digit sums → English for 5 minutes.      │
+   │  Set  lockLang: 'zh'  below to hard-lock Chinese again. │
    └─────────────────────────────────────────────────────────┘
    ═══════════════════════════════════════════════════════════ */
 window.ARG = window.ARG || {};
 
 ARG.config = {
 
-  /* Lock the whole app to one language and hide the EN / 中文 button.
-     'zh' = Chinese only,  'en' = English only,  null = switcher enabled. */
-  lockLang: 'zh',
+  /* The language button is gated by shared/lang.js: a 5-question one-digit
+     addition quiz unlocks English for 5 minutes, then it returns to Chinese.
+     Chinese is always the default. Set 'zh' here to hard-lock it again. */
+  lockLang: null,
 
   /* Neural narration through the server's /tts route.
      mode: 'auto'   — neural on desktop and Android, device voices on iPad

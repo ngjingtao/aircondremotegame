@@ -228,6 +228,10 @@ ARG.lesson = (function () {
     seen = false;
     build();
     go(cur().step || 0, { speak: true, silent: true });
+    if (!init.__langHooked) {
+      init.__langHooked = true;
+      document.addEventListener('arg:lang', () => refresh());
+    }
   }
 
   /* re-read the strings after a language change */

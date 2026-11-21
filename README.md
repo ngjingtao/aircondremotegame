@@ -1124,20 +1124,17 @@ Live: **https://jk-play-n-learn.onrender.com**
 
 ## Languages and voice
 
-**The interface is currently locked to Chinese.** The EN / 中文 button is hidden and every page
-forces `zh` — this is deliberate, so it can't be switched by accident.
+**Chinese is always the default.** The EN / 中文 button is visible again, but it is gated:
+tapping it opens a **five-correct one-digit addition quiz**. A wrong answer asks a new sum and
+does not count. Five correct answers unlock **English for five minutes**, with a visible `EN · 4:59` countdown chip. When the timer reaches zero the app
+switches back to Chinese, and the next page load starts in Chinese again.
 
-> **To bring the English option back:** open `www/shared/config.js` and change
-> `lockLang: 'zh'` to `lockLang: null`. That one word is the only edit needed — the button
-> reappears and the switcher works again. `'en'` locks it to English instead.
+An active English session survives page navigation (the deadline is stored as `arg.enUntil`), so
+the five minutes do not restart on every page. The gate lives in `www/shared/lang.js`; set
+`lockLang: 'zh'` in `www/shared/config.js` to hard-lock the app again.
 
-The lock beats a previously saved choice too: if a device still has `en` in local storage, the
-locked language wins and the page never flashes English. There is a test for all of this
-(`— Language lock —` in `npm test`).
-
-With the lock off, the interface starts in Chinese and stays there unless the button is pressed,
-and that choice is remembered on the device. Every label, speech bubble, science fact and help
-screen exists in both languages.
+Every label, speech bubble, science fact and help screen exists in both languages. There is a
+test for the gate (`— Language gate —` in `npm test`).
 
 **🗣️ Voice** — every activity has a voice button next to the sound button. On desktop and
 Android, narration prefers a **neural voice** from the server (below); the iPad uses the built-in
@@ -1340,7 +1337,7 @@ www/                          ← the whole app (no build step)
 ├─ pwa.js                               registers the service worker, detects standalone
 ├─ icons/                               120/152/167/180/192/512 px + maskable
 ├─ shared/
-│  ├─ config.js                         build switches — currently the language lock
+│  ├─ config.js                         build switches — lockLang, TTS/art gates
 │  ├─ ui.css                            top bar, help overlay, toast, colour vars
 │  ├─ store.js                          ARG namespace + safe localStorage
 │  ├─ progress.js                       the sticker book every activity writes to
@@ -1461,9 +1458,9 @@ server.js                               static server + /tts neural voice ($PORT
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        328 assertions over the twenty-five activities
+test/sim.test.js                        330 assertions over the twenty-five activities
 test/voice.test.js                       45 assertions: neural voice, autoplay, native/Web Speech fallback, word ranges
-test/render.test.js                     346 assertions: every page booted, the menu, the artwork, the art hook, the book, and nothing inline
+test/render.test.js                     378 assertions: every page booted, the menu, the art hook, the language gate, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 │  └─ app/src/main/java/.../SystemTts.java   native TTS bridge (window.AndroidTts)

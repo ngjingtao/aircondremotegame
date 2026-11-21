@@ -373,6 +373,8 @@ for (const page of PAGES) {
 
   if (p.bootError) { bad(label + ' — boots clean', p.bootError); continue; }
   ok(label + ' — boots clean');
+  const gateHtml = fs.readFileSync(path.join(WWW, page.dir === '.' ? 'index.html' : path.join(page.dir, 'index.html')), 'utf8');
+  eq('  → language gate loaded', /shared\/lang\.js/.test(gateHtml), true);
 
   if (page.loop === false) {
     /* no animation loop to drive, but it must still paint and stay quiet */
@@ -1248,6 +1250,18 @@ console.log('\n— After a meal: rest or run? —');
      /afterKeepSay/.test(js) && /afterPain/.test(html), true);
   eq('  → every string exists in Chinese',
      /afterIntro/.test(i18n) && /饭后/.test(i18n) && /afterRule/.test(i18n), true);
+}
+
+/* ─────────── the language gate ─────────── */
+console.log('\n— Language gate —');
+{
+  const gate = fs.readFileSync(path.join(WWW, 'shared', 'lang.js'), 'utf8');
+  eq('five one-digit sums are required', /NEED\s*=\s*5/.test(gate), true);
+  eq('  → and unlock five minutes', /SECONDS\s*=\s*300/.test(gate), true);
+  eq('  → Chinese is the default', /set\('arg\.lang', 'zh'\)/.test(gate), true);
+  eq('  → a countdown is shown', /lang-timer/.test(gate) && /tick/.test(gate), true);
+  eq('  → the questions are a + b', /a \+ b/.test(gate) && /Math\.random/.test(gate), true);
+  eq('  → the timeout returns to Chinese', /switchToChinese/.test(gate), true);
 }
 
 /* ─────────── report ─────────── */

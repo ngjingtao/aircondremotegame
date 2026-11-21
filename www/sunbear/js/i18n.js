@@ -197,7 +197,7 @@ ARG.i18n = (function () {
     if (hb) hb.innerHTML = DICT[lang].helpBody;
     const bl = document.getElementById('btn-lang');
     if (bl) {
-      bl.textContent = lang === 'en' ? 'EN' : '中文';
+      bl.textContent = lang === 'en' ? '中文' : 'EN';
       if (ARG.config && ARG.config.lockLang) bl.hidden = true;
     }
   }

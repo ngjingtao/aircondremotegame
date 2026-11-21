@@ -117,6 +117,12 @@
 
     ARG.panel.render();
     ARG.scene.render();
+
+    document.addEventListener('arg:lang', () => {
+      ARG.panel.refresh();
+      ARG.panel.render();
+      ARG.scene.render();
+    });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);

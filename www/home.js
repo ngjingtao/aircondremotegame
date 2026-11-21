@@ -749,7 +749,7 @@
       const v = DICT[lang][el.dataset.i18n];
       if (v !== undefined) el.textContent = v;
     });
-    $('btn-lang').textContent = lang === 'en' ? 'EN' : '中文';
+    $('btn-lang').textContent = lang === 'en' ? '中文' : 'EN';
     if (ARG.config && ARG.config.lockLang) $('btn-lang').hidden = true;
     $('help-title').textContent = DICT[lang].helpTitle;
     $('help-body').innerHTML = DICT[lang].helpBody;
@@ -783,6 +783,11 @@
 
   function boot() {
     $('btn-lang').addEventListener('click', () => {
+      if (ARG.langGate) {
+        ARG.langGate.request();
+        ARG.audio.blip();
+        return;
+      }
       if (!(ARG.config && ARG.config.lockLang)) {
         lang = lang === 'en' ? 'zh' : 'en';
         ARG.store.set('arg.lang', lang);
@@ -790,6 +795,15 @@
       apply();
       ARG.voice.syncLang();
       ARG.audio.blip();
+    });
+
+    document.addEventListener('arg:lang', e => {
+      const l = e.detail && e.detail.lang;
+      if (!DICT[l] || l === lang) return;
+      lang = l;
+      ARG.store.set('arg.lang', l);
+      apply();
+      ARG.voice.syncLang();
     });
 
     $('btn-sound').addEventListener('click', e => {
