@@ -17,7 +17,7 @@
       catNatureDesc: 'Trees, the water cycle and the weather',
       catBodyDesc: 'Breathing, trains and engines',
       catScienceDesc: 'Electricity, magnets, light and the sun bear',
-      catMachinesDesc: 'Speaker, computer, power and safety',
+      catMachinesDesc: 'Speaker, computer, power, safety, motor and camera',
       tileAirTitle: 'Play Aircond',
       tileAirSub: 'Drive the remote, make the boy happy, cold or hot',
       tileFoodTitle: 'Food Eating',
@@ -64,6 +64,10 @@
       tilePowerSub: 'From the generator to the socket, step by step',
       tileSafetyTitle: 'Electrical Safety',
       tileSafetySub: 'Six rules that keep electricity safe at home',
+      tileMotorTitle: 'Electric Motor',
+      tileMotorSub: 'Power, load, hand-turn, stall and burn',
+      tileCameraTitle: 'Photo Camera',
+      tileCameraSub: 'Shutter, ISO and aperture — take the shot',
       groupHome: 'Home machines',
       groupKitchen: 'Kitchen',
       groupWater: 'Water systems',
@@ -104,9 +108,11 @@
       stComputer: 'Follow data from input to output',
       stPower: 'Follow electricity from the plant to the socket',
       stSafety: 'Learn the six safety rules',
+      stMotor: 'Spin it, load it, hold it, and see the heat',
+      stCamera: 'Complete all three photo challenges',
       foot: 'Made for curious kids',
       help: '?',
-      helpTitle: 'Twenty-three activities',
+      helpTitle: 'Twenty-five activities',
       helpBody: `
         <h3>❄ Play Aircond</h3>
         <ul>
@@ -263,7 +269,7 @@
       catNatureDesc: '树木、水循环和天气',
       catBodyDesc: '呼吸、火车和发动机',
       catScienceDesc: '电、磁铁、光和马来熊',
-      catMachinesDesc: '扬声器、电脑、电和安全',
+      catMachinesDesc: '扬声器、电脑、电的旅程、安全用电、电动机和拍照',
       tileAirTitle: '玩空调',
       tileAirSub: '操作遥控器，看看男孩是舒服、冷还是热',
       tileFoodTitle: '吃东西',
@@ -310,6 +316,10 @@
       tilePowerSub: '跟着电从发电机一路走到插座',
       tileSafetyTitle: '安全用电',
       tileSafetySub: '让家里用电安全的六条规则',
+      tileMotorTitle: '电动机',
+      tileMotorSub: '通电、加负载、手转、堵转和烧毁',
+      tileCameraTitle: '拍照',
+      tileCameraSub: '快门、ISO、光圈——拍一张',
       groupHome: '家里的机器',
       groupKitchen: '厨房',
       groupWater: '水系统',
@@ -350,9 +360,11 @@
       stComputer: '跟着数据从输入走到输出',
       stPower: '跟着电从发电厂走到插座',
       stSafety: '记住六条安全用电规则',
+      stMotor: '让它转、加负载、抓住转轴，看到发热',
+      stCamera: '完成三个拍照挑战',
       foot: '给充满好奇心的小朋友',
       help: '?',
-      helpTitle: '二十三个小游戏',
+      helpTitle: '二十五个小游戏',
       helpBody: `
         <h3>❄ 玩空调</h3>
         <ul>
@@ -528,7 +540,9 @@
     speaker: { icon: '🔊', tint: '#8fd0ff' },
     computer: { icon: '💻', tint: '#3f9fd8' },
     power:   { icon: '⚡', tint: '#ffd166' },
-    safety:  { icon: '⚠️', tint: '#f87171' }
+    safety:  { icon: '⚠️', tint: '#f87171' },
+    motor:   { icon: '⚙️', tint: '#ffd166' },
+    camera:  { icon: '📷', tint: '#8fd0ff' }
   };
 
   /* level 1 → one card per group; level 2 → that group's tiles.

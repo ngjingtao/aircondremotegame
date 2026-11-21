@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="description" content="用索尼相机学拍照：快门、ISO 和光圈怎样影响定格、亮度和背景虚化。" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="拍照" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<title>拍照 · 边玩边学</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="camera.css" />
+</head>
+<body>
+
+<div id="app">
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html#machines" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand"><span class="tb-logo">📷</span><span class="tb-title" data-i18n="title">Photo Camera</span></div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudShutter">Shutter</span><b id="hud-shutter">1/125</b></div>
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudIso">ISO</span><b id="hud-iso">100</b></div>
+      <div class="hud-chip hud-score"><span class="hud-label" data-i18n="hudAperture">Aperture</span><b id="hud-aperture">f/5.6</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="ctl-panel">
+      <div id="ctl-scaler"><div class="ctl" id="ctl">
+        <div class="fact-card" id="camera-fact"></div>
+
+        <div class="ctl-label" data-i18n="challenge">Challenge</div>
+        <div class="seg three" id="scene-row"></div>
+
+        <div class="ctl-label" data-i18n="shutter">Shutter speed</div>
+        <div class="seg six" id="shutter-row"></div>
+
+        <div class="ctl-label" data-i18n="iso">ISO</div>
+        <div class="seg seven" id="iso-row"></div>
+
+        <div class="ctl-label" data-i18n="aperture">Aperture</div>
+        <div class="seg seven" id="aperture-row"></div>
+
+        <button class="shoot-btn" id="btn-shoot" data-action="shoot"><span aria-hidden="true">◉</span><b data-i18n="shoot">TAKE PHOTO</b></button>
+
+        <div class="tasks" id="camera-tasks"></div>
+        <button class="reset-btn" data-action="reset" data-i18n="reset">RESET</button>
+      </div></div>
+    </section>
+
+    <section id="scene">
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="lead">Sony camera</span>
+        <span class="scene-status" id="scene-status">1/125 · ISO 100 · f/5.6</span>
+      </div>
+
+      <div class="shot-wrap">
+        <div class="shot-frame" id="preview">
+          <svg id="shot" viewBox="0 0 320 210" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="cSky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#7cc7ff"/><stop offset="100%" stop-color="#d9f0ff"/>
+              </linearGradient>
+              <linearGradient id="cWater" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#d7f4ff"/><stop offset="100%" stop-color="#58b7d8"/>
+              </linearGradient>
+              <linearGradient id="cGrass" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#8ed36b"/><stop offset="100%" stop-color="#4a9a45"/>
+              </linearGradient>
+            </defs>
+
+            <g id="bg">
+              <rect width="320" height="210" fill="url(#cSky)"/>
+              <g id="bg-runner">
+                <circle cx="258" cy="44" r="24" fill="#ffe28a"/>
+                <path d="M0 150 Q70 110 150 148 T320 140 V210 H0 Z" fill="url(#cGrass)"/>
+                <path d="M0 172 Q80 150 160 174 T320 166 V210 H0 Z" fill="#3d8a3a" opacity=".7"/>
+              </g>
+              <g id="bg-waterfall" class="off">
+                <rect y="0" width="320" height="210" fill="#b9dff0"/>
+                <path d="M0 0 H110 V210 H0 Z" fill="#61706b"/>
+                <path d="M210 0 H320 V210 H210 Z" fill="#61706b"/>
+                <path d="M110 0 H210 V210 H110 Z" fill="#8dd7ea"/>
+                <path d="M124 0 q-8 40 4 80 q10 40 -2 130 M160 0 q10 50 -2 100 q-10 50 6 110 M194 0 q12 46 0 92 q-10 52 8 118" fill="none" stroke="#f2fbff" stroke-width="7" stroke-linecap="round" opacity=".8"/>
+                <ellipse cx="160" cy="194" rx="88" ry="16" fill="url(#cWater)"/>
+              </g>
+              <g id="bg-portrait" class="off">
+                <rect width="320" height="210" fill="#c9e7c2"/>
+                <circle cx="270" cy="40" r="20" fill="#ffe28a"/>
+                <path d="M0 150 Q80 120 170 150 T320 142 V210 H0 Z" fill="url(#cGrass)"/>
+                <circle cx="60" cy="120" r="28" fill="#6fbf5f" opacity=".6"/>
+                <circle cx="268" cy="126" r="34" fill="#6fbf5f" opacity=".5"/>
+              </g>
+            </g>
+
+            <g id="subject">
+              <g id="subject-waterfall" class="off">
+                <path d="M112 18 L208 18 L202 150 Q160 176 118 150 Z" fill="url(#cWater)" opacity=".9"/>
+                <path d="M126 20 q-6 40 4 78 q8 38 -4 70 M160 20 q8 46 -2 90 q-8 44 6 66 M194 20 q10 42 2 82 q-8 42 6 68" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity=".75"/>
+              </g>
+              <g id="subject-runner">
+                <circle cx="160" cy="74" r="18" fill="#ffd9b8"/>
+                <path d="M160 92 L158 130" stroke="#ffd9b8" stroke-width="12" stroke-linecap="round"/>
+                <path d="M160 96 L136 112 M160 96 L184 108" stroke="#ffd9b8" stroke-width="7" stroke-linecap="round"/>
+                <path d="M158 130 L142 158 M158 130 L178 154" stroke="#3b4a63" stroke-width="8" stroke-linecap="round"/>
+                <circle cx="160" cy="70" r="18" fill="#2f2a35" opacity=".85"/>
+                <path d="M143 74 q17 14 34 0" fill="none" stroke="#ffd9b8" stroke-width="7" stroke-linecap="round"/>
+                <path d="M150 96 q10 8 20 0" fill="none" stroke="#e85d5d" stroke-width="5" stroke-linecap="round"/>
+              </g>
+              <g id="subject-portrait" class="off">
+                <circle cx="160" cy="92" r="36" fill="#ffd9b8"/>
+                <circle cx="160" cy="84" r="36" fill="#2f2a35" opacity=".9"/>
+                <path d="M124 90 q36 30 72 0" fill="none" stroke="#ffd9b8" stroke-width="12" stroke-linecap="round"/>
+                <circle cx="148" cy="96" r="3.4" fill="#2f2a35"/>
+                <circle cx="172" cy="96" r="3.4" fill="#2f2a35"/>
+                <path d="M148 108 q12 10 24 0" fill="none" stroke="#c0583f" stroke-width="3.2" stroke-linecap="round"/>
+                <path d="M104 210 q10 -60 56 -60 q46 0 56 60 Z" fill="#22a8c4"/>
+              </g>
+            </g>
+          </svg>
+          <div class="noise" id="noise"></div>
+          <div class="flash" id="flash"></div>
+          <div class="shot-result" id="shot-result" hidden></div>
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        </div>
+
+        <svg class="camera-body" viewBox="0 0 320 168" aria-hidden="true">
+          <rect x="16" y="34" width="288" height="112" rx="20" fill="#222b36" stroke="#0b1219" stroke-width="3"/>
+          <rect x="16" y="34" width="288" height="26" rx="14" fill="#333f4e"/>
+          <rect x="32" y="22" width="72" height="20" rx="7" fill="#3a4656" stroke="#141d27" stroke-width="2"/>
+          <text x="68" y="37" text-anchor="middle" font-size="11" font-weight="800" fill="#dfe9f5" font-family="system-ui" letter-spacing="1.5">SONY</text>
+          <circle cx="196" cy="102" r="46" fill="#121a23" stroke="#5f7188" stroke-width="5"/>
+          <circle cx="196" cy="102" r="32" fill="#0a1017" stroke="#8fa0b4" stroke-width="2"/>
+          <circle cx="196" cy="102" r="18" fill="#25364a"/>
+          <circle cx="196" cy="102" r="8" fill="#67e8f9" opacity=".75"/>
+          <circle cx="266" cy="58" r="16" fill="#3a4656" stroke="#141d27" stroke-width="2"/>
+          <path d="M266 58 L266 47 M266 58 L275 62" stroke="#dfe9f5" stroke-width="2" stroke-linecap="round"/>
+          <rect x="238" y="26" width="30" height="12" rx="5" fill="#8fa0b4"/>
+          <circle cx="44" cy="54" r="7" fill="#e85d5d"/>
+          <rect x="32" y="64" width="42" height="10" rx="4" fill="#4a5868"/>
+        </svg>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <div id="help-overlay" class="overlay" hidden>
+    <div class="overlay-card">
+      <h2 id="help-title" data-i18n="helpTitle">Taking the photo</h2>
+      <p id="help-sub" data-i18n="helpSub">Shutter, ISO and aperture</p>
+      <div id="help-body"></div>
+      <button class="overlay-close" id="help-close">OK</button>
+    </div>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

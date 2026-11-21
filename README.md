@@ -2,7 +2,7 @@
 
 [![Build Android APK](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml/badge.svg)](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml)
 
-One little app, **twenty-three** activities for a curious kid. The home screen shows twenty-three picture
+One little app, **twenty-five** activities for a curious kid. The home screen shows twenty-five picture
 tiles — tap one and you're in.
 
 ```
@@ -61,9 +61,9 @@ tiles — tap one and you're in.
 > cards; tap one to get here.
 
 Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
-All twenty-three activities speak **English and 中文**, work offline, and are installable as an app.
+All twenty-five activities speak **English and 中文**, work offline, and are installable as an app.
 
-The twenty-three tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
+The twenty-five tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
 painted from one shared palette and split into three depth layers that drift gently and pull
 apart on hover. They are the only place the character guidelines in
 [`docs/character-bible.md`](docs/character-bible.md) are applied so far.
@@ -74,7 +74,7 @@ and **Electricity & machines** (4).
 
 ### The two-level menu
 
-With twenty-three activities, the home is a **two-level menu** rather than one long scroll:
+With twenty-five activities, the home is a **two-level menu** rather than one long scroll:
 
 1. **Topics** — seven cards, each with its icon, name, a one-line description and the number of
    activities. The newest group spans the full row, so the odd count stays tidy.
@@ -128,8 +128,8 @@ The shared rules live in `www/shared/ui.css` (phone sheet, fitted card and top b
 
 ### The sticker book
 
-Under the tiles is the one thing that ties the twenty-three activities together: a collection that
-every activity writes to. Twenty-eight stickers, earned by doing the thing the activity is about —
+Under the tiles is the one thing that ties the twenty-five activities together: a collection that
+every activity writes to. Thirty stickers, earned by doing the thing the activity is about —
 `shared/progress.js` holds the catalogue and the storage, and each activity awards its own from
 its render loop.
 
@@ -158,6 +158,8 @@ its render loop.
 | 💻 Computer | 1 | following data from input to output |
 | ⚡ Power Journey | 1 | following electricity from the plant to the socket |
 | ⚠️ Electrical Safety | 1 | reading all six safety rules |
+| ⚙️ Electric Motor | 1 | seeing a spin, a load, a stall and the heat warning |
+| 📷 Photo Camera | 1 | all three photo challenges |
 
 An earned sticker takes its activity's accent colour and shows the stars; the rest sit dimmed
 behind a dashed outline, so there is always something obviously missing. Awards only ever go
@@ -267,6 +269,12 @@ digestive tract is visible, and the food actually travels along it.
 A **science fact card** under the body changes at every stop, with the real numbers:
 amylase, pH 1.5–3.5, ~6 m of small intestine, ~30 m² of villi, 12–48 h transit time.
 There is a **4-question quiz** in the top bar for afterwards.
+
+**After a meal — can I run?** A button on the control deck opens a short lesson with a blood-flow
+diagram and a pain meter. The child chooses **sit and rest** or **run right away**; the lesson
+shows the blood moving from the gut to the muscles, digestion slowing, and the pain signal rising
+if they keep running. The rule at the end: rest first, wait 1–2 hours before hard exercise, and a
+gentle walk is fine. It reads itself and highlights the words.
 
 ---
 
@@ -1032,6 +1040,44 @@ The key words are 插座 · 绝缘 · 接地线 · 漏电保护器 · 过载 · 
 
 ---
 
+## 24 · ⚙️ Electric Motor
+
+A cutaway DC motor on the bench: a battery, a coil between N and S magnets, a commutator,
+brushes and a fan. The child changes voltage and load, then does the two dangerous things on
+purpose — and sees the current and heat respond.
+
+| Experiment | What happens | The lesson |
+|---|---|---|
+| **Power on** | current flows, the coil is pushed, the shaft spins | a motor is a coil in a magnetic field |
+| **Add load** | speed drops, current rises, the coil warms | torque costs current |
+| **Hold the shaft** | no back EMF, current spikes, heat climbs | a stalled motor burns |
+| **Turn by hand, power off** | the LED lights | a motor is also a generator |
+| **Turn by hand, power on** | it helps the shaft, current falls | back EMF fights the supply |
+| **Overheat** | smoke, then a burnt coil | release the shaft; reset and try again |
+
+The badge is earned by seeing a spin, a loaded motor, a stall and the heat warning. The
+help panel explains why a stalled motor has no back EMF and why that is the burn case.
+
+---
+
+## 25 · 📷 Photo Camera
+
+A Sony-style mirrorless body with a large viewfinder and three real controls: shutter speed,
+ISO and aperture. The child balances exposure and uses the controls to solve three photo
+challenges. The illustration is a stylised camera, not a real menu; there is no brand UI.
+
+| Control | What it changes | Trade-off |
+|---|---|---|
+| **Shutter** 1/1000 → 1/30 | freezes or blurs motion | slow shutter also blurs hand shake |
+| **ISO** 100 → 6400 | brightness | high ISO adds noise |
+| **Aperture** f/1.8 → f/16 | light and depth of field | wide blurs the background, narrow needs more light |
+
+Three challenges: **freeze the runner**, **silky waterfall**, **blurry background**. The
+viewfinder previews brightness, motion blur, background blur and noise live; the result card
+says whether the exposure is under, over or right, and what to change.
+
+---
+
 ## Play it in a browser (fastest)
 
 Everything is plain HTML/CSS/JS — no build step.
@@ -1310,8 +1356,8 @@ www/                          ← the whole app (no build step)
 │  └─ js/ i18n.js · state.js · remote.js · room.js · main.js
 ├─ food/                                ── activity 2 ──
 │  ├─ index.html
-│  ├─ food.css                          deck, body, organs, effects, quiz
-│  └─ js/ i18n.js · state.js · body.js · deck.js · main.js
+│  ├─ food.css                          deck, body, organs, effects, quiz, after-meal
+│  └─ js/ aftermeal.js · i18n.js · state.js · body.js · deck.js · main.js
 ├─ train/                               ── activity 3 ──
 │  ├─ index.html
 │  ├─ train.css                         sky, track, train, crossing, driver's desk
@@ -1396,6 +1442,14 @@ www/                          ← the whole app (no build step)
 │  ├─ index.html
 │  ├─ safety.css                        socket, water, lead, cord, RCD, storm
 │  └─ js/ i18n.js · state.js · scene.js · main.js
+├─ motor/                               ── activity 24 ──
+│  ├─ index.html
+│  ├─ motor.css                         motor cutaway, magnet, coil, fan, heat
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ camera/                              ── activity 25 ──
+│  ├─ index.html
+│  ├─ camera.css                        Sony-style body, viewfinder, preview
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
 ├─ _devicelab.html                      dev-only: phone & iPad previews
 docs/character-bible.md                 the character, the palettes and the house style
 docs/art/                               illustration handoff: brief, prompts, integration
@@ -1407,9 +1461,9 @@ server.js                               static server + /tts neural voice ($PORT
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        310 assertions over the twenty-three simulations
+test/sim.test.js                        328 assertions over the twenty-five activities
 test/voice.test.js                       45 assertions: neural voice, autoplay, native/Web Speech fallback, word ranges
-test/render.test.js                     335 assertions: every page booted, the menu, the artwork, the art hook, the book, and nothing inline
+test/render.test.js                     346 assertions: every page booted, the menu, the artwork, the art hook, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 │  └─ app/src/main/java/.../SystemTts.java   native TTS bridge (window.AndroidTts)
@@ -1434,7 +1488,7 @@ call a scene, so a `render()` that throws still passes every one of them while t
 completely dead. It happened: the train's scene referenced an undefined `clamp`, which threw on
 every frame — and because `main.js` calls `render()` *before* it schedules
 `requestAnimationFrame`, the throw killed the animation loop at boot. Pressing the throttle did
-nothing at all, yet all 56 simulation assertions passed. So this test boots each of the twenty-three
+nothing at all, yet all 56 simulation assertions passed. So this test boots each of the twenty-five
 pages for real — reading the exact `<script>` list out of its own HTML and loading it in order
 into a small fake DOM — then drives the `requestAnimationFrame` loop for ~3 seconds of frames and
 fails on any throw, on boot or on any later frame. The train is checked as behaviour too: apply

@@ -106,7 +106,7 @@ visit, add only that lesson's six files to `ASSETS`, not all 71.
 npm test
 ```
 
-Expected today: **310** simulation + **45** voice + **335** render, 0 failed.
+Expected today: **328** simulation + **45** voice + **346** render, 0 failed.
 The render suite checks every lesson has the `#art-plate` slot, loads
 `shared/art.js`, and asks for its plate on each step.
 

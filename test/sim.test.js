@@ -898,7 +898,7 @@ console.log('\n— The sticker book —');
   const p = ARG.progress;
 
   p.reset();
-  eq('the book has twenty-eight stickers', p.count, 28);
+  eq('the book has thirty stickers', p.count, 30);
   eq('and starts empty', p.earned(), 0);
   eq('  → with no stars', p.total(), 0);
 
@@ -917,19 +917,20 @@ console.log('\n— The sticker book —');
   eq('the total adds the stars up', p.total(), 4);
 
   const book = p.book();
-  eq('every catalogue sticker is in the book', book.length, 28);
+  eq('every catalogue sticker is in the book', book.length, 30);
   eq('  → each knows its activity', book[0].activity, 'aircond');
   eq('  → and has a label to explain it', typeof book[0].label, 'string');
   const acts = {};
   book.forEach(c => { acts[c.activity] = (acts[c.activity] || 0) + 1; });
-  eq('every activity in the app contributes', Object.keys(acts).length, 23);
+  eq('every activity in the app contributes', Object.keys(acts).length, 25);
   eq('  → the two with missions contribute three each, the laundry two, the rest one',
      acts.aircond === 3 && acts.train === 3 && acts.laundry === 2 &&
      acts.tree === 1 && acts.sandwich === 1 && acts.waterhome === 1 &&
      acts.cycle === 1 && acts.weather === 1 && acts.engine === 1 &&
      acts.electric === 1 && acts.magnet === 1 && acts.light === 1 &&
      acts.sunbear === 1 && acts.speaker === 1 && acts.computer === 1 &&
-     acts.power === 1 && acts.safety === 1, true);
+     acts.power === 1 && acts.safety === 1 &&
+     acts.motor === 1 && acts.camera === 1, true);
 
   /* a corrupt store must not take the home screen down with it */
   const ARG2 = load('shared', ['shared/progress.js']);
@@ -937,6 +938,70 @@ console.log('\n— The sticker book —');
   eq('a corrupt book reads as empty rather than throwing', ARG2.progress.earned(), 0);
   ARG2.store.set('arg.progress', '[1,2,3]');
   eq('  → and so does one of the wrong shape', ARG2.progress.earned(), 0);
+}
+
+console.log('\n— Electric Motor —');
+{
+  const ARG = load('motor', ['motor/js/state.js']);
+  const sim = ARG.sim;
+  const S = () => sim.s;
+
+  sim.press('power');
+  settle(sim, 2);
+  check('power makes the motor spin', S().speed, 600, 2000, ' rpm');
+  eq('  → it reports spinning', sim.statusKey(), 'statusRun');
+
+  sim.press('load', { dataset: { load: '100' } });
+  settle(sim, 2);
+  check('a heavy load raises the current', S().current, 3, 8, ' A');
+  check('  → and slows it down', S().speed, 0, 900, ' rpm');
+
+  sim.press('hold');
+  settle(sim, 5);
+  eq('holding the shaft burns the coil', S().burnt, true);
+  eq('  → and the panel says so', sim.factKey(), 'factBurnt');
+
+  sim.press('reset');
+  eq('reset clears the damage', S().burnt, false);
+
+  sim.press('hand');
+  settle(sim, 2);
+  eq('turning a disconnected motor generates', S().gen, true);
+  check('  → with only a small current', S().current, 0, 1, ' A');
+}
+
+console.log('\n— Photo Camera —');
+{
+  const ARG = load('camera', ['camera/js/state.js']);
+  const sim = ARG.sim;
+  const set = (sh, iso, ap, sc) => {
+    sim.press('shutter', { dataset: { i: sh } });
+    sim.press('iso', { dataset: { i: iso } });
+    sim.press('aperture', { dataset: { i: ap } });
+    sim.press('scene', { dataset: { i: sc } });
+  };
+
+  set(0, 0, 3, 0);                 // 1/1000 · ISO100 · f/5.6 · runner
+  let r = sim.press('shoot').result;
+  eq('a fast shutter freezes the runner', r.pass, true);
+  eq('  → and the exposure is right', r.exposure, 'good');
+
+  set(5, 0, 5, 1);                 // 1/30 · ISO100 · f/11 · waterfall
+  r = sim.press('shoot').result;
+  eq('a slow shutter silks the waterfall', r.pass, true);
+  check('  → with motion blur', r.motion, 6, 16, ' px');
+
+  set(0, 0, 0, 2);                 // 1/1000 · ISO100 · f/1.8 · portrait
+  r = sim.press('shoot').result;
+  eq('a wide aperture blurs the background', r.pass, true);
+  check('  → by a visible amount', r.bg, 2.5, 8, ' px');
+  eq('  → all three challenges complete the badge', sim.s.done, true);
+
+  sim.press('reset');
+  set(3, 0, 0, 0);                 // 1/125 · ISO100 · f/1.8 · runner
+  r = sim.press('shoot').result;
+  eq('too slow for the runner, the shot is soft', r.pass, false);
+  eq('  → the exposure is still readable', r.exposure, 'over');
 }
 
 console.log('\n— Language lock —');

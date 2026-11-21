@@ -90,6 +90,26 @@ ARG.i18n = (function () {
       quizScore: 'You got {n} of {t}!',
       quizDone: 'Finish',
 
+      /* after a meal */
+      afterMeal: 'After a meal',
+      afterTitle: 'Can I run right after eating?',
+      afterStomach: 'Blood to stomach',
+      afterMuscle: 'Blood to muscles',
+      afterPain: 'Tummy pain',
+      afterIntro: 'You have just eaten. Blood is busy helping the stomach churn and absorb. What happens if you run right now?',
+      afterRest: 'Sit and rest',
+      afterRun: 'Run right away',
+      afterRestSay: 'Resting keeps blood in the stomach and gut. Churning and absorption work normally, and the tummy stays comfortable. Wait 1–2 hours before hard exercise; a gentle walk is fine.',
+      afterRunSay: 'Running sends a large share of blood to your muscles. The stomach slows down, food sits there longer, and you may get a stitch, cramp or nausea. That is the pain signal.',
+      afterKeep: 'Keep running',
+      afterRecover: 'Stop and rest',
+      afterKeepSay: 'The pain gets worse and the stomach feels heavier. This is not bravery — it is your body warning you. Stop, walk slowly, and tell an adult.',
+      afterRule: 'The rule: rest after eating, then wait 1–2 hours before hard exercise. A slow walk is okay. If you feel belly pain, nausea or dizziness, stop and tell an adult.',
+      afterNext: 'Got it',
+      afterClose: 'Close',
+      afterGood: '✔ Good choice',
+      afterBad: '⚠ Your body is warning you',
+
       helpTitle: 'How food travels through you',
       helpSub: 'Six stops, about 1–2 days',
       helpBody: `
@@ -109,6 +129,7 @@ ARG.i18n = (function () {
           <li><code>CHURN</code> in the stomach, then watch absorption happen.</li>
           <li><code>GO TO TOILET</code> at the end.</li>
           <li><code>WATCH</code> plays the whole journey for you.</li>
+          <li><code>After a meal</code> is a short lesson on why hard exercise too soon can cause a stitch, cramp or nausea.</li>
         </ul>
       `
     },
@@ -189,6 +210,26 @@ ARG.i18n = (function () {
       quizScore: '你答对了 {n} / {t} 题！',
       quizDone: '完成',
 
+      /* 饭后运动 */
+      afterMeal: '饭后运动',
+      afterTitle: '吃完饭，能马上跑吗？',
+      afterStomach: '胃的血液',
+      afterMuscle: '肌肉的血液',
+      afterPain: '肚子疼痛',
+      afterIntro: '刚吃完饭，血液正忙着帮胃搅拌和吸收。现在马上去跑步，会发生什么？',
+      afterRest: '坐下休息',
+      afterRun: '马上跑步',
+      afterRestSay: '休息时，血液留在胃和肠道，搅拌和吸收正常工作，肚子舒服。饭后先休息，等 1–2 小时再做剧烈运动；散步没问题。',
+      afterRunSay: '一跑起来，大量血液被肌肉抢走。胃的搅拌变慢，食物停在胃里，可能抽筋、侧腹痛、恶心。这就是身体发出的疼痛信号。',
+      afterKeep: '继续跑',
+      afterRecover: '停下来休息',
+      afterKeepSay: '疼痛加重，胃更难受。这不是勇敢，是身体在报警。停下来，慢慢走，告诉大人。',
+      afterRule: '规则：饭后先休息，等 1–2 小时再做剧烈运动；散步可以。如果腹痛、恶心、头晕，立刻停下来，告诉大人。',
+      afterNext: '知道了',
+      afterClose: '关闭',
+      afterGood: '✔ 好选择',
+      afterBad: '⚠ 身体在报警',
+
       helpTitle: '食物在身体里的旅程',
       helpSub: '六个站点，大约 1–2 天',
       helpBody: `
@@ -208,6 +249,7 @@ ARG.i18n = (function () {
           <li>在胃里按 <code>搅拌</code>，然后看营养被吸收。</li>
           <li>最后按 <code>去厕所</code>。</li>
           <li>按 <code>观看</code> 可以自动播放整个旅程。</li>
+          <li>按 <code>饭后运动</code> 看一段小课：刚吃完就跑，为什么容易侧腹痛、抽筋或恶心。</li>
         </ul>
       `
     }

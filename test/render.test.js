@@ -357,7 +357,9 @@ const PAGES = [
   { dir: 'speaker', name: 'Speaker', loop: false },
   { dir: 'computer', name: 'Computer', loop: false },
   { dir: 'power', name: 'Power Journey', loop: false },
-  { dir: 'safety', name: 'Electrical Safety', loop: false }
+  { dir: 'safety', name: 'Electrical Safety', loop: false },
+  { dir: 'motor', name: 'Electric Motor' },
+  { dir: 'camera', name: 'Photo Camera', loop: false }
 ];
 
 console.log('\n— Every page boots —');
@@ -960,26 +962,26 @@ console.log('\n— Home tiles —');
   const html = fs.readFileSync(path.join(WWW, 'index.html'), 'utf8');
 
   const tiles = html.match(/class="tile tile-[a-z]+(?: [^"]*)?"/g) || [];
-  eq('the home screen has twenty-three tiles', tiles.length, 23);
+  eq('the home screen has twenty-five tiles', tiles.length, 25);
 
   /* level-1 groups make the larger collection navigable */
   const groupBlocks = html.match(/<section class="group"[\s\S]*?<\/section>/g) || [];
   eq('the home screen has seven groups', groupBlocks.length, 7);
   const groupCounts = groupBlocks.map(b => (b.match(/class="tile tile-/g) || []).length);
-  eq('  → grouped 3 / 3 / 3 / 3 / 3 / 4 / 4', groupCounts.join(','), '3,3,3,3,3,4,4');
+  eq('  → grouped 3 / 3 / 3 / 3 / 3 / 4 / 6', groupCounts.join(','), '3,3,3,3,3,4,6');
   const groupKeys = groupBlocks.map(b => (b.match(/data-group="([^"]+)"/) || [])[1]);
   eq('  → home, kitchen, water, nature, body, science, machines',
      groupKeys.join(','), 'home,kitchen,water,nature,body,science,machines');
   eq('  → every group has a heading', (html.match(/class="group-title"/g) || []).length, 7);
 
   const svgs = html.match(/class="tile-svg"[^>]*viewBox="([^"]+)"/g) || [];
-  eq('every tile is an illustration, not a stack of spans', svgs.length, 23);
+  eq('every tile is an illustration, not a stack of spans', svgs.length, 25);
   eq('  → all on one 96×96 canvas', svgs.every(s => /viewBox="0 0 96 96"/.test(s)), true);
 
   /* three depth layers — the parallax and the idle drift both count on them */
   const layer = n => (html.match(new RegExp('class="tl ' + n + '"', 'g')) || []).length;
   eq('every scene has a back, mid and front layer',
-     layer('back') === 23 && layer('mid') === 23 && layer('front') === 23, true);
+     layer('back') === 25 && layer('mid') === 25 && layer('front') === 25, true);
 
   /* the tile illustrations use one shared palette. Every paint a shape asks for
      has to exist, or the shape silently renders black — and a paint nobody uses
@@ -1033,7 +1035,8 @@ console.log('\n— The two-level menu —');
     tree: 'nature', cycle: 'nature', weather: 'nature',
     breath: 'body', train: 'body', engine: 'body',
     electric: 'science', magnet: 'science', light: 'science', sunbear: 'science',
-    speaker: 'machines', computer: 'machines', power: 'machines', safety: 'machines'
+    speaker: 'machines', computer: 'machines', power: 'machines', safety: 'machines',
+    motor: 'machines', camera: 'machines'
   };
   const wrong = Object.keys(topicOf).filter(function (dir) {
     const page = fs.readFileSync(path.join(WWW, dir, 'index.html'), 'utf8');
@@ -1076,7 +1079,8 @@ console.log('\n— Phone and iPad layouts —');
 
   const panelPages = ['aircond', 'aircare', 'breath', 'cycle', 'engine', 'food', 'hood',
     'indah', 'laundry', 'sandwich', 'toilet', 'tree', 'waterhome', 'weather',
-    'electric', 'magnet', 'light', 'sunbear', 'speaker', 'computer', 'power', 'safety'];
+    'electric', 'magnet', 'light', 'sunbear', 'speaker', 'computer', 'power', 'safety',
+    'motor', 'camera'];
   const missing = panelPages.filter(p => {
     const js = fs.readFileSync(path.join(WWW, p, 'js', 'main.js'), 'utf8');
     return !/ARG\.shell\.isStacked\(\)/.test(js) || !/ARG\.shell\.stackPanel\(/.test(js);
@@ -1154,7 +1158,7 @@ console.log('\n— Sticker book on the home screen —');
 
   const p = boot('.');
   if (p.bootError) bad('home — boots', p.bootError);
-  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 28');
+  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 30');
 }
 
 /* ─────────── the science lab: steps, words and reading ─────────── */
@@ -1226,6 +1230,24 @@ console.log('\n— Science and machines: eight step-by-step lessons —');
     if (p.errors.length) bad(L.dir + ' — no errors while stepping', p.errors[0]);
     else ok(L.dir + ' — no errors while stepping');
   }
+}
+
+/* ─────────── the after-meal lesson is inside the eating game ─────────── */
+console.log('\n— After a meal: rest or run? —');
+{
+  const html = fs.readFileSync(path.join(WWW, 'food', 'index.html'), 'utf8');
+  const js = fs.readFileSync(path.join(WWW, 'food', 'js', 'aftermeal.js'), 'utf8');
+  const i18n = fs.readFileSync(path.join(WWW, 'food', 'js', 'i18n.js'), 'utf8');
+
+  eq('the eating game has an after-meal button', /id="btn-after"/.test(html), true);
+  eq('  → and a dialog for it', /id="after-overlay"/.test(html) && /id="after-body"/.test(html), true);
+  eq('  → loaded beside the main script', /js\/aftermeal\.js/.test(html), true);
+  eq('  → it branches between resting and running',
+     /data-choice/.test(js) && /afterRestSay/.test(js) && /afterRunSay/.test(js), true);
+  eq('  → and warns about pain',
+     /afterKeepSay/.test(js) && /afterPain/.test(html), true);
+  eq('  → every string exists in Chinese',
+     /afterIntro/.test(i18n) && /饭后/.test(i18n) && /afterRule/.test(i18n), true);
 }
 
 /* ─────────── report ─────────── */

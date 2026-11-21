@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-art-1';
+const CACHE = 'play-learn-25-2';
 
 const ASSETS = [
   './',
@@ -211,7 +211,23 @@ const ASSETS = [
   'safety/js/i18n.js',
   'safety/js/state.js',
   'safety/js/scene.js',
-  'safety/js/main.js'
+  'safety/js/main.js',
+
+  'motor/index.html',
+  'motor/motor.css',
+  'motor/js/i18n.js',
+  'motor/js/state.js',
+  'motor/js/scene.js',
+  'motor/js/panel.js',
+  'motor/js/main.js',
+
+  'camera/index.html',
+  'camera/camera.css',
+  'camera/js/i18n.js',
+  'camera/js/state.js',
+  'camera/js/scene.js',
+  'camera/js/panel.js',
+  'camera/js/main.js'
 ];
 
 self.addEventListener('install', event => {

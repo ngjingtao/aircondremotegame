@@ -76,6 +76,7 @@
           <div class="deck-foot">
             <button class="mode-btn active" id="btn-manual" data-i18n="manual">Manual</button>
             <button class="mode-btn" id="btn-watch" data-i18n="watch">Watch</button>
+            <button class="mode-btn" id="btn-after" data-i18n="afterMeal">After a meal</button>
           </div>
 
         </div>
@@ -215,6 +216,38 @@
 </div>
 
 <!-- ══════════ QUIZ ══════════ -->
+<div id="after-overlay" class="overlay" hidden>
+  <div class="overlay-card after-card" role="dialog" aria-modal="true" aria-labelledby="after-title">
+    <div class="after-head">
+      <span class="after-ico" id="after-ico" aria-hidden="true">🍽️</span>
+      <div class="after-head-text">
+        <h2 id="after-title">饭后运动</h2>
+        <i id="after-step">1 / 3</i>
+      </div>
+      <button class="overlay-close after-close" id="after-close" aria-label="Close">×</button>
+    </div>
+    <div class="after-flow">
+      <div class="af-row">
+        <span data-i18n="afterStomach">胃的血液</span>
+        <div class="af-bar"><i id="af-stomach"></i></div>
+        <b id="af-stomach-n">55%</b>
+      </div>
+      <div class="af-row">
+        <span data-i18n="afterMuscle">肌肉的血液</span>
+        <div class="af-bar muscle"><i id="af-muscle"></i></div>
+        <b id="af-muscle-n">15%</b>
+      </div>
+      <div class="af-row pain">
+        <span data-i18n="afterPain">肚子疼痛</span>
+        <div class="af-bar pain"><i id="af-pain"></i></div>
+        <b id="af-pain-n">5</b>
+      </div>
+    </div>
+    <div class="after-body" id="after-body" aria-live="polite"></div>
+    <div class="after-actions" id="after-actions"></div>
+  </div>
+</div>
+
 <div id="quiz-overlay" class="overlay" hidden>
   <div class="overlay-card quiz-card">
     <h2 id="quiz-title" data-i18n="quizTitle">小测验！</h2>
@@ -236,6 +269,7 @@
 <script src="js/state.js"></script>
 <script src="js/body.js"></script>
 <script src="js/deck.js"></script>
+<script src="js/aftermeal.js"></script>
 <script src="js/main.js"></script>
 <script src="../pwa.js"></script>
 </body>

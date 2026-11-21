@@ -217,6 +217,7 @@
       ARG.i18n.apply();
       ARG.body.refreshLabels();
       ARG.deck.render();
+      if (ARG.after) ARG.after.refresh();
     });
 
     $('btn-sound').addEventListener('click', e => {

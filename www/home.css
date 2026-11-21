@@ -92,6 +92,8 @@
   border-radius:12px;
   display:flex;align-items:center;justify-content:center;
 }
+.tile-motor .tile-art{background:linear-gradient(160deg,#1b2a3c,#0d1620);}
+.tile-camera .tile-art{background:linear-gradient(160deg,#1a2533,#0c131c);}
 .tile-img{
   position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;border-radius:inherit;display:block;
