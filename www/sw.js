@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-26-2';
+const CACHE = 'play-learn-27-2';
 
 const ASSETS = [
   './',
@@ -236,7 +236,15 @@ const ASSETS = [
   'testpanel/js/state.js',
   'testpanel/js/scene.js',
   'testpanel/js/panel.js',
-  'testpanel/js/main.js'
+  'testpanel/js/main.js',
+
+  'kitlab/index.html',
+  'kitlab/kitlab.css',
+  'kitlab/js/i18n.js',
+  'kitlab/js/state.js',
+  'kitlab/js/scene.js',
+  'kitlab/js/panel.js',
+  'kitlab/js/main.js'
 ];
 
 self.addEventListener('install', event => {

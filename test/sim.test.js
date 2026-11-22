@@ -898,7 +898,7 @@ console.log('\n— The sticker book —');
   const p = ARG.progress;
 
   p.reset();
-  eq('the book has thirty-one stickers', p.count, 31);
+  eq('the book has thirty-two stickers', p.count, 32);
   eq('and starts empty', p.earned(), 0);
   eq('  → with no stars', p.total(), 0);
 
@@ -917,12 +917,12 @@ console.log('\n— The sticker book —');
   eq('the total adds the stars up', p.total(), 4);
 
   const book = p.book();
-  eq('every catalogue sticker is in the book', book.length, 31);
+  eq('every catalogue sticker is in the book', book.length, 32);
   eq('  → each knows its activity', book[0].activity, 'aircond');
   eq('  → and has a label to explain it', typeof book[0].label, 'string');
   const acts = {};
   book.forEach(c => { acts[c.activity] = (acts[c.activity] || 0) + 1; });
-  eq('every activity in the app contributes', Object.keys(acts).length, 26);
+  eq('every activity in the app contributes', Object.keys(acts).length, 27);
   eq('  → the two with missions contribute three each, the laundry two, the rest one',
      acts.aircond === 3 && acts.train === 3 && acts.laundry === 2 &&
      acts.tree === 1 && acts.sandwich === 1 && acts.waterhome === 1 &&
@@ -930,7 +930,8 @@ console.log('\n— The sticker book —');
      acts.electric === 1 && acts.magnet === 1 && acts.light === 1 &&
      acts.sunbear === 1 && acts.speaker === 1 && acts.computer === 1 &&
      acts.power === 1 && acts.safety === 1 &&
-     acts.motor === 1 && acts.camera === 1 && acts.testpanel === 1, true);
+     acts.motor === 1 && acts.camera === 1 && acts.testpanel === 1 &&
+     acts.kitlab === 1, true);
 
   /* a corrupt store must not take the home screen down with it */
   const ARG2 = load('shared', ['shared/progress.js']);
@@ -1038,6 +1039,32 @@ console.log('\n— Test & Check Panel —');
   sim.press('rcd');
   eq('the safety switch can be turned off', S().rcd, false);
   eq('  → and then nothing runs', sim.power(), 0);
+}
+
+console.log('\n— Electromagnet Kit Lab —');
+{
+  const ARG = load('kitlab', ['kitlab/js/state.js']);
+  const sim = ARG.sim;
+  const place = id => sim.press('place', { dataset: { part: id } });
+
+  const wrong = sim.press('place', { dataset: { part: 'resistor' } });
+  eq('a part the experiment does not need is refused', wrong.wrong, true);
+  eq('  → and nothing is built', sim.s.built.length, 0);
+
+  for (const id of sim.required()) place(id);
+  eq('the bulb experiment needs four parts', sim.ready(), true);
+  sim.press('run');
+  eq('running the closed loop lights the bulb', sim.s.run, true);
+  eq('  → and records the experiment', sim.s.runs.length, 1);
+  eq('  → the fact explains the loop', sim.factKey(), 'factBulb');
+
+  for (let i = 1; i < sim.EXPERIMENTS.length; i++) {
+    sim.press('exp', { dataset: { i: i } });
+    for (const id of sim.required()) place(id);
+    sim.press('run');
+  }
+  eq('all eight experiments complete the badge', sim.s.done, true);
+  eq('  → eight runs recorded', sim.s.runs.length, 8);
 }
 
 console.log('\n— Language gate —');

@@ -2,7 +2,7 @@
 
 [![Build Android APK](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml/badge.svg)](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml)
 
-One little app, **twenty-six** activities for a curious kid. The home screen shows twenty-six picture
+One little app, **twenty-seven** activities for a curious kid. The home screen shows twenty-seven picture
 tiles — tap one and you're in.
 
 ```
@@ -61,9 +61,9 @@ tiles — tap one and you're in.
 > cards; tap one to get here.
 
 Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
-All twenty-six activities speak **English and 中文**, work offline, and are installable as an app.
+All twenty-seven activities speak **English and 中文**, work offline, and are installable as an app.
 
-The twenty-six tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
+The twenty-seven tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
 painted from one shared palette and split into three depth layers that drift gently and pull
 apart on hover. They are the only place the character guidelines in
 [`docs/character-bible.md`](docs/character-bible.md) are applied so far.
@@ -74,7 +74,7 @@ and **Electricity & machines** (4).
 
 ### The two-level menu
 
-With twenty-six activities, the home is a **two-level menu** rather than one long scroll:
+With twenty-seven activities, the home is a **two-level menu** rather than one long scroll:
 
 1. **Topics** — seven cards, each with its icon, name, a one-line description and the number of
    activities. The newest group spans the full row, so the odd count stays tidy.
@@ -128,8 +128,8 @@ The shared rules live in `www/shared/ui.css` (phone sheet, fitted card and top b
 
 ### The sticker book
 
-Under the tiles is the one thing that ties the twenty-six activities together: a collection that
-every activity writes to. Thirty-one stickers, earned by doing the thing the activity is about —
+Under the tiles is the one thing that ties the twenty-seven activities together: a collection that
+every activity writes to. Thirty-two stickers, earned by doing the thing the activity is about —
 `shared/progress.js` holds the catalogue and the storage, and each activity awards its own from
 its render loop.
 
@@ -161,6 +161,7 @@ its render loop.
 | ⚙️ Electric Motor | 1 | seeing a spin, a load, a stall and the heat warning |
 | 📷 Photo Camera | 1 | all three photo challenges |
 | 🧪 Test & Check Panel | 1 | no-load 0 W, a load, standby and an RCD trip |
+| 🧰 Electromagnet Kit Lab | 1 | all eight kit experiments |
 
 An earned sticker takes its activity's accent colour and shows the stars; the rest sit dimmed
 behind a dashed outline, so there is always something obviously missing. Awards only ever go
@@ -1100,6 +1101,32 @@ waste energy**, while still saying to isolate before changing a lamp.
 
 ---
 
+## 27 · 🧰 Electromagnet Kit Lab
+
+A guided lab built around the 52-kind / 87-piece electromagnet kit. The tray holds 36 key parts —
+battery box, switch, bulb and holder, wires, 10 Ω resistor, ammeter, voltmeter, rheostat, bell,
+motor and fan, coil, nail, paperclips, hand generator, LED, solar panel, magnets, compass, iron
+filings, electroscope, fur, rod, silk, photoresistor, screwdriver, magnetic car, ring magnet, alligator clips, copper and zinc sheets and more —
+and eight experiments use them:
+
+| Experiment | Parts | What happens |
+|---|---|---|
+| **Light the bulb** | battery, switch, bulb, wires | closed loop, bulb glows |
+| **Measure current** | + resistor, ammeter | ammeter reads about 0.12 A |
+| **Electromagnet** | + coil, nail, paperclips | picks up six paperclips |
+| **Motor** | + motor, fan blade | fan spins at 1 800 rpm |
+| **Hand generator** | hand generator, LED | crank lights the LED |
+| **Solar fan** | solar panel, motor, fan | light drives the fan |
+| **See the field** | bar magnet, compass, iron filings | compass and filings show the field |
+| **Static charge** | fur, rubber rod, electroscope | leaves repel |
+
+Tap the parts the experiment needs; wrong parts are refused. Press **RUN** when the bench is
+complete. The badge needs all eight experiments. The tray also keeps the kit's other pieces
+(bell, photoresistor, rheostat, magnetic car, ring magnets, alligator clips and more) for future
+experiments.
+
+---
+
 ## Play it in a browser (fastest)
 
 Everything is plain HTML/CSS/JS — no build step.
@@ -1473,6 +1500,10 @@ www/                          ← the whole app (no build step)
 │  ├─ index.html
 │  ├─ testpanel.css                     yellow test board, tubes, RCD, sockets
 │  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ kitlab/                              ── activity 27 ──
+│  ├─ index.html
+│  ├─ kitlab.css                        kit tray, bench, effects
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
 ├─ _devicelab.html                      dev-only: phone & iPad previews
 docs/character-bible.md                 the character, the palettes and the house style
 docs/art/                               illustration handoff: brief, prompts, integration
@@ -1484,9 +1515,9 @@ server.js                               static server + /tts neural voice ($PORT
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        345 assertions over the twenty-six activities
+test/sim.test.js                        353 assertions over the twenty-seven activities
 test/voice.test.js                       45 assertions: neural voice, autoplay, native/Web Speech fallback, word ranges
-test/render.test.js                     382 assertions: every page booted, the menu, the art hook, the language gate, the book, and nothing inline
+test/render.test.js                     385 assertions: every page booted, the menu, the art hook, the language gate, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 │  └─ app/src/main/java/.../SystemTts.java   native TTS bridge (window.AndroidTts)
@@ -1511,7 +1542,7 @@ call a scene, so a `render()` that throws still passes every one of them while t
 completely dead. It happened: the train's scene referenced an undefined `clamp`, which threw on
 every frame — and because `main.js` calls `render()` *before* it schedules
 `requestAnimationFrame`, the throw killed the animation loop at boot. Pressing the throttle did
-nothing at all, yet all 56 simulation assertions passed. So this test boots each of the twenty-six
+nothing at all, yet all 56 simulation assertions passed. So this test boots each of the twenty-seven
 pages for real — reading the exact `<script>` list out of its own HTML and loading it in order
 into a small fake DOM — then drives the `requestAnimationFrame` loop for ~3 seconds of frames and
 fails on any throw, on boot or on any later frame. The train is checked as behaviour too: apply

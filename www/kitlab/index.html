@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="description" content="电磁实验箱：用电池、开关、灯泡、电流表、线圈、电动机、发电机、太阳能板等做八个实验。" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="电磁实验箱" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<title>电磁实验箱 · 边玩边学</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="kitlab.css" />
+</head>
+<body>
+
+<div id="app">
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html#machines" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand"><span class="tb-logo">🧰</span><span class="tb-title" data-i18n="title">Electromagnet Kit Lab</span></div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudDone">Experiments</span><b id="hud-done">0 / 8</b></div>
+      <div class="hud-chip hud-score"><span class="hud-label" data-i18n="hudRead">Reading</span><b id="hud-read">—</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="ctl-panel">
+      <div id="ctl-scaler"><div class="ctl" id="ctl">
+        <div class="fact-card" id="kit-fact"></div>
+
+        <div class="ctl-label" data-i18n="experiment">Experiment</div>
+        <div class="exps" id="exp-row"></div>
+
+        <div class="ctl-label" data-i18n="parts">Tap the parts you need</div>
+        <div class="tray" id="part-row"></div>
+
+        <div class="built" id="built-row"></div>
+
+        <div class="run-row">
+          <button class="run-btn" data-action="run" id="btn-run" data-i18n="run">RUN</button>
+          <button class="clear-btn" data-action="reset" data-i18n="reset">CLEAR</button>
+        </div>
+
+        <div class="dots" id="kit-dots"></div>
+      </div></div>
+    </section>
+
+    <section id="scene">
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="lead">Build from the kit</span>
+        <span class="scene-status" id="scene-status" data-i18n="statusBuild">Build it</span>
+      </div>
+
+      <div class="bench">
+        <div class="bench-board">
+          <div class="bench-title" id="bench-title">—</div>
+          <div class="bench-parts" id="bench-parts"></div>
+          <div class="bench-wire" id="bench-wire"></div>
+          <div class="bench-effect" id="bench-effect">🧰</div>
+          <div class="bench-read" id="bench-read">—</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <div id="help-overlay" class="overlay" hidden>
+    <div class="overlay-card">
+      <h2 id="help-title" data-i18n="helpTitle">The kit, piece by piece</h2>
+      <p id="help-sub" data-i18n="helpSub">Batteries, meters, coils, motors and more</p>
+      <div id="help-body"></div>
+      <button class="overlay-close" id="help-close">OK</button>
+    </div>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/lang.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

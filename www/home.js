@@ -17,7 +17,7 @@
       catNatureDesc: 'Trees, the water cycle and the weather',
       catBodyDesc: 'Breathing, trains and engines',
       catScienceDesc: 'Electricity, magnets, light and the sun bear',
-      catMachinesDesc: 'Speaker, computer, power, safety, motor, camera and test panel',
+      catMachinesDesc: 'Speaker, computer, power, safety, motor, camera, test panel and kit',
       tileAirTitle: 'Play Aircond',
       tileAirSub: 'Drive the remote, make the boy happy, cold or hot',
       tileFoodTitle: 'Food Eating',
@@ -70,6 +70,8 @@
       tileCameraSub: 'Shutter, ISO and aperture — take the shot',
       tilePanelTitle: 'Test & Check Panel',
       tilePanelSub: 'No load, no energy — and an RCD test',
+      tileKitTitle: 'Electromagnet Kit',
+      tileKitSub: 'Build circuits from the kit and run eight experiments',
       groupHome: 'Home machines',
       groupKitchen: 'Kitchen',
       groupWater: 'Water systems',
@@ -113,9 +115,10 @@
       stMotor: 'Spin it, load it, hold it, and see the heat',
       stCamera: 'Complete all three photo challenges',
       stPanel: 'Prove 0 W, run a load, find standby, trip the RCD',
+      stKitlab: 'Complete all eight kit experiments',
       foot: 'Made for curious kids',
       help: '?',
-      helpTitle: 'Twenty-six activities',
+      helpTitle: 'Twenty-seven activities',
       helpBody: `
         <h3>❄ Play Aircond</h3>
         <ul>
@@ -272,7 +275,7 @@
       catNatureDesc: '树木、水循环和天气',
       catBodyDesc: '呼吸、火车和发动机',
       catScienceDesc: '电、磁铁、光和马来熊',
-      catMachinesDesc: '扬声器、电脑、电的旅程、安全用电、电动机、拍照和测试面板',
+      catMachinesDesc: '扬声器、电脑、电的旅程、安全用电、电动机、拍照、测试面板和实验箱',
       tileAirTitle: '玩空调',
       tileAirSub: '操作遥控器，看看男孩是舒服、冷还是热',
       tileFoodTitle: '吃东西',
@@ -325,6 +328,8 @@
       tileCameraSub: '快门、ISO、光圈——拍一张',
       tilePanelTitle: '测试面板',
       tilePanelSub: '没有负载就不耗电——还能试漏电保护',
+      tileKitTitle: '电磁实验箱',
+      tileKitSub: '用实验箱搭电路，做八个实验',
       groupHome: '家里的机器',
       groupKitchen: '厨房',
       groupWater: '水系统',
@@ -368,9 +373,10 @@
       stMotor: '让它转、加负载、抓住转轴，看到发热',
       stCamera: '完成三个拍照挑战',
       stPanel: '证明 0 瓦、接负载、找待机、让漏电保护跳闸',
+      stKitlab: '完成实验箱的八个实验',
       foot: '给充满好奇心的小朋友',
       help: '?',
-      helpTitle: '二十六个小游戏',
+      helpTitle: '二十七个小游戏',
       helpBody: `
         <h3>❄ 玩空调</h3>
         <ul>
@@ -549,7 +555,8 @@
     safety:  { icon: '⚠️', tint: '#f87171' },
     motor:   { icon: '⚙️', tint: '#ffd166' },
     camera:  { icon: '📷', tint: '#8fd0ff' },
-    testpanel: { icon: '🧪', tint: '#f4d21f' }
+    testpanel: { icon: '🧪', tint: '#f4d21f' },
+    kitlab: { icon: '🧰', tint: '#58d6c9' }
   };
 
   /* level 1 → one card per group; level 2 → that group's tiles.
