@@ -898,7 +898,7 @@ console.log('\n— The sticker book —');
   const p = ARG.progress;
 
   p.reset();
-  eq('the book has thirty stickers', p.count, 30);
+  eq('the book has thirty-one stickers', p.count, 31);
   eq('and starts empty', p.earned(), 0);
   eq('  → with no stars', p.total(), 0);
 
@@ -917,12 +917,12 @@ console.log('\n— The sticker book —');
   eq('the total adds the stars up', p.total(), 4);
 
   const book = p.book();
-  eq('every catalogue sticker is in the book', book.length, 30);
+  eq('every catalogue sticker is in the book', book.length, 31);
   eq('  → each knows its activity', book[0].activity, 'aircond');
   eq('  → and has a label to explain it', typeof book[0].label, 'string');
   const acts = {};
   book.forEach(c => { acts[c.activity] = (acts[c.activity] || 0) + 1; });
-  eq('every activity in the app contributes', Object.keys(acts).length, 25);
+  eq('every activity in the app contributes', Object.keys(acts).length, 26);
   eq('  → the two with missions contribute three each, the laundry two, the rest one',
      acts.aircond === 3 && acts.train === 3 && acts.laundry === 2 &&
      acts.tree === 1 && acts.sandwich === 1 && acts.waterhome === 1 &&
@@ -930,7 +930,7 @@ console.log('\n— The sticker book —');
      acts.electric === 1 && acts.magnet === 1 && acts.light === 1 &&
      acts.sunbear === 1 && acts.speaker === 1 && acts.computer === 1 &&
      acts.power === 1 && acts.safety === 1 &&
-     acts.motor === 1 && acts.camera === 1, true);
+     acts.motor === 1 && acts.camera === 1 && acts.testpanel === 1, true);
 
   /* a corrupt store must not take the home screen down with it */
   const ARG2 = load('shared', ['shared/progress.js']);
@@ -1002,6 +1002,42 @@ console.log('\n— Photo Camera —');
   r = sim.press('shoot').result;
   eq('too slow for the runner, the shot is soft', r.pass, false);
   eq('  → the exposure is still readable', r.exposure, 'over');
+}
+
+console.log('\n— Test & Check Panel —');
+{
+  const ARG = load('testpanel', ['testpanel/js/state.js']);
+  const sim = ARG.sim;
+  const S = () => sim.s;
+
+  settle(sim, 3);
+  eq('with no load the power is zero', sim.power(), 0);
+  eq('  → and no energy is used', S().energy, 0);
+  eq('  → the panel says so', sim.factKey(), 'factNoLoad');
+  eq('  → and the no-load task is done', S().seen.none, true);
+
+  sim.press('load', { dataset: { load: 'led' } });
+  settle(sim, 3);
+  eq('an LED load draws its 18 W', sim.power(), 18);
+  check('  → and the meter counts energy', S().energy, 0.000001, 0.1, ' kWh');
+  eq('  → the load task is done', S().seen.load, true);
+
+  sim.press('load', { dataset: { load: 'charger' } });
+  settle(sim, 1);
+  check('a charger with no phone draws standby power', sim.power(), 0.1, 1, ' W');
+  eq('  → the standby task is done', S().seen.standby, true);
+
+  sim.press('test');
+  settle(sim, 0.5);
+  eq('the RCD test trips the safety switch', S().tripped, true);
+  eq('  → the power is cut', sim.power(), 0);
+  eq('  → all four tasks earn the badge', S().done, true);
+
+  sim.press('reset');
+  eq('reset restores the RCD', S().tripped, false);
+  sim.press('rcd');
+  eq('the safety switch can be turned off', S().rcd, false);
+  eq('  → and then nothing runs', sim.power(), 0);
 }
 
 console.log('\n— Language gate —');

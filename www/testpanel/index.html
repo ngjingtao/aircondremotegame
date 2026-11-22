@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="description" content="测试与检查面板：没有负载就没有电流，电表停在 0 瓦；漏电保护器是安全开关，不是用电器。" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="测试面板" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<title>测试面板 · 边玩边学</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="testpanel.css" />
+</head>
+<body>
+
+<div id="app">
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html#machines" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand"><span class="tb-logo">🧪</span><span class="tb-title" data-i18n="title">Test &amp; Check Panel</span></div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudW">Power</span><b id="hud-w">0</b></div>
+      <div class="hud-chip hud-score"><span class="hud-label" data-i18n="hudKwh">Energy</span><b id="hud-kwh">0.000</b></div>
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudRcd">Safety</span><b id="hud-rcd">ON</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="ctl-panel">
+      <div id="ctl-scaler"><div class="ctl" id="ctl">
+        <div class="fact-card" id="panel-fact"></div>
+
+        <div class="ctl-label" data-i18n="load">Plug a load</div>
+        <div class="loads" id="load-row"></div>
+
+        <div class="rcd-row">
+          <button class="rcd-btn" data-action="rcd" id="btn-rcd"><b data-i18n="rcdOn">SWITCH ON</b></button>
+          <button class="test-btn" data-action="test" data-i18n="test">PRESS TO TEST</button>
+        </div>
+
+        <button class="reset-btn" data-action="reset" data-i18n="reset">RESET RCD</button>
+        <div class="tasks" id="panel-tasks"></div>
+      </div></div>
+    </section>
+
+    <section id="scene">
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="lead">Test &amp; check board</span>
+        <span class="scene-status" id="scene-status" data-i18n="statusNoLoad">No load · 0 W</span>
+      </div>
+
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="tpFrame" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f7f8fa"/><stop offset="100%" stop-color="#cfd5dd"/>
+            </linearGradient>
+            <linearGradient id="tpYellow" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f4d21f"/><stop offset="100%" stop-color="#e0b800"/>
+            </linearGradient>
+            <linearGradient id="tpTube" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#ffffff"/><stop offset="55%" stop-color="#eef6ff"/><stop offset="100%" stop-color="#c9d7e6"/>
+            </linearGradient>
+            <filter id="tpSoft" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#04080f" flood-opacity=".45"/>
+            </filter>
+            <radialGradient id="tpGlow">
+              <stop offset="0%" stop-color="rgba(180,240,255,.85)"/><stop offset="100%" stop-color="rgba(120,210,255,0)"/>
+            </radialGradient>
+          </defs>
+
+          <rect width="340" height="520" fill="#101923"/>
+          <rect y="472" width="340" height="48" fill="#0a1119"/>
+
+          <!-- white frame + yellow board -->
+          <rect x="22" y="52" width="296" height="420" rx="26" fill="url(#tpFrame)" stroke="#e9edf2" stroke-width="2" filter="url(#tpSoft)"/>
+          <rect x="40" y="76" width="260" height="372" rx="14" fill="url(#tpYellow)" stroke="#c8a400" stroke-width="1.4"/>
+
+          <!-- meter -->
+          <rect x="54" y="86" width="232" height="38" rx="7" fill="#0b141d" stroke="#3a4a5e" stroke-width="1.2"/>
+          <text id="meter-w" x="70" y="112" font-family="ui-monospace,monospace" font-size="16" font-weight="700" fill="#8ef0b4">0 W</text>
+          <text id="meter-kwh" x="272" y="112" text-anchor="end" font-family="ui-monospace,monospace" font-size="12" fill="#c8d1dd">0.000 kWh</text>
+
+          <!-- long fluorescent tube -->
+          <g class="load-part" data-part="fluor" filter="url(#tpSoft)">
+            <rect x="58" y="140" width="16" height="220" rx="7" fill="url(#tpTube)" stroke="#9fb0c2" stroke-width="1"/>
+            <rect x="61" y="136" width="10" height="8" rx="3" fill="#c8d1dd"/>
+            <rect x="61" y="356" width="10" height="8" rx="3" fill="#c8d1dd"/>
+          </g>
+
+          <!-- long LED tube -->
+          <g class="load-part" data-part="led" filter="url(#tpSoft)">
+            <rect x="88" y="140" width="12" height="220" rx="6" fill="url(#tpTube)" stroke="#9fb0c2" stroke-width="1"/>
+            <rect x="90" y="136" width="8" height="8" rx="3" fill="#c8d1dd"/>
+            <rect x="90" y="356" width="8" height="8" rx="3" fill="#c8d1dd"/>
+          </g>
+
+          <!-- short tubes -->
+          <g class="load-part" data-part="e27" filter="url(#tpSoft)">
+            <rect x="124" y="150" width="18" height="150" rx="6" fill="url(#tpTube)" stroke="#9fb0c2" stroke-width="1"/>
+            <circle cx="133" cy="316" r="15" fill="#f4efe4" stroke="#c8d1dd" stroke-width="2"/>
+            <circle cx="133" cy="316" r="7" fill="#ffd166"/>
+          </g>
+          <g class="load-part" data-part="e14" filter="url(#tpSoft)">
+            <rect x="158" y="150" width="13" height="150" rx="6" fill="url(#tpTube)" stroke="#9fb0c2" stroke-width="1"/>
+            <circle cx="164" cy="316" r="11" fill="#f4efe4" stroke="#c8d1dd" stroke-width="2"/>
+            <circle cx="164" cy="316" r="5" fill="#ffd166"/>
+          </g>
+
+          <!-- MR16 and charger -->
+          <g class="load-part" data-part="mr16">
+            <circle cx="196" cy="316" r="13" fill="#26313f" stroke="#8fa0b4" stroke-width="2"/>
+            <circle cx="196" cy="316" r="7" fill="#9fe8ff"/>
+          </g>
+          <g class="load-part" data-part="charger">
+            <rect x="228" y="348" width="20" height="28" rx="4" fill="#f4efe4" stroke="#8fa0b4" stroke-width="1.4"/>
+            <path d="M238 348 v-10 M232 338 h12" stroke="#8fa0b4" stroke-width="2" stroke-linecap="round"/>
+          </g>
+
+          <!-- RCD -->
+          <g id="rcd" filter="url(#tpSoft)">
+            <rect x="222" y="150" width="56" height="92" rx="6" fill="#f2f5f8" stroke="#8fa0b4" stroke-width="1.6"/>
+            <rect x="230" y="160" width="40" height="24" rx="3" fill="#dfe6ee"/>
+            <rect id="rcd-lever" x="242" y="164" width="16" height="16" rx="2" fill="#2f3b4a"/>
+            <circle id="rcd-trip" cx="250" cy="206" r="9" fill="#8a2b22" opacity=".35"/>
+            <circle cx="250" cy="228" r="5" fill="#3ddc84" opacity=".7"/>
+          </g>
+
+          <!-- sockets -->
+          <g fill="#f2f5f8" stroke="#8fa0b4" stroke-width="1.4">
+            <rect x="228" y="264" width="44" height="34" rx="5"/>
+            <rect x="228" y="306" width="44" height="34" rx="5"/>
+            <rect x="228" y="348" width="44" height="34" rx="5"/>
+          </g>
+          <g fill="#2f3b4a">
+            <rect x="238" y="276" width="6" height="10" rx="2"/><rect x="256" y="276" width="6" height="10" rx="2"/>
+            <rect x="238" y="318" width="6" height="10" rx="2"/><rect x="256" y="318" width="6" height="10" rx="2"/>
+          </g>
+          <text x="250" y="400" text-anchor="middle" font-size="8" font-weight="800" fill="#6b5900" font-family="system-ui">PRESS TO TEST</text>
+
+          <!-- holders -->
+          <circle cx="56" cy="386" r="12" fill="#1a2430" stroke="#6b7c93" stroke-width="2"/>
+          <circle cx="88" cy="386" r="12" fill="#1a2430" stroke="#6b7c93" stroke-width="2"/>
+          <circle cx="120" cy="386" r="12" fill="#1a2430" stroke="#6b7c93" stroke-width="2"/>
+          <circle cx="152" cy="386" r="12" fill="#1a2430" stroke="#6b7c93" stroke-width="2"/>
+
+          <!-- selected-load glow -->
+          <rect id="load-glow" x="40" y="76" width="260" height="372" rx="14" fill="url(#tpGlow)" opacity="0" pointer-events="none"/>
+        </svg>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <div id="help-overlay" class="overlay" hidden>
+    <div class="overlay-card">
+      <h2 id="help-title" data-i18n="helpTitle">What the board teaches</h2>
+      <p id="help-sub" data-i18n="helpSub">No load, no current — but safety still matters</p>
+      <div id="help-body"></div>
+      <button class="overlay-close" id="help-close">OK</button>
+    </div>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/lang.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

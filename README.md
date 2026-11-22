@@ -2,7 +2,7 @@
 
 [![Build Android APK](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml/badge.svg)](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml)
 
-One little app, **twenty-five** activities for a curious kid. The home screen shows twenty-five picture
+One little app, **twenty-six** activities for a curious kid. The home screen shows twenty-six picture
 tiles — tap one and you're in.
 
 ```
@@ -61,9 +61,9 @@ tiles — tap one and you're in.
 > cards; tap one to get here.
 
 Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
-All twenty-five activities speak **English and 中文**, work offline, and are installable as an app.
+All twenty-six activities speak **English and 中文**, work offline, and are installable as an app.
 
-The twenty-five tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
+The twenty-six tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
 painted from one shared palette and split into three depth layers that drift gently and pull
 apart on hover. They are the only place the character guidelines in
 [`docs/character-bible.md`](docs/character-bible.md) are applied so far.
@@ -74,7 +74,7 @@ and **Electricity & machines** (4).
 
 ### The two-level menu
 
-With twenty-five activities, the home is a **two-level menu** rather than one long scroll:
+With twenty-six activities, the home is a **two-level menu** rather than one long scroll:
 
 1. **Topics** — seven cards, each with its icon, name, a one-line description and the number of
    activities. The newest group spans the full row, so the odd count stays tidy.
@@ -128,8 +128,8 @@ The shared rules live in `www/shared/ui.css` (phone sheet, fitted card and top b
 
 ### The sticker book
 
-Under the tiles is the one thing that ties the twenty-five activities together: a collection that
-every activity writes to. Thirty stickers, earned by doing the thing the activity is about —
+Under the tiles is the one thing that ties the twenty-six activities together: a collection that
+every activity writes to. Thirty-one stickers, earned by doing the thing the activity is about —
 `shared/progress.js` holds the catalogue and the storage, and each activity awards its own from
 its render loop.
 
@@ -160,6 +160,7 @@ its render loop.
 | ⚠️ Electrical Safety | 1 | reading all six safety rules |
 | ⚙️ Electric Motor | 1 | seeing a spin, a load, a stall and the heat warning |
 | 📷 Photo Camera | 1 | all three photo challenges |
+| 🧪 Test & Check Panel | 1 | no-load 0 W, a load, standby and an RCD trip |
 
 An earned sticker takes its activity's accent colour and shows the stars; the rest sit dimmed
 behind a dashed outline, so there is always something obviously missing. Awards only ever go
@@ -1078,6 +1079,27 @@ says whether the exposure is under, over or right, and what to change.
 
 ---
 
+## 26 · 🧪 Test & Check Panel
+
+A yellow "TEST & CHECK" board, after the electrical-shop display: fluorescent and LED
+tubes, E27/E14/MR16 holders, three sockets, and an RCD with a test button. The child plugs a
+load into the board and watches the meter.
+
+| Experiment | What it shows | The lesson |
+|---|---|---|
+| **Nothing plugged in** | **0 W**, 0 kWh, even with the RCD on | no load → no current → no energy; the safety switch is not an appliance |
+| **Fluorescent tube** | 36 W | older tube, magnetic ballast |
+| **LED tube** | 18 W | about half the power for the same light |
+| **E27 / E14 / MR16** | 60 W / 40 W / 20 W | different lamps, different loads |
+| **Charger with no phone** | about 0.3 W | standby is not a true no-load; unplug it |
+| **Press TEST** | the RCD trips and cuts the power | the safety switch works; find the fault and reset |
+
+The badge needs all four: prove 0 W with no load, run a real load, find the standby draw, and
+trip the RCD. The panel explicitly teaches that **leaving the RCD on with no load does not
+waste energy**, while still saying to isolate before changing a lamp.
+
+---
+
 ## Play it in a browser (fastest)
 
 Everything is plain HTML/CSS/JS — no build step.
@@ -1447,6 +1469,10 @@ www/                          ← the whole app (no build step)
 │  ├─ index.html
 │  ├─ camera.css                        Sony-style body, viewfinder, preview
 │  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
+├─ testpanel/                           ── activity 26 ──
+│  ├─ index.html
+│  ├─ testpanel.css                     yellow test board, tubes, RCD, sockets
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
 ├─ _devicelab.html                      dev-only: phone & iPad previews
 docs/character-bible.md                 the character, the palettes and the house style
 docs/art/                               illustration handoff: brief, prompts, integration
@@ -1458,9 +1484,9 @@ server.js                               static server + /tts neural voice ($PORT
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        330 assertions over the twenty-five activities
+test/sim.test.js                        345 assertions over the twenty-six activities
 test/voice.test.js                       45 assertions: neural voice, autoplay, native/Web Speech fallback, word ranges
-test/render.test.js                     378 assertions: every page booted, the menu, the art hook, the language gate, the book, and nothing inline
+test/render.test.js                     382 assertions: every page booted, the menu, the art hook, the language gate, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 │  └─ app/src/main/java/.../SystemTts.java   native TTS bridge (window.AndroidTts)
@@ -1485,7 +1511,7 @@ call a scene, so a `render()` that throws still passes every one of them while t
 completely dead. It happened: the train's scene referenced an undefined `clamp`, which threw on
 every frame — and because `main.js` calls `render()` *before* it schedules
 `requestAnimationFrame`, the throw killed the animation loop at boot. Pressing the throttle did
-nothing at all, yet all 56 simulation assertions passed. So this test boots each of the twenty-five
+nothing at all, yet all 56 simulation assertions passed. So this test boots each of the twenty-six
 pages for real — reading the exact `<script>` list out of its own HTML and loading it in order
 into a small fake DOM — then drives the `requestAnimationFrame` loop for ~3 seconds of frames and
 fails on any throw, on boot or on any later frame. The train is checked as behaviour too: apply

@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-lang-2';
+const CACHE = 'play-learn-26-2';
 
 const ASSETS = [
   './',
@@ -228,7 +228,15 @@ const ASSETS = [
   'camera/js/state.js',
   'camera/js/scene.js',
   'camera/js/panel.js',
-  'camera/js/main.js'
+  'camera/js/main.js',
+
+  'testpanel/index.html',
+  'testpanel/testpanel.css',
+  'testpanel/js/i18n.js',
+  'testpanel/js/state.js',
+  'testpanel/js/scene.js',
+  'testpanel/js/panel.js',
+  'testpanel/js/main.js'
 ];
 
 self.addEventListener('install', event => {
