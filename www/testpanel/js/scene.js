@@ -15,6 +15,7 @@ ARG.scene = (function () {
     els.lever = $('rcd-lever');
     els.trip = $('rcd-trip');
     els.glow = $('load-glow');
+    els.spark = $('short-spark');
     els.status = $('scene-status');
     els.scene = $('scene');
   }
@@ -31,7 +32,8 @@ ARG.scene = (function () {
     document.querySelectorAll('.load-part').forEach(el => {
       el.classList.toggle('on', S.load === el.dataset.part);
     });
-    if (els.glow) opacity(els.glow, watts > 0 ? 0.32 : 0);
+    if (els.glow) opacity(els.glow, watts > 0 ? Math.min(0.46, 0.12 + watts / 160) : 0);
+    if (els.spark) { opacity(els.spark, S.short ? 1 : 0); els.spark.classList.toggle('on', !!S.short); }
 
     if (els.lever) els.lever.setAttribute('y', S.rcd && !S.tripped ? '164' : '174');
     if (els.rcd) {
@@ -44,7 +46,7 @@ ARG.scene = (function () {
     if (els.status) {
       const text = t(key);
       setText(els.status, text + (watts > 0 ? ' · ' + (watts < 1 ? watts.toFixed(1) : Math.round(watts)) + ' W' : ''));
-      els.status.classList.toggle('busy', key === 'statusTripped' || key === 'statusStandby');
+      els.status.classList.toggle('busy', key === 'statusTripped' || key === 'statusStandby' || key === 'statusShort');
     }
     if (els.scene) els.scene.dataset.status = key;
     void current;

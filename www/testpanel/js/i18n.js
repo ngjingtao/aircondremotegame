@@ -12,16 +12,26 @@ ARG.i18n = (function () {
       loadNone: 'Nothing', loadFluor: 'Fluorescent', loadLed: 'LED tube',
       loadE27: 'E27 bulb', loadE14: 'E14 bulb', loadMr16: 'MR16 lamp',
       loadCharger: 'Charger (no phone)',
+      bulbModel: 'Bulb model',
+      mE27Led5: '5 W LED', mE27Led9: '9 W LED',
+      mE27Inc40: '40 W incandescent', mE27Inc60: '60 W incandescent',
+      mE14Led4: '4 W LED', mE14Inc25: '25 W incandescent',
+      short: 'SHORT CIRCUIT',
       rcdOff: 'SWITCH OFF', rcdOn: 'SWITCH ON',
       test: 'PRESS TO TEST', reset: 'RESET RCD',
       statusNoLoad: 'No load · 0 W', statusOff: 'Switched off',
       statusTripped: 'RCD tripped', statusStandby: 'Standby', statusOn: 'Running',
+      statusShort: 'Short circuit!',
       taskNone: 'Prove 0 W with no load', taskLoad: 'Run a real load',
       taskStandby: 'Find standby power', taskTest: 'Trip the RCD',
+      taskShort: 'Trip it with a short circuit',
       factNoLoad: 'No load means no current. The meter stays at 0 W: the switch and the RCD are not using energy, so leaving the safety on with nothing plugged in does not cost anything.',
       factOff: 'The safety switch is off. Nothing can run until it is switched back on.',
       factLoad: 'A load is connected, so current flows and the meter counts. Compare the fluorescent tube with the LED: same light, less power.',
       factStandby: 'A charger with no phone can still draw a little standby power. Unplug it to get a true 0 W.',
+      factBulb: 'Change the bulb model and watch the meter. A 5 W LED gives roughly the light of a 40 W incandescent while using far less power. Higher wattage means higher current.',
+      factShort: 'A short circuit bypasses the load. The current spikes to a huge value, and the RCD trips in a fraction of a second to cut the power. That is protection working.',
+      factShortOff: 'The short is still connected, but the RCD is off. Turning it on will trip immediately. Never energise a short circuit.',
       factTripped: 'The RCD tripped. That is the safety switch doing its job: it cut the power. Find the fault, then reset.',
       toastDone: 'Test & Check badge earned — no-load, load, standby and trip.',
       helpTitle: 'What the board teaches',
@@ -38,7 +48,9 @@ ARG.i18n = (function () {
           <li><code>Charger with no phone</code> — a tiny standby load, about 0.3 W.</li>
         </ul>
         <h3>Safety</h3>
-        <p><b>Leaving the RCD on with no load does not waste energy.</b> Still switch off and isolate before changing a lamp or touching a holder. Press <code>TEST</code> to see the RCD trip; reset it after the fault is cleared.</p>`
+        <p><b>Leaving the RCD on with no load does not waste energy.</b> Still switch off and isolate before changing a lamp or touching a holder. Press <code>TEST</code> to see the RCD trip; reset it after the fault is cleared.</p>
+        <h3>Short circuit</h3>
+        <p>Press <code>SHORT CIRCUIT</code> to add a zero-resistance path. The current spikes, the RCD trips instantly and the power is cut. Never energise a shorted circuit.</p>`
     },
     zh: {
       title: '测试面板',
@@ -49,16 +61,26 @@ ARG.i18n = (function () {
       loadNone: '什么都不接', loadFluor: '日光灯管', loadLed: 'LED 灯管',
       loadE27: 'E27 灯泡', loadE14: 'E14 灯泡', loadMr16: 'MR16 射灯',
       loadCharger: '充电器（没接手机）',
+      bulbModel: '灯泡型号',
+      mE27Led5: '5 瓦 LED', mE27Led9: '9 瓦 LED',
+      mE27Inc40: '40 瓦白炽灯', mE27Inc60: '60 瓦白炽灯',
+      mE14Led4: '4 瓦 LED', mE14Inc25: '25 瓦白炽灯',
+      short: '短路',
       rcdOff: '开关关', rcdOn: '开关开',
       test: '按下测试', reset: '复位漏电保护',
       statusNoLoad: '没有负载 · 0 瓦', statusOff: '已关电',
       statusTripped: '漏电保护跳闸', statusStandby: '待机', statusOn: '运行中',
+      statusShort: '短路！',
       taskNone: '证明没负载是 0 瓦', taskLoad: '接一个真实负载',
       taskStandby: '找到待机耗电', taskTest: '让漏电保护跳闸',
+      taskShort: '用短路让它跳闸',
       factNoLoad: '没有负载就没有电流，电表停在 0 瓦。开关和漏电保护器本身不耗电，所以什么都没插时，让安全开关开着并不会浪费电。',
       factOff: '安全开关关着，什么都不能用，直到重新打开。',
       factLoad: '接了负载，电流才会流动，电表才开始计数。比较日光灯和 LED：同样的光，LED 更省电。',
       factStandby: '充电器没接手机也可能有待机耗电。拔掉它，才是真正的 0 瓦。',
+      factBulb: '换一种灯泡型号，看电表怎样变。5 瓦 LED 的亮度大约相当于 40 瓦白炽灯，却省很多电。瓦数越大，电流越大。',
+      factShort: '短路会绕过负载，电流瞬间变得非常大；漏电保护器在不到一秒内跳闸，切断电源。这就是保护在工作。',
+      factShortOff: '短路还接着，但漏电保护关着。一打开就会立刻跳闸。绝对不要给短路的电路通电。',
       factTripped: '漏电保护跳闸了。这是安全开关在工作：它切断了电源。先找到故障，再复位。',
       toastDone: '测试面板徽章到手——空载、负载、待机和跳闸都看过了。',
       helpTitle: '这块面板教什么',
@@ -75,7 +97,9 @@ ARG.i18n = (function () {
           <li><code>没接手机的充电器</code>——很小的待机耗电，大约 0.3 瓦。</li>
         </ul>
         <h3>安全</h3>
-        <p><b>没有负载时让漏电保护开着，不会浪费电。</b>但换灯管或碰灯座之前，仍然要关电、隔离。按 <code>测试</code> 看漏电保护跳闸；排除故障后再复位。</p>`
+        <p><b>没有负载时让漏电保护开着，不会浪费电。</b>但换灯管或碰灯座之前，仍然要关电、隔离。按 <code>测试</code> 看漏电保护跳闸；排除故障后再复位。</p>
+        <h3>短路</h3>
+        <p>按 <code>短路</code> 接出一条没有负载的捷径。电流会猛增，漏电保护立刻跳闸。绝对不要给短路的电路通电。</p>`
     }
   };
 

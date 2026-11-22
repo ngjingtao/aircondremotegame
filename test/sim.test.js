@@ -1032,13 +1032,33 @@ console.log('\n— Test & Check Panel —');
   settle(sim, 0.5);
   eq('the RCD test trips the safety switch', S().tripped, true);
   eq('  → the power is cut', sim.power(), 0);
-  eq('  → all four tasks earn the badge', S().done, true);
+  eq('  → that task is recorded', S().seen.test, true);
+  eq('  → but the short-circuit task is still open', S().done, false);
 
   sim.press('reset');
   eq('reset restores the RCD', S().tripped, false);
+
+  sim.press('load', { dataset: { load: 'e27' } });
+  eq('an E27 holder offers four bulb models', sim.modelList().length, 4);
+  sim.press('model', { dataset: { i: 0 } });
+  eq('a 5 W LED draws 5 W', sim.power(), 5);
+  sim.press('model', { dataset: { i: 3 } });
+  eq('a 60 W incandescent draws 60 W', sim.power(), 60);
+
+  sim.press('short');
+  settle(sim, 0.2);
+  eq('a short circuit trips the RCD', S().tripped, true);
+  eq('  → the short task is recorded', S().seen.short, true);
+  eq('  → all five tasks earn the badge', S().done, true);
+
+  sim.press('reset');
   sim.press('rcd');
   eq('the safety switch can be turned off', S().rcd, false);
-  eq('  → and then nothing runs', sim.power(), 0);
+  sim.press('short');
+  eq('a short with the RCD off does not trip yet', S().tripped, false);
+  sim.press('rcd');
+  eq('  → turning the RCD on trips immediately', S().tripped, true);
+  eq('  → and no power flows', sim.power(), 0);
 }
 
 console.log('\n— Electromagnet Kit Lab —');

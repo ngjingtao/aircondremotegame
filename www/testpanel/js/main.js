@@ -48,6 +48,7 @@
     if (!res) return;
     if (res.sound && typeof ARG.audio[res.sound] === 'function') ARG.audio[res.sound]();
     else ARG.audio.blip();
+    ARG.panel.refresh();
     ARG.panel.render();
     ARG.scene.render();
     if (res.say) speakFact();

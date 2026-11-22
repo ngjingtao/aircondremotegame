@@ -1091,12 +1091,15 @@ load into the board and watches the meter.
 | **Nothing plugged in** | **0 W**, 0 kWh, even with the RCD on | no load → no current → no energy; the safety switch is not an appliance |
 | **Fluorescent tube** | 36 W | older tube, magnetic ballast |
 | **LED tube** | 18 W | about half the power for the same light |
-| **E27 / E14 / MR16** | 60 W / 40 W / 20 W | different lamps, different loads |
+| **E27 bulb models** | 5 W LED · 9 W LED · 40 W incandescent · 60 W incandescent | compare light for the same fitting; higher wattage means higher current |
+| **E14 bulb models** | 4 W LED · 25 W incandescent | smaller fitting, same comparison |
+| **MR16** | 20 W | small spotlight |
 | **Charger with no phone** | about 0.3 W | standby is not a true no-load; unplug it |
 | **Press TEST** | the RCD trips and cuts the power | the safety switch works; find the fault and reset |
+| **SHORT CIRCUIT** | current spikes, the RCD trips instantly | protection works; never energise a short |
 
-The badge needs all four: prove 0 W with no load, run a real load, find the standby draw, and
-trip the RCD. The panel explicitly teaches that **leaving the RCD on with no load does not
+The badge needs all five: prove 0 W with no load, run a real load, find the standby draw, trip
+the RCD with TEST, and trip it with a short circuit. The panel explicitly teaches that **leaving the RCD on with no load does not
 waste energy**, while still saying to isolate before changing a lamp.
 
 ---
@@ -1515,7 +1518,7 @@ server.js                               static server + /tts neural voice ($PORT
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        353 assertions over the twenty-seven activities
+test/sim.test.js                        362 assertions over the twenty-seven activities
 test/voice.test.js                       45 assertions: neural voice, autoplay, native/Web Speech fallback, word ranges
 test/render.test.js                     385 assertions: every page booted, the menu, the art hook, the language gate, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs

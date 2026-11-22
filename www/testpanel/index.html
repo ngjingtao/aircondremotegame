@@ -50,11 +50,17 @@
         <div class="ctl-label" data-i18n="load">Plug a load</div>
         <div class="loads" id="load-row"></div>
 
+        <div class="model-wrap" id="model-wrap" hidden>
+          <div class="ctl-label" data-i18n="bulbModel">Bulb model</div>
+          <div class="models" id="model-row"></div>
+        </div>
+
         <div class="rcd-row">
           <button class="rcd-btn" data-action="rcd" id="btn-rcd"><b data-i18n="rcdOn">SWITCH ON</b></button>
           <button class="test-btn" data-action="test" data-i18n="test">PRESS TO TEST</button>
         </div>
 
+        <button class="short-btn" id="btn-short" data-action="short" data-i18n="short">SHORT CIRCUIT</button>
         <button class="reset-btn" data-action="reset" data-i18n="reset">RESET RCD</button>
         <div class="tasks" id="panel-tasks"></div>
       </div></div>
@@ -160,6 +166,13 @@
           <circle cx="88" cy="386" r="12" fill="#1a2430" stroke="#6b7c93" stroke-width="2"/>
           <circle cx="120" cy="386" r="12" fill="#1a2430" stroke="#6b7c93" stroke-width="2"/>
           <circle cx="152" cy="386" r="12" fill="#1a2430" stroke="#6b7c93" stroke-width="2"/>
+
+          <!-- short-circuit spark at the wires -->
+          <g id="short-spark" opacity="0">
+            <path d="M92 214 L108 230 L96 232 L116 252 L102 254 L122 274" fill="none" stroke="#ff5a4e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="92" cy="214" r="5" fill="#ffd166"/>
+            <circle cx="122" cy="274" r="5" fill="#ffd166"/>
+          </g>
 
           <!-- selected-load glow -->
           <rect id="load-glow" x="40" y="76" width="260" height="372" rx="14" fill="url(#tpGlow)" opacity="0" pointer-events="none"/>

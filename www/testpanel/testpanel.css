@@ -88,3 +88,24 @@
   .scene-lead{font-size:14px;}
   .scene-status{font-size:13.5px;padding:5px 16px;}
 }
+
+.model-wrap[hidden]{display:none;}
+.models{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
+.model-btn{
+  min-height:26px;padding:2px 3px;border-radius:7px;border:1px solid #c4d0dc;
+  background:linear-gradient(180deg,#fff,#edf3f8);font-family:inherit;cursor:pointer;
+}
+.model-btn b{font-size:6.6px;font-weight:800;color:#60758a;line-height:1.1;}
+.model-btn.on{background:linear-gradient(180deg,#cfe6ff,#a9cdf7);border-color:#7aa9d8;}
+.model-btn.on b{color:#1d3d61;}
+.short-btn{
+  padding:8px;border-radius:9px;border:1px solid #a83a2f;
+  background:linear-gradient(180deg,#ffb3a7,#ef6b5c);box-shadow:0 2px 0 #a83a2f;
+  font-family:inherit;font-size:8.5px;font-weight:900;color:#4a0d08;cursor:pointer;
+  letter-spacing:.3px;
+}
+.short-btn:disabled{opacity:.45;cursor:not-allowed;}
+.short-btn:active{transform:translateY(2px);box-shadow:0 0 0 #a83a2f;}
+#short-spark{transition:opacity .12s;}
+#short-spark.on{animation:shortZap .35s steps(2) infinite;}
+@keyframes shortZap{0%,100%{opacity:1;}50%{opacity:.35;}}

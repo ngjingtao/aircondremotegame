@@ -14,7 +14,10 @@ ARG.panel = (function () {
     onAction = handler;
     els.fact = $('panel-fact');
     els.loads = $('load-row');
+    els.modelWrap = $('model-wrap');
+    els.models = $('model-row');
     els.rcd = $('btn-rcd');
+    els.short = $('btn-short');
     els.test = $('test-btn');
     els.reset = $('reset-btn');
     els.tasks = $('panel-tasks');
@@ -29,7 +32,7 @@ ARG.panel = (function () {
       ).join('');
     }
     if (els.tasks) {
-      els.tasks.innerHTML = ['none', 'load', 'standby', 'test'].map(k =>
+      els.tasks.innerHTML = ['none', 'load', 'standby', 'test', 'short'].map(k =>
         '<span class="task" data-task="' + k + '"><i>○</i><b data-i18n="task' + k.charAt(0).toUpperCase() + k.slice(1) + '"></b></span>'
       ).join('');
     }
@@ -48,9 +51,26 @@ ARG.panel = (function () {
     }
   }
 
+  function renderModels() {
+    const list = ARG.sim.modelList();
+    if (!els.modelWrap || !els.models) return;
+    if (!list) { els.modelWrap.hidden = true; return; }
+    els.modelWrap.hidden = false;
+    const sig = list.map(m => m.id).join(',') + '|' + ARG.sim.s.model;
+    if (els.models.dataset.sig !== sig) {
+      els.models.dataset.sig = sig;
+      els.models.innerHTML = list.map((m, i) =>
+        '<button class="model-btn" data-action="model" data-i="' + i + '"><b data-i18n="' + m.key + '"></b></button>'
+      ).join('');
+      ARG.i18n.apply(els.models);
+    }
+    els.models.querySelectorAll('[data-i]').forEach(b => b.classList.toggle('on', +b.dataset.i === ARG.sim.s.model));
+  }
+
   function render() {
     const S = ARG.sim.s;
     const t = T();
+    renderModels();
 
     const fk = ARG.sim.factKey();
     if (fk !== lastFact) { lastFact = fk; setText(els.fact, t(fk)); }
@@ -61,12 +81,13 @@ ARG.panel = (function () {
       els.rcd.classList.toggle('on', S.rcd && !S.tripped);
       els.rcd.disabled = S.tripped;
     }
-    if (els.test) els.test.disabled = S.tripped || !S.rcd;
-    if (els.reset) els.reset.disabled = !S.tripped;
+    if (els.test) els.test.disabled = S.tripped || !S.rcd || S.short;
+    if (els.short) els.short.disabled = S.tripped || S.short;
+    if (els.reset) els.reset.disabled = !(S.tripped || S.short);
 
     if (els.hudW) setText(els.hudW, Math.round(ARG.sim.power() * 10) / 10 + ' W');
     if (els.hudKwh) setText(els.hudKwh, S.energy.toFixed(3));
-    if (els.hudRcd) setText(els.hudRcd, S.tripped ? 'TRIP' : (S.rcd ? 'ON' : 'OFF'));
+    if (els.hudRcd) setText(els.hudRcd, S.tripped ? 'TRIP' : (S.short ? 'SHORT' : (S.rcd ? 'ON' : 'OFF')));
 
     if (els.tasks) {
       els.tasks.querySelectorAll('[data-task]').forEach(el => {
