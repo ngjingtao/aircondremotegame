@@ -76,6 +76,8 @@
       tileEarSub: 'From a sound wave to a signal in the brain',
       tileEyeTitle: 'How the Eye Sees',
       tileEyeSub: 'Light, lens, retina and the picture in the brain',
+      tileRainbowTitle: 'Rainbow & Light',
+      tileRainbowSub: 'Prisms, raindrops and the colours inside white light',
       groupHome: 'Home machines',
       groupKitchen: 'Kitchen',
       groupWater: 'Water systems',
@@ -122,9 +124,10 @@
       stKitlab: 'Complete all eight kit experiments',
       stEar: 'Follow the sound from the pinna to the brain',
       stEye: 'Follow the light from the cornea to the brain',
+      stRainbow: 'Follow white light through a prism and a raindrop',
       foot: 'Made for curious kids',
       help: '?',
-      helpTitle: 'Twenty-nine activities',
+      helpTitle: 'Thirty activities',
       helpBody: `
         <h3>❄ Play Aircond</h3>
         <ul>
@@ -340,6 +343,8 @@
       tileEarSub: '从声波到大脑里的信号',
       tileEyeTitle: '眼睛怎样看见',
       tileEyeSub: '光、晶状体、视网膜和大脑里的画面',
+      tileRainbowTitle: '彩虹与光',
+      tileRainbowSub: '棱镜、雨滴和白光里的颜色',
       groupHome: '家里的机器',
       groupKitchen: '厨房',
       groupWater: '水系统',
@@ -386,9 +391,10 @@
       stKitlab: '完成实验箱的八个实验',
       stEar: '跟着声音从耳廓走到大脑',
       stEye: '跟着光从角膜走到大脑',
+      stRainbow: '跟着白光穿过棱镜和雨滴',
       foot: '给充满好奇心的小朋友',
       help: '?',
-      helpTitle: '二十九个小游戏',
+      helpTitle: '三十个小游戏',
       helpBody: `
         <h3>❄ 玩空调</h3>
         <ul>
@@ -570,7 +576,8 @@
     testpanel: { icon: '🧪', tint: '#f4d21f' },
     kitlab: { icon: '🧰', tint: '#58d6c9' },
     ear: { icon: '👂', tint: '#f0b58a' },
-    eye: { icon: '👁️', tint: '#8fd0ff' }
+    eye: { icon: '👁️', tint: '#8fd0ff' },
+    rainbow: { icon: '🌈', tint: '#e85d5d' }
   };
 
   /* level 1 → one card per group; level 2 → that group's tiles.

@@ -363,7 +363,8 @@ const PAGES = [
   { dir: 'testpanel', name: 'Test & Check Panel' },
   { dir: 'kitlab', name: 'Electromagnet Kit Lab', loop: false },
   { dir: 'ear', name: 'How the Ear Hears', loop: false },
-  { dir: 'eye', name: 'How the Eye Sees', loop: false }
+  { dir: 'eye', name: 'How the Eye Sees', loop: false },
+  { dir: 'rainbow', name: 'Rainbow & Light', loop: false }
 ];
 
 console.log('\n— Every page boots —');
@@ -968,26 +969,26 @@ console.log('\n— Home tiles —');
   const html = fs.readFileSync(path.join(WWW, 'index.html'), 'utf8');
 
   const tiles = html.match(/class="tile tile-[a-z]+(?: [^"]*)?"/g) || [];
-  eq('the home screen has twenty-nine tiles', tiles.length, 29);
+  eq('the home screen has thirty tiles', tiles.length, 30);
 
   /* level-1 groups make the larger collection navigable */
   const groupBlocks = html.match(/<section class="group"[\s\S]*?<\/section>/g) || [];
   eq('the home screen has seven groups', groupBlocks.length, 7);
   const groupCounts = groupBlocks.map(b => (b.match(/class="tile tile-/g) || []).length);
-  eq('  → grouped 3 / 3 / 3 / 3 / 5 / 4 / 8', groupCounts.join(','), '3,3,3,3,5,4,8');
+  eq('  → grouped 3 / 3 / 3 / 3 / 5 / 5 / 8', groupCounts.join(','), '3,3,3,3,5,5,8');
   const groupKeys = groupBlocks.map(b => (b.match(/data-group="([^"]+)"/) || [])[1]);
   eq('  → home, kitchen, water, nature, body, science, machines',
      groupKeys.join(','), 'home,kitchen,water,nature,body,science,machines');
   eq('  → every group has a heading', (html.match(/class="group-title"/g) || []).length, 7);
 
   const svgs = html.match(/class="tile-svg"[^>]*viewBox="([^"]+)"/g) || [];
-  eq('every tile is an illustration, not a stack of spans', svgs.length, 29);
+  eq('every tile is an illustration, not a stack of spans', svgs.length, 30);
   eq('  → all on one 96×96 canvas', svgs.every(s => /viewBox="0 0 96 96"/.test(s)), true);
 
   /* three depth layers — the parallax and the idle drift both count on them */
   const layer = n => (html.match(new RegExp('class="tl ' + n + '"', 'g')) || []).length;
   eq('every scene has a back, mid and front layer',
-     layer('back') === 29 && layer('mid') === 29 && layer('front') === 29, true);
+     layer('back') === 30 && layer('mid') === 30 && layer('front') === 30, true);
 
   /* the tile illustrations use one shared palette. Every paint a shape asks for
      has to exist, or the shape silently renders black — and a paint nobody uses
@@ -1043,7 +1044,7 @@ console.log('\n— The two-level menu —');
     electric: 'science', magnet: 'science', light: 'science', sunbear: 'science',
     speaker: 'machines', computer: 'machines', power: 'machines', safety: 'machines',
     motor: 'machines', camera: 'machines', testpanel: 'machines', kitlab: 'machines',
-    ear: 'body', eye: 'body'
+    ear: 'body', eye: 'body', rainbow: 'science'
   };
   const wrong = Object.keys(topicOf).filter(function (dir) {
     const page = fs.readFileSync(path.join(WWW, dir, 'index.html'), 'utf8');
@@ -1087,7 +1088,7 @@ console.log('\n— Phone and iPad layouts —');
   const panelPages = ['aircond', 'aircare', 'breath', 'cycle', 'engine', 'food', 'hood',
     'indah', 'laundry', 'sandwich', 'toilet', 'tree', 'waterhome', 'weather',
     'electric', 'magnet', 'light', 'sunbear', 'speaker', 'computer', 'power', 'safety',
-    'motor', 'camera', 'testpanel', 'kitlab', 'ear', 'eye'];
+    'motor', 'camera', 'testpanel', 'kitlab', 'ear', 'eye', 'rainbow'];
   const missing = panelPages.filter(p => {
     const js = fs.readFileSync(path.join(WWW, p, 'js', 'main.js'), 'utf8');
     return !/ARG\.shell\.isStacked\(\)/.test(js) || !/ARG\.shell\.stackPanel\(/.test(js);
@@ -1165,7 +1166,7 @@ console.log('\n— Sticker book on the home screen —');
 
   const p = boot('.');
   if (p.bootError) bad('home — boots', p.bootError);
-  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 34');
+  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 35');
 }
 
 /* ─────────── the science lab: steps, words and reading ─────────── */
@@ -1191,7 +1192,9 @@ console.log('\n— Science and machines: eight step-by-step lessons —');
     { dir: 'ear', sticker: 'ear',
       labs: ['sound', 'pinna', 'eardrum', 'ossicles', 'cochlea', 'brain'] },
     { dir: 'eye', sticker: 'eye',
-      labs: ['light', 'cornea', 'pupil', 'lens', 'retina', 'brain'] }
+      labs: ['light', 'cornea', 'pupil', 'lens', 'retina', 'brain'] },
+    { dir: 'rainbow', sticker: 'rainbow',
+      labs: ['white', 'refract', 'prism', 'drop', 'colours', 'make'] }
   ];
 
   const lessonJs = fs.readFileSync(path.join(WWW, 'shared', 'lesson.js'), 'utf8');

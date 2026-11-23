@@ -98,6 +98,7 @@
 .tile-kitlab .tile-art{background:linear-gradient(160deg,#123a36,#0a211f);}
 .tile-ear .tile-art{background:linear-gradient(160deg,#2a1a22,#150b10);}
 .tile-eye .tile-art{background:linear-gradient(160deg,#1a2433,#0b111a);}
+.tile-rainbow .tile-art{background:linear-gradient(160deg,#1b2433,#0b111a);}
 .tile-img{
   position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;border-radius:inherit;display:block;
