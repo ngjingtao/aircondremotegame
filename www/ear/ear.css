@@ -1,0 +1,37 @@
+/* How the Ear Hears — scene */
+.art-wrap{flex:1 1 auto;position:relative;min-height:0;display:flex;align-items:center;justify-content:center;padding:4px 6px;}
+#art{width:100%;height:100%;display:block;}
+
+.lab{opacity:.30;transition:opacity .25s, filter .25s;}
+.lab.on{opacity:1;filter:drop-shadow(0 0 7px rgba(140,220,255,.55));}
+
+#sound-waves path{transform-origin:20px 260px;}
+#art[data-step="0"] #sound-waves path{animation:earWave 1.6s ease-in-out infinite;}
+#art[data-step="0"] #sound-waves path:nth-child(2){animation-delay:.2s;}
+#art[data-step="0"] #sound-waves path:nth-child(3){animation-delay:.35s;}
+@keyframes earWave{0%,100%{transform:translateX(0);opacity:.35;}50%{transform:translateX(10px);opacity:1;}}
+
+#art[data-step="2"] #eardrum-membrane{animation:earDrum .22s ease-in-out infinite alternate;}
+@keyframes earDrum{0%{transform:translateX(-2px);}100%{transform:translateX(3px);}}
+
+#art[data-step="3"] #ossicles path{animation:earBone .5s ease-in-out infinite alternate;}
+#art[data-step="3"] #ossicles path:nth-child(2){animation-delay:.08s;}
+#art[data-step="3"] #ossicles path:nth-child(3){animation-delay:.16s;}
+@keyframes earBone{0%{transform:translateX(-1px);}100%{transform:translateX(3px);}}
+
+#art[data-step="4"] #cochlea-hairs path{animation:earHair .4s ease-in-out infinite alternate;}
+#art[data-step="4"] #cochlea-hairs path:nth-child(2){animation-delay:.05s;}
+#art[data-step="4"] #cochlea-hairs path:nth-child(3){animation-delay:.1s;}
+#art[data-step="4"] #cochlea-hairs path:nth-child(4){animation-delay:.15s;}
+#art[data-step="4"] #cochlea-hairs path:nth-child(5){animation-delay:.2s;}
+@keyframes earHair{0%{opacity:.45;}100%{opacity:1;}}
+
+#art[data-step="5"] #auditory-nerve{animation:earNerve .7s linear infinite;}
+@keyframes earNerve{to{stroke-dashoffset:-24;}}
+#art[data-step="5"] #protect-shield,
+#art[data-step="5"] .protect{animation:earProtect 1.8s ease-in-out infinite;}
+@keyframes earProtect{0%,100%{filter:drop-shadow(0 0 0 rgba(61,220,132,0));}50%{filter:drop-shadow(0 0 10px rgba(61,220,132,.65));}}
+
+@media (max-width:520px){
+  .art-wrap{padding:2px 4px;}
+}

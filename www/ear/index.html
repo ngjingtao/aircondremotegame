@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="description" content="耳朵怎样听见：声音怎样从耳廓、耳道、鼓膜、听小骨、耳蜗传到大脑，学会保护听力。" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="耳朵怎样听见" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>耳朵怎样听见 · 边玩边学</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="../shared/lesson.css" />
+<link rel="stylesheet" href="ear.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html#body" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">👂</span>
+      <span class="tb-title" data-i18n="title">How the Ear Hears</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudStep">Step</span><b id="hud-step">1 / 6</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl" id="ctl">
+
+          <div class="ls-head">
+            <span class="ls-kicker" data-i18n="lead">The human ear</span>
+            <span class="ls-count" id="ls-count">1 / 6</span>
+            <button class="ls-read" id="ls-replay" data-action="replay" title="Read again">🔊</button>
+          </div>
+          <div class="ls-track"><i id="ls-bar"></i></div>
+
+          <div class="ls-steps" id="ls-steps"></div>
+
+          <h3 class="ls-title" id="ls-title"></h3>
+          <div class="fact-card ls-fact" id="ls-fact"></div>
+
+          <div class="ls-words" id="ls-words"></div>
+          <div class="ls-worddef" id="ls-worddef" hidden></div>
+
+          <div class="nav-row">
+            <button class="nav-btn" id="ls-back" data-action="prev" data-i18n="back">BACK</button>
+            <button class="nav-btn go" id="ls-next" data-action="next" data-i18n="next">NEXT</button>
+          </div>
+
+          <div class="result" id="ls-result" hidden>
+            <div class="res-stars">★☆☆</div>
+            <p id="ls-result-text"></p>
+            <button class="nav-btn" data-action="again" data-i18n="again">START AGAIN</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="scene">
+
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="lead">The human ear</span>
+        <span class="scene-status" id="scene-status" data-i18n="status">Following the current</span>
+      </div>
+
+      <div class="art-wrap">
+        <img id="art-plate" class="art-plate" alt="" hidden />
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="earSkin" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffd9b8"/><stop offset="100%" stop-color="#f0b58a"/>
+            </linearGradient>
+            <linearGradient id="earCanal" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#b76a4a"/><stop offset="100%" stop-color="#6e3424"/>
+            </linearGradient>
+            <linearGradient id="earBone" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fff4d8"/><stop offset="100%" stop-color="#d8b784"/>
+            </linearGradient>
+            <radialGradient id="earCochlea">
+              <stop offset="0%" stop-color="#ffd166"/><stop offset="100%" stop-color="#c47a2c"/>
+            </radialGradient>
+            <radialGradient id="earBrain">
+              <stop offset="0%" stop-color="#ffb7c8"/><stop offset="100%" stop-color="#b85c78"/>
+            </radialGradient>
+            <radialGradient id="earWave">
+              <stop offset="0%" stop-color="rgba(140,220,255,.7)"/><stop offset="100%" stop-color="rgba(140,220,255,0)"/>
+            </radialGradient>
+            <filter id="earSoft" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#05080d" flood-opacity=".4"/>
+            </filter>
+          </defs>
+
+          <rect width="340" height="520" fill="#102028"/>
+          <rect width="340" height="520" fill="url(#earWave)" opacity=".12"/>
+          <rect y="474" width="340" height="46" fill="#09141a"/>
+
+          <!-- sound waves -->
+          <g id="sound-waves" class="lab" data-lab="sound" fill="none" stroke="#8fd0ff" stroke-linecap="round">
+            <path d="M26 210 q-18 50 0 100" stroke-width="4" opacity=".7"/>
+            <path d="M10 190 q-28 70 0 140" stroke-width="3" opacity=".5"/>
+            <path d="M44 230 q-10 35 0 70" stroke-width="3" opacity=".5"/>
+          </g>
+
+          <!-- head -->
+          <path d="M92 122 C180 88 286 128 300 246 C312 356 252 430 176 440 C116 448 82 398 78 338 C74 286 84 168 92 122 Z"
+                fill="url(#earSkin)" stroke="#8a4e36" stroke-width="2" filter="url(#earSoft)"/>
+
+          <!-- pinna + canal -->
+          <g class="lab" data-lab="pinna">
+            <path d="M92 214 C62 196 46 230 54 270 C62 312 84 334 108 320 C92 292 92 246 92 214 Z"
+                  fill="#f7c9a5" stroke="#8a4e36" stroke-width="2"/>
+            <path d="M78 226 C68 246 68 284 82 306" fill="none" stroke="#b76a4a" stroke-width="3" stroke-linecap="round"/>
+            <path d="M96 248 C114 254 146 258 170 258" fill="none" stroke="url(#earCanal)" stroke-width="16" stroke-linecap="round"/>
+            <path d="M96 248 C114 254 146 258 170 258" fill="none" stroke="#3b1c14" stroke-width="7" stroke-linecap="round" opacity=".5"/>
+          </g>
+
+          <!-- eardrum -->
+          <g class="lab" data-lab="eardrum">
+            <line x1="176" y1="236" x2="176" y2="280" stroke="#e8eef6" stroke-width="6" stroke-linecap="round"/>
+            <ellipse id="eardrum-membrane" cx="176" cy="258" rx="5" ry="22" fill="#dff3ff" stroke="#8fd0ff" stroke-width="1.5"/>
+          </g>
+
+          <!-- ossicles -->
+          <g id="ossicles" class="lab" data-lab="ossicles" stroke="#d8b784" stroke-width="5" stroke-linecap="round" fill="none">
+            <path d="M190 244 L204 236"/>
+            <path d="M206 238 L218 252"/>
+            <path d="M220 254 L232 244"/>
+            <circle cx="190" cy="244" r="5" fill="#fff4d8"/>
+            <circle cx="232" cy="244" r="4" fill="#fff4d8"/>
+          </g>
+
+          <!-- cochlea -->
+          <g class="lab" data-lab="cochlea">
+            <path d="M246 246 C286 232 310 260 302 292 C294 326 258 334 240 310 C226 292 236 270 254 270 C270 270 276 286 266 296"
+                  fill="none" stroke="url(#earCochlea)" stroke-width="16" stroke-linecap="round"/>
+            <g id="cochlea-hairs" stroke="#ffe9a8" stroke-width="2" stroke-linecap="round" opacity=".85">
+              <path d="M252 244 v-8"/><path d="M268 238 v-8"/><path d="M286 242 v-8"/>
+              <path d="M298 256 v-8"/><path d="M300 274 v-8"/>
+            </g>
+          </g>
+
+          <!-- nerve + brain + protection -->
+          <g class="lab" data-lab="brain">
+            <path id="auditory-nerve" d="M292 288 C306 274 318 252 306 228 C298 210 278 196 262 190"
+                  fill="none" stroke="#8ef0b4" stroke-width="5" stroke-linecap="round" stroke-dasharray="6 6"/>
+            <path d="M262 158 C238 140 214 160 216 186 C218 214 246 230 270 216 C292 202 288 176 262 158 Z"
+                  fill="url(#earBrain)" stroke="#8a3d55" stroke-width="2"/>
+            <path d="M238 180 q12 -14 24 0 q12 14 24 0 M234 198 q14 -10 28 0 q14 10 28 0"
+                  fill="none" stroke="#7a2c44" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+            <!-- protect shield + earplug -->
+            <path id="protect-shield" class="protect" d="M60 366 l24 -10 24 10 v22 c0 16 -12 26 -24 30 c-12 -4 -24 -14 -24 -30 Z"
+                  fill="rgba(61,220,132,.20)" stroke="#3ddc84" stroke-width="2.4"/>
+            <path d="M72 388 l8 8 16 -18" fill="none" stroke="#3ddc84" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="48" cy="388" r="9" fill="#f0a03a" stroke="#8a5a10" stroke-width="1.5"/>
+          </g>
+
+</svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">How hearing works</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/lang.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="../shared/art.js"></script>
+<script src="js/scene.js"></script>
+<script src="../shared/lesson.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>

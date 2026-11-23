@@ -96,6 +96,7 @@
 .tile-camera .tile-art{background:linear-gradient(160deg,#1a2533,#0c131c);}
 .tile-testpanel .tile-art{background:linear-gradient(160deg,#2a2a18,#141408);}
 .tile-kitlab .tile-art{background:linear-gradient(160deg,#123a36,#0a211f);}
+.tile-ear .tile-art{background:linear-gradient(160deg,#2a1a22,#150b10);}
 .tile-img{
   position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;border-radius:inherit;display:block;

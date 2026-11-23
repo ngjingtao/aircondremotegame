@@ -72,6 +72,8 @@
       tilePanelSub: 'No load, no energy — and an RCD test',
       tileKitTitle: 'Electromagnet Kit',
       tileKitSub: 'Build circuits from the kit and run eight experiments',
+      tileEarTitle: 'How the Ear Hears',
+      tileEarSub: 'From a sound wave to a signal in the brain',
       groupHome: 'Home machines',
       groupKitchen: 'Kitchen',
       groupWater: 'Water systems',
@@ -116,9 +118,10 @@
       stCamera: 'Complete all three photo challenges',
       stPanel: 'Prove 0 W, run a load, find standby, trip the RCD',
       stKitlab: 'Complete all eight kit experiments',
+      stEar: 'Follow the sound from the pinna to the brain',
       foot: 'Made for curious kids',
       help: '?',
-      helpTitle: 'Twenty-seven activities',
+      helpTitle: 'Twenty-eight activities',
       helpBody: `
         <h3>❄ Play Aircond</h3>
         <ul>
@@ -330,6 +333,8 @@
       tilePanelSub: '没有负载就不耗电——还能试漏电保护',
       tileKitTitle: '电磁实验箱',
       tileKitSub: '用实验箱搭电路，做八个实验',
+      tileEarTitle: '耳朵怎样听见',
+      tileEarSub: '从声波到大脑里的信号',
       groupHome: '家里的机器',
       groupKitchen: '厨房',
       groupWater: '水系统',
@@ -374,9 +379,10 @@
       stCamera: '完成三个拍照挑战',
       stPanel: '证明 0 瓦、接负载、找待机、让漏电保护跳闸',
       stKitlab: '完成实验箱的八个实验',
+      stEar: '跟着声音从耳廓走到大脑',
       foot: '给充满好奇心的小朋友',
       help: '?',
-      helpTitle: '二十七个小游戏',
+      helpTitle: '二十八个小游戏',
       helpBody: `
         <h3>❄ 玩空调</h3>
         <ul>
@@ -556,7 +562,8 @@
     motor:   { icon: '⚙️', tint: '#ffd166' },
     camera:  { icon: '📷', tint: '#8fd0ff' },
     testpanel: { icon: '🧪', tint: '#f4d21f' },
-    kitlab: { icon: '🧰', tint: '#58d6c9' }
+    kitlab: { icon: '🧰', tint: '#58d6c9' },
+    ear: { icon: '👂', tint: '#f0b58a' }
   };
 
   /* level 1 → one card per group; level 2 → that group's tiles.
