@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-28-3';
+const CACHE = 'play-learn-29-2';
 
 const ASSETS = [
   './',
@@ -251,7 +251,14 @@ const ASSETS = [
   'ear/js/i18n.js',
   'ear/js/state.js',
   'ear/js/scene.js',
-  'ear/js/main.js'
+  'ear/js/main.js',
+
+  'eye/index.html',
+  'eye/eye.css',
+  'eye/js/i18n.js',
+  'eye/js/state.js',
+  'eye/js/scene.js',
+  'eye/js/main.js'
 ];
 
 self.addEventListener('install', event => {

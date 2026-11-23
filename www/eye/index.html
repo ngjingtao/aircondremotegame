@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="description" content="眼睛怎样看见：光怎样经过角膜、瞳孔、晶状体、视网膜和视神经到达大脑，学会保护眼睛。" />
+<meta name="format-detection" content="telephone=no" />
+<!-- pwa -->
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="眼睛怎样看见" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<!-- /pwa -->
+<title>眼睛怎样看见 · 边玩边学</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="../shared/lesson.css" />
+<link rel="stylesheet" href="eye.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html#body" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand">
+      <span class="tb-logo">👁️</span>
+      <span class="tb-title" data-i18n="title">How the Eye Sees</span>
+    </div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudStep">Step</span><b id="hud-step">1 / 6</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="ctl-panel">
+      <div id="ctl-scaler">
+        <div class="ctl" id="ctl">
+
+          <div class="ls-head">
+            <span class="ls-kicker" data-i18n="lead">The human eye</span>
+            <span class="ls-count" id="ls-count">1 / 6</span>
+            <button class="ls-read" id="ls-replay" data-action="replay" title="Read again">🔊</button>
+          </div>
+          <div class="ls-track"><i id="ls-bar"></i></div>
+
+          <div class="ls-steps" id="ls-steps"></div>
+
+          <h3 class="ls-title" id="ls-title"></h3>
+          <div class="fact-card ls-fact" id="ls-fact"></div>
+
+          <div class="ls-words" id="ls-words"></div>
+          <div class="ls-worddef" id="ls-worddef" hidden></div>
+
+          <div class="nav-row">
+            <button class="nav-btn" id="ls-back" data-action="prev" data-i18n="back">BACK</button>
+            <button class="nav-btn go" id="ls-next" data-action="next" data-i18n="next">NEXT</button>
+          </div>
+
+          <div class="result" id="ls-result" hidden>
+            <div class="res-stars">★☆☆</div>
+            <p id="ls-result-text"></p>
+            <button class="nav-btn" data-action="again" data-i18n="again">START AGAIN</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="scene">
+
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="lead">The human eye</span>
+        <span class="scene-status" id="scene-status" data-i18n="status">Following the current</span>
+      </div>
+
+      <div class="art-wrap">
+        <img id="art-plate" class="art-plate" alt="" hidden />
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+          <defs>
+            <radialGradient id="eyeWhite" cx="35%" cy="35%">
+              <stop offset="0%" stop-color="#ffffff"/><stop offset="70%" stop-color="#f1f5f9"/><stop offset="100%" stop-color="#c8d1dd"/>
+            </radialGradient>
+            <linearGradient id="eyeCornea" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#bfe8ff" stop-opacity=".95"/><stop offset="100%" stop-color="#6fc3ef" stop-opacity=".55"/>
+            </linearGradient>
+            <linearGradient id="eyeIris" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#4aa8c8"/><stop offset="100%" stop-color="#1f5f7a"/>
+            </linearGradient>
+            <linearGradient id="eyeLens" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#dff3ff"/><stop offset="100%" stop-color="#8fd0ff"/>
+            </linearGradient>
+            <radialGradient id="eyeRetina">
+              <stop offset="0%" stop-color="#ffb7c8"/><stop offset="100%" stop-color="#b85c78"/>
+            </radialGradient>
+            <radialGradient id="eyeBrain">
+              <stop offset="0%" stop-color="#ffb7c8"/><stop offset="100%" stop-color="#a84a68"/>
+            </radialGradient>
+            <radialGradient id="eyeGlow">
+              <stop offset="0%" stop-color="rgba(255,209,102,.45)"/><stop offset="100%" stop-color="rgba(255,209,102,0)"/>
+            </radialGradient>
+            <filter id="eyeSoft" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#05080d" flood-opacity=".45"/>
+            </filter>
+          </defs>
+
+          <rect width="340" height="520" fill="#101923"/>
+          <rect width="340" height="520" fill="url(#eyeGlow)" opacity=".10"/>
+          <rect y="474" width="340" height="46" fill="#091219"/>
+
+          <!-- light rays from the left -->
+          <g class="lab" data-lab="light" fill="none" stroke="#ffd166" stroke-linecap="round">
+            <path d="M8 210 L58 238" stroke-width="3" opacity=".85"/>
+            <path d="M2 250 L56 258" stroke-width="3" opacity=".85"/>
+            <path d="M8 290 L58 278" stroke-width="3" opacity=".85"/>
+            <path d="M20 180 L62 224" stroke-width="2" opacity=".45"/>
+            <path d="M20 320 L62 296" stroke-width="2" opacity=".45"/>
+          </g>
+
+          <!-- eyeball -->
+          <circle cx="166" cy="260" r="112" fill="url(#eyeWhite)" stroke="#8fa0b4" stroke-width="2.5" filter="url(#eyeSoft)"/>
+          <g class="lab" data-lab="cornea">
+          <path d="M54 204 C30 222 30 298 54 316 C74 330 94 306 94 260 C94 214 74 190 54 204 Z"
+                fill="url(#eyeCornea)" stroke="#8fd0ff" stroke-width="2"/>
+          <path d="M82 222 C114 238 114 282 82 298 C98 282 98 238 82 222 Z" fill="#dff3ff" opacity=".45"/>
+          </g>
+
+          <!-- iris + pupil -->
+          <g class="lab" data-lab="pupil">
+            <circle cx="92" cy="260" r="42" fill="url(#eyeIris)" stroke="#123b4c" stroke-width="2"/>
+            <circle id="eye-pupil" cx="92" cy="260" r="17" fill="#060b10"/>
+            <circle cx="84" cy="252" r="4" fill="#ffffff" opacity=".65"/>
+            <path d="M92 218 v-8 M92 302 v8 M50 260 h-8 M134 260 h8" stroke="#4aa8c8" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+          </g>
+
+          <!-- lens + ciliary muscles -->
+          <g class="lab" data-lab="lens">
+            <ellipse id="eye-lens" cx="116" cy="260" rx="13" ry="48" fill="url(#eyeLens)" stroke="#4aa8c8" stroke-width="2" opacity=".9"/>
+            <path d="M116 212 q-18 -12 -26 -2 M116 308 q-18 12 -26 2" fill="none" stroke="#e85d5d" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M116 212 q18 -12 26 -2 M116 308 q18 12 26 2" fill="none" stroke="#e85d5d" stroke-width="2.4" stroke-linecap="round"/>
+          </g>
+
+          <!-- retina + rods/cones -->
+          <g class="lab" data-lab="retina">
+            <path d="M238 168 C280 204 280 316 238 352" fill="none" stroke="url(#eyeRetina)" stroke-width="13" stroke-linecap="round"/>
+            <g id="retina-dots" fill="#ffe9a8">
+              <circle cx="248" cy="190" r="2.4"/><circle cx="258" cy="210" r="2.4"/>
+              <circle cx="264" cy="234" r="2.4"/><circle cx="264" cy="260" r="2.4"/>
+              <circle cx="264" cy="286" r="2.4"/><circle cx="258" cy="310" r="2.4"/>
+              <circle cx="248" cy="330" r="2.4"/>
+            </g>
+          </g>
+
+          <!-- optic nerve + brain + protection -->
+          <g class="lab" data-lab="brain">
+            <path id="eye-nerve" d="M266 286 C288 300 304 280 302 252 C300 232 288 216 272 210"
+                  fill="none" stroke="#8ef0b4" stroke-width="6" stroke-linecap="round" stroke-dasharray="7 6"/>
+            <path d="M268 162 C242 142 214 162 216 190 C218 220 248 236 274 220 C298 204 294 180 268 162 Z"
+                  fill="url(#eyeBrain)" stroke="#8a3d55" stroke-width="2"/>
+            <path d="M242 184 q14 -14 26 0 q14 14 26 0 M238 202 q16 -10 30 0 q16 10 30 0"
+                  fill="none" stroke="#7a2c44" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+            <!-- protective sunglasses + shield -->
+            <path id="eye-glasses" d="M42 388 q18 -10 36 0 q18 10 36 0" fill="none" stroke="#3ddc84" stroke-width="4" stroke-linecap="round"/>
+            <path d="M48 376 q12 -8 24 0 M78 376 q12 -8 24 0" fill="none" stroke="#3ddc84" stroke-width="2.4" stroke-linecap="round"/>
+            <path id="eye-shield" d="M160 394 l20 -8 20 8 v16 c0 14 -10 22 -20 26 c-10 -4 -20 -12 -20 -26 Z"
+                  fill="rgba(61,220,132,.18)" stroke="#3ddc84" stroke-width="2.2"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="pane-note" id="pane-note"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="help-overlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <h2 id="help-title">How seeing works</h2>
+    <div id="help-body" class="help-body"></div>
+    <button class="overlay-close" id="help-close">OK</button>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/lang.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="../shared/art.js"></script>
+<script src="js/scene.js"></script>
+<script src="../shared/lesson.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>
