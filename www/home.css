@@ -100,6 +100,7 @@
 .tile-eye .tile-art{background:linear-gradient(160deg,#1a2433,#0b111a);}
 .tile-rainbow .tile-art{background:linear-gradient(160deg,#1b2433,#0b111a);}
 .tile-baggage .tile-art{background:linear-gradient(160deg,#1a2633,#0b1119);}
+.tile-restaurant .tile-art{background:linear-gradient(160deg,#3a2432,#1a1018);}
 .tile-img{
   position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;border-radius:inherit;display:block;

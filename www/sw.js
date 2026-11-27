@@ -6,7 +6,7 @@
    Bump CACHE when you ship a change.
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE = 'play-learn-31-2';
+const CACHE = 'play-learn-32-2';
 
 const ASSETS = [
   './',
@@ -273,7 +273,15 @@ const ASSETS = [
   'baggage/js/state.js',
   'baggage/js/scene.js',
   'baggage/js/panel.js',
-  'baggage/js/main.js'
+  'baggage/js/main.js',
+
+  'restaurant/index.html',
+  'restaurant/restaurant.css',
+  'restaurant/js/i18n.js',
+  'restaurant/js/state.js',
+  'restaurant/js/scene.js',
+  'restaurant/js/panel.js',
+  'restaurant/js/main.js'
 ];
 
 self.addEventListener('install', event => {

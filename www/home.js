@@ -80,6 +80,8 @@
       tileRainbowSub: 'Prisms, raindrops and the colours inside white light',
       tileBagTitle: 'Airport Baggage',
       tileBagSub: 'Tag, scan, sort and send each bag to the right chute',
+      tileRestTitle: 'Bunny Restaurant',
+      tileRestSub: 'Take orders, add prices and give the right change',
       groupHome: 'Home machines',
       groupKitchen: 'Kitchen',
       groupWater: 'Water systems',
@@ -128,9 +130,10 @@
       stEye: 'Follow the light from the cornea to the brain',
       stRainbow: 'Follow white light through a prism and a raindrop',
       stBag: 'Sort every bag to the right chute',
+      stRest: 'Serve five customers and give the right change',
       foot: 'Made for curious kids',
       help: '?',
-      helpTitle: 'Thirty-one activities',
+      helpTitle: 'Thirty-two activities',
       helpBody: `
         <h3>❄ Play Aircond</h3>
         <ul>
@@ -350,6 +353,8 @@
       tileRainbowSub: '棱镜、雨滴和白光里的颜色',
       tileBagTitle: '机场行李系统',
       tileBagSub: '贴牌、扫描、分拣，把每件行李送进正确的滑槽',
+      tileRestTitle: '兔子餐厅',
+      tileRestSub: '点单、加价格、找回正确的零钱',
       groupHome: '家里的机器',
       groupKitchen: '厨房',
       groupWater: '水系统',
@@ -398,9 +403,10 @@
       stEye: '跟着光从角膜走到大脑',
       stRainbow: '跟着白光穿过棱镜和雨滴',
       stBag: '把每件行李分到正确的滑槽',
+      stRest: '服务五位顾客，找回正确的零钱',
       foot: '给充满好奇心的小朋友',
       help: '?',
-      helpTitle: '三十一个小游戏',
+      helpTitle: '三十二个小游戏',
       helpBody: `
         <h3>❄ 玩空调</h3>
         <ul>
@@ -584,7 +590,8 @@
     ear: { icon: '👂', tint: '#f0b58a' },
     eye: { icon: '👁️', tint: '#8fd0ff' },
     rainbow: { icon: '🌈', tint: '#e85d5d' },
-    baggage: { icon: '🧳', tint: '#f0a03a' }
+    baggage: { icon: '🧳', tint: '#f0a03a' },
+    restaurant: { icon: '🐰', tint: '#e85d5d' }
   };
 
   /* level 1 → one card per group; level 2 → that group's tiles.

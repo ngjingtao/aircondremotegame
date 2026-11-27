@@ -898,7 +898,7 @@ console.log('\n— The sticker book —');
   const p = ARG.progress;
 
   p.reset();
-  eq('the book has thirty-six stickers', p.count, 36);
+  eq('the book has thirty-seven stickers', p.count, 37);
   eq('and starts empty', p.earned(), 0);
   eq('  → with no stars', p.total(), 0);
 
@@ -917,12 +917,12 @@ console.log('\n— The sticker book —');
   eq('the total adds the stars up', p.total(), 4);
 
   const book = p.book();
-  eq('every catalogue sticker is in the book', book.length, 36);
+  eq('every catalogue sticker is in the book', book.length, 37);
   eq('  → each knows its activity', book[0].activity, 'aircond');
   eq('  → and has a label to explain it', typeof book[0].label, 'string');
   const acts = {};
   book.forEach(c => { acts[c.activity] = (acts[c.activity] || 0) + 1; });
-  eq('every activity in the app contributes', Object.keys(acts).length, 31);
+  eq('every activity in the app contributes', Object.keys(acts).length, 32);
   eq('  → the two with missions contribute three each, the laundry two, the rest one',
      acts.aircond === 3 && acts.train === 3 && acts.laundry === 2 &&
      acts.tree === 1 && acts.sandwich === 1 && acts.waterhome === 1 &&
@@ -932,7 +932,7 @@ console.log('\n— The sticker book —');
      acts.power === 1 && acts.safety === 1 &&
      acts.motor === 1 && acts.camera === 1 && acts.testpanel === 1 &&
      acts.kitlab === 1 && acts.ear === 1 && acts.eye === 1 && acts.rainbow === 1 &&
-     acts.baggage === 1, true);
+     acts.baggage === 1 && acts.restaurant === 1, true);
 
   /* a corrupt store must not take the home screen down with it */
   const ARG2 = load('shared', ['shared/progress.js']);
@@ -1117,6 +1117,52 @@ console.log('\n— Airport Baggage —');
   eq('eight correct bags finish the shift', sim.s.done, true);
   eq('  → with all eight sorted', sim.s.score, 8);
   eq('  → and three stars', sim.stars(), 3);
+}
+
+console.log('\n— Bunny Restaurant —');
+{
+  const ARG = load('restaurant', ['restaurant/js/state.js']);
+  const sim = ARG.sim;
+  const serveOrder = () => sim.order().items.forEach(id => sim.press('serve', { dataset: { item: id } }));
+  const payAndChange = (note) => {
+    sim.press('pay', { dataset: { value: note } });
+    const change = Math.round((note - sim.total()) * 100) / 100;
+    sim.press('change', { dataset: { value: change } });
+  };
+
+  eq('the first order has two dishes', sim.order().items.length, 2);
+  const wrong = sim.press('serve', { dataset: { item: 'cake' } });
+  eq('a dish not on the order is refused', wrong.wrong, true);
+  eq('  → and nothing is served', sim.s.served.length, 0);
+
+  serveOrder();
+  eq('serving the order moves to the total', sim.s.phase, 'total');
+  sim.press('total', { dataset: { value: 6.5 } });
+  eq('a wrong total is a mistake', sim.s.mistakes, 1);
+  sim.press('total', { dataset: { value: sim.total() } });
+  eq('the right total moves to payment', sim.s.phase, 'pay');
+
+  sim.press('pay', { dataset: { value: 5 } });
+  eq('a note that is too small is refused', sim.s.phase, 'pay');
+  sim.press('pay', { dataset: { value: 10 } });
+  eq('a big enough note moves to change', sim.s.phase, 'change');
+
+  sim.press('change', { dataset: { value: 3.5 } });
+  eq('wrong change is a mistake', sim.s.mistakes, 2);
+  payAndChange(10);
+  eq('right change pays the customer', sim.s.score, 1);
+  eq('  → and starts the next order', sim.s.round, 1);
+
+  sim.press('reset');
+  for (let r = 0; r < sim.ORDERS.length; r++) {
+    serveOrder();
+    sim.press('total', { dataset: { value: sim.total() } });
+    sim.press('pay', { dataset: { value: 50 } });
+    sim.press('change', { dataset: { value: Math.round((50 - sim.total()) * 100) / 100 } });
+  }
+  eq('five correct customers finish the shift', sim.s.done, true);
+  eq('  → with all five paid', sim.s.score, 5);
+  eq('  → and three stars for no mistakes', sim.stars(), 3);
 }
 
 console.log('\n— Language gate —');

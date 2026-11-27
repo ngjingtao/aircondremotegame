@@ -365,7 +365,8 @@ const PAGES = [
   { dir: 'ear', name: 'How the Ear Hears', loop: false },
   { dir: 'eye', name: 'How the Eye Sees', loop: false },
   { dir: 'rainbow', name: 'Rainbow & Light', loop: false },
-  { dir: 'baggage', name: 'Airport Baggage' }
+  { dir: 'baggage', name: 'Airport Baggage' },
+  { dir: 'restaurant', name: 'Bunny Restaurant', loop: false }
 ];
 
 console.log('\n— Every page boots —');
@@ -970,26 +971,26 @@ console.log('\n— Home tiles —');
   const html = fs.readFileSync(path.join(WWW, 'index.html'), 'utf8');
 
   const tiles = html.match(/class="tile tile-[a-z]+(?: [^"]*)?"/g) || [];
-  eq('the home screen has thirty-one tiles', tiles.length, 31);
+  eq('the home screen has thirty-two tiles', tiles.length, 32);
 
   /* level-1 groups make the larger collection navigable */
   const groupBlocks = html.match(/<section class="group"[\s\S]*?<\/section>/g) || [];
   eq('the home screen has seven groups', groupBlocks.length, 7);
   const groupCounts = groupBlocks.map(b => (b.match(/class="tile tile-/g) || []).length);
-  eq('  → grouped 3 / 3 / 3 / 3 / 6 / 5 / 8', groupCounts.join(','), '3,3,3,3,6,5,8');
+  eq('  → grouped 3 / 4 / 3 / 3 / 6 / 5 / 8', groupCounts.join(','), '3,4,3,3,6,5,8');
   const groupKeys = groupBlocks.map(b => (b.match(/data-group="([^"]+)"/) || [])[1]);
   eq('  → home, kitchen, water, nature, body, science, machines',
      groupKeys.join(','), 'home,kitchen,water,nature,body,science,machines');
   eq('  → every group has a heading', (html.match(/class="group-title"/g) || []).length, 7);
 
   const svgs = html.match(/class="tile-svg"[^>]*viewBox="([^"]+)"/g) || [];
-  eq('every tile is an illustration, not a stack of spans', svgs.length, 31);
+  eq('every tile is an illustration, not a stack of spans', svgs.length, 32);
   eq('  → all on one 96×96 canvas', svgs.every(s => /viewBox="0 0 96 96"/.test(s)), true);
 
   /* three depth layers — the parallax and the idle drift both count on them */
   const layer = n => (html.match(new RegExp('class="tl ' + n + '"', 'g')) || []).length;
   eq('every scene has a back, mid and front layer',
-     layer('back') === 31 && layer('mid') === 31 && layer('front') === 31, true);
+     layer('back') === 32 && layer('mid') === 32 && layer('front') === 32, true);
 
   /* the tile illustrations use one shared palette. Every paint a shape asks for
      has to exist, or the shape silently renders black — and a paint nobody uses
@@ -1045,7 +1046,7 @@ console.log('\n— The two-level menu —');
     electric: 'science', magnet: 'science', light: 'science', sunbear: 'science',
     speaker: 'machines', computer: 'machines', power: 'machines', safety: 'machines',
     motor: 'machines', camera: 'machines', testpanel: 'machines', kitlab: 'machines',
-    ear: 'body', eye: 'body', rainbow: 'science', baggage: 'body'
+    ear: 'body', eye: 'body', rainbow: 'science', baggage: 'body', restaurant: 'kitchen'
   };
   const wrong = Object.keys(topicOf).filter(function (dir) {
     const page = fs.readFileSync(path.join(WWW, dir, 'index.html'), 'utf8');
@@ -1089,7 +1090,7 @@ console.log('\n— Phone and iPad layouts —');
   const panelPages = ['aircond', 'aircare', 'breath', 'cycle', 'engine', 'food', 'hood',
     'indah', 'laundry', 'sandwich', 'toilet', 'tree', 'waterhome', 'weather',
     'electric', 'magnet', 'light', 'sunbear', 'speaker', 'computer', 'power', 'safety',
-    'motor', 'camera', 'testpanel', 'kitlab', 'ear', 'eye', 'rainbow', 'baggage'];
+    'motor', 'camera', 'testpanel', 'kitlab', 'ear', 'eye', 'rainbow', 'baggage', 'restaurant'];
   const missing = panelPages.filter(p => {
     const js = fs.readFileSync(path.join(WWW, p, 'js', 'main.js'), 'utf8');
     return !/ARG\.shell\.isStacked\(\)/.test(js) || !/ARG\.shell\.stackPanel\(/.test(js);
@@ -1167,7 +1168,7 @@ console.log('\n— Sticker book on the home screen —');
 
   const p = boot('.');
   if (p.bootError) bad('home — boots', p.bootError);
-  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 36');
+  else eq('the book draws itself on boot', p.document.getElementById('book-count').textContent, '0 / 37');
 }
 
 /* ─────────── the science lab: steps, words and reading ─────────── */

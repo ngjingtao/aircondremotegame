@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../shared/config.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<script src="../shared/prepaint.js"></script>
+<meta name="theme-color" content="#0b1220" />
+<meta name="description" content="兔子餐厅：看顾客点单、把菜价加起来、选钞票付钱、找回正确的零钱。" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="manifest" href="../manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="兔子餐厅" />
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/icon-180.png" />
+<link rel="apple-touch-icon" sizes="167x167" href="../icons/icon-167.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="../icons/icon-152.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="../icons/icon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png" />
+<title>兔子餐厅 · 边玩边学</title>
+<link rel="stylesheet" href="../shared/ui.css" />
+<link rel="stylesheet" href="restaurant.css" />
+</head>
+<body>
+
+<div id="app">
+  <header id="topbar">
+    <a class="tb-btn home" href="../index.html#kitchen" title="Back to menu">‹ <span data-i18n="menu">Menu</span></a>
+    <div class="tb-brand"><span class="tb-logo">🐰</span><span class="tb-title" data-i18n="title">Bunny Restaurant</span></div>
+    <div class="tb-hud">
+      <div class="hud-chip"><span class="hud-label" data-i18n="hudEarned">Earned</span><b id="hud-earned">RM 0.00</b></div>
+      <div class="hud-chip hud-score"><span class="hud-label" data-i18n="hudRound">Customer</span><b id="hud-round">1 / 5</b></div>
+    </div>
+    <div class="tb-buttons">
+      <button class="tb-btn" id="btn-panel" title="Hide controls">◧</button>
+      <button class="tb-btn" id="btn-voice" title="Voice">🗣️</button>
+      <button class="tb-btn" id="btn-lang">EN</button>
+      <button class="tb-btn" id="btn-sound">🔊</button>
+      <button class="tb-btn" id="btn-help">?</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="ctl-panel">
+      <div id="ctl-scaler"><div class="ctl" id="ctl">
+        <div class="fact-card" id="rest-fact"></div>
+
+        <div class="order-card">
+          <span class="order-label" data-i18n="order">Order</span>
+          <div class="order-list" id="order-list"></div>
+        </div>
+
+        <div class="serve-box" id="serve-box">
+          <div class="ctl-label" data-i18n="serve">Tap the food the customer ordered</div>
+          <div class="menu-grid" id="menu-grid"></div>
+        </div>
+
+        <div class="choice-box" id="total-box" hidden>
+          <div class="ctl-label" data-i18n="total">What is the total?</div>
+          <div class="choices" id="total-row"></div>
+        </div>
+
+        <div class="choice-box" id="pay-box" hidden>
+          <div class="ctl-label" data-i18n="pay">Choose a note to pay</div>
+          <div class="choices notes" id="note-row"></div>
+        </div>
+
+        <div class="choice-box" id="change-box" hidden>
+          <div class="ctl-label" data-i18n="change">How much change?</div>
+          <div class="choices" id="change-row"></div>
+        </div>
+
+        <div class="feedback" id="rest-feedback"></div>
+
+        <div class="run-row">
+          <button class="clear-btn" data-action="reset" data-i18n="reset">NEW SHIFT</button>
+        </div>
+
+        <div class="result" id="rest-result" hidden>
+          <div class="res-stars" id="rest-stars">★★★</div>
+          <p id="rest-res-text"></p>
+          <button class="clear-btn" data-action="reset" data-i18n="again">PLAY AGAIN</button>
+        </div>
+      </div></div>
+    </section>
+
+    <section id="scene">
+      <div class="scene-top">
+        <span class="scene-lead" data-i18n="lead">Bunny restaurant</span>
+        <span class="scene-status" id="scene-status" data-i18n="statusServe">Taking the order</span>
+      </div>
+      <div class="art-wrap">
+        <svg id="art" viewBox="0 0 340 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="rWall" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a2432"/><stop offset="100%" stop-color="#1a1018"/>
+            </linearGradient>
+            <linearGradient id="rCounter" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#c47a2c"/><stop offset="100%" stop-color="#7a4a16"/>
+            </linearGradient>
+            <radialGradient id="rLamp">
+              <stop offset="0%" stop-color="rgba(255,209,102,.55)"/><stop offset="100%" stop-color="rgba(255,209,102,0)"/>
+            </radialGradient>
+            <filter id="rSoft" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#05080d" flood-opacity=".45"/>
+            </filter>
+          </defs>
+
+          <rect width="340" height="520" fill="url(#rWall)"/>
+          <rect y="470" width="340" height="50" fill="#0a070b"/>
+          <circle cx="170" cy="70" r="120" fill="url(#rLamp)" opacity=".7"/>
+
+          <!-- counter -->
+          <rect x="18" y="320" width="304" height="86" rx="14" fill="url(#rCounter)" stroke="#4a2a0d" stroke-width="2" filter="url(#rSoft)"/>
+          <rect x="18" y="320" width="304" height="14" rx="7" fill="#e0a35a"/>
+
+          <!-- bunny chef -->
+          <g id="bunny" filter="url(#rSoft)">
+            <ellipse cx="96" cy="296" rx="46" ry="42" fill="#f7f2ea" stroke="#c8b8a8" stroke-width="2"/>
+            <ellipse cx="74" cy="232" rx="14" ry="40" fill="#f7f2ea" stroke="#c8b8a8" stroke-width="2" transform="rotate(-12 74 232)"/>
+            <ellipse cx="118" cy="232" rx="14" ry="40" fill="#f7f2ea" stroke="#c8b8a8" stroke-width="2" transform="rotate(12 118 232)"/>
+            <ellipse cx="96" cy="272" rx="34" ry="30" fill="#f7f2ea" stroke="#c8b8a8" stroke-width="2"/>
+            <circle cx="84" cy="266" r="4" fill="#2f2a35"/>
+            <circle cx="108" cy="266" r="4" fill="#2f2a35"/>
+            <path d="M90 280 q6 6 12 0" fill="none" stroke="#c0583f" stroke-width="3" stroke-linecap="round"/>
+            <path d="M96 292 v10 M88 302 h16" stroke="#c8b8a8" stroke-width="2" stroke-linecap="round"/>
+            <path d="M70 306 q26 16 52 0 l-6 20 h-40 Z" fill="#e85d5d" opacity=".8"/>
+          </g>
+
+          <!-- customer -->
+          <g id="customer" filter="url(#rSoft)">
+            <ellipse cx="258" cy="330" rx="36" ry="34" fill="#d9e6f2" stroke="#8fa0b4" stroke-width="2"/>
+            <ellipse cx="244" cy="288" rx="10" ry="28" fill="#d9e6f2" stroke="#8fa0b4" stroke-width="2" transform="rotate(-10 244 288)"/>
+            <ellipse cx="272" cy="288" rx="10" ry="28" fill="#d9e6f2" stroke="#8fa0b4" stroke-width="2" transform="rotate(10 272 288)"/>
+            <circle cx="248" cy="326" r="3.4" fill="#2f2a35"/>
+            <circle cx="268" cy="326" r="3.4" fill="#2f2a35"/>
+            <path d="M254 338 q4 4 8 0" fill="none" stroke="#c0583f" stroke-width="2.4" stroke-linecap="round"/>
+          </g>
+
+          <!-- tray, bell, register -->
+          <ellipse cx="168" cy="342" rx="56" ry="10" fill="#2a1a10" opacity=".55"/>
+          <text id="tray-items" x="168" y="338" text-anchor="middle" font-size="22" font-family="system-ui">🍽️</text>
+          <g id="bell">
+            <path d="M282 344 q10 -18 20 0 Z" fill="#ffd166" stroke="#b8862b" stroke-width="1.4"/>
+            <rect x="290" y="344" width="4" height="8" rx="2" fill="#b8862b"/>
+          </g>
+          <g>
+            <rect x="30" y="342" width="40" height="26" rx="4" fill="#2b3542" stroke="#5f7188" stroke-width="1.4"/>
+            <rect x="36" y="348" width="28" height="9" rx="2" fill="#8ef0b4" opacity=".7"/>
+          </g>
+        </svg>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <div id="help-overlay" class="overlay" hidden>
+    <div class="overlay-card">
+      <h2 id="help-title" data-i18n="helpTitle">Bunny Restaurant</h2>
+      <p id="help-sub" data-i18n="helpSub">Take orders, add prices, give change</p>
+      <div id="help-body"></div>
+      <button class="overlay-close" id="help-close">OK</button>
+    </div>
+  </div>
+</div>
+
+<script src="../shared/store.js"></script>
+<script src="../shared/lang.js"></script>
+<script src="../shared/progress.js"></script>
+<script src="../shared/voice.js"></script>
+<script src="../shared/a11y.js"></script>
+<script src="../shared/audio.js"></script>
+<script src="../shared/shell.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/state.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/main.js"></script>
+<script src="../pwa.js"></script>
+</body>
+</html>
