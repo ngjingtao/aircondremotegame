@@ -898,7 +898,7 @@ console.log('\n— The sticker book —');
   const p = ARG.progress;
 
   p.reset();
-  eq('the book has thirty-five stickers', p.count, 35);
+  eq('the book has thirty-six stickers', p.count, 36);
   eq('and starts empty', p.earned(), 0);
   eq('  → with no stars', p.total(), 0);
 
@@ -917,12 +917,12 @@ console.log('\n— The sticker book —');
   eq('the total adds the stars up', p.total(), 4);
 
   const book = p.book();
-  eq('every catalogue sticker is in the book', book.length, 35);
+  eq('every catalogue sticker is in the book', book.length, 36);
   eq('  → each knows its activity', book[0].activity, 'aircond');
   eq('  → and has a label to explain it', typeof book[0].label, 'string');
   const acts = {};
   book.forEach(c => { acts[c.activity] = (acts[c.activity] || 0) + 1; });
-  eq('every activity in the app contributes', Object.keys(acts).length, 30);
+  eq('every activity in the app contributes', Object.keys(acts).length, 31);
   eq('  → the two with missions contribute three each, the laundry two, the rest one',
      acts.aircond === 3 && acts.train === 3 && acts.laundry === 2 &&
      acts.tree === 1 && acts.sandwich === 1 && acts.waterhome === 1 &&
@@ -931,7 +931,8 @@ console.log('\n— The sticker book —');
      acts.sunbear === 1 && acts.speaker === 1 && acts.computer === 1 &&
      acts.power === 1 && acts.safety === 1 &&
      acts.motor === 1 && acts.camera === 1 && acts.testpanel === 1 &&
-     acts.kitlab === 1 && acts.ear === 1 && acts.eye === 1 && acts.rainbow === 1, true);
+     acts.kitlab === 1 && acts.ear === 1 && acts.eye === 1 && acts.rainbow === 1 &&
+     acts.baggage === 1, true);
 
   /* a corrupt store must not take the home screen down with it */
   const ARG2 = load('shared', ['shared/progress.js']);
@@ -1085,6 +1086,37 @@ console.log('\n— Electromagnet Kit Lab —');
   }
   eq('all eight experiments complete the badge', sim.s.done, true);
   eq('  → eight runs recorded', sim.s.runs.length, 8);
+}
+
+console.log('\n— Airport Baggage —');
+{
+  const ARG = load('baggage', ['baggage/js/state.js']);
+  const sim = ARG.sim;
+  const chuteFor = () => sim.DESTS.findIndex(d => d.code === sim.bag().code);
+
+  sim.press('start');
+  eq('the belt starts on the first bag', sim.s.running, true);
+  sim.press('sort', { dataset: { chute: chuteFor() } });
+  eq('a matching chute sorts the bag', sim.s.score, 1);
+  eq('  → and the next bag is up', sim.s.i, 1);
+
+  const wrong = (chuteFor() + 1) % sim.DESTS.length;
+  sim.press('sort', { dataset: { chute: wrong } });
+  eq('a wrong chute mishandles the bag', sim.s.mistakes, 1);
+
+  for (let i = 0; i < 400; i++) sim.tick(0.05);
+  eq('a bag that passes the diverter is mishandled', sim.s.mistakes > 1, true);
+
+  sim.press('reset');
+  eq('a new shift clears the score', sim.s.score, 0);
+  sim.press('start');
+  let guard = 0;
+  while (!sim.s.done && guard++ < 20) {
+    sim.press('sort', { dataset: { chute: chuteFor() } });
+  }
+  eq('eight correct bags finish the shift', sim.s.done, true);
+  eq('  → with all eight sorted', sim.s.score, 8);
+  eq('  → and three stars', sim.stars(), 3);
 }
 
 console.log('\n— Language gate —');

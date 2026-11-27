@@ -75,7 +75,7 @@ For each lesson, lay the six plates side by side:
 - [ ] One lesson was stepped through: all six images change, no flash of a
       broken image, SVG fallback works when a file is renamed.
 - [ ] The home screen shows the tile images and the labels underneath.
-- [ ] `npm test` passes (362 + 45 + 427 today).
+- [ ] `npm test` passes (371 + 45 + 431 today).
 - [ ] Service-worker cache name bumped, or `npm run stamp` ran.
 - [ ] A hard reload shows the new art (no stale PWA cache).
 - [ ] Total `www/art` size is within budget.

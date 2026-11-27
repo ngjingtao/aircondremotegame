@@ -2,7 +2,7 @@
 
 [![Build Android APK](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml/badge.svg)](https://github.com/ngjingtao/aircondremotegame/actions/workflows/android.yml)
 
-One little app, **thirty** activities for a curious kid. The home screen shows thirty picture
+One little app, **thirty-one** activities for a curious kid. The home screen shows thirty-one picture
 tiles — tap one and you're in.
 
 ```
@@ -61,9 +61,9 @@ tiles — tap one and you're in.
 > cards; tap one to get here.
 
 Everything is hand-drawn in **CSS + inline SVG** — no images, no sprite sheets, no build step.
-All thirty activities speak **English and 中文**, work offline, and are installable as an app.
+All thirty-one activities speak **English and 中文**, work offline, and are installable as an app.
 
-The thirty tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
+The thirty-one tiles are SVG scenes rather than icons: each shows a *moment* from its activity,
 painted from one shared palette and split into three depth layers that drift gently and pull
 apart on hover. They are the only place the character guidelines in
 [`docs/character-bible.md`](docs/character-bible.md) are applied so far.
@@ -74,7 +74,7 @@ and **Electricity & machines** (4).
 
 ### The two-level menu
 
-With thirty activities, the home is a **two-level menu** rather than one long scroll:
+With thirty-one activities, the home is a **two-level menu** rather than one long scroll:
 
 1. **Topics** — seven cards, each with its icon, name, a one-line description and the number of
    activities. The newest group spans the full row, so the odd count stays tidy.
@@ -128,8 +128,8 @@ The shared rules live in `www/shared/ui.css` (phone sheet, fitted card and top b
 
 ### The sticker book
 
-Under the tiles is the one thing that ties the thirty activities together: a collection that
-every activity writes to. Thirty-five stickers, earned by doing the thing the activity is about —
+Under the tiles is the one thing that ties the thirty-one activities together: a collection that
+every activity writes to. Thirty-six stickers, earned by doing the thing the activity is about —
 `shared/progress.js` holds the catalogue and the storage, and each activity awards its own from
 its render loop.
 
@@ -165,6 +165,7 @@ its render loop.
 | 👂 How the Ear Hears | 1 | follow the sound from pinna to brain |
 | 👁️ How the Eye Sees | 1 | follow the light from cornea to brain |
 | 🌈 Rainbow & Light | 1 | follow white light through a prism and raindrop |
+| 🧳 Airport Baggage | 1 | sort all eight bags to the right chute |
 
 An earned sticker takes its activity's accent colour and shows the stars; the rest sit dimmed
 behind a dashed outline, so there is always something obviously missing. Awards only ever go
@@ -1186,6 +1187,26 @@ order reversed.
 
 ---
 
+## 31 · 🧳 Airport Baggage
+
+A baggage-sortation game in the transport group. Each bag gets a tag with a destination and
+flight; the belt carries it through the X-ray scanner to a diverter, and the child has to send
+it to the matching make-up chute before it passes the end of the belt.
+
+| Part | What happens |
+|---|---|
+| **Check-in tag** | destination and flight are printed on the tag |
+| **Belt + X-ray** | the bag travels through security |
+| **Diverter** | the tag is read and the bag is pushed to a chute |
+| **Make-up chutes** | KUL · SIN · BKI; the right one is loaded to the flight |
+| **Mishandled** | a wrong or missed bag is counted and would need re-routing |
+| **Shift result** | eight bags, stars for a clean shift, badge on completion |
+
+The help panel explains the real BHS: kilometres of belt, scanners, diverters and sortation
+computers, and why a mis-sorted bag can miss its flight.
+
+---
+
 ## Play it in a browser (fastest)
 
 Everything is plain HTML/CSS/JS — no build step.
@@ -1575,6 +1596,10 @@ www/                          ← the whole app (no build step)
 │  ├─ index.html
 │  ├─ rainbow.css                       sun, prism, raindrop, rainbow arcs
 │  └─ js/ i18n.js · state.js · scene.js · main.js
+├─ baggage/                             ── activity 31 ──
+│  ├─ index.html
+│  ├─ baggage.css                       check-in, belt, X-ray, chutes, aircraft
+│  └─ js/ i18n.js · state.js · scene.js · panel.js · main.js
 ├─ _devicelab.html                      dev-only: phone & iPad previews
 docs/character-bible.md                 the character, the palettes and the house style
 docs/art/                               illustration handoff: brief, prompts, integration
@@ -1586,9 +1611,9 @@ server.js                               static server + /tts neural voice ($PORT
 render.yaml                             Render blueprint (build + start commands)
 scripts/stamp.js                        stamps the sw.js cache from the git commit
 scripts/build-apk.js                    cross-platform APK build
-test/sim.test.js                        362 assertions over the thirty activities
+test/sim.test.js                        371 assertions over the thirty-one activities
 test/voice.test.js                       45 assertions: neural voice, autoplay, native/Web Speech fallback, word ranges
-test/render.test.js                     427 assertions: every page booted, the menu, the art hook, the language gate, the book, and nothing inline
+test/render.test.js                     431 assertions: every page booted, the menu, the art hook, the language gate, the book, and nothing inline
 test/server.test.js                     hammers the server with malformed URLs
 android/                                Capacitor Android project (committed)
 │  └─ app/src/main/java/.../SystemTts.java   native TTS bridge (window.AndroidTts)
@@ -1613,7 +1638,7 @@ call a scene, so a `render()` that throws still passes every one of them while t
 completely dead. It happened: the train's scene referenced an undefined `clamp`, which threw on
 every frame — and because `main.js` calls `render()` *before* it schedules
 `requestAnimationFrame`, the throw killed the animation loop at boot. Pressing the throttle did
-nothing at all, yet all 56 simulation assertions passed. So this test boots each of the thirty
+nothing at all, yet all 56 simulation assertions passed. So this test boots each of the thirty-one
 pages for real — reading the exact `<script>` list out of its own HTML and loading it in order
 into a small fake DOM — then drives the `requestAnimationFrame` loop for ~3 seconds of frames and
 fails on any throw, on boot or on any later frame. The train is checked as behaviour too: apply

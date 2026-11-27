@@ -78,6 +78,8 @@
       tileEyeSub: 'Light, lens, retina and the picture in the brain',
       tileRainbowTitle: 'Rainbow & Light',
       tileRainbowSub: 'Prisms, raindrops and the colours inside white light',
+      tileBagTitle: 'Airport Baggage',
+      tileBagSub: 'Tag, scan, sort and send each bag to the right chute',
       groupHome: 'Home machines',
       groupKitchen: 'Kitchen',
       groupWater: 'Water systems',
@@ -125,9 +127,10 @@
       stEar: 'Follow the sound from the pinna to the brain',
       stEye: 'Follow the light from the cornea to the brain',
       stRainbow: 'Follow white light through a prism and a raindrop',
+      stBag: 'Sort every bag to the right chute',
       foot: 'Made for curious kids',
       help: '?',
-      helpTitle: 'Thirty activities',
+      helpTitle: 'Thirty-one activities',
       helpBody: `
         <h3>❄ Play Aircond</h3>
         <ul>
@@ -345,6 +348,8 @@
       tileEyeSub: '光、晶状体、视网膜和大脑里的画面',
       tileRainbowTitle: '彩虹与光',
       tileRainbowSub: '棱镜、雨滴和白光里的颜色',
+      tileBagTitle: '机场行李系统',
+      tileBagSub: '贴牌、扫描、分拣，把每件行李送进正确的滑槽',
       groupHome: '家里的机器',
       groupKitchen: '厨房',
       groupWater: '水系统',
@@ -392,9 +397,10 @@
       stEar: '跟着声音从耳廓走到大脑',
       stEye: '跟着光从角膜走到大脑',
       stRainbow: '跟着白光穿过棱镜和雨滴',
+      stBag: '把每件行李分到正确的滑槽',
       foot: '给充满好奇心的小朋友',
       help: '?',
-      helpTitle: '三十个小游戏',
+      helpTitle: '三十一个小游戏',
       helpBody: `
         <h3>❄ 玩空调</h3>
         <ul>
@@ -577,7 +583,8 @@
     kitlab: { icon: '🧰', tint: '#58d6c9' },
     ear: { icon: '👂', tint: '#f0b58a' },
     eye: { icon: '👁️', tint: '#8fd0ff' },
-    rainbow: { icon: '🌈', tint: '#e85d5d' }
+    rainbow: { icon: '🌈', tint: '#e85d5d' },
+    baggage: { icon: '🧳', tint: '#f0a03a' }
   };
 
   /* level 1 → one card per group; level 2 → that group's tiles.
